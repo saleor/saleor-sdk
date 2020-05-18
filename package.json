@@ -1,0 +1,39 @@
+{
+  "name": "saleor-sdk",
+  "version": "0.0.1",
+  "description": "This package contains all queries and mutations that are used in our sample storefront. It can be used for semi-custom or fully-custom (with ability to extend existing queries) storefront solutions.",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc --noEmit --watch",
+    "test": "jest"
+  },
+  "keywords": [
+    "saleor",
+    "sdk",
+    "storefront",
+    "shop",
+    "typescript",
+    "apollo",
+    "graphql"
+  ],
+  "author": "Mirumee",
+  "devDependencies": {
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "apollo": "^2.27.4",
+    "apollo-client": "^2.6.10",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.3",
+    "jest": "^26.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.9.2"
+  },
+  "peerDependencies": {
+    "apollo-client": "^2.6.10",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
