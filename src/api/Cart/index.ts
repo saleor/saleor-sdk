@@ -1,10 +1,10 @@
-import { ErrorListener } from "@sdk/helpers";
-import { JobsManager } from "@sdk/jobs";
-import { ErrorCartTypes } from "@sdk/jobs/Cart";
-import { NetworkManager } from "@sdk/network";
-import { CheckoutRepositoryManager, ICheckoutModel } from "@sdk/repository";
-import { SaleorState } from "@sdk/state";
-import { ISaleorStateSummeryPrices, StateItems } from "@sdk/state/types";
+import { ErrorListener } from "@helpers";
+import { JobsManager } from "@jobs";
+import { ErrorCartTypes } from "@jobs/Cart";
+import { NetworkManager } from "@network";
+import { CheckoutRepositoryManager, ICheckoutModel } from "@repository";
+import { SaleorState } from "@state";
+import { ISaleorStateSummeryPrices, StateItems } from "@state/types";
 
 import {
   IDiscount,
@@ -54,7 +54,7 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
       StateItems.CHECKOUT,
       ({ lines }: ICheckoutModel) => {
         this.items = lines
-          ?.filter(line => line.quantity > 0)
+          ?.filter((line) => line.quantity > 0)
           .sort((a, b) => {
             if (a.id && b.id) {
               const aId = a.id?.toUpperCase() || "";

@@ -1,6 +1,6 @@
-import { DataErrorCheckoutTypes } from "@sdk/api/Checkout/types";
-import { ErrorCartTypes } from "@sdk/jobs/Cart";
-import { ApolloErrorWithUserInput } from "@sdk/react/types";
+import { DataErrorCheckoutTypes } from "@api/Checkout/types";
+import { ErrorCartTypes } from "@jobs/Cart";
+import { ApolloErrorWithUserInput } from "@react/types";
 
 import { IErrorListener } from "./types";
 
@@ -25,7 +25,7 @@ export class ErrorListener implements IErrorListener {
     func: (error: ApolloErrorWithUserInput | any, type: ErrorTypes) => any
   ) => {
     this.errorListeners = this.errorListeners.filter(
-      errorListenersFunc => func !== errorListenersFunc
+      (errorListenersFunc) => func !== errorListenersFunc
     );
   };
 
@@ -33,7 +33,7 @@ export class ErrorListener implements IErrorListener {
     error: ApolloErrorWithUserInput | any,
     type: ErrorTypes
   ) => {
-    this.errorListeners.forEach(errorListenersFunc => {
+    this.errorListeners.forEach((errorListenersFunc) => {
       errorListenersFunc(error, type);
     });
   };

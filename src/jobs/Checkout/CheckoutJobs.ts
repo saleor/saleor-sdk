@@ -1,6 +1,6 @@
-import { DataErrorCheckoutTypes, ICreditCard } from "@sdk/api/Checkout/types";
-import { NetworkManager } from "@sdk/network";
-import { ICheckoutAddress, LocalRepository } from "@sdk/repository";
+import { DataErrorCheckoutTypes, ICreditCard } from "@api/Checkout/types";
+import { NetworkManager } from "@network";
+import { ICheckoutAddress, LocalRepository } from "@repository";
 
 import { PromiseCheckoutJobRunResponse } from "../types";
 

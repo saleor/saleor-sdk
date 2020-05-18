@@ -1,5 +1,5 @@
-import { NetworkManager } from "@sdk/network";
-import { LocalRepository } from "@sdk/repository";
+import { NetworkManager } from "@network";
+import { LocalRepository } from "@repository";
 
 import { QueuedJobsHandler } from "../QueuedJobsHandler";
 

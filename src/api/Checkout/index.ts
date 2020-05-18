@@ -1,8 +1,8 @@
-import { ErrorListener } from "@sdk/helpers";
-import { JobsManager } from "@sdk/jobs";
-import { ICheckoutModel, IPaymentModel } from "@sdk/repository";
-import { SaleorState } from "@sdk/state";
-import { StateItems } from "@sdk/state/types";
+import { ErrorListener } from "@helpers";
+import { JobsManager } from "@jobs";
+import { ICheckoutModel, IPaymentModel } from "@repository";
+import { SaleorState } from "@state";
+import { StateItems } from "@state/types";
 
 import { PromiseRunResponse } from "../types";
 import {
@@ -137,7 +137,7 @@ export class SaleorCheckoutAPI extends ErrorListener
   ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
     await this.saleorState.provideCheckout(this.fireError);
     const checkoutId = this.saleorState.checkout?.id;
-    const alteredLines = this.saleorState.checkout?.lines?.map(item => ({
+    const alteredLines = this.saleorState.checkout?.lines?.map((item) => ({
       quantity: item!.quantity,
       variantId: item?.variant!.id,
     }));
@@ -196,9 +196,9 @@ export class SaleorCheckoutAPI extends ErrorListener
     await this.saleorState.provideCheckout(this.fireError);
     const checkoutId = this.saleorState.checkout?.id;
     const isShippingRequiredForProducts = this.saleorState.checkout?.lines
-      ?.filter(line => line.quantity > 0)
+      ?.filter((line) => line.quantity > 0)
       .some(({ variant }) => variant.product?.productType.isShippingRequired);
-    const alteredLines = this.saleorState.checkout?.lines?.map(item => ({
+    const alteredLines = this.saleorState.checkout?.lines?.map((item) => ({
       quantity: item!.quantity,
       variantId: item?.variant!.id,
     }));

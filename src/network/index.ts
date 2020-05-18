@@ -1,71 +1,71 @@
 import ApolloClient from "apollo-client";
 
-import { getAuthToken } from "@sdk/auth";
-import { Checkout } from "@sdk/fragments/gqlTypes/Checkout";
-import { OrderDetail } from "@sdk/fragments/gqlTypes/OrderDetail";
-import { Payment } from "@sdk/fragments/gqlTypes/Payment";
-import { CountryCode } from "@sdk/gqlTypes/globalTypes";
-import * as CheckoutMutations from "@sdk/mutations/checkout";
+import { getAuthToken } from "@auth";
+import { Checkout } from "@fragments/gqlTypes/Checkout";
+import { OrderDetail } from "@fragments/gqlTypes/OrderDetail";
+import { Payment } from "@fragments/gqlTypes/Payment";
+import { CountryCode } from "@gqlTypes/globalTypes";
+import * as CheckoutMutations from "@mutations/checkout";
 import {
   AddCheckoutPromoCode,
   AddCheckoutPromoCodeVariables,
-} from "@sdk/mutations/gqlTypes/AddCheckoutPromoCode";
+} from "@mutations/gqlTypes/AddCheckoutPromoCode";
 import {
   CompleteCheckout,
   CompleteCheckoutVariables,
-} from "@sdk/mutations/gqlTypes/CompleteCheckout";
+} from "@mutations/gqlTypes/CompleteCheckout";
 import {
   CreateCheckout,
   CreateCheckoutVariables,
-} from "@sdk/mutations/gqlTypes/CreateCheckout";
+} from "@mutations/gqlTypes/CreateCheckout";
 import {
   CreateCheckoutPayment,
   CreateCheckoutPaymentVariables,
-} from "@sdk/mutations/gqlTypes/CreateCheckoutPayment";
+} from "@mutations/gqlTypes/CreateCheckoutPayment";
 import {
   RemoveCheckoutPromoCode,
   RemoveCheckoutPromoCodeVariables,
-} from "@sdk/mutations/gqlTypes/RemoveCheckoutPromoCode";
+} from "@mutations/gqlTypes/RemoveCheckoutPromoCode";
 import {
   UpdateCheckoutBillingAddress,
   UpdateCheckoutBillingAddressVariables,
-} from "@sdk/mutations/gqlTypes/UpdateCheckoutBillingAddress";
+} from "@mutations/gqlTypes/UpdateCheckoutBillingAddress";
 import {
   UpdateCheckoutBillingAddressWithEmail,
   UpdateCheckoutBillingAddressWithEmailVariables,
-} from "@sdk/mutations/gqlTypes/UpdateCheckoutBillingAddressWithEmail";
+} from "@mutations/gqlTypes/UpdateCheckoutBillingAddressWithEmail";
 import {
   UpdateCheckoutLine,
   UpdateCheckoutLineVariables,
-} from "@sdk/mutations/gqlTypes/UpdateCheckoutLine";
+} from "@mutations/gqlTypes/UpdateCheckoutLine";
 import {
   UpdateCheckoutShippingAddress,
   UpdateCheckoutShippingAddressVariables,
-} from "@sdk/mutations/gqlTypes/UpdateCheckoutShippingAddress";
+} from "@mutations/gqlTypes/UpdateCheckoutShippingAddress";
 import {
   UpdateCheckoutShippingMethod,
   UpdateCheckoutShippingMethodVariables,
-} from "@sdk/mutations/gqlTypes/UpdateCheckoutShippingMethod";
-import * as CheckoutQueries from "@sdk/queries/checkout";
-import { CheckoutDetails } from "@sdk/queries/gqlTypes/CheckoutDetails";
+} from "@mutations/gqlTypes/UpdateCheckoutShippingMethod";
+import * as CheckoutQueries from "@queries/checkout";
+import { CheckoutDetails } from "@queries/gqlTypes/CheckoutDetails";
 import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
-} from "@sdk/queries/gqlTypes/CheckoutProductVariants";
+} from "@queries/gqlTypes/CheckoutProductVariants";
 import {
   GetShopPaymentGateways,
   GetShopPaymentGateways_shop_availablePaymentGateways,
-} from "@sdk/queries/gqlTypes/GetShopPaymentGateways";
-import { UserCheckoutDetails } from "@sdk/queries/gqlTypes/UserCheckoutDetails";
-import * as ShopQueries from "@sdk/queries/shop";
+} from "@queries/gqlTypes/GetShopPaymentGateways";
+import { UserCheckoutDetails } from "@queries/gqlTypes/UserCheckoutDetails";
+import * as ShopQueries from "@queries/shop";
 import {
   ICheckoutAddress,
   ICheckoutModel,
   ICheckoutModelLine,
   IOrderModel,
   IPaymentModel,
-} from "@sdk/repository";
-import { filterNotEmptyArrayItems } from "@sdk/utils";
+} from "@repository";
+import { filterNotEmptyArrayItems } from "@utils";
 
 import { INetworkManager } from "./types";
 
@@ -86,7 +86,7 @@ export class NetworkManager implements INetworkManager {
             query: CheckoutQueries.userCheckoutDetails,
           });
           observable.subscribe(
-            result => {
+            (result) => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -94,7 +94,7 @@ export class NetworkManager implements INetworkManager {
                 resolve(data.me?.checkout);
               }
             },
-            error => {
+            (error) => {
               reject(error);
             }
           );
@@ -107,7 +107,7 @@ export class NetworkManager implements INetworkManager {
             },
           });
           observable.subscribe(
-            result => {
+            (result) => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -115,7 +115,7 @@ export class NetworkManager implements INetworkManager {
                 resolve(data.checkout);
               }
             },
-            error => {
+            (error) => {
               reject(error);
             }
           );
@@ -141,10 +141,10 @@ export class NetworkManager implements INetworkManager {
     checkoutlines: ICheckoutModelLine[] | null
   ) => {
     const idsOfMissingVariants = checkoutlines
-      ?.filter(line => !line.variant || !line.totalPrice)
-      .map(line => line.variant.id);
+      ?.filter((line) => !line.variant || !line.totalPrice)
+      .map((line) => line.variant.id);
     const linesWithProperVariant =
-      checkoutlines?.filter(line => line.variant && line.totalPrice) || [];
+      checkoutlines?.filter((line) => line.variant && line.totalPrice) || [];
 
     let variants: CheckoutProductVariants_productVariants | null | undefined;
     if (idsOfMissingVariants && idsOfMissingVariants.length) {
@@ -159,7 +159,7 @@ export class NetworkManager implements INetworkManager {
         );
         variants = await new Promise((resolve, reject) => {
           observable.subscribe(
-            result => {
+            (result) => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -167,7 +167,7 @@ export class NetworkManager implements INetworkManager {
                 resolve(data.productVariants);
               }
             },
-            error => {
+            (error) => {
               reject(error);
             }
           );
@@ -180,9 +180,9 @@ export class NetworkManager implements INetworkManager {
     }
 
     const linesWithMissingVariantUpdated = variants
-      ? variants.edges.map(edge => {
+      ? variants.edges.map((edge) => {
           const existingLine = checkoutlines?.find(
-            line => line.variant.id === edge.node.id
+            (line) => line.variant.id === edge.node.id
           );
           const variantPricing = edge.node.pricing?.price;
           const totalPrice = variantPricing
@@ -218,7 +218,7 @@ export class NetworkManager implements INetworkManager {
         })
       : [];
 
-    const linesWithProperVariantUpdated = linesWithProperVariant.map(line => {
+    const linesWithProperVariantUpdated = linesWithProperVariant.map((line) => {
       const variantPricing = line.variant.pricing?.price;
       const totalPrice = variantPricing
         ? {
@@ -260,7 +260,7 @@ export class NetworkManager implements INetworkManager {
           query: ShopQueries.getShopPaymentGateways,
         });
         observable.subscribe(
-          result => {
+          (result) => {
             const { data, errors } = result;
             if (errors?.length) {
               reject(errors);
@@ -268,7 +268,7 @@ export class NetworkManager implements INetworkManager {
               resolve(data.shop.availablePaymentGateways);
             }
           },
-          error => {
+          (error) => {
             reject(error);
           }
         );
@@ -364,7 +364,7 @@ export class NetworkManager implements INetworkManager {
     const lines = checkout.lines;
 
     if (checkoutId && lines) {
-      const alteredLines = lines.map(line => ({
+      const alteredLines = lines.map((line) => ({
         quantity: line.quantity,
         variantId: line.variant.id,
       }));
@@ -803,8 +803,8 @@ export class NetworkManager implements INetworkManager {
     email,
     id,
     lines: lines
-      ?.filter(item => item?.quantity && item.variant.id)
-      .map(item => {
+      ?.filter((item) => item?.quantity && item.variant.id)
+      .map((item) => {
         const itemVariant = item?.variant;
 
         return {
