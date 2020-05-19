@@ -2,7 +2,7 @@ import {
   ICheckoutModelLine,
   ICheckoutModelPrice,
   ICheckoutModelPriceValue,
-} from "@repository";
+} from "../../repository";
 
 import { PromiseQueuedResponse } from "../types";
 

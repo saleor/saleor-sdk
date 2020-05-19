@@ -1,10 +1,10 @@
-import { ErrorListener } from "@helpers";
-import { JobsManager } from "@jobs";
-import { ErrorCartTypes } from "@jobs/Cart";
-import { NetworkManager } from "@network";
-import { CheckoutRepositoryManager, ICheckoutModel } from "@repository";
-import { SaleorState } from "@state";
-import { ISaleorStateSummeryPrices, StateItems } from "@state/types";
+import { ErrorListener } from "../../helpers";
+import { JobsManager } from "../../jobs";
+import { ErrorCartTypes } from "../../jobs/Cart";
+import { NetworkManager } from "../../network";
+import { CheckoutRepositoryManager, ICheckoutModel } from "../../repository";
+import { SaleorState } from "../../state";
+import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
 
 import {
   IDiscount,

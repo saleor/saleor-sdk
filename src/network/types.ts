@@ -6,7 +6,7 @@ import {
   ICheckoutModelLine,
   IOrderModel,
   IPaymentModel,
-} from "@repository";
+} from "../repository";
 
 export enum PendingSaveItems {
   UPDATE_CART = "updateCart",

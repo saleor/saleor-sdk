@@ -1,42 +1,21 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "declaration": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["es2017", "dom", "esnext"],
     "module": "commonjs",
     "noUnusedLocals": true,
-    "paths": {
-      "@api": ["./src/api/index.ts"],
-      "@api/*": ["./src/api/*"],
-      "@auth": ["./src/auth.ts"],
-      "@fragments": ["./src/fragments/index.ts"],
-      "@fragments/*": ["./src/fragments/*"],
-      "@gqlTypes": ["./src/gqlTypes/index.ts"],
-      "@gqlTypes/*": ["./src/gqlTypes/*"],
-      "@helpers": ["./src/helpers/index.ts"],
-      "@helpers/*": ["./src/helpers/*"],
-      "@jobs": ["./src/jobs/index.ts"],
-      "@jobs/*": ["./src/jobs/*"],
-      "@mutations": ["./src/mutations/index.ts"],
-      "@mutations/*": ["./src/mutations/*"],
-      "@network": ["./src/network/index.ts"],
-      "@network/*": ["./src/network/*"],
-      "@queries": ["./src/queries/index.ts"],
-      "@queries/*": ["./src/queries/*"],
-      "@react": ["./src/react/index.ts"],
-      "@react/*": ["./src/react/*"],
-      "@repository": ["./src/repository/index.ts"],
-      "@repository/*": ["./src/repository/*"],
-      "@state": ["./src/state/index.ts"],
-      "@state/*": ["./src/state/*"],
-      "@types": ["./src/types"],
-      "@utils": ["./src/utils"]
-    },
+    "outDir": "build",
+    // Well, path aliasing doesn't work
+    // ref https://github.com/microsoft/TypeScript/issues/10866
+    "paths": {},
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "es6"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*"]
 }

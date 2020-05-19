@@ -1,6 +1,6 @@
 import ApolloClient from "apollo-client";
 
-import { Config } from "@types";
+import { Config } from "../../../types";
 
 export interface IProps<TCacheShape> {
   children: React.ReactElement;
