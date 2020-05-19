@@ -8,7 +8,7 @@
 !.jest
 !.linguirc
 !.prettierrc
-dist
+build
 node_modules
 src/locales/_build
 
