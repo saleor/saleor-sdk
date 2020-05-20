@@ -4,7 +4,9 @@
 !.circle
 !.gitignore
 !.jest
-!.linguirc
+!.prettierrc
+!.prettierignore
+!.eslintrc
 !.npmignore
 !.plop
 !.prettierrc
