@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 
-import { CredentialsProvider } from "../";
-import { SaleorManager } from "../../../";
+import { CredentialsProvider } from "..";
+import { SaleorManager } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { IProps } from "./types";

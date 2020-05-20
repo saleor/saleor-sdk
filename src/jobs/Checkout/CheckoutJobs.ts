@@ -9,6 +9,7 @@ import { PromiseCheckoutJobRunResponse } from "../types";
 
 export class CheckoutJobs {
   private apolloClientManager: ApolloClientManager;
+
   private localStorageHandler: LocalStorageHandler;
 
   constructor(
@@ -52,16 +53,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...data,
-        selectedBillingAddressId,
-        selectedShippingAddressId,
-      });
-      return {
-        data,
-      };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...data,
+      selectedBillingAddressId,
+      selectedShippingAddressId,
+    });
+    return {
+      data,
+    };
   };
 
   setShippingAddress = async ({
@@ -90,16 +91,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAsShipping: false,
-        email: data?.email,
-        selectedShippingAddressId,
-        shippingAddress: data?.shippingAddress,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAsShipping: false,
+      email: data?.email,
+      selectedShippingAddressId,
+      shippingAddress: data?.shippingAddress,
+    });
+    return { data };
   };
 
   setBillingAddress = async ({
@@ -127,15 +128,15 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_BILLING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAddress: data?.billingAddress,
-        billingAsShipping: !!billingAsShipping,
-        selectedBillingAddressId,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAddress: data?.billingAddress,
+      billingAsShipping: !!billingAsShipping,
+      selectedBillingAddressId,
+    });
+    return { data };
   };
 
   setBillingAddressWithEmail = async ({
@@ -167,16 +168,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_BILLING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAddress: data?.billingAddress,
-        billingAsShipping: false,
-        email: data?.email,
-        selectedBillingAddressId,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAddress: data?.billingAddress,
+      billingAsShipping: false,
+      email: data?.email,
+      selectedBillingAddressId,
+    });
+    return { data };
   };
 
   setShippingMethod = async ({
@@ -200,14 +201,14 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_METHOD,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-        shippingMethod: data?.shippingMethod,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+      shippingMethod: data?.shippingMethod,
+    });
+    return { data };
   };
 
   addPromoCode = async ({
@@ -231,13 +232,13 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.ADD_PROMO_CODE,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+    });
+    return { data };
   };
 
   removePromoCode = async ({
@@ -261,13 +262,13 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.REMOVE_PROMO_CODE,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+    });
+    return { data };
   };
 
   createPayment = async ({
@@ -302,16 +303,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.CREATE_PAYMENT,
         },
       };
-    } else {
-      this.localStorageHandler.setPayment({
-        ...payment,
-        creditCard,
-        gateway: data?.gateway,
-        id: data?.id,
-        token: data?.token,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setPayment({
+      ...payment,
+      creditCard,
+      gateway: data?.gateway,
+      id: data?.id,
+      token: data?.token,
+    });
+    return { data };
   };
 
   completeCheckout = async ({
@@ -330,10 +331,10 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.COMPLETE_CHECKOUT,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({});
-      this.localStorageHandler.setPayment({});
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({});
+    this.localStorageHandler.setPayment({});
+    return { data };
   };
 }

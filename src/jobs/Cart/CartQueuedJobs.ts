@@ -9,6 +9,7 @@ export enum ErrorCartTypes {
 
 export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
   private apolloClientManager: ApolloClientManager;
+
   private localStorageHandler: LocalStorageHandler;
 
   constructor(

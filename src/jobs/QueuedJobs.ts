@@ -10,6 +10,7 @@ export interface IQueuedJobs {
 
 export class QueuedJobs implements IQueuedJobs {
   cart: CartQueuedJobs;
+
   checkout: CheckoutQueuedJobs;
 
   constructor(

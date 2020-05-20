@@ -16,6 +16,7 @@ export * from "./Cart";
 
 export class SaleorAPI {
   checkout: SaleorCheckoutAPI;
+
   cart: SaleorCartAPI;
 
   /**

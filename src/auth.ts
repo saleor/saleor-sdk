@@ -75,7 +75,6 @@ export const authLink = setContext((_, context) => {
         Authorization: authToken ? `JWT ${authToken}` : null,
       },
     };
-  } else {
-    return context;
   }
+  return context;
 });

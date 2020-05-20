@@ -9,9 +9,11 @@ export class JobsManager {
     jobGroup: string;
     jobName: string;
   }>;
-  private localStorageHandler: LocalStorageHandler;
 
   private jobs: IJobs;
+
+  private localStorageHandler: LocalStorageHandler;
+
   private queuedJobs: IQueuedJobs;
 
   constructor(

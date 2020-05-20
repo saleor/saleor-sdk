@@ -1,10 +1,10 @@
 import { SaleorState } from "../../state";
-
 import { LocalStorageHandler } from "../../helpers/LocalStorageHandler/LocalStorageHandler";
 import { ILocalStorageManager } from "./types";
 
 export class LocalStorageManager implements ILocalStorageManager {
   private handler: LocalStorageHandler;
+
   private saleorState: SaleorState;
 
   constructor(handler: LocalStorageHandler, saleorState: SaleorState) {
@@ -18,9 +18,9 @@ export class LocalStorageManager implements ILocalStorageManager {
 
   addItemToCart = (variantId: string, quantity: number) => {
     const lines = this.saleorState.checkout?.lines || [];
-    let variant = lines.find((variant) => variant.variant.id === variantId);
+    let variant = lines.find(variant => variant.variant.id === variantId);
     const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+      variant => variant.variant.id !== variantId
     );
     const newVariantQuantity = variant ? variant.quantity + quantity : quantity;
     if (variant) {
@@ -50,9 +50,9 @@ export class LocalStorageManager implements ILocalStorageManager {
 
   removeItemFromCart = (variantId: string) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
+    const variant = lines.find(variant => variant.variant.id === variantId);
     const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+      variant => variant.variant.id !== variantId
     );
     if (variant) {
       variant.quantity = 0;
@@ -73,9 +73,9 @@ export class LocalStorageManager implements ILocalStorageManager {
 
   subtractItemFromCart = (variantId: string) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
+    const variant = lines.find(variant => variant.variant.id === variantId);
     const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+      variant => variant.variant.id !== variantId
     );
     const newVariantQuantity = variant ? variant.quantity - 1 : 0;
     if (variant) {
@@ -97,9 +97,9 @@ export class LocalStorageManager implements ILocalStorageManager {
 
   updateItemInCart = (variantId: string, quantity: number) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
+    const variant = lines.find(variant => variant.variant.id === variantId);
     const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+      variant => variant.variant.id !== variantId
     );
     if (variant) {
       variant.quantity = quantity;

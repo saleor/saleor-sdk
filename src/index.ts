@@ -34,7 +34,9 @@ export function createSaleorClient(
 
 export class SaleorManager {
   private apiProxy: APIProxy;
+
   private api: SaleorAPI;
+
   private apiChangeListener: ((api: SaleorAPI) => any) | undefined;
 
   constructor(client: ApolloClient<any>, config?: Config) {
