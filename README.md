@@ -1,9 +1,9 @@
 # Saleor API SDK
 
-This package contains all queries and mutations that are used in our sample storefront. It can be used for semi-custom or fully-custom (with ability to extend existing queries) storefront solutions.
+This package contains all queries and mutations that are used in our sample storefront.
 Still under heavy development.
 
-## Setup (PACKAGE CURRENTLY NOT RELEASED TO NPM)
+## Setup
 
 ```
 npm install @saleor/sdk

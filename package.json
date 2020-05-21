@@ -9,6 +9,8 @@
     "build": "tsc",
     "clean": "rimraf build",
     "create-package": "node scripts/create-packages.js",
+    "prepublishOnly": "npm run clea && npm run build && npm run create-package",
+    "release": "np",
     "start": "tsc --watch"
   },
   "keywords": [
@@ -41,6 +43,9 @@
     "react-dom": "^16.9.0",
     "rimraf": "^3.0.2",
     "typescript": "^3.9.2"
+  },
+  "np": {
+    "contents": "build"
   },
   "peerDependencies": {
     "apollo-cache-inmemory": "^1.5.1",
