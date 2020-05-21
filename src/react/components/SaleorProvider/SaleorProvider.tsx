@@ -6,17 +6,17 @@ import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { IProps } from "./types";
 
-export function SaleorProvider<TCacheShape = any>({
+export const SaleorProvider: React.FC<IProps> = ({
   client,
   config,
   children,
-}: IProps<TCacheShape>): React.ReactElement<IProps<TCacheShape>> {
+}) => {
   const [context, setContext] = useState<SaleorAPI | null>(null);
 
   useMemo(() => {
     const manager = new SaleorManager(client, config);
 
-    manager.connect(saleorAPI => setContext({ ...saleorAPI }));
+    manager.connect((saleorAPI) => setContext({ ...saleorAPI }));
 
     return manager;
   }, [client]);
@@ -26,4 +26,4 @@ export function SaleorProvider<TCacheShape = any>({
       {context ? <CredentialsProvider>{children}</CredentialsProvider> : <></>}
     </SaleorContext.Provider>
   );
-}
+};

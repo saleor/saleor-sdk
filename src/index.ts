@@ -1,4 +1,4 @@
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloCache } from "apollo-cache";
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { BatchHttpLink } from "apollo-link-batch-http";
@@ -20,16 +20,17 @@ const getLink = (
     new BatchHttpLink({ uri: apiUrl }),
   ]);
 
-export const createSaleorClient = (
+export function createSaleorClient(
   apiUrl: string,
   invalidTokenLink: ApolloLink,
   authLink: ApolloLink,
-  cache: InMemoryCache
-) =>
-  new ApolloClient({
+  cache: ApolloCache<any>
+) {
+  return new ApolloClient({
     cache,
     link: getLink(apiUrl, invalidTokenLink, authLink),
   });
+}
 
 export class SaleorManager {
   private apiProxy: APIProxy;
