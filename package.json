@@ -54,5 +54,6 @@
     "graphql-tag": "^2.10.3",
     "react": "^16.9.9",
     "react-dom": "^16.9.0"
-  }
+  },
+  "type": "commonjs"
 }
