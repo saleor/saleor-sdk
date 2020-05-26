@@ -3,13 +3,19 @@
   "version": "0.1.0-3",
   "description": "This package contains all queries and mutations that are used in our sample storefront. It can be used for semi-custom or fully-custom (with ability to extend existing queries) storefront solutions.",
   "homepage": "https://getsaleor.com/",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "license": "BSD-3-Clause",
+  "engines": {
+    "node": ">=12.16.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mirumee/saleor-sdk.git"
+  },
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf build",
-    "create-package": "node scripts/create-packages.js",
-    "version": "npm run clean && npm run build && npm run create-package",
+    "clean": "rimraf lib",
+    "install": "npm run clean && npm run build",
     "release": "np",
     "start": "tsc --watch",
     "test": "jest"
@@ -58,5 +64,6 @@
     "react": "^16.9.9",
     "react-dom": "^16.9.0"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "typings": "./lib/index.d.ts"
 }
