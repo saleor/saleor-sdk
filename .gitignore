@@ -8,9 +8,5 @@
 !.jest
 !.linguirc
 !.prettierrc
-build
+lib
 node_modules
-src/locales/_build
-
-cypress/videos
-cypress/screenshots
