@@ -1,6 +1,9 @@
 import { ErrorListener } from "../../helpers";
+import {
+  ICheckoutModel,
+  IPaymentModel,
+} from "../../helpers/LocalStorageHandler";
 import { JobsManager } from "../../jobs";
-import { ICheckoutModel, IPaymentModel } from "../../repository";
 import { SaleorState } from "../../state";
 import { StateItems } from "../../state/types";
 

@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "build-types": "apollo codegen:generate --target=typescript gqlTypes",
     "clean": "rimraf lib",
     "install": "npm run clean && npm run build",
     "release": "np",

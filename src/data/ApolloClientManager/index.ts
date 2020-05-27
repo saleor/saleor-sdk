@@ -1,75 +1,75 @@
 import ApolloClient from "apollo-client";
 
-import { getAuthToken } from "../auth";
-import { Checkout } from "../fragments/gqlTypes/Checkout";
-import { OrderDetail } from "../fragments/gqlTypes/OrderDetail";
-import { Payment } from "../fragments/gqlTypes/Payment";
-import { CountryCode } from "../gqlTypes/globalTypes";
-import * as CheckoutMutations from "../mutations/checkout";
-import {
-  AddCheckoutPromoCode,
-  AddCheckoutPromoCodeVariables,
-} from "../mutations/gqlTypes/AddCheckoutPromoCode";
-import {
-  CompleteCheckout,
-  CompleteCheckoutVariables,
-} from "../mutations/gqlTypes/CompleteCheckout";
-import {
-  CreateCheckout,
-  CreateCheckoutVariables,
-} from "../mutations/gqlTypes/CreateCheckout";
-import {
-  CreateCheckoutPayment,
-  CreateCheckoutPaymentVariables,
-} from "../mutations/gqlTypes/CreateCheckoutPayment";
-import {
-  RemoveCheckoutPromoCode,
-  RemoveCheckoutPromoCodeVariables,
-} from "../mutations/gqlTypes/RemoveCheckoutPromoCode";
-import {
-  UpdateCheckoutBillingAddress,
-  UpdateCheckoutBillingAddressVariables,
-} from "../mutations/gqlTypes/UpdateCheckoutBillingAddress";
-import {
-  UpdateCheckoutBillingAddressWithEmail,
-  UpdateCheckoutBillingAddressWithEmailVariables,
-} from "../mutations/gqlTypes/UpdateCheckoutBillingAddressWithEmail";
-import {
-  UpdateCheckoutLine,
-  UpdateCheckoutLineVariables,
-} from "../mutations/gqlTypes/UpdateCheckoutLine";
-import {
-  UpdateCheckoutShippingAddress,
-  UpdateCheckoutShippingAddressVariables,
-} from "../mutations/gqlTypes/UpdateCheckoutShippingAddress";
-import {
-  UpdateCheckoutShippingMethod,
-  UpdateCheckoutShippingMethodVariables,
-} from "../mutations/gqlTypes/UpdateCheckoutShippingMethod";
-import * as CheckoutQueries from "../queries/checkout";
-import { CheckoutDetails } from "../queries/gqlTypes/CheckoutDetails";
-import {
-  CheckoutProductVariants,
-  CheckoutProductVariants_productVariants,
-} from "../queries/gqlTypes/CheckoutProductVariants";
-import {
-  GetShopPaymentGateways,
-  GetShopPaymentGateways_shop_availablePaymentGateways,
-} from "../queries/gqlTypes/GetShopPaymentGateways";
-import { UserCheckoutDetails } from "../queries/gqlTypes/UserCheckoutDetails";
-import * as ShopQueries from "../queries/shop";
+import { getAuthToken } from "../../auth";
+import { Checkout } from "../../fragments/gqlTypes/Checkout";
+import { OrderDetail } from "../../fragments/gqlTypes/OrderDetail";
+import { Payment } from "../../fragments/gqlTypes/Payment";
+import { CountryCode } from "../../../gqlTypes/globalTypes";
 import {
   ICheckoutAddress,
   ICheckoutModel,
   ICheckoutModelLine,
   IOrderModel,
   IPaymentModel,
-} from "../repository";
-import { filterNotEmptyArrayItems } from "../utils";
+} from "../../helpers/LocalStorageHandler";
+import * as CheckoutMutations from "../../mutations/checkout";
+import {
+  AddCheckoutPromoCode,
+  AddCheckoutPromoCodeVariables,
+} from "../../mutations/gqlTypes/AddCheckoutPromoCode";
+import {
+  CompleteCheckout,
+  CompleteCheckoutVariables,
+} from "../../mutations/gqlTypes/CompleteCheckout";
+import {
+  CreateCheckout,
+  CreateCheckoutVariables,
+} from "../../mutations/gqlTypes/CreateCheckout";
+import {
+  CreateCheckoutPayment,
+  CreateCheckoutPaymentVariables,
+} from "../../mutations/gqlTypes/CreateCheckoutPayment";
+import {
+  RemoveCheckoutPromoCode,
+  RemoveCheckoutPromoCodeVariables,
+} from "../../mutations/gqlTypes/RemoveCheckoutPromoCode";
+import {
+  UpdateCheckoutBillingAddress,
+  UpdateCheckoutBillingAddressVariables,
+} from "../../mutations/gqlTypes/UpdateCheckoutBillingAddress";
+import {
+  UpdateCheckoutBillingAddressWithEmail,
+  UpdateCheckoutBillingAddressWithEmailVariables,
+} from "../../mutations/gqlTypes/UpdateCheckoutBillingAddressWithEmail";
+import {
+  UpdateCheckoutLine,
+  UpdateCheckoutLineVariables,
+} from "../../mutations/gqlTypes/UpdateCheckoutLine";
+import {
+  UpdateCheckoutShippingAddress,
+  UpdateCheckoutShippingAddressVariables,
+} from "../../mutations/gqlTypes/UpdateCheckoutShippingAddress";
+import {
+  UpdateCheckoutShippingMethod,
+  UpdateCheckoutShippingMethodVariables,
+} from "../../mutations/gqlTypes/UpdateCheckoutShippingMethod";
+import * as CheckoutQueries from "../../queries/checkout";
+import { CheckoutDetails } from "../../queries/gqlTypes/CheckoutDetails";
+import {
+  CheckoutProductVariants,
+  CheckoutProductVariants_productVariants,
+} from "../../queries/gqlTypes/CheckoutProductVariants";
+import {
+  GetShopPaymentGateways,
+  GetShopPaymentGateways_shop_availablePaymentGateways,
+} from "../../queries/gqlTypes/GetShopPaymentGateways";
+import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails";
+import * as ShopQueries from "../../queries/shop";
+import { filterNotEmptyArrayItems } from "../../utils";
 
-import { INetworkManager } from "./types";
+import { IApolloClientManager } from "./types";
 
-export class NetworkManager implements INetworkManager {
+export class ApolloClientManager implements IApolloClientManager {
   private client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
@@ -211,8 +211,8 @@ export class NetworkManager implements INetworkManager {
               name: edge.node.name,
               pricing: edge.node.pricing,
               product: edge.node.product,
+              quantityAvailable: edge.node.quantityAvailable,
               sku: edge.node.sku,
-              stockQuantity: edge.node.stockQuantity,
             },
           };
         })
@@ -818,8 +818,8 @@ export class NetworkManager implements INetworkManager {
             name: itemVariant?.name,
             pricing: itemVariant?.pricing,
             product: itemVariant?.product,
+            quantityAvailable: itemVariant?.quantityAvailable,
             sku: itemVariant?.sku,
-            stockQuantity: itemVariant?.stockQuantity,
           },
         };
       }),
