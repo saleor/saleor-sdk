@@ -5,8 +5,10 @@ import {
   productVariantFragment,
   selectedAttributeFragment,
 } from "../fragments/products";
+import { checkoutPriceFragment } from "../fragments/checkout";
 
 export const productPricingFragment = gql`
+  ${checkoutPriceFragment}
   fragment ProductPricingField on Product {
     pricing {
       onSale
