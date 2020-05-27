@@ -2,7 +2,7 @@ import {
   ICheckoutModelLine,
   ICheckoutModelPrice,
   ICheckoutModelPriceValue,
-} from "../../repository";
+} from "../../helpers/LocalStorageHandler";
 
 import { PromiseQueuedResponse } from "../types";
 

@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
-import { AccountInput } from "./../../gqlTypes/globalTypes";
+import { AccountInput } from "./../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: AccountUpdate

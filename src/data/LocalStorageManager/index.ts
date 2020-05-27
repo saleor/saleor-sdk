@@ -1,18 +1,19 @@
 import { SaleorState } from "../../state";
-import { LocalRepository } from "../LocalRepository";
-import { ICheckoutRepositoryManager } from "./types";
 
-export class CheckoutRepositoryManager implements ICheckoutRepositoryManager {
-  private repository: LocalRepository;
+import { LocalStorageHandler } from "../../helpers/LocalStorageHandler/LocalStorageHandler";
+import { ILocalStorageManager } from "./types";
+
+export class LocalStorageManager implements ILocalStorageManager {
+  private handler: LocalStorageHandler;
   private saleorState: SaleorState;
 
-  constructor(repository: LocalRepository, saleorState: SaleorState) {
-    this.repository = repository;
+  constructor(handler: LocalStorageHandler, saleorState: SaleorState) {
+    this.handler = handler;
     this.saleorState = saleorState;
   }
 
-  getRepository = () => {
-    return this.repository;
+  getHandler = () => {
+    return this.handler;
   };
 
   addItemToCart = (variantId: string, quantity: number) => {
@@ -42,7 +43,7 @@ export class CheckoutRepositoryManager implements ICheckoutRepositoryManager {
       : {
           lines: alteredLines,
         };
-    this.repository.setCheckout(alteredCheckout);
+    this.handler.setCheckout(alteredCheckout);
 
     return alteredCheckout;
   };
@@ -65,7 +66,7 @@ export class CheckoutRepositoryManager implements ICheckoutRepositoryManager {
       : {
           lines: alteredLines,
         };
-    this.repository.setCheckout(alteredCheckout);
+    this.handler.setCheckout(alteredCheckout);
 
     return alteredCheckout;
   };
@@ -89,7 +90,7 @@ export class CheckoutRepositoryManager implements ICheckoutRepositoryManager {
       : {
           lines: alteredLines,
         };
-    this.repository.setCheckout(alteredCheckout);
+    this.handler.setCheckout(alteredCheckout);
 
     return alteredCheckout;
   };
@@ -112,7 +113,7 @@ export class CheckoutRepositoryManager implements ICheckoutRepositoryManager {
       : {
           lines: alteredLines,
         };
-    this.repository.setCheckout(alteredCheckout);
+    this.handler.setCheckout(alteredCheckout);
 
     return alteredCheckout;
   };
