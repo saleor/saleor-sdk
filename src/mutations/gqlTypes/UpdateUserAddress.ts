@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AddressInput } from "./../../../gqlTypes/globalTypes";
+import { AddressInput } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateUserAddress
@@ -160,7 +160,9 @@ export interface UpdateUserAddress_accountAddressUpdate_user {
   /**
    * List of all user's addresses.
    */
-  addresses: (UpdateUserAddress_accountAddressUpdate_user_addresses | null)[] | null;
+  addresses:
+    | (UpdateUserAddress_accountAddressUpdate_user_addresses | null)[]
+    | null;
 }
 
 export interface UpdateUserAddress_accountAddressUpdate {

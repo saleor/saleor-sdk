@@ -1,11 +1,11 @@
 import { LocalStorageManager } from "../../data";
+import { ApolloClientManager } from "../../data/ApolloClientManager";
 import { ErrorListener } from "../../helpers";
 import { ICheckoutModel } from "../../helpers/LocalStorageHandler";
 import { JobsManager } from "../../jobs";
 import { ErrorCartTypes } from "../../jobs/Cart";
 import { SaleorState } from "../../state";
 import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
-import { ApolloClientManager } from "../../data/ApolloClientManager";
 
 import {
   IDiscount,

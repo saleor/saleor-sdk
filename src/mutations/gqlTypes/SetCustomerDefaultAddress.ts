@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AddressTypeEnum } from "./../../../gqlTypes/globalTypes";
+import { AddressTypeEnum } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: SetCustomerDefaultAddress
@@ -160,7 +160,9 @@ export interface SetCustomerDefaultAddress_accountSetDefaultAddress_user {
   /**
    * List of all user's addresses.
    */
-  addresses: (SetCustomerDefaultAddress_accountSetDefaultAddress_user_addresses | null)[] | null;
+  addresses:
+    | (SetCustomerDefaultAddress_accountSetDefaultAddress_user_addresses | null)[]
+    | null;
 }
 
 export interface SetCustomerDefaultAddress_accountSetDefaultAddress {
