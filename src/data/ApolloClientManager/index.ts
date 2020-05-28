@@ -4,7 +4,7 @@ import { getAuthToken } from "../../auth";
 import { Checkout } from "../../fragments/gqlTypes/Checkout";
 import { OrderDetail } from "../../fragments/gqlTypes/OrderDetail";
 import { Payment } from "../../fragments/gqlTypes/Payment";
-import { CountryCode } from "../../../gqlTypes/globalTypes";
+import { CountryCode } from "../../gqlTypes/globalTypes";
 import {
   ICheckoutAddress,
   ICheckoutModel,
