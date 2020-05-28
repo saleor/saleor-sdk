@@ -16,7 +16,7 @@
     "build": "tsc",
     "build-types": "apollo codegen:generate --target=typescript gqlTypes && rm -rf src/gqlTypes && move-file gqlTypes src/gqlTypes",
     "clean": "rimraf lib",
-    "install": "npm run clean && npm run build",
+    "prepare": "npm run clean && npm run build",
     "release": "np",
     "start": "tsc --watch",
     "test": "jest"
