@@ -14,8 +14,9 @@
   },
   "scripts": {
     "build": "tsc",
+    "build-types": "apollo codegen:generate --target=typescript gqlTypes && rm -rf src/gqlTypes && move-file gqlTypes src/gqlTypes",
     "clean": "rimraf lib",
-    "install": "npm run clean && npm run build",
+    "prepare": "npm run clean && npm run build",
     "release": "np",
     "start": "tsc --watch",
     "test": "jest"
@@ -46,6 +47,7 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.3",
     "jest": "^26.0.1",
+    "move-file-cli": "^1.0.0",
     "np": "^6.2.3",
     "react": "^16.9.9",
     "react-dom": "^16.9.0",

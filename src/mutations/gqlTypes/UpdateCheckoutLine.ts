@@ -1,8 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
-import { CheckoutLineInput } from "./../../gqlTypes/globalTypes";
+import {
+  CheckoutLineInput,
+  CheckoutErrorCode,
+} from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateCheckoutLine
@@ -458,9 +462,9 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout_lines_variant {
   name: string;
   sku: string;
   /**
-   * Quantity of a product available for sale.
+   * Quantity of a product available for sale in one checkout.
    */
-  stockQuantity: number;
+  quantityAvailable: number;
   /**
    * Whether the variant is in stock and visible or not.
    */
@@ -504,6 +508,9 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout_discount {
 
 export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
@@ -535,7 +542,9 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout {
   /**
    * A list of checkout lines, each containing information about an item in the checkout.
    */
-  lines: (UpdateCheckoutLine_checkoutLinesUpdate_checkout_lines | null)[] | null;
+  lines:
+    | (UpdateCheckoutLine_checkoutLinesUpdate_checkout_lines | null)[]
+    | null;
   /**
    * Returns True, if checkout requires shipping.
    */
@@ -547,7 +556,11 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout {
 }
 
 export interface UpdateCheckoutLine_checkoutLinesUpdate_errors {
-  __typename: "Error";
+  __typename: "CheckoutError";
+  /**
+   * The error code.
+   */
+  code: CheckoutErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -565,9 +578,6 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate {
    * An updated checkout.
    */
   checkout: UpdateCheckoutLine_checkoutLinesUpdate_checkout | null;
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: UpdateCheckoutLine_checkoutLinesUpdate_errors[];
 }
 

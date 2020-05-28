@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 import { CheckoutErrorCode } from "./../../gqlTypes/globalTypes";
@@ -458,9 +459,9 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
   name: string;
   sku: string;
   /**
-   * Quantity of a product available for sale.
+   * Quantity of a product available for sale in one checkout.
    */
-  stockQuantity: number;
+  quantityAvailable: number;
   /**
    * Whether the variant is in stock and visible or not.
    */
@@ -504,6 +505,9 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_discou
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
@@ -535,7 +539,9 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
   /**
    * A list of checkout lines, each containing information about an item in the checkout.
    */
-  lines: (RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines | null)[] | null;
+  lines:
+    | (RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines | null)[]
+    | null;
   /**
    * Returns True, if checkout requires shipping.
    */
@@ -547,33 +553,20 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_errors {
-  __typename: "Error";
-  /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
-   */
-  field: string | null;
-  /**
-   * The error message.
-   */
-  message: string | null;
-}
-
-export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkoutErrors {
   __typename: "CheckoutError";
-  /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
-   */
-  field: string | null;
-  /**
-   * The error message.
-   */
-  message: string | null;
   /**
    * The error code.
    */
   code: CheckoutErrorCode;
+  /**
+   * Name of a field that caused the error. A value of `null` indicates that the
+   * error isn't associated with a particular field.
+   */
+  field: string | null;
+  /**
+   * The error message.
+   */
+  message: string | null;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode {
@@ -582,11 +575,7 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode {
    * The checkout with the removed gift card or voucher.
    */
   checkout: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout | null;
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_errors[];
-  checkoutErrors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkoutErrors[];
 }
 
 export interface RemoveCheckoutPromoCode {

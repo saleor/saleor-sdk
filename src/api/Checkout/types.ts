@@ -1,10 +1,10 @@
 import { Checkout_availableShippingMethods } from "../../fragments/gqlTypes/Checkout";
-import { GetShopPaymentGateways_shop_availablePaymentGateways } from "../../queries/gqlTypes/GetShopPaymentGateways";
 import {
   ICheckoutModelPrice,
   ICheckoutModelPriceValue,
   IPaymentCreditCard,
-} from "../../repository";
+} from "../../helpers/LocalStorageHandler";
+import { GetShopPaymentGateways_shop_availablePaymentGateways } from "../../queries/gqlTypes/GetShopPaymentGateways";
 
 import { PromiseQueuedResponse, PromiseRunResponse } from "../types";
 

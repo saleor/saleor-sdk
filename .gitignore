@@ -1,12 +1,13 @@
 .*
 !.dockerignore
-!.storybook
+!.babelrc
 !.circle
 !.gitignore
-!.babelrc
-!.plop
 !.jest
 !.linguirc
+!.npmignore
+!.plop
 !.prettierrc
+!.storybook
 lib
 node_modules

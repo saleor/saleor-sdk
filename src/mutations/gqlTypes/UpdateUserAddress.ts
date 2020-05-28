@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 import { AddressInput } from "./../../gqlTypes/globalTypes";
@@ -159,7 +160,9 @@ export interface UpdateUserAddress_accountAddressUpdate_user {
   /**
    * List of all user's addresses.
    */
-  addresses: (UpdateUserAddress_accountAddressUpdate_user_addresses | null)[] | null;
+  addresses:
+    | (UpdateUserAddress_accountAddressUpdate_user_addresses | null)[]
+    | null;
 }
 
 export interface UpdateUserAddress_accountAddressUpdate {

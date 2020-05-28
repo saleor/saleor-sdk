@@ -1,15 +1,20 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
-import { AddressInput } from "./../../gqlTypes/globalTypes";
+import { AddressInput, CheckoutErrorCode } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateCheckoutBillingAddressWithEmail
 // ====================================================
 
 export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate_errors {
-  __typename: "Error";
+  __typename: "CheckoutError";
+  /**
+   * The error code.
+   */
+  code: CheckoutErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -471,9 +476,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpd
   name: string;
   sku: string;
   /**
-   * Quantity of a product available for sale.
+   * Quantity of a product available for sale in one checkout.
    */
-  stockQuantity: number;
+  quantityAvailable: number;
   /**
    * Whether the variant is in stock and visible or not.
    */
@@ -517,6 +522,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpd
 
 export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
@@ -548,7 +556,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpd
   /**
    * A list of checkout lines, each containing information about an item in the checkout.
    */
-  lines: (UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate_checkout_lines | null)[] | null;
+  lines:
+    | (UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate_checkout_lines | null)[]
+    | null;
   /**
    * Returns True, if checkout requires shipping.
    */
@@ -561,9 +571,6 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpd
 
 export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate {
   __typename: "CheckoutBillingAddressUpdate";
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpdate_errors[];
   /**
    * An updated checkout.
@@ -1021,9 +1028,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_check
   name: string;
   sku: string;
   /**
-   * Quantity of a product available for sale.
+   * Quantity of a product available for sale in one checkout.
    */
-  stockQuantity: number;
+  quantityAvailable: number;
   /**
    * Whether the variant is in stock and visible or not.
    */
@@ -1067,6 +1074,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_check
 
 export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
@@ -1098,7 +1108,9 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_check
   /**
    * A list of checkout lines, each containing information about an item in the checkout.
    */
-  lines: (UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_checkout_lines | null)[] | null;
+  lines:
+    | (UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_checkout_lines | null)[]
+    | null;
   /**
    * Returns True, if checkout requires shipping.
    */
@@ -1110,7 +1122,11 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_check
 }
 
 export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_errors {
-  __typename: "Error";
+  __typename: "CheckoutError";
+  /**
+   * The error code.
+   */
+  code: CheckoutErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -1128,9 +1144,6 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate {
    * An updated checkout.
    */
   checkout: UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_checkout | null;
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_errors[];
 }
 
