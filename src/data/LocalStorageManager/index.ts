@@ -1,9 +1,8 @@
 import { SaleorState } from "../../state";
 
 import { LocalStorageHandler } from "../../helpers/LocalStorageHandler/LocalStorageHandler";
-import { ILocalStorageManager } from "./types";
 
-export class LocalStorageManager implements ILocalStorageManager {
+export class LocalStorageManager {
   private handler: LocalStorageHandler;
   private saleorState: SaleorState;
 

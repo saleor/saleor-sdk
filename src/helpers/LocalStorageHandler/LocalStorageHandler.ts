@@ -2,8 +2,8 @@ import { NamedObservable } from "../NamedObservable";
 import {
   ICheckoutModel,
   IJobsModel,
-  ILocalStorageHandler,
   IPaymentModel,
+  LocalStorageEvents,
   LocalStorageItems,
 } from "./types";
 
@@ -12,7 +12,9 @@ import {
  * If data is set to null, then it is removed from local storage.
  * If needed, it stringify data for persistance in local storage or parse such data to be retrieved in desired format.
  */
-class LocalStorageHandlerProxy extends NamedObservable<LocalStorageItems> {
+class LocalStorageHandlerProxy extends NamedObservable<
+  LocalStorageItems | LocalStorageEvents
+> {
   /**
    * Save string item to local storage.
    * @param name Unique key by which item is identified.
@@ -62,10 +64,19 @@ class LocalStorageHandlerProxy extends NamedObservable<LocalStorageItems> {
     }
     return null;
   }
+  protected clearStorage(): void {
+    localStorage.clear();
+    this.notifyChange(LocalStorageEvents.CLEAR, undefined);
+  }
 }
 
-export class LocalStorageHandler extends LocalStorageHandlerProxy
-  implements ILocalStorageHandler {
+export class LocalStorageHandler extends LocalStorageHandlerProxy {
+  getSignInToken(): string | null {
+    return this.retrieveItem(LocalStorageItems.TOKEN);
+  }
+  setSignInToken(token: string | null): void {
+    this.saveItem(LocalStorageItems.TOKEN, token);
+  }
   getCheckout(): ICheckoutModel | null {
     return this.retrieveObject(LocalStorageItems.CHECKOUT);
   }
@@ -83,5 +94,8 @@ export class LocalStorageHandler extends LocalStorageHandlerProxy
   }
   setJobs(jobs: IJobsModel | null): void {
     return this.saveObject(LocalStorageItems.JOB_QUEUE_CHECKOUT, jobs);
+  }
+  clear(): void {
+    this.clearStorage();
   }
 }
