@@ -503,9 +503,6 @@ export interface UserCheckoutDetails_me_checkout_discount {
 
 export interface UserCheckoutDetails_me_checkout {
   __typename: "Checkout";
-  /**
-   * The checkout's token.
-   */
   token: any;
   /**
    * The ID of the object.

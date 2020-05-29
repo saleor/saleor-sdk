@@ -3,7 +3,10 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CheckoutCreateInput, CheckoutErrorCode } from "./../../gqlTypes/globalTypes";
+import {
+  CheckoutCreateInput,
+  CheckoutErrorCode,
+} from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: CreateCheckout
@@ -522,9 +525,6 @@ export interface CreateCheckout_checkoutCreate_checkout_discount {
 
 export interface CreateCheckout_checkoutCreate_checkout {
   __typename: "Checkout";
-  /**
-   * The checkout's token.
-   */
   token: any;
   /**
    * The ID of the object.
