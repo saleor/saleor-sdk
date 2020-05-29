@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CheckoutErrorCode } from "./../../gqlTypes/globalTypes";
+import { CheckoutErrorCode } from "./../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: RemoveCheckoutPromoCode
@@ -505,9 +505,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_discou
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
   __typename: "Checkout";
-  /**
-   * The checkout's token.
-   */
   token: any;
   /**
    * The ID of the object.

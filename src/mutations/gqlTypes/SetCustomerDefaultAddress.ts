@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AddressTypeEnum } from "./../../gqlTypes/globalTypes";
+import { AddressTypeEnum } from "./../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: SetCustomerDefaultAddress
