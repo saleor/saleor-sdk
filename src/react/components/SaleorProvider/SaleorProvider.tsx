@@ -1,29 +1,50 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { CredentialsProvider } from "../";
 import { SaleorManager } from "../../../";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { IProps } from "./types";
 
-export const SaleorProvider: React.FC<IProps> = ({
-  client,
+import { invalidTokenLinkWithTokenHandler } from "../../../auth";
+
+export function SaleorProvider<TCacheShape = any>({
   config,
   children,
-}) => {
+  attachApolloClient,
+}: IProps<TCacheShape>): React.ReactElement<IProps<TCacheShape>> {
   const [context, setContext] = useState<SaleorAPI | null>(null);
+  const [tokenExpired, setTokenExpired] = useState(false);
+
+  const tokenExpirationCallback = () => {
+    setTokenExpired(true);
+  };
+
+  const apolloClient = React.useMemo(() => {
+    const { link: invalidTokenLink } = invalidTokenLinkWithTokenHandler(
+      tokenExpirationCallback
+    );
+
+    return attachApolloClient(invalidTokenLink);
+  }, []);
+
+  useEffect(() => {
+    if (tokenExpired) {
+      context?.auth.signOut();
+      setTokenExpired(false);
+    }
+  }, [tokenExpired, context]);
 
   useMemo(() => {
-    const manager = new SaleorManager(client, config);
+    const manager = new SaleorManager(apolloClient, config);
 
     manager.connect((saleorAPI) => setContext({ ...saleorAPI }));
 
     return manager;
-  }, [client]);
+  }, []);
 
   return (
     <SaleorContext.Provider value={context}>
-      {context ? <CredentialsProvider>{children}</CredentialsProvider> : <></>}
+      {context ? children : <></>}
     </SaleorContext.Provider>
   );
-};
+}

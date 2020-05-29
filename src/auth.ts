@@ -1,4 +1,3 @@
-import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { setContext } from "apollo-link-context";
 import { ErrorResponse, onError } from "apollo-link-error";
@@ -16,26 +15,6 @@ export function getAuthToken(): string | null {
 export function setAuthToken(token: string) {
   localStorage.setItem("token", token);
   dispatchEvent(authEvent);
-}
-
-export function removeAuthToken() {
-  localStorage.removeItem("token");
-  dispatchEvent(authEvent);
-}
-
-export function clearStorage(): void {
-  localStorage.clear();
-  dispatchEvent(authEvent);
-}
-
-export function fireSignOut(client?: ApolloClient<any>): void {
-  clearStorage();
-  if (navigator.credentials && navigator.credentials.preventSilentAccess) {
-    navigator.credentials.preventSilentAccess();
-  }
-  if (client) {
-    client.resetStore();
-  }
 }
 
 interface ResponseError extends ErrorResponse {

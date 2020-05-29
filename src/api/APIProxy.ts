@@ -6,11 +6,10 @@ import {
 } from "apollo-client";
 import { GraphQLError } from "graphql";
 
-import { fireSignOut, getAuthToken, setAuthToken } from "../auth";
+import { getAuthToken, setAuthToken } from "../auth";
 import { MUTATIONS } from "../mutations";
 import { TokenAuth } from "../mutations/gqlTypes/TokenAuth";
 import { QUERIES } from "../queries";
-import { UserDetails } from "../queries/gqlTypes/UserDetails";
 import { RequireAtLeastOne } from "../tsHelpers";
 import {
   InferOptions,
@@ -92,30 +91,6 @@ export class APIProxy {
     this.client = client;
   }
 
-  getUserDetails = (
-    variables: InferOptions<QUERIES["UserDetails"]>["variables"],
-    options: Omit<InferOptions<QUERIES["UserDetails"]>, "variables"> & {
-      onUpdate: (data: UserDetails["me"] | null) => void;
-    }
-  ) => {
-    if (this.isLoggedIn()) {
-      return this.watchQuery(QUERIES.UserDetails, data => data.me)(
-        variables,
-        options
-      );
-    }
-    if (options.onUpdate) {
-      options.onUpdate(null);
-    }
-    return {
-      refetch: () =>
-        new Promise<{ data: UserDetails["me"] }>((resolve, _reject) => {
-          resolve({ data: null });
-        }),
-      unsubscribe: () => undefined,
-    };
-  };
-
   signIn = (
     variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
     options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
@@ -153,17 +128,6 @@ export class APIProxy {
         });
 
         resolve(data);
-      } catch (e) {
-        reject(e);
-      }
-    });
-
-  signOut = () =>
-    new Promise(async (resolve, reject) => {
-      try {
-        fireSignOut(this.client);
-
-        resolve();
       } catch (e) {
         reject(e);
       }

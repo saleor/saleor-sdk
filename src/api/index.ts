@@ -8,6 +8,7 @@ import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
 import { Config } from "../types";
 import { APIProxy } from "./APIProxy";
+import { AuthAPI } from "./Auth";
 import { SaleorCartAPI } from "./Cart";
 import { SaleorCheckoutAPI } from "./Checkout";
 
@@ -15,6 +16,7 @@ export * from "./Checkout";
 export * from "./Cart";
 
 export class SaleorAPI {
+  auth: AuthAPI;
   checkout: SaleorCheckoutAPI;
   cart: SaleorCartAPI;
 
@@ -39,37 +41,34 @@ export class SaleorAPI {
         ...config?.loadOnStart,
       },
     };
-    const { loadOnStart } = finalConfig;
 
     const localStorageHandler = new LocalStorageHandler();
     const apolloClientManager = new ApolloClientManager(client);
-    const saleorState = new SaleorState(
+    const jobsManager = new JobsManager(
       localStorageHandler,
       apolloClientManager
+    );
+    const saleorState = new SaleorState(
+      finalConfig,
+      localStorageHandler,
+      apolloClientManager,
+      jobsManager
     );
     const localStorageManager = new LocalStorageManager(
       localStorageHandler,
       saleorState
-    );
-    const jobsManager = new JobsManager(
-      localStorageHandler,
-      apolloClientManager
     );
 
     if (onStateUpdate) {
       saleorState.subscribeToNotifiedChanges(onStateUpdate);
     }
 
-    this.checkout = new SaleorCheckoutAPI(
-      saleorState,
-      loadOnStart.checkout,
-      jobsManager
-    );
+    this.auth = new AuthAPI(saleorState, jobsManager);
+    this.checkout = new SaleorCheckoutAPI(saleorState, jobsManager);
     this.cart = new SaleorCartAPI(
       localStorageManager,
       apolloClientManager,
       saleorState,
-      loadOnStart.cart,
       jobsManager
     );
 

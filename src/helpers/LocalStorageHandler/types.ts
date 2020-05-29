@@ -8,8 +8,12 @@ import { IQueuedJobs } from "../../jobs/QueuedJobs";
 
 export enum LocalStorageItems {
   JOB_QUEUE_CHECKOUT = "job_queueCheckout",
+  TOKEN = "token",
   CHECKOUT = "data_checkout",
   PAYMENT = "data_payment",
+}
+export enum LocalStorageEvents {
+  CLEAR = "clear",
 }
 
 export interface ICheckoutModelLineTotalPrice {
@@ -125,20 +129,8 @@ export interface IOrderModel {
   number?: string | null;
 }
 
-export type IJobsGroupModel<G extends keyof IQueuedJobs> = Record<
-  keyof IQueuedJobs[G],
-  boolean
->;
-
 type IQueuedJobsState<T> = {
   [P in keyof T]?: Partial<Record<keyof T[P], boolean>>;
 };
 
 export type IJobsModel = IQueuedJobsState<IQueuedJobs>;
-
-export interface ILocalStorageHandler {
-  getCheckout(): ICheckoutModel | null;
-  setCheckout(checkout: ICheckoutModel | null): void;
-  getPayment(): IPaymentModel | null;
-  setPayment(payment: IPaymentModel | null): void;
-}
