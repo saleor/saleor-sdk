@@ -76,7 +76,7 @@ export class AuthAPI extends ErrorListener {
     });
 
     if (autoSignIn && !dataError?.error && window.PasswordCredential) {
-      navigator.credentials.store(
+      await navigator.credentials.store(
         new window.PasswordCredential({
           id: email,
           password,
@@ -105,7 +105,7 @@ export class AuthAPI extends ErrorListener {
     await this.jobsManager.run("auth", "signOut", undefined);
 
     if (navigator.credentials && navigator.credentials.preventSilentAccess) {
-      navigator.credentials.preventSilentAccess();
+      await navigator.credentials.preventSilentAccess();
     }
 
     return {
