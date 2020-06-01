@@ -7,6 +7,9 @@ import { StateItems } from "../../state/types";
 import { PromiseRunResponse } from "../types";
 import { DataErrorAuthTypes, FunctionErrorAuthTypes } from "./types";
 
+export const BROWSER_NO_CREDENTIAL_API_MESSAGE =
+  "Saleor SDK is unable to use browser Credential Management API.";
+
 export class AuthAPI extends ErrorListener {
   /**
    * Indicates if data is initialized, initially retrieved from cache or initially fetched.
@@ -75,13 +78,17 @@ export class AuthAPI extends ErrorListener {
       password,
     });
 
-    if (autoSignIn && !dataError?.error && window.PasswordCredential) {
-      await navigator.credentials.store(
-        new window.PasswordCredential({
-          id: email,
-          password,
-        })
-      );
+    try {
+      if (autoSignIn && !dataError?.error && window.PasswordCredential) {
+        await navigator.credentials.store(
+          new window.PasswordCredential({
+            id: email,
+            password,
+          })
+        );
+      }
+    } catch (credentialsError) {
+      console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
     await this.jobsManager.run("checkout", "provideCheckout", {
@@ -103,9 +110,12 @@ export class AuthAPI extends ErrorListener {
     FunctionErrorAuthTypes
   > => {
     await this.jobsManager.run("auth", "signOut", undefined);
-
-    if (navigator.credentials && navigator.credentials.preventSilentAccess) {
-      await navigator.credentials.preventSilentAccess();
+    try {
+      if (navigator.credentials && navigator.credentials.preventSilentAccess) {
+        await navigator.credentials.preventSilentAccess();
+      }
+    } catch (credentialsError) {
+      console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
     return {
@@ -114,9 +124,14 @@ export class AuthAPI extends ErrorListener {
   };
 
   private autoSignIn = async () => {
-    const credentials = await (navigator.credentials as any).get({
-      password: true,
-    });
+    let credentials;
+    try {
+      credentials = await (navigator.credentials as any).get({
+        password: true,
+      });
+    } catch (credentialsError) {
+      console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
+    }
 
     if (credentials) {
       const { dataError } = await this.signIn(
