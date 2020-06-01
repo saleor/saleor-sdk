@@ -3,10 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {
-  PaymentChargeStatusEnum,
-  OrderStatus,
-} from "./../../gqlTypes/globalTypes";
+import { PaymentChargeStatusEnum, OrderStatus } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL fragment: OrderDetail
