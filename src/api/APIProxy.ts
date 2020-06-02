@@ -328,7 +328,7 @@ class APIProxy {
             }
           }
 
-          return this.firePromise(
+          return APIProxy.firePromise(
             () => observable.refetch(newVariables),
             mapFn
           );

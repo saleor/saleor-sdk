@@ -1,7 +1,7 @@
 import { isEqual } from "apollo-utilities";
 import React from "react";
 
-import { APIProxy } from "../api/APIProxy";
+import APIProxy from "../api/APIProxy";
 import { RequireAtLeastOne } from "../tsHelpers";
 import { useAuth, useSaleorClient } from "./helpers";
 import {

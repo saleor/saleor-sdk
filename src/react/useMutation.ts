@@ -2,7 +2,7 @@ import { DataProxy } from "apollo-cache";
 import { FetchResult } from "apollo-link";
 import React from "react";
 
-import { APIProxy } from "../api/APIProxy";
+import APIProxy from "../api/APIProxy";
 import { MutationOptions } from "../mutations";
 import { useSaleorClient } from "./helpers";
 import {

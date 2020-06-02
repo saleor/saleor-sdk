@@ -7,7 +7,7 @@ import {
 
 import { PromiseCheckoutJobRunResponse } from "../types";
 
-export class CheckoutJobs {
+class CheckoutJobs {
   private apolloClientManager: ApolloClientManager;
 
   private localStorageHandler: LocalStorageHandler;
@@ -338,3 +338,5 @@ export class CheckoutJobs {
     return { data };
   };
 }
+
+export default CheckoutJobs;
