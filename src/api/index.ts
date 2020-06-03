@@ -6,7 +6,7 @@ import { ApolloClientManager } from "../data/ApolloClientManager";
 import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
-import { Config } from "../types";
+import { CustomConfig } from "../types";
 import { APIProxy } from "./APIProxy";
 import { AuthAPI } from "./Auth";
 import { SaleorCartAPI } from "./Cart";
@@ -29,7 +29,7 @@ export class SaleorAPI {
   constructor(
     client: ApolloClient<any>,
     apiProxy: APIProxy,
-    config?: Config,
+    config: CustomConfig,
     onStateUpdate?: () => any
   ) {
     this.legacyAPIProxy = apiProxy;
@@ -72,7 +72,7 @@ export class SaleorAPI {
       jobsManager
     );
 
-    this.legacyAPIProxy.attachAuthListener(authenticated => {
+    this.legacyAPIProxy.attachAuthListener((authenticated) => {
       if (!authenticated) {
         localStorageHandler.setCheckout({});
         localStorageHandler.setPayment({});

@@ -1,6 +1,6 @@
-import { Config } from "./types";
+import { DefaultConfig } from "./types";
 
-export const defaultConfig: Config = {
+export const defaultConfig: DefaultConfig = {
   loadOnStart: {
     auth: true,
     checkout: true,
