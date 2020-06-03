@@ -1,56 +1,104 @@
-# Saleor API SDK
+<div align="center">
+  <h1>Saleor SDK</h1>
+</div>
 
 This package contains all queries and mutations that are used in our sample storefront.
 Still under heavy development.
 
+## Table of Contents
+
+- [Setup](#setup)
+- [Usage](#usage)
+
 ## Setup
 
+### React implementation
+
+First install SDK as dependency to your project
+
+```bash
+npm install @saleor/sdk
 ```
+
+In React, all you need to do is to use `SaleorProvider` with passed custom config as a prop. Having that you may use React hooks in any component passed as child to `SaleorProvider`. These hooks are available in the same package.
+
+```tsx
+import { SaleorProvider } from "@saleor/sdk";
+import App from "./App";
+
+const CUSTOM_CONFIG = { apiUrl: "http://localhost:8000/graphql/" };
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(
+  <SaleorProvider config={CUSTOM_CONFIG}>
+    <App />
+  </SaleorProvider>,
+  rootElement
+);
+```
+
+### Custom implementation
+
+```bash
 npm install @saleor/sdk
 ```
 
 Create new saleor client by using our built-in pre-configured apollo client:
 
-```
-import { createSaleorClient } from '@saleor/sdk'
+```tsx
+import { createSaleorClient } from "@saleor/sdk";
 
-const client = createSaleorClient(API_URL)
+const client = createSaleorClient(...);
+```
+
+Then use SaleorManager and get `SaleorAPI` from `connect` method. This method takes function as an argument, which will be executed every time the `SaleorAPI` state changes.
+
+```tsx
+const manager = new SaleorManager(client, config);
+
+let saleor;
+
+manager.connect((saleorAPI) => {
+  if (saleor === undefined) {
+    saleor = saleorAPI;
+  }
+});
 ```
 
 ## Usage
 
-### React
+### React hooks
 
 We provide a custom hook per each query that have near identical API to `react-apollo` but are dynamically typed, with built-in error handling.
 
 In your root file:
 
-```
-import { SaleorProvider } from '@saleor/sdk'
-import { client } from './saleor'
+```tsx
+import { SaleorProvider } from "@saleor/sdk";
+import App from "./App";
 
-import App from './App'
+const CUSTOM_CONFIG = { apiUrl: "http://localhost:8000/graphql/" };
 
-const rootElement = document.getElementById('root')
+const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <SaleorProvider client={client}>
+  <SaleorProvider config={CUSTOM_CONFIG}>
     <App />
   </SaleorProvider>,
   rootElement
-)
+);
 ```
 
 There are 2 types of api calls - queries and mutations.
 
 Query (gets data):
 
-```
+```tsx
 const { data: TData["data"], loading: boolean, error: ApolloError } = useProductDetails(variables, options?)
 ```
 
 Mutation (sets data):
 
-```
+```tsx
 const [
   signIn: (options?) => Promise<TData>,
   { data: TData["data"], loading: boolean, error: ApolloError, called: boolean }
@@ -63,14 +111,14 @@ For `options` and full api reference, navigate to [official docs](https://www.ap
 
 Create new SaleorAPI instance and use methods available on it
 
-```
-import { SaleorAPI } from 'saleor-sdk'
-import { client } from './saleor'
+```tsx
+import { SaleorAPI } from "saleor-sdk";
+import { client } from "./saleor";
 
-export const saleorAPI = new SaleorAPI(client)
+export const saleorAPI = new SaleorAPI(client);
 ```
 
-```
+```tsx
 const { data } = await saleorAPI.getProductDetails(variables, options?)
 ```
 
@@ -79,7 +127,7 @@ const { data } = await saleorAPI.getProductDetails(variables, options?)
 It is possible to develop storefront and SDK simultaneously. To do this, you need
 to link it to the storefront's project.
 
-```language=shell
+```bash
 $ cd build
 $ npm link
 $ cd <your storefront path>
