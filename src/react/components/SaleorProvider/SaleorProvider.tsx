@@ -5,7 +5,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "apollo-cache-inmemory";
-// import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "react-apollo";
 
 import { SaleorManager, createSaleorClient } from "../../../";
 import { SaleorAPI } from "../../../api";
@@ -85,7 +85,7 @@ export function SaleorProvider({
   if (apolloClient && context) {
     return (
       <SaleorContext.Provider value={context}>
-        {children(apolloClient)}
+        <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
       </SaleorContext.Provider>
     );
   }
