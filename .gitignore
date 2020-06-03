@@ -3,6 +3,7 @@
 !.babelrc
 !.circle
 !.gitignore
+!.github
 !.jest
 !.prettierrc
 !.prettierignore
