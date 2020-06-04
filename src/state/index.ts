@@ -114,7 +114,7 @@ export class SaleorState extends NamedObservable<StateItems>
     ) => any
   ) => {
     // 1. Try to take checkout from backend database
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     if (checkout?.token) {
       const { data, error } = await this.apolloClientManager.getCheckout(
@@ -130,7 +130,7 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const checkoutModel: ICheckoutModel | null = this.localStorageHandler.getCheckout();
+    const checkoutModel: ICheckoutModel | null = LocalStorageHandler.getCheckout();
     if (checkoutModel) {
       this.onCheckoutUpdate(checkoutModel);
     }
@@ -143,7 +143,7 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const checkoutModel: ICheckoutModel | null = this.localStorageHandler.getCheckout();
+    const checkoutModel: ICheckoutModel | null = LocalStorageHandler.getCheckout();
 
     if (checkoutModel) {
       this.onCheckoutUpdate(checkoutModel);
@@ -159,7 +159,7 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const paymentModel: ICheckoutModel | null = this.localStorageHandler.getPayment();
+    const paymentModel: ICheckoutModel | null = LocalStorageHandler.getPayment();
 
     if (paymentModel) {
       this.onPaymentUpdate(paymentModel);

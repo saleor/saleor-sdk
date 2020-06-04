@@ -76,7 +76,7 @@ class CheckoutJobs {
     email: string;
     selectedShippingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingAddress(
       shippingAddress,
@@ -114,7 +114,7 @@ class CheckoutJobs {
     billingAsShipping?: boolean;
     selectedBillingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setBillingAddress(
       billingAddress,
@@ -150,7 +150,7 @@ class CheckoutJobs {
     billingAddress: ICheckoutAddress;
     selectedBillingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const {
       data,
@@ -187,7 +187,7 @@ class CheckoutJobs {
     checkoutId: string;
     shippingMethodId: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingMethod(
       shippingMethodId,
@@ -218,7 +218,7 @@ class CheckoutJobs {
     checkoutId: string;
     promoCode: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.addPromoCode(
       promoCode,
@@ -248,7 +248,7 @@ class CheckoutJobs {
     checkoutId: string;
     promoCode: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.removePromoCode(
       promoCode,
@@ -286,7 +286,7 @@ class CheckoutJobs {
     billingAddress: ICheckoutAddress;
     creditCard?: ICreditCard;
   }): PromiseCheckoutJobRunResponse => {
-    const payment = this.localStorageHandler.getPayment();
+    const payment = LocalStorageHandler.getPayment();
 
     const { data, error } = await this.apolloClientManager.createPayment(
       amount,
