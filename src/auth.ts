@@ -27,12 +27,10 @@ interface ResponseError extends ErrorResponse {
 // possibly remove callback here and use event emitter
 export const invalidTokenLinkWithTokenHandler = (
   tokenExpirationCallback: () => void
-): {
-  link: ApolloLink;
-} => {
+): ApolloLink => {
   const link = onError((error: ResponseError) => {
     const isTokenExpired = error.graphQLErrors?.some(
-      error => error.extensions?.exception?.code === "JSONWebTokenExpired"
+      (error) => error.extensions?.exception?.code === "JSONWebTokenExpired"
     );
     if (
       isTokenExpired ||
@@ -41,7 +39,7 @@ export const invalidTokenLinkWithTokenHandler = (
       tokenExpirationCallback();
     }
   });
-  return { link };
+  return link;
 };
 
 export const authLink = setContext((_, context) => {
