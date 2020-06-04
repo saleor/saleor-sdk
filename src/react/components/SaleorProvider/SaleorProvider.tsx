@@ -16,7 +16,7 @@ export const SaleorProvider: React.FC<IProps> = ({
   useMemo(() => {
     const manager = new SaleorManager(client, config);
 
-    manager.connect((saleorAPI) => setContext({ ...saleorAPI }));
+    manager.connect(saleorAPI => setContext({ ...saleorAPI }));
 
     return manager;
   }, [client]);
