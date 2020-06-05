@@ -44,8 +44,8 @@ ReactDOM.render(
 const App = () => {
   const { authenticated, user, signIn } = useAuth();
 
-  const handleSignIn = () => {
-    const { data, dataError } = signIn("admin@example.com", "admin");
+  const handleSignIn = async () => {
+    const { data, dataError } = await signIn("admin@example.com", "admin");
 
     if (dataError) {
       /**
