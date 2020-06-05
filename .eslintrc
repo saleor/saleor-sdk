@@ -15,7 +15,7 @@
     "comma-spacing": "off",
     "sort-keys": "error",
     "sort-imports": "off",
-    "import/no-extraneous-dependencies": "off",
+    "import/no-cycle": "off",
     "import/no-internal-modules": "off",
     "import/no-named-as-default": "off",
     "import/prefer-default-export": "off",
