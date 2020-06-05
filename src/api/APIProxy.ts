@@ -133,7 +133,7 @@ class APIProxy {
     }
     return {
       refetch: () =>
-        new Promise<{ data: UserDetails["me"] }>((resolve, _reject) => {
+        new Promise<{ data: UserDetails["me"] }>(resolve => {
           resolve({ data: null });
         }),
       unsubscribe: () => undefined,
@@ -150,14 +150,15 @@ class APIProxy {
 
         const data = await this.fireQuery(
           MUTATIONS.TokenAuth,
-          data => data!.tokenCreate
+          mutationData => mutationData!.tokenCreate
         )(variables, {
           ...options,
-          update: (proxy, data) => {
+          update: (proxy, updateData) => {
             const handledData = handleDataErrors(
-              (data: any) => data.tokenCreate,
-              data.data,
-              data.errors
+              (tokenCreateMutationData: any) =>
+                tokenCreateMutationData.tokenCreate,
+              updateData.data,
+              updateData.errors
             );
             if (!handledData.errors && handledData.data) {
               setAuthToken(handledData.data.token);
@@ -171,7 +172,7 @@ class APIProxy {
               }
             }
             if (options && options.update) {
-              options.update(proxy, data);
+              options.update(proxy, updateData);
             }
           },
         });

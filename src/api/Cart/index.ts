@@ -6,6 +6,7 @@ import { JobsManager } from "../../jobs";
 import { ErrorCartTypes } from "../../jobs/Cart";
 import { SaleorState } from "../../state";
 import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
+import { sortCheckoutLines } from "./utils";
 
 import {
   IDiscount,
@@ -65,16 +66,7 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
       ({ lines }: ICheckoutModel) => {
         this.items = lines
           ?.filter(line => line.quantity > 0)
-          .sort((a, b) => {
-            if (a.id && b.id) {
-              const aId = a.id?.toUpperCase() || "";
-              const bId = b.id?.toUpperCase() || "";
-              return aId < bId ? -1 : aId > bId ? 1 : 0;
-            }
-            const aId = a.variant.id?.toUpperCase() || "";
-            const bId = b.variant.id?.toUpperCase() || "";
-            return aId < bId ? -1 : aId > bId ? 1 : 0;
-          });
+          .sort(sortCheckoutLines);
         this.checkoutLoaded = true;
         this.loaded = this.checkoutLoaded && this.summaryPricesLoaded;
       }

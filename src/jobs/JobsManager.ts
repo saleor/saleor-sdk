@@ -53,6 +53,8 @@ export class JobsManager {
     if (typeof func === "function") {
       return func(params);
     }
+
+    return undefined;
   }
 
   /**

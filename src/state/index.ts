@@ -85,7 +85,7 @@ export class SaleorState extends NamedObservable<StateItems>
 
   private onCheckoutUpdate = (checkout: ICheckoutModel) => {
     this.checkout = checkout;
-    this.summaryPrices = this.calculateSummaryPrices(checkout);
+    this.summaryPrices = SaleorState.calculateSummaryPrices(checkout);
     this.notifyChange(StateItems.CHECKOUT, this.checkout);
     this.notifyChange(StateItems.SUMMARY_PRICES, this.summaryPrices);
   };
@@ -183,7 +183,7 @@ export class SaleorState extends NamedObservable<StateItems>
     this.onPaymentGatewaysUpdate(data);
   };
 
-  private calculateSummaryPrices(
+  private static calculateSummaryPrices(
     checkout?: ICheckoutModel
   ): ISaleorStateSummeryPrices {
     const items = checkout?.lines;
@@ -202,23 +202,22 @@ export class SaleorState extends NamedObservable<StateItems>
             firstItemTotalPrice.gross.currency,
         };
 
-        const { itemsNetPrice, itmesGrossPrice } = items.reduce(
-          (prevVals, item) => {
-            prevVals.itemsNetPrice += item.totalPrice?.net.amount || 0;
-            prevVals.itmesGrossPrice += item.totalPrice?.gross.amount || 0;
-            return prevVals;
-          },
-          {
-            itemsNetPrice: 0,
-            itmesGrossPrice: 0,
-          }
+        const itemsNetPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.net.amount || 0),
+          0
+        );
+        const itemsGrossPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.gross?.amount || 0),
+          0
         );
 
         const subtotalPrice = {
           ...firstItemTotalPrice,
           gross: {
             ...firstItemTotalPrice.gross,
-            amount: round(itmesGrossPrice, 2),
+            amount: round(itemsGrossPrice, 2),
           },
           net: {
             ...firstItemTotalPrice.net,
@@ -238,7 +237,7 @@ export class SaleorState extends NamedObservable<StateItems>
           gross: {
             ...subtotalPrice.gross,
             amount: round(
-              itmesGrossPrice + shippingPrice.amount - discount.amount,
+              itemsGrossPrice + shippingPrice.amount - discount.amount,
               2
             ),
           },
