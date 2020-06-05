@@ -1,8 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { GraphQLError } from "graphql";
 
-// import { useAuth } from "@saleor/sdk/react";
-import { useAuth } from "../../../../../lib/react";
+import { useAuth } from "@saleor/sdk/lib/react";
 
 import "./index.css";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { SaleorProvider } from "@saleor/sdk/react";
+import { SaleorProvider } from "@saleor/sdk/lib/react";
 
 import "./index.css";
 import App from "./App";
