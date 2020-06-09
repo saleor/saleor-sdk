@@ -28,6 +28,7 @@
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/quotes": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "no-async-promise-executor": "warn"
   }
 }
