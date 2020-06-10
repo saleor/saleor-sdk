@@ -2,7 +2,7 @@ import { DataProxy } from "apollo-cache";
 import { FetchResult } from "apollo-link";
 import React from "react";
 
-import { APIProxy } from "../api/APIProxy";
+import APIProxy from "../api/APIProxy";
 import { MutationOptions } from "../mutations";
 import { useSaleorClient } from "./helpers";
 import {
@@ -36,15 +36,15 @@ export interface MutationResult<TData extends { data: any }> {
 
 // keep track of called mutation
 const useMutationTracking = (() => {
-  let _mutationId = 0;
+  let mostRecentMutation = 0;
 
   const generateNewMutationId = (): number => {
-    _mutationId += 1;
-    return _mutationId;
+    mostRecentMutation += 1;
+    return mostRecentMutation;
   };
 
   const isMostRecentMutation = (mutationId: number) => {
-    return _mutationId === mutationId;
+    return mostRecentMutation === mutationId;
   };
 
   return () => ({

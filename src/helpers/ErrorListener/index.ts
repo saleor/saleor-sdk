@@ -25,7 +25,7 @@ export class ErrorListener implements IErrorListener {
     func: (error: ApolloErrorWithUserInput | any, type: ErrorTypes) => any
   ) => {
     this.errorListeners = this.errorListeners.filter(
-      (errorListenersFunc) => func !== errorListenersFunc
+      errorListenersFunc => func !== errorListenersFunc
     );
   };
 
@@ -33,7 +33,7 @@ export class ErrorListener implements IErrorListener {
     error: ApolloErrorWithUserInput | any,
     type: ErrorTypes
   ) => {
-    this.errorListeners.forEach((errorListenersFunc) => {
+    this.errorListeners.forEach(errorListenersFunc => {
       errorListenersFunc(error, type);
     });
   };

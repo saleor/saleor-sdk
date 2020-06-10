@@ -16,16 +16,23 @@ import { ISaleorState, ISaleorStateSummeryPrices, StateItems } from "./types";
 export class SaleorState extends NamedObservable<StateItems>
   implements ISaleorState {
   checkout?: ICheckoutModel;
+
   promoCode?: string;
+
   selectedShippingAddressId?: string;
+
   selectedBillingAddressId?: string;
+
   payment?: IPaymentModel;
+
   summaryPrices?: ISaleorStateSummeryPrices;
+
   // Should be changed it in future to shop object containing payment gateways besides all the shop data
   availablePaymentGateways?: GetShopPaymentGateways_shop_availablePaymentGateways[];
 
-  private localStorageHandler: LocalStorageHandler;
   private apolloClientManager: ApolloClientManager;
+
+  private localStorageHandler: LocalStorageHandler;
 
   constructor(
     localStorageHandler: LocalStorageHandler,
@@ -61,14 +68,10 @@ export class SaleorState extends NamedObservable<StateItems>
     } else {
       this.provideCheckoutOffline(forceReload);
     }
-
-    return;
   };
 
   providePayment = async (forceReload?: boolean) => {
     this.providePaymentOffline(forceReload);
-
-    return;
   };
 
   providePaymentGateways = async (
@@ -82,14 +85,16 @@ export class SaleorState extends NamedObservable<StateItems>
 
   private onCheckoutUpdate = (checkout: ICheckoutModel) => {
     this.checkout = checkout;
-    this.summaryPrices = this.calculateSummaryPrices(checkout);
+    this.summaryPrices = SaleorState.calculateSummaryPrices(checkout);
     this.notifyChange(StateItems.CHECKOUT, this.checkout);
     this.notifyChange(StateItems.SUMMARY_PRICES, this.summaryPrices);
   };
+
   private onPaymentUpdate = (payment: IPaymentModel) => {
     this.payment = payment;
     this.notifyChange(StateItems.PAYMENT, this.payment);
   };
+
   private onPaymentGatewaysUpdate = (
     paymentGateways?: GetShopPaymentGateways_shop_availablePaymentGateways[]
   ) => {
@@ -109,7 +114,7 @@ export class SaleorState extends NamedObservable<StateItems>
     ) => any
   ) => {
     // 1. Try to take checkout from backend database
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     if (checkout?.token) {
       const { data, error } = await this.apolloClientManager.getCheckout(
@@ -125,10 +130,9 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const checkoutModel: ICheckoutModel | null = this.localStorageHandler.getCheckout();
+    const checkoutModel: ICheckoutModel | null = LocalStorageHandler.getCheckout();
     if (checkoutModel) {
       this.onCheckoutUpdate(checkoutModel);
-      return;
     }
   };
 
@@ -139,7 +143,7 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const checkoutModel: ICheckoutModel | null = this.localStorageHandler.getCheckout();
+    const checkoutModel: ICheckoutModel | null = LocalStorageHandler.getCheckout();
 
     if (checkoutModel) {
       this.onCheckoutUpdate(checkoutModel);
@@ -155,7 +159,7 @@ export class SaleorState extends NamedObservable<StateItems>
     }
 
     // 2. Try to take checkout from local storage
-    const paymentModel: ICheckoutModel | null = this.localStorageHandler.getPayment();
+    const paymentModel: ICheckoutModel | null = LocalStorageHandler.getPayment();
 
     if (paymentModel) {
       this.onPaymentUpdate(paymentModel);
@@ -179,7 +183,7 @@ export class SaleorState extends NamedObservable<StateItems>
     this.onPaymentGatewaysUpdate(data);
   };
 
-  private calculateSummaryPrices(
+  private static calculateSummaryPrices(
     checkout?: ICheckoutModel
   ): ISaleorStateSummeryPrices {
     const items = checkout?.lines;
@@ -198,23 +202,22 @@ export class SaleorState extends NamedObservable<StateItems>
             firstItemTotalPrice.gross.currency,
         };
 
-        const { itemsNetPrice, itmesGrossPrice } = items.reduce(
-          (prevVals, item) => {
-            prevVals.itemsNetPrice += item.totalPrice?.net.amount || 0;
-            prevVals.itmesGrossPrice += item.totalPrice?.gross.amount || 0;
-            return prevVals;
-          },
-          {
-            itemsNetPrice: 0,
-            itmesGrossPrice: 0,
-          }
+        const itemsNetPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.net.amount || 0),
+          0
+        );
+        const itemsGrossPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.gross?.amount || 0),
+          0
         );
 
         const subtotalPrice = {
           ...firstItemTotalPrice,
           gross: {
             ...firstItemTotalPrice.gross,
-            amount: round(itmesGrossPrice, 2),
+            amount: round(itemsGrossPrice, 2),
           },
           net: {
             ...firstItemTotalPrice.net,
@@ -234,7 +237,7 @@ export class SaleorState extends NamedObservable<StateItems>
           gross: {
             ...subtotalPrice.gross,
             amount: round(
-              itmesGrossPrice + shippingPrice.amount - discount.amount,
+              itemsGrossPrice + shippingPrice.amount - discount.amount,
               2
             ),
           },

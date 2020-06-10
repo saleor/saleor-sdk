@@ -6,6 +6,7 @@ import { JobsManager } from "../../jobs";
 import { ErrorCartTypes } from "../../jobs/Cart";
 import { SaleorState } from "../../state";
 import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
+import { sortCheckoutLines } from "./utils";
 
 import {
   IDiscount,
@@ -18,19 +19,28 @@ import {
 
 export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
   loaded: boolean;
+
   items: IItems;
+
   totalPrice: ITotalPrice;
+
   subtotalPrice: ISubtotalPrice;
+
   shippingPrice: IShippingPrice;
+
   discount?: IDiscount;
 
+  private apolloClientManager: ApolloClientManager;
+
   private checkoutLoaded: boolean;
-  private summaryPricesLoaded: boolean;
+
+  private jobsManager: JobsManager;
 
   private localStorageManager: LocalStorageManager;
+
   private saleorState: SaleorState;
-  private apolloClientManager: ApolloClientManager;
-  private jobsManager: JobsManager;
+
+  private summaryPricesLoaded: boolean;
 
   constructor(
     localStorageManager: LocalStorageManager,
@@ -55,18 +65,8 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
       StateItems.CHECKOUT,
       ({ lines }: ICheckoutModel) => {
         this.items = lines
-          ?.filter((line) => line.quantity > 0)
-          .sort((a, b) => {
-            if (a.id && b.id) {
-              const aId = a.id?.toUpperCase() || "";
-              const bId = b.id?.toUpperCase() || "";
-              return aId < bId ? -1 : aId > bId ? 1 : 0;
-            } else {
-              const aId = a.variant.id?.toUpperCase() || "";
-              const bId = b.variant.id?.toUpperCase() || "";
-              return aId < bId ? -1 : aId > bId ? 1 : 0;
-            }
-          });
+          ?.filter(line => line.quantity > 0)
+          .sort(sortCheckoutLines);
         this.checkoutLoaded = true;
         this.loaded = this.checkoutLoaded && this.summaryPricesLoaded;
       }

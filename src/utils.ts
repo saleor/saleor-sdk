@@ -14,7 +14,7 @@ export const getErrorsFromData = <T extends { [key: string]: any }>(
       };
     }, {});
 
-    return !!Object.keys(error).length ? error : null;
+    return Object.keys(error).length ? error : null;
   } catch (e) {
     return null;
   }

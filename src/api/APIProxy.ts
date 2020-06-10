@@ -26,7 +26,31 @@ import {
   mergeEdges,
 } from "../utils";
 
-export class APIProxy {
+const handleDataErrors = <T extends QueryShape, TData>(
+  mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
+  data: TData,
+  apolloErrors?: readonly GraphQLError[]
+) => {
+  // INFO: user input errors will be moved to graphql errors
+  const userInputErrors = getErrorsFromData(data);
+  const errors =
+    apolloErrors || userInputErrors
+      ? new ApolloError({
+          extraInfo: userInputErrors,
+          graphQLErrors: apolloErrors,
+        })
+      : null;
+
+  if (errors && isDataEmpty(data)) {
+    return { errors };
+  }
+
+  const result = getMappedData(mapFn, data);
+
+  return { data: result };
+};
+
+class APIProxy {
   getAttributes = this.watchQuery(QUERIES.Attributes, data => data.attributes);
 
   getProductDetails = this.watchQuery(
@@ -109,7 +133,7 @@ export class APIProxy {
     }
     return {
       refetch: () =>
-        new Promise<{ data: UserDetails["me"] }>((resolve, _reject) => {
+        new Promise<{ data: UserDetails["me"] }>(resolve => {
           resolve({ data: null });
         }),
       unsubscribe: () => undefined,
@@ -126,14 +150,15 @@ export class APIProxy {
 
         const data = await this.fireQuery(
           MUTATIONS.TokenAuth,
-          data => data!.tokenCreate
+          mutationData => mutationData!.tokenCreate
         )(variables, {
           ...options,
-          update: (proxy, data) => {
+          update: (proxy, updateData) => {
             const handledData = handleDataErrors(
-              (data: any) => data.tokenCreate,
-              data.data,
-              data.errors
+              (tokenCreateMutationData: any) =>
+                tokenCreateMutationData.tokenCreate,
+              updateData.data,
+              updateData.errors
             );
             if (!handledData.errors && handledData.data) {
               setAuthToken(handledData.data.token);
@@ -147,7 +172,7 @@ export class APIProxy {
               }
             }
             if (options && options.update) {
-              options.update(proxy, data);
+              options.update(proxy, updateData);
             }
           },
         });
@@ -174,10 +199,10 @@ export class APIProxy {
       callback(this.isLoggedIn());
     };
 
-    addEventListener("auth", eventHandler);
+    window.addEventListener("auth", eventHandler);
 
     return () => {
-      removeEventListener("auth", eventHandler);
+      window.removeEventListener("auth", eventHandler);
     };
   };
 
@@ -216,8 +241,8 @@ export class APIProxy {
 
       if (options.skip) {
         return {
-          refetch: (_variables?: TVariables) => {
-            return new Promise((resolve, _reject) => {
+          refetch: () => {
+            return new Promise(resolve => {
               resolve({ data: null });
             });
           },
@@ -294,9 +319,9 @@ export class APIProxy {
             variables: { ...variables, ...extraVariables },
           });
         },
-        refetch: (variables?: TVariables) => {
-          if (variables) {
-            observable.setVariables(variables);
+        refetch: (newVariables?: TVariables) => {
+          if (newVariables) {
+            observable.setVariables(newVariables);
             const cachedResult = observable.currentResult();
             const errorHandledData = handleDataErrors(mapFn, cachedResult.data);
             if (errorHandledData.data) {
@@ -304,10 +329,13 @@ export class APIProxy {
             }
           }
 
-          return this.firePromise(() => observable.refetch(variables), mapFn);
+          return APIProxy.firePromise(
+            () => observable.refetch(newVariables),
+            mapFn
+          );
         },
-        setOptions: (options: TOptions) =>
-          this.firePromise(() => observable.setOptions(options), mapFn),
+        setOptions: (newOptions: TOptions) =>
+          APIProxy.firePromise(() => observable.setOptions(newOptions), mapFn),
         unsubscribe: subscription.unsubscribe.bind(subscription),
       };
     };
@@ -318,7 +346,7 @@ export class APIProxy {
       variables: InferOptions<T>["variables"],
       options?: Omit<InferOptions<T>, "variables">
     ) =>
-      this.firePromise(
+      APIProxy.firePromise(
         () =>
           query(this.client, {
             ...options,
@@ -329,7 +357,7 @@ export class APIProxy {
   }
 
   // Promise wrapper to catch errors
-  firePromise<T extends QueryShape, TResult>(
+  static firePromise<T extends QueryShape, TResult>(
     promise: () => Promise<any>,
     mapFn: MapFn<T, TResult> | WatchMapFn<T, TResult>
   ) {
@@ -352,27 +380,4 @@ export class APIProxy {
   }
 }
 
-// error handler
-const handleDataErrors = <T extends QueryShape, TData>(
-  mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
-  data: TData,
-  apolloErrors?: readonly GraphQLError[]
-) => {
-  // INFO: user input errors will be moved to graphql errors
-  const userInputErrors = getErrorsFromData(data);
-  const errors =
-    apolloErrors || userInputErrors
-      ? new ApolloError({
-          extraInfo: userInputErrors,
-          graphQLErrors: apolloErrors,
-        })
-      : null;
-
-  if (errors && isDataEmpty(data)) {
-    return { errors };
-  }
-
-  const result = getMappedData(mapFn, data);
-
-  return { data: result };
-};
+export default APIProxy;

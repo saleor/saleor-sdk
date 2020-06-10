@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 
-import { CredentialsProvider } from "../";
-import { SaleorManager } from "../../../";
+import { CredentialsProvider } from "..";
+import { SaleorManager } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { IProps } from "./types";
@@ -16,7 +16,7 @@ export const SaleorProvider: React.FC<IProps> = ({
   useMemo(() => {
     const manager = new SaleorManager(client, config);
 
-    manager.connect((saleorAPI) => setContext({ ...saleorAPI }));
+    manager.connect(saleorAPI => setContext({ ...saleorAPI }));
 
     return manager;
   }, [client]);

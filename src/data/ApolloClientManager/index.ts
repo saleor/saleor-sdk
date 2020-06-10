@@ -86,7 +86,7 @@ export class ApolloClientManager implements IApolloClientManager {
             query: CheckoutQueries.userCheckoutDetails,
           });
           observable.subscribe(
-            (result) => {
+            result => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -94,7 +94,7 @@ export class ApolloClientManager implements IApolloClientManager {
                 resolve(data.me?.checkout);
               }
             },
-            (error) => {
+            error => {
               reject(error);
             }
           );
@@ -107,7 +107,7 @@ export class ApolloClientManager implements IApolloClientManager {
             },
           });
           observable.subscribe(
-            (result) => {
+            result => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -115,7 +115,7 @@ export class ApolloClientManager implements IApolloClientManager {
                 resolve(data.checkout);
               }
             },
-            (error) => {
+            error => {
               reject(error);
             }
           );
@@ -141,10 +141,10 @@ export class ApolloClientManager implements IApolloClientManager {
     checkoutlines: ICheckoutModelLine[] | null
   ) => {
     const idsOfMissingVariants = checkoutlines
-      ?.filter((line) => !line.variant || !line.totalPrice)
-      .map((line) => line.variant.id);
+      ?.filter(line => !line.variant || !line.totalPrice)
+      .map(line => line.variant.id);
     const linesWithProperVariant =
-      checkoutlines?.filter((line) => line.variant && line.totalPrice) || [];
+      checkoutlines?.filter(line => line.variant && line.totalPrice) || [];
 
     let variants: CheckoutProductVariants_productVariants | null | undefined;
     if (idsOfMissingVariants && idsOfMissingVariants.length) {
@@ -159,7 +159,7 @@ export class ApolloClientManager implements IApolloClientManager {
         );
         variants = await new Promise((resolve, reject) => {
           observable.subscribe(
-            (result) => {
+            result => {
               const { data, errors } = result;
               if (errors?.length) {
                 reject(errors);
@@ -167,7 +167,7 @@ export class ApolloClientManager implements IApolloClientManager {
                 resolve(data.productVariants);
               }
             },
-            (error) => {
+            error => {
               reject(error);
             }
           );
@@ -180,9 +180,9 @@ export class ApolloClientManager implements IApolloClientManager {
     }
 
     const linesWithMissingVariantUpdated = variants
-      ? variants.edges.map((edge) => {
+      ? variants.edges.map(edge => {
           const existingLine = checkoutlines?.find(
-            (line) => line.variant.id === edge.node.id
+            line => line.variant.id === edge.node.id
           );
           const variantPricing = edge.node.pricing?.price;
           const totalPrice = variantPricing
@@ -218,7 +218,7 @@ export class ApolloClientManager implements IApolloClientManager {
         })
       : [];
 
-    const linesWithProperVariantUpdated = linesWithProperVariant.map((line) => {
+    const linesWithProperVariantUpdated = linesWithProperVariant.map(line => {
       const variantPricing = line.variant.pricing?.price;
       const totalPrice = variantPricing
         ? {
@@ -260,7 +260,7 @@ export class ApolloClientManager implements IApolloClientManager {
           query: ShopQueries.getShopPaymentGateways,
         });
         observable.subscribe(
-          (result) => {
+          result => {
             const { data, errors } = result;
             if (errors?.length) {
               reject(errors);
@@ -268,7 +268,7 @@ export class ApolloClientManager implements IApolloClientManager {
               resolve(data.shop.availablePaymentGateways);
             }
           },
-          (error) => {
+          error => {
             reject(error);
           }
         );
@@ -342,11 +342,13 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutCreate?.errors.length) {
+      }
+      if (data?.checkoutCreate?.errors.length) {
         return {
           error: data?.checkoutCreate?.errors,
         };
-      } else if (data?.checkoutCreate?.checkout) {
+      }
+      if (data?.checkoutCreate?.checkout) {
         return {
           data: this.constructCheckoutModel(data.checkoutCreate.checkout),
         };
@@ -361,10 +363,10 @@ export class ApolloClientManager implements IApolloClientManager {
 
   setCartItem = async (checkout: ICheckoutModel) => {
     const checkoutId = checkout.id;
-    const lines = checkout.lines;
+    const { lines } = checkout;
 
     if (checkoutId && lines) {
-      const alteredLines = lines.map((line) => ({
+      const alteredLines = lines.map(line => ({
         quantity: line.quantity,
         variantId: line.variant.id,
       }));
@@ -385,11 +387,13 @@ export class ApolloClientManager implements IApolloClientManager {
           return {
             error: errors,
           };
-        } else if (data?.checkoutLinesUpdate?.errors.length) {
+        }
+        if (data?.checkoutLinesUpdate?.errors.length) {
           return {
             error: data?.checkoutLinesUpdate?.errors,
           };
-        } else if (data?.checkoutLinesUpdate?.checkout) {
+        }
+        if (data?.checkoutLinesUpdate?.checkout) {
           return {
             data: this.constructCheckoutModel(
               data.checkoutLinesUpdate.checkout
@@ -442,23 +446,25 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutEmailUpdate?.errors.length) {
+      }
+      if (data?.checkoutEmailUpdate?.errors.length) {
         return {
           error: data?.checkoutEmailUpdate?.errors,
         };
-      } else if (data?.checkoutShippingAddressUpdate?.errors.length) {
+      }
+      if (data?.checkoutShippingAddressUpdate?.errors.length) {
         return {
           error: data?.checkoutShippingAddressUpdate?.errors,
         };
-      } else if (data?.checkoutShippingAddressUpdate?.checkout) {
+      }
+      if (data?.checkoutShippingAddressUpdate?.checkout) {
         return {
           data: this.constructCheckoutModel(
             data.checkoutShippingAddressUpdate.checkout
           ),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -501,19 +507,20 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutBillingAddressUpdate?.errors.length) {
+      }
+      if (data?.checkoutBillingAddressUpdate?.errors.length) {
         return {
           error: data?.checkoutBillingAddressUpdate?.errors,
         };
-      } else if (data?.checkoutBillingAddressUpdate?.checkout) {
+      }
+      if (data?.checkoutBillingAddressUpdate?.checkout) {
         return {
           data: this.constructCheckoutModel(
             data.checkoutBillingAddressUpdate.checkout
           ),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -559,23 +566,25 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutEmailUpdate?.errors.length) {
+      }
+      if (data?.checkoutEmailUpdate?.errors.length) {
         return {
           error: data?.checkoutEmailUpdate?.errors,
         };
-      } else if (data?.checkoutBillingAddressUpdate?.errors.length) {
+      }
+      if (data?.checkoutBillingAddressUpdate?.errors.length) {
         return {
           error: data?.checkoutBillingAddressUpdate?.errors,
         };
-      } else if (data?.checkoutBillingAddressUpdate?.checkout) {
+      }
+      if (data?.checkoutBillingAddressUpdate?.checkout) {
         return {
           data: this.constructCheckoutModel(
             data.checkoutBillingAddressUpdate.checkout
           ),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -600,19 +609,20 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutShippingMethodUpdate?.errors.length) {
+      }
+      if (data?.checkoutShippingMethodUpdate?.errors.length) {
         return {
           error: data?.checkoutShippingMethodUpdate?.errors,
         };
-      } else if (data?.checkoutShippingMethodUpdate?.checkout) {
+      }
+      if (data?.checkoutShippingMethodUpdate?.checkout) {
         return {
           data: this.constructCheckoutModel(
             data.checkoutShippingMethodUpdate.checkout
           ),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -634,17 +644,18 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutAddPromoCode?.errors.length) {
+      }
+      if (data?.checkoutAddPromoCode?.errors.length) {
         return {
           error: data?.checkoutAddPromoCode?.errors,
         };
-      } else if (data?.checkoutAddPromoCode?.checkout) {
+      }
+      if (data?.checkoutAddPromoCode?.checkout) {
         return {
           data: this.constructCheckoutModel(data.checkoutAddPromoCode.checkout),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -666,19 +677,20 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutRemovePromoCode?.errors.length) {
+      }
+      if (data?.checkoutRemovePromoCode?.errors.length) {
         return {
           error: data?.checkoutRemovePromoCode?.errors,
         };
-      } else if (data?.checkoutRemovePromoCode?.checkout) {
+      }
+      if (data?.checkoutRemovePromoCode?.checkout) {
         return {
           data: this.constructCheckoutModel(
             data.checkoutRemovePromoCode.checkout
           ),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -729,17 +741,18 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutPaymentCreate?.errors.length) {
+      }
+      if (data?.checkoutPaymentCreate?.errors.length) {
         return {
           error: data?.checkoutPaymentCreate?.errors,
         };
-      } else if (data?.checkoutPaymentCreate?.payment) {
+      }
+      if (data?.checkoutPaymentCreate?.payment) {
         return {
           data: this.constructPaymentModel(data.checkoutPaymentCreate.payment),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -761,17 +774,18 @@ export class ApolloClientManager implements IApolloClientManager {
         return {
           error: errors,
         };
-      } else if (data?.checkoutComplete?.errors.length) {
+      }
+      if (data?.checkoutComplete?.errors.length) {
         return {
           error: data?.checkoutComplete?.errors,
         };
-      } else if (data?.checkoutComplete?.order) {
+      }
+      if (data?.checkoutComplete?.order) {
         return {
           data: this.constructOrderModel(data.checkoutComplete.order),
         };
-      } else {
-        return {};
       }
+      return {};
     } catch (error) {
       return {
         error,
@@ -803,8 +817,8 @@ export class ApolloClientManager implements IApolloClientManager {
     email,
     id,
     lines: lines
-      ?.filter((item) => item?.quantity && item.variant.id)
-      .map((item) => {
+      ?.filter(item => item?.quantity && item.variant.id)
+      .map(item => {
         const itemVariant = item?.variant;
 
         return {

@@ -1,5 +1,5 @@
 import { ApolloError } from "apollo-client";
-import { APIProxy } from "../api/APIProxy";
+import APIProxy from "../api/APIProxy";
 
 export interface ApolloErrorWithUserInput extends ApolloError {
   extraInfo: {

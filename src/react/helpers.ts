@@ -32,10 +32,10 @@ export const useAuth = (
   };
 
   React.useEffect(() => {
-    addEventListener("auth", eventHandler);
+    window.addEventListener("auth", eventHandler);
 
     return () => {
-      removeEventListener("auth", eventHandler);
+      window.removeEventListener("auth", eventHandler);
     };
   }, [authenticated]);
 
