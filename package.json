@@ -16,6 +16,7 @@
     "build": "tsc",
     "build-types": "apollo codegen:generate --target=typescript gqlTypes && rm -rf src/gqlTypes && move-file gqlTypes src/gqlTypes && jscodeshift -t scripts/fixImportPaths.ts src/**/gqlTypes/* --parser=tsx",
     "clean": "rimraf lib",
+    "lint": "eslint \"src/**/*.@(tsx|ts|jsx|js)\" --fix && prettier --check \"src/**/*.@(tsx|ts|jsx|js)\" --write",
     "prepare": "npm run clean && npm run build",
     "release": "np",
     "start": "tsc --watch",
