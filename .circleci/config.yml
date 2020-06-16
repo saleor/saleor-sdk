@@ -21,20 +21,5 @@ jobs:
           name: Run typescript checker
           command: npx tsc --noEmit
       - run:
-          name: Package lock security test
-          command: npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
-      - run:
           name: Build application
           command: npm run build
-      - run:
-          name: Run tests
-          command: npm run test
-
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /^v.*/
