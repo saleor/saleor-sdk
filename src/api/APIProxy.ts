@@ -6,9 +6,11 @@ import {
 } from "apollo-client";
 import { GraphQLError } from "graphql";
 
+import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
+import { SetPassword } from "../mutations/gqlTypes/SetPassword";
 import { fireSignOut, getAuthToken, setAuthToken } from "../auth";
 import { MUTATIONS } from "../mutations";
-import { TokenAuth } from "../mutations/gqlTypes/TokenAuth";
+import { TokenAuth_tokenCreate } from "../mutations/gqlTypes/TokenAuth";
 import { QUERIES } from "../queries";
 import { UserDetails } from "../queries/gqlTypes/UserDetails";
 import { RequireAtLeastOne } from "../tsHelpers";
@@ -25,6 +27,7 @@ import {
   isDataEmpty,
   mergeEdges,
 } from "../utils";
+import { SignIn, SetPasswordChange, SetPasswordResult } from "./types";
 
 const handleDataErrors = <T extends QueryShape, TData>(
   mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
@@ -106,10 +109,6 @@ class APIProxy {
     data => data!.accountUpdate
   );
 
-  setPasswordChange = this.fireQuery(MUTATIONS.PasswordChange, data => data);
-
-  setPassword = this.fireQuery(MUTATIONS.SetPassword, data => data);
-
   client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
@@ -140,48 +139,40 @@ class APIProxy {
     };
   };
 
-  signIn = (
+  signIn = async (
     variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
     options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
-  ) =>
-    new Promise<{ data: TokenAuth["tokenCreate"] }>(async (resolve, reject) => {
-      try {
-        this.client.resetStore();
+  ): Promise<SignIn> => {
+    await this.client.resetStore();
+    let result: {
+      data: TokenAuth_tokenCreate | null;
+    } | null = null;
 
-        const data = await this.fireQuery(
-          MUTATIONS.TokenAuth,
-          mutationData => mutationData!.tokenCreate
-        )(variables, {
-          ...options,
-          update: (proxy, updateData) => {
-            const handledData = handleDataErrors(
-              (tokenCreateMutationData: any) =>
-                tokenCreateMutationData.tokenCreate,
-              updateData.data,
-              updateData.errors
-            );
-            if (!handledData.errors && handledData.data) {
-              setAuthToken(handledData.data.token);
-              if (window.PasswordCredential && variables) {
-                navigator.credentials.store(
-                  new window.PasswordCredential({
-                    id: variables.email,
-                    password: variables.password,
-                  })
-                );
-              }
-            }
-            if (options && options.update) {
-              options.update(proxy, updateData);
-            }
-          },
-        });
-
-        resolve(data);
-      } catch (e) {
-        reject(e);
-      }
+    result = await this.fireQuery(
+      MUTATIONS.TokenAuth,
+      mutationData => mutationData!.tokenCreate
+    )(variables, {
+      ...options,
+      fetchPolicy: "no-cache",
     });
+    const { data } = result;
+
+    if (data?.token && data.errors.length === 0) {
+      setAuthToken(data.token);
+      if (window.PasswordCredential && variables) {
+        navigator.credentials.store(
+          new window.PasswordCredential({
+            id: variables.email,
+            password: variables.password,
+          })
+        );
+      }
+    }
+    return {
+      data,
+      error: null,
+    };
+  };
 
   signOut = () =>
     new Promise(async (resolve, reject) => {
@@ -193,6 +184,52 @@ class APIProxy {
         reject(e);
       }
     });
+
+  setPassword = async (
+    variables: InferOptions<MUTATIONS["SetPassword"]>["variables"],
+    options?: Omit<InferOptions<MUTATIONS["SetPassword"]>, "variables">
+  ): Promise<SetPasswordResult> => {
+    let result: {
+      data: SetPassword | null;
+    } | null = null;
+
+    result = await this.fireQuery(MUTATIONS.SetPassword, data => data!)(
+      variables,
+      {
+        ...options,
+        fetchPolicy: "no-cache",
+      }
+    );
+    const { data } = result;
+
+    return {
+      data,
+      error: null,
+    };
+  };
+
+  setPasswordChange = async (
+    variables: InferOptions<MUTATIONS["PasswordChange"]>["variables"],
+    options?: Omit<InferOptions<MUTATIONS["PasswordChange"]>, "variables">
+  ): Promise<SetPasswordChange> => {
+    let result: {
+      data: PasswordChange | null;
+    } | null = null;
+
+    result = await this.fireQuery(MUTATIONS.PasswordChange, data => data!)(
+      variables,
+      {
+        ...options,
+        fetchPolicy: "no-cache",
+      }
+    );
+    const { data } = result;
+
+    return {
+      data,
+      error: null,
+    };
+  };
 
   attachAuthListener = (callback: (authenticated: boolean) => void) => {
     const eventHandler = () => {

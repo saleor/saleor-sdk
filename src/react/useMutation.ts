@@ -121,7 +121,7 @@ const useMutation = <
           ...(variables as object),
         };
 
-        const apolloOptions = {
+        const apolloOptions: MutationOptions<any, any> = {
           ...(baseOptions as object),
           ...(options as object),
         };
