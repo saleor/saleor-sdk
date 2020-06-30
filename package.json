@@ -99,9 +99,6 @@
       "git add"
     ]
   },
-  "np": {
-    "contents": "lib"
-  },
   "peerDependencies": {
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.6.10",
