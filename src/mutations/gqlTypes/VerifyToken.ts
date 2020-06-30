@@ -150,13 +150,19 @@ export interface VerifyToken_tokenVerify_user {
 
 export interface VerifyToken_tokenVerify {
   __typename: "VerifyToken";
+  /**
+   * JWT payload.
+   */
   payload: any | null;
+  /**
+   * User assigned to token.
+   */
   user: VerifyToken_tokenVerify_user | null;
 }
 
 export interface VerifyToken {
   /**
-   * Mutation that confirms if token is valid and also returns user data.
+   * Verify JWT token.
    */
   tokenVerify: VerifyToken_tokenVerify | null;
 }
