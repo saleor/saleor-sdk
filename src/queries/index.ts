@@ -76,7 +76,7 @@ export const QUERIES = {
     options: QueryOptions<OrderByTokenVariables>
   ): ObservableQuery<OrderByToken, any> =>
     client.watchQuery({
-      query: User.orderDetailsByTokenQuery,
+      query: Orders.orderDetailsByTokenQuery,
       ...options,
     }),
   OrderDetailsByUser: <TCacheShape>(
@@ -84,7 +84,7 @@ export const QUERIES = {
     options: QueryOptions<UserOrderByTokenVariables>
   ): ObservableQuery<UserOrderByToken, any> =>
     client.watchQuery({
-      query: User.userOrderDetailsByTokenQuery,
+      query: Orders.userOrderDetailsByTokenQuery,
       ...options,
     }),
   OrdersByUser: <TCacheShape>(
