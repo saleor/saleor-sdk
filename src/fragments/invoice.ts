@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const fragmentInvoice = gql`
+export const invoiceFragment = gql`
   fragment InvoiceFragment on Invoice {
     id
     number

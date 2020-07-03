@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
-import { orderDetailFragment } from "../fragments/user";
-import { fragmentInvoice } from "../fragments/invoice";
+import { orderDetailFragment } from "../fragments/order";
+import { invoiceFragment } from "../fragments/invoice";
 
 export const ordersByUser = gql`
   query OrdersByUser($perPage: Int!, $after: String) {
@@ -64,7 +64,7 @@ export const orderDetailsByTokenQuery = gql`
 
 export const userOrderDetailsByTokenQuery = gql`
   ${orderDetailFragment}
-  ${fragmentInvoice}
+  ${invoiceFragment}
   query UserOrderByToken($token: UUID!) {
     orderByToken(token: $token) {
       ...OrderDetail
