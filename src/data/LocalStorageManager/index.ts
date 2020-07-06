@@ -1,9 +1,9 @@
 import { SaleorState } from "../../state";
-
 import { LocalStorageHandler } from "../../helpers/LocalStorageHandler/LocalStorageHandler";
 
 export class LocalStorageManager {
   private handler: LocalStorageHandler;
+
   private saleorState: SaleorState;
 
   constructor(handler: LocalStorageHandler, saleorState: SaleorState) {
@@ -17,22 +17,26 @@ export class LocalStorageManager {
 
   addItemToCart = (variantId: string, quantity: number) => {
     const lines = this.saleorState.checkout?.lines || [];
-    let variant = lines.find((variant) => variant.variant.id === variantId);
-    const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+    let variantInCheckout = lines.find(
+      variant => variant.variant.id === variantId
     );
-    const newVariantQuantity = variant ? variant.quantity + quantity : quantity;
-    if (variant) {
-      variant.quantity = newVariantQuantity;
-      alteredLines.push(variant);
+    const alteredLines = lines.filter(
+      variant => variant.variant.id !== variantId
+    );
+    const newVariantQuantity = variantInCheckout
+      ? variantInCheckout.quantity + quantity
+      : quantity;
+    if (variantInCheckout) {
+      variantInCheckout.quantity = newVariantQuantity;
+      alteredLines.push(variantInCheckout);
     } else {
-      variant = {
+      variantInCheckout = {
         quantity,
         variant: {
           id: variantId,
         },
       };
-      alteredLines.push(variant);
+      alteredLines.push(variantInCheckout);
     }
     const alteredCheckout = this.saleorState.checkout
       ? {
@@ -49,13 +53,15 @@ export class LocalStorageManager {
 
   removeItemFromCart = (variantId: string) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
-    const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+    const variantInCheckout = lines.find(
+      variant => variant.variant.id === variantId
     );
-    if (variant) {
-      variant.quantity = 0;
-      alteredLines.push(variant);
+    const alteredLines = lines.filter(
+      variant => variant.variant.id !== variantId
+    );
+    if (variantInCheckout) {
+      variantInCheckout.quantity = 0;
+      alteredLines.push(variantInCheckout);
     }
     const alteredCheckout = this.saleorState.checkout
       ? {
@@ -72,14 +78,18 @@ export class LocalStorageManager {
 
   subtractItemFromCart = (variantId: string) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
-    const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+    const variantFromCart = lines.find(
+      variant => variant.variant.id === variantId
     );
-    const newVariantQuantity = variant ? variant.quantity - 1 : 0;
-    if (variant) {
-      variant.quantity = newVariantQuantity;
-      alteredLines.push(variant);
+    const alteredLines = lines.filter(
+      variant => variant.variant.id !== variantId
+    );
+    const newVariantQuantity = variantFromCart
+      ? variantFromCart.quantity - 1
+      : 0;
+    if (variantFromCart) {
+      variantFromCart.quantity = newVariantQuantity;
+      alteredLines.push(variantFromCart);
     }
     const alteredCheckout = this.saleorState.checkout
       ? {
@@ -96,13 +106,15 @@ export class LocalStorageManager {
 
   updateItemInCart = (variantId: string, quantity: number) => {
     const lines = this.saleorState.checkout?.lines || [];
-    const variant = lines.find((variant) => variant.variant.id === variantId);
-    const alteredLines = lines.filter(
-      (variant) => variant.variant.id !== variantId
+    const variantInCheckout = lines.find(
+      variant => variant.variant.id === variantId
     );
-    if (variant) {
-      variant.quantity = quantity;
-      alteredLines.push(variant);
+    const alteredLines = lines.filter(
+      variant => variant.variant.id !== variantId
+    );
+    if (variantInCheckout) {
+      variantInCheckout.quantity = quantity;
+      alteredLines.push(variantInCheckout);
     }
     const alteredCheckout = this.saleorState.checkout
       ? {

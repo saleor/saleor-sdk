@@ -14,8 +14,9 @@ export type PromiseCheckoutJobRunResponse = Promise<
   JobRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes>
 >;
 
-export class CheckoutJobs {
+class CheckoutJobs {
   private apolloClientManager: ApolloClientManager;
+
   private localStorageHandler: LocalStorageHandler;
 
   constructor(
@@ -45,13 +46,12 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.GET_CHECKOUT,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout(data || checkout);
-
-      return {
-        data,
-      };
     }
+    this.localStorageHandler.setCheckout(data || checkout);
+
+    return {
+      data,
+    };
   };
 
   providePaymentGateways = async (): PromiseCheckoutJobRunResponse => {
@@ -104,16 +104,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...data,
-        selectedBillingAddressId,
-        selectedShippingAddressId,
-      });
-      return {
-        data,
-      };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...data,
+      selectedBillingAddressId,
+      selectedShippingAddressId,
+    });
+    return {
+      data,
+    };
   };
 
   setShippingAddress = async ({
@@ -127,7 +127,7 @@ export class CheckoutJobs {
     email: string;
     selectedShippingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingAddress(
       shippingAddress,
@@ -142,16 +142,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAsShipping: false,
-        email: data?.email,
-        selectedShippingAddressId,
-        shippingAddress: data?.shippingAddress,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAsShipping: false,
+      email: data?.email,
+      selectedShippingAddressId,
+      shippingAddress: data?.shippingAddress,
+    });
+    return { data };
   };
 
   setBillingAddress = async ({
@@ -165,7 +165,7 @@ export class CheckoutJobs {
     billingAsShipping?: boolean;
     selectedBillingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setBillingAddress(
       billingAddress,
@@ -179,15 +179,15 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_BILLING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAddress: data?.billingAddress,
-        billingAsShipping: !!billingAsShipping,
-        selectedBillingAddressId,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAddress: data?.billingAddress,
+      billingAsShipping: !!billingAsShipping,
+      selectedBillingAddressId,
+    });
+    return { data };
   };
 
   setBillingAddressWithEmail = async ({
@@ -201,7 +201,7 @@ export class CheckoutJobs {
     billingAddress: ICheckoutAddress;
     selectedBillingAddressId?: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const {
       data,
@@ -219,16 +219,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_BILLING_ADDRESS,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        billingAddress: data?.billingAddress,
-        billingAsShipping: false,
-        email: data?.email,
-        selectedBillingAddressId,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      billingAddress: data?.billingAddress,
+      billingAsShipping: false,
+      email: data?.email,
+      selectedBillingAddressId,
+    });
+    return { data };
   };
 
   setShippingMethod = async ({
@@ -238,7 +238,7 @@ export class CheckoutJobs {
     checkoutId: string;
     shippingMethodId: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingMethod(
       shippingMethodId,
@@ -252,14 +252,14 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.SET_SHIPPING_METHOD,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-        shippingMethod: data?.shippingMethod,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+      shippingMethod: data?.shippingMethod,
+    });
+    return { data };
   };
 
   addPromoCode = async ({
@@ -269,7 +269,7 @@ export class CheckoutJobs {
     checkoutId: string;
     promoCode: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.addPromoCode(
       promoCode,
@@ -283,13 +283,13 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.ADD_PROMO_CODE,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+    });
+    return { data };
   };
 
   removePromoCode = async ({
@@ -299,7 +299,7 @@ export class CheckoutJobs {
     checkoutId: string;
     promoCode: string;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.removePromoCode(
       promoCode,
@@ -313,13 +313,13 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.REMOVE_PROMO_CODE,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({
-        ...checkout,
-        promoCodeDiscount: data?.promoCodeDiscount,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({
+      ...checkout,
+      promoCodeDiscount: data?.promoCodeDiscount,
+    });
+    return { data };
   };
 
   createPayment = async ({
@@ -337,7 +337,7 @@ export class CheckoutJobs {
     billingAddress: ICheckoutAddress;
     creditCard?: ICreditCard;
   }): PromiseCheckoutJobRunResponse => {
-    const payment = this.localStorageHandler.getPayment();
+    const payment = LocalStorageHandler.getPayment();
 
     const { data, error } = await this.apolloClientManager.createPayment(
       amount,
@@ -354,16 +354,16 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.CREATE_PAYMENT,
         },
       };
-    } else {
-      this.localStorageHandler.setPayment({
-        ...payment,
-        creditCard,
-        gateway: data?.gateway,
-        id: data?.id,
-        token: data?.token,
-      });
-      return { data };
     }
+
+    this.localStorageHandler.setPayment({
+      ...payment,
+      creditCard,
+      gateway: data?.gateway,
+      id: data?.id,
+      token: data?.token,
+    });
+    return { data };
   };
 
   completeCheckout = async ({
@@ -382,10 +382,12 @@ export class CheckoutJobs {
           type: DataErrorCheckoutTypes.COMPLETE_CHECKOUT,
         },
       };
-    } else {
-      this.localStorageHandler.setCheckout({});
-      this.localStorageHandler.setPayment({});
-      return { data };
     }
+
+    this.localStorageHandler.setCheckout({});
+    this.localStorageHandler.setPayment({});
+    return { data };
   };
 }
+
+export default CheckoutJobs;

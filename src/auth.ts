@@ -30,7 +30,7 @@ export const invalidTokenLinkWithTokenHandler = (
 ): ApolloLink => {
   const link = onError((error: ResponseError) => {
     const isTokenExpired = error.graphQLErrors?.some(
-      (error) => error.extensions?.exception?.code === "JSONWebTokenExpired"
+      gqlError => gqlError.extensions?.exception?.code === "JSONWebTokenExpired"
     );
     if (
       isTokenExpired ||
@@ -52,7 +52,6 @@ export const authLink = setContext((_, context) => {
         Authorization: authToken ? `JWT ${authToken}` : null,
       },
     };
-  } else {
-    return context;
   }
+  return context;
 });

@@ -2,15 +2,16 @@ import React, { useEffect, useMemo, useState } from "react";
 import { persistCache } from "apollo-cache-persist";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
+import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import ApolloClient from "apollo-client";
 
-import { SaleorManager, createSaleorClient } from "../../../";
+import { SaleorManager, createSaleorClient } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { invalidTokenLinkWithTokenHandler, authLink } from "../../../auth";
 import { cache } from "../../../cache";
 
 import { IProps } from "./types";
-import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 export function SaleorProvider({
   config,
@@ -42,7 +43,7 @@ export function SaleorProvider({
   /**
    * Initialize Apollo Client and Saleor Manager
    */
-  const apolloClient = useMemo(() => {
+  const apolloClient = useMemo<ApolloClient<any> | undefined>(() => {
     if (cachePersisted) {
       const invalidTokenLink = invalidTokenLinkWithTokenHandler(
         tokenExpirationCallback
@@ -57,7 +58,7 @@ export function SaleorProvider({
 
       const manager = new SaleorManager(client, config);
 
-      manager.connect((saleorAPI) => setContext({ ...saleorAPI }));
+      manager.connect(saleorAPI => setContext({ ...saleorAPI }));
 
       return client;
     }

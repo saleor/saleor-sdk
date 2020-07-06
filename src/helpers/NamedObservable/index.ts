@@ -5,6 +5,7 @@ export class NamedObservable<T> implements INamedObservable<T> {
     name: T;
     func: (data: any) => any;
   }>;
+
   private notifiedObservers: Array<(data: any) => any>;
 
   constructor() {

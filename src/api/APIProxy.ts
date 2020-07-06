@@ -6,9 +6,11 @@ import {
 } from "apollo-client";
 import { GraphQLError } from "graphql";
 
+import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
+import { SetPassword } from "../mutations/gqlTypes/SetPassword";
 import { getAuthToken, setAuthToken } from "../auth";
 import { MUTATIONS } from "../mutations";
-import { TokenAuth } from "../mutations/gqlTypes/TokenAuth";
+import { TokenAuth_tokenCreate } from "../mutations/gqlTypes/TokenAuth";
 import { QUERIES } from "../queries";
 import { RequireAtLeastOne } from "../tsHelpers";
 import {
@@ -24,73 +26,88 @@ import {
   isDataEmpty,
   mergeEdges,
 } from "../utils";
+import { SignIn, SetPasswordChange, SetPasswordResult } from "./types";
 import { BROWSER_NO_CREDENTIAL_API_MESSAGE } from "./Auth";
 
-export class APIProxy {
-  getAttributes = this.watchQuery(
-    QUERIES.Attributes,
-    (data) => data.attributes
-  );
+const handleDataErrors = <T extends QueryShape, TData>(
+  mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
+  data: TData,
+  apolloErrors?: readonly GraphQLError[]
+) => {
+  // INFO: user input errors will be moved to graphql errors
+  const userInputErrors = getErrorsFromData(data);
+  const errors =
+    apolloErrors || userInputErrors
+      ? new ApolloError({
+          extraInfo: userInputErrors,
+          graphQLErrors: apolloErrors,
+        })
+      : null;
+
+  if (errors && isDataEmpty(data)) {
+    return { errors };
+  }
+
+  const result = getMappedData(mapFn, data);
+
+  return { data: result };
+};
+
+class APIProxy {
+  getAttributes = this.watchQuery(QUERIES.Attributes, data => data.attributes);
 
   getProductDetails = this.watchQuery(
     QUERIES.ProductDetails,
-    (data) => data.product
+    data => data.product
   );
 
-  getProductList = this.watchQuery(
-    QUERIES.ProductList,
-    (data) => data.products
-  );
+  getProductList = this.watchQuery(QUERIES.ProductList, data => data.products);
 
   getCategoryDetails = this.watchQuery(
     QUERIES.CategoryDetails,
-    (data) => data.category
+    data => data.category
   );
 
-  getOrdersByUser = this.watchQuery(QUERIES.OrdersByUser, (data) =>
+  getOrdersByUser = this.watchQuery(QUERIES.OrdersByUser, data =>
     data.me ? data.me.orders : null
   );
 
   getOrderDetails = this.watchQuery(
     QUERIES.OrderDetails,
-    (data) => data.orderByToken
+    data => data.orderByToken
   );
 
   getVariantsProducts = this.watchQuery(
     QUERIES.VariantsProducts,
-    (data) => data.productVariants
+    data => data.productVariants
   );
 
-  getShopDetails = this.watchQuery(QUERIES.GetShopDetails, (data) => data);
+  getShopDetails = this.watchQuery(QUERIES.GetShopDetails, data => data);
 
   setUserDefaultAddress = this.fireQuery(
     MUTATIONS.AddressTypeUpdate,
-    (data) => data!.accountSetDefaultAddress
+    data => data!.accountSetDefaultAddress
   );
 
   setDeleteUserAddress = this.fireQuery(
     MUTATIONS.DeleteUserAddress,
-    (data) => data!.accountAddressDelete
+    data => data!.accountAddressDelete
   );
 
   setCreateUserAddress = this.fireQuery(
     MUTATIONS.CreateUserAddress,
-    (data) => data!.accountAddressCreate
+    data => data!.accountAddressCreate
   );
 
   setUpdateuserAddress = this.fireQuery(
     MUTATIONS.UpdateUserAddress,
-    (data) => data!.accountAddressUpdate
+    data => data!.accountAddressUpdate
   );
 
   setAccountUpdate = this.fireQuery(
     MUTATIONS.AccountUpdate,
-    (data) => data!.accountUpdate
+    data => data!.accountUpdate
   );
-
-  setPasswordChange = this.fireQuery(MUTATIONS.PasswordChange, (data) => data);
-
-  setPassword = this.fireQuery(MUTATIONS.SetPassword, (data) => data);
 
   client: ApolloClient<any>;
 
@@ -98,64 +115,101 @@ export class APIProxy {
     this.client = client;
   }
 
-  signIn = (
+  signIn = async (
     variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
     options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
-  ) =>
-    new Promise<{ data: TokenAuth["tokenCreate"] }>(async (resolve, reject) => {
-      try {
-        this.client.resetStore();
+  ): Promise<SignIn> => {
+    await this.client.resetStore();
+    let result: {
+      data: TokenAuth_tokenCreate | null;
+    } | null = null;
 
-        const data = await this.fireQuery(
-          MUTATIONS.TokenAuth,
-          (data) => data!.tokenCreate
-        )(variables, {
-          ...options,
-          update: (proxy, data) => {
-            const handledData = handleDataErrors(
-              (data: any) => data.tokenCreate,
-              data.data,
-              data.errors
-            );
-            if (!handledData.errors && handledData.data) {
-              setAuthToken(handledData.data.token);
-              if (window.PasswordCredential && variables) {
-                navigator.credentials
-                  .store(
-                    new window.PasswordCredential({
-                      id: variables.email,
-                      password: variables.password,
-                    })
-                  )
-                  .catch((credentialsError) =>
-                    console.warn(
-                      BROWSER_NO_CREDENTIAL_API_MESSAGE,
-                      credentialsError
-                    )
-                  );
-              }
-            }
-            if (options && options.update) {
-              options.update(proxy, data);
-            }
-          },
-        });
-
-        resolve(data);
-      } catch (e) {
-        reject(e);
-      }
+    result = await this.fireQuery(
+      MUTATIONS.TokenAuth,
+      mutationData => mutationData!.tokenCreate
+    )(variables, {
+      ...options,
+      fetchPolicy: "no-cache",
     });
+    const { data } = result;
+
+    if (data?.token && data.errors.length === 0) {
+      setAuthToken(data.token);
+      if (window.PasswordCredential && variables) {
+        navigator.credentials
+          .store(
+            new window.PasswordCredential({
+              id: variables.email,
+              password: variables.password,
+            })
+          )
+          .catch(credentialsError =>
+            // eslint-disable-next-line no-console
+            console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError)
+          );
+      }
+    }
+    return {
+      data,
+      error: null,
+    };
+  };
+
+  setPassword = async (
+    variables: InferOptions<MUTATIONS["SetPassword"]>["variables"],
+    options?: Omit<InferOptions<MUTATIONS["SetPassword"]>, "variables">
+  ): Promise<SetPasswordResult> => {
+    let result: {
+      data: SetPassword | null;
+    } | null = null;
+
+    result = await this.fireQuery(MUTATIONS.SetPassword, data => data!)(
+      variables,
+      {
+        ...options,
+        fetchPolicy: "no-cache",
+      }
+    );
+    const { data } = result;
+
+    return {
+      data,
+      error: null,
+    };
+  };
+
+  setPasswordChange = async (
+    variables: InferOptions<MUTATIONS["PasswordChange"]>["variables"],
+    options?: Omit<InferOptions<MUTATIONS["PasswordChange"]>, "variables">
+  ): Promise<SetPasswordChange> => {
+    let result: {
+      data: PasswordChange | null;
+    } | null = null;
+
+    result = await this.fireQuery(MUTATIONS.PasswordChange, data => data!)(
+      variables,
+      {
+        ...options,
+        fetchPolicy: "no-cache",
+      }
+    );
+    const { data } = result;
+
+    return {
+      data,
+      error: null,
+    };
+  };
 
   attachAuthListener = (callback: (authenticated: boolean) => void) => {
     const eventHandler = () => {
       callback(this.isLoggedIn());
     };
 
-    addEventListener("auth", eventHandler);
+    window.addEventListener("auth", eventHandler);
 
     return () => {
-      removeEventListener("auth", eventHandler);
+      window.removeEventListener("auth", eventHandler);
     };
   };
 
@@ -194,8 +248,8 @@ export class APIProxy {
 
       if (options.skip) {
         return {
-          refetch: (_variables?: TVariables) => {
-            return new Promise((resolve, _reject) => {
+          refetch: () => {
+            return new Promise(resolve => {
               resolve({ data: null });
             });
           },
@@ -204,7 +258,7 @@ export class APIProxy {
       }
 
       const subscription = observable.subscribe(
-        (result) => {
+        result => {
           const { data, errors: apolloErrors } = result;
           const errorHandledData = handleDataErrors(
             mapFn,
@@ -224,7 +278,7 @@ export class APIProxy {
             }
           }
         },
-        (error) => {
+        error => {
           if (onError) {
             onError(error);
           }
@@ -259,7 +313,7 @@ export class APIProxy {
                 );
 
                 // use new result for metadata and mutate existing data
-                Object.keys(prevResultRef).forEach((key) => {
+                Object.keys(prevResultRef).forEach(key => {
                   prevResultRef[key] = newResultRef[key];
                 });
                 prevResultRef.edges = mergedEdges;
@@ -272,9 +326,9 @@ export class APIProxy {
             variables: { ...variables, ...extraVariables },
           });
         },
-        refetch: (variables?: TVariables) => {
-          if (variables) {
-            observable.setVariables(variables);
+        refetch: (newVariables?: TVariables) => {
+          if (newVariables) {
+            observable.setVariables(newVariables);
             const cachedResult = observable.currentResult();
             const errorHandledData = handleDataErrors(mapFn, cachedResult.data);
             if (errorHandledData.data) {
@@ -282,10 +336,13 @@ export class APIProxy {
             }
           }
 
-          return this.firePromise(() => observable.refetch(variables), mapFn);
+          return APIProxy.firePromise(
+            () => observable.refetch(newVariables),
+            mapFn
+          );
         },
-        setOptions: (options: TOptions) =>
-          this.firePromise(() => observable.setOptions(options), mapFn),
+        setOptions: (newOptions: TOptions) =>
+          APIProxy.firePromise(() => observable.setOptions(newOptions), mapFn),
         unsubscribe: subscription.unsubscribe.bind(subscription),
       };
     };
@@ -296,7 +353,7 @@ export class APIProxy {
       variables: InferOptions<T>["variables"],
       options?: Omit<InferOptions<T>, "variables">
     ) =>
-      this.firePromise(
+      APIProxy.firePromise(
         () =>
           query(this.client, {
             ...options,
@@ -307,7 +364,7 @@ export class APIProxy {
   }
 
   // Promise wrapper to catch errors
-  firePromise<T extends QueryShape, TResult>(
+  static firePromise<T extends QueryShape, TResult>(
     promise: () => Promise<any>,
     mapFn: MapFn<T, TResult> | WatchMapFn<T, TResult>
   ) {
@@ -330,27 +387,4 @@ export class APIProxy {
   }
 }
 
-// error handler
-const handleDataErrors = <T extends QueryShape, TData>(
-  mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
-  data: TData,
-  apolloErrors?: readonly GraphQLError[]
-) => {
-  // INFO: user input errors will be moved to graphql errors
-  const userInputErrors = getErrorsFromData(data);
-  const errors =
-    apolloErrors || userInputErrors
-      ? new ApolloError({
-          extraInfo: userInputErrors,
-          graphQLErrors: apolloErrors,
-        })
-      : null;
-
-  if (errors && isDataEmpty(data)) {
-    return { errors };
-  }
-
-  const result = getMappedData(mapFn, data);
-
-  return { data: result };
-};
+export default APIProxy;

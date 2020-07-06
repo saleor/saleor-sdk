@@ -5,8 +5,8 @@ import { BatchHttpLink } from "apollo-link-batch-http";
 import { RetryLink } from "apollo-link-retry";
 
 import { SaleorAPI } from "./api";
-import { APIProxy } from "./api/APIProxy";
 import { CustomConfig } from "./types";
+import APIProxy from "./api/APIProxy";
 
 const getLink = (
   apiUrl: string,
@@ -34,7 +34,9 @@ export function createSaleorClient(
 
 export class SaleorManager {
   private apiProxy: APIProxy;
+
   private api: SaleorAPI;
+
   private apiChangeListener: ((api: SaleorAPI) => any) | undefined;
 
   constructor(client: ApolloClient<any>, config: CustomConfig) {
@@ -65,4 +67,8 @@ export class SaleorManager {
 
 export * from "./auth";
 export * from "./gqlTypes/globalTypes";
+
+// FIXME: It's imported here because it's not a monorepo yet
+/* eslint-disable import/no-cycle */
 export * from "./react";
+/* eslint-enable */

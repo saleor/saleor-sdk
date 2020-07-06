@@ -12,7 +12,9 @@ export interface IJobs {
 
 export class Jobs implements IJobs {
   auth: AuthJobs;
+
   cart: CartJobs;
+
   checkout: CheckoutJobs;
 
   constructor(

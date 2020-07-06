@@ -9,6 +9,7 @@ export enum ErrorCartTypes {
 
 export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
   private apolloClientManager: ApolloClientManager;
+
   private localStorageHandler: LocalStorageHandler;
 
   constructor(
@@ -21,7 +22,7 @@ export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
   }
 
   setCartItem = async () => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     if (checkout) {
       const { data, error } = await this.apolloClientManager.setCartItem(

@@ -35,21 +35,31 @@ const defaultSaleorStateLoaded = {
 
 export class SaleorState extends NamedObservable<StateItems> {
   user?: User | null;
+
   signInToken?: string | null;
+
   checkout?: ICheckoutModel;
+
   promoCode?: string;
+
   selectedShippingAddressId?: string;
+
   selectedBillingAddressId?: string;
+
   payment?: IPaymentModel | null;
+
   summaryPrices?: ISaleorStateSummeryPrices;
+
   // Should be changed it in future to shop object containing payment gateways besides all the shop data
   availablePaymentGateways?: PaymentGateway[] | null;
 
   loaded: SaleorStateLoaded;
 
-  private localStorageHandler: LocalStorageHandler;
   private apolloClientManager: ApolloClientManager;
+
   private jobsManager: JobsManager;
+
+  private localStorageHandler: LocalStorageHandler;
 
   constructor(
     config: Config,
@@ -100,14 +110,14 @@ export class SaleorState extends NamedObservable<StateItems> {
    */
   private initializeState = async (config: Config) => {
     if (config.loadOnStart.auth) {
-      this.onSignInTokenUpdate(this.localStorageHandler.getSignInToken());
+      this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken());
       await this.jobsManager.run("auth", "provideUser", undefined);
     }
     if (config.loadOnStart.checkout) {
       await this.jobsManager.run("checkout", "provideCheckout", {
         isUserSignedIn: !!this.user,
       });
-      this.onPaymentUpdate(this.localStorageHandler.getPayment());
+      this.onPaymentUpdate(LocalStorageHandler.getPayment());
       await this.jobsManager.run(
         "checkout",
         "providePaymentGateways",
@@ -123,6 +133,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     };
     this.notifyChange(StateItems.LOADED, this.loaded);
   };
+
   private onClearLocalStorage = () => {
     this.onSignInTokenUpdate(null);
     this.onUserUpdate(null);
@@ -137,6 +148,7 @@ export class SaleorState extends NamedObservable<StateItems> {
       signInToken: true,
     });
   };
+
   private onUserUpdate = (user: User | null) => {
     this.user = user;
     this.notifyChange(StateItems.USER, this.user);
@@ -144,9 +156,10 @@ export class SaleorState extends NamedObservable<StateItems> {
       user: true,
     });
   };
+
   private onCheckoutUpdate = (checkout?: ICheckoutModel) => {
     this.checkout = checkout;
-    this.summaryPrices = this.calculateSummaryPrices(checkout);
+    this.summaryPrices = SaleorState.calculateSummaryPrices(checkout);
     this.notifyChange(StateItems.CHECKOUT, this.checkout);
     this.notifyChange(StateItems.SUMMARY_PRICES, this.summaryPrices);
     this.onLoadedUpdate({
@@ -154,6 +167,7 @@ export class SaleorState extends NamedObservable<StateItems> {
       summaryPrices: true,
     });
   };
+
   private onPaymentUpdate = (payment?: IPaymentModel | null) => {
     this.payment = payment;
     this.notifyChange(StateItems.PAYMENT, this.payment);
@@ -161,6 +175,7 @@ export class SaleorState extends NamedObservable<StateItems> {
       payment: true,
     });
   };
+
   private onPaymentGatewaysUpdate = (
     paymentGateways?: PaymentGateway[] | null
   ) => {
@@ -174,7 +189,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     });
   };
 
-  private calculateSummaryPrices(
+  private static calculateSummaryPrices(
     checkout?: ICheckoutModel
   ): ISaleorStateSummeryPrices {
     const items = checkout?.lines;
@@ -193,23 +208,22 @@ export class SaleorState extends NamedObservable<StateItems> {
             firstItemTotalPrice.gross.currency,
         };
 
-        const { itemsNetPrice, itmesGrossPrice } = items.reduce(
-          (prevVals, item) => {
-            prevVals.itemsNetPrice += item.totalPrice?.net.amount || 0;
-            prevVals.itmesGrossPrice += item.totalPrice?.gross.amount || 0;
-            return prevVals;
-          },
-          {
-            itemsNetPrice: 0,
-            itmesGrossPrice: 0,
-          }
+        const itemsNetPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.net.amount || 0),
+          0
+        );
+        const itemsGrossPrice = items.reduce(
+          (accumulatorPrice, line) =>
+            accumulatorPrice + (line.totalPrice?.gross?.amount || 0),
+          0
         );
 
         const subtotalPrice = {
           ...firstItemTotalPrice,
           gross: {
             ...firstItemTotalPrice.gross,
-            amount: round(itmesGrossPrice, 2),
+            amount: round(itemsGrossPrice, 2),
           },
           net: {
             ...firstItemTotalPrice.net,
@@ -229,7 +243,7 @@ export class SaleorState extends NamedObservable<StateItems> {
           gross: {
             ...subtotalPrice.gross,
             amount: round(
-              itmesGrossPrice + shippingPrice.amount - discount.amount,
+              itemsGrossPrice + shippingPrice.amount - discount.amount,
               2
             ),
           },

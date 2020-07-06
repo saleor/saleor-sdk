@@ -3,8 +3,11 @@
 !.babelrc
 !.circle
 !.gitignore
+!.github
 !.jest
-!.linguirc
+!.prettierrc
+!.prettierignore
+!.eslintrc
 !.npmignore
 !.plop
 !.prettierrc

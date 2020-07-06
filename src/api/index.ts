@@ -7,8 +7,8 @@ import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
 import { CustomConfig } from "../types";
-import { APIProxy } from "./APIProxy";
 import { AuthAPI } from "./Auth";
+import APIProxy from "./APIProxy";
 import { SaleorCartAPI } from "./Cart";
 import { SaleorCheckoutAPI } from "./Checkout";
 
@@ -17,7 +17,9 @@ export * from "./Cart";
 
 export class SaleorAPI {
   auth: AuthAPI;
+
   checkout: SaleorCheckoutAPI;
+
   cart: SaleorCartAPI;
 
   /**
@@ -72,7 +74,7 @@ export class SaleorAPI {
       jobsManager
     );
 
-    this.legacyAPIProxy.attachAuthListener((authenticated) => {
+    this.legacyAPIProxy.attachAuthListener(authenticated => {
       if (!authenticated) {
         localStorageHandler.setCheckout({});
         localStorageHandler.setPayment({});
