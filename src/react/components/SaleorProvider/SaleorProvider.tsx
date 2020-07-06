@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { persistCache } from "apollo-cache-persist";
-import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
-import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
-import { SaleorManager, createSaleorClient } from "../../..";
+import { ApolloCache } from "apollo-cache";
+import { SaleorManager, createSaleorClient, createSaleorLinks } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
-import { invalidTokenLinkWithTokenHandler, authLink } from "../../../auth";
-import { cache } from "../../../cache";
+import { createSaleorCache } from "../../../cache";
 
 import { IProps } from "./types";
 
-const SaleorProvider: React.FC<IProps> = ({ config, children }: IProps) => {
-  const [cachePersisted, setCachePersisted] = useState(false);
+const SaleorProvider: React.FC<IProps> = ({
+  apolloConfig,
+  config,
+  children,
+}: IProps) => {
+  const [cache, setCache] = useState<ApolloCache<any> | null>(null);
   const [context, setContext] = useState<SaleorAPI | null>(null);
   const [tokenExpired, setTokenExpired] = useState(false);
 
@@ -22,13 +23,11 @@ const SaleorProvider: React.FC<IProps> = ({ config, children }: IProps) => {
    */
   useEffect(() => {
     (async () => {
-      await persistCache({
-        cache,
-        storage: window.localStorage as PersistentStorage<
-          PersistedData<NormalizedCacheObject>
-        >,
-      });
-      setCachePersisted(true);
+      const saleorCache = apolloConfig?.cache
+        ? apolloConfig.cache
+        : await createSaleorCache();
+
+      setCache(saleorCache);
     })();
   }, []);
 
@@ -37,29 +36,27 @@ const SaleorProvider: React.FC<IProps> = ({ config, children }: IProps) => {
   };
 
   /**
-   * Initialize Apollo Client and Saleor Manager
+   * Initialize Apollo Links, Apollo Client and Saleor Manager
    */
   const apolloClient = useMemo(() => {
-    if (cachePersisted) {
-      const invalidTokenLink = invalidTokenLinkWithTokenHandler(
-        tokenExpirationCallback
-      );
+    if (cache) {
+      const saleorLinks = apolloConfig?.links
+        ? apolloConfig.links
+        : createSaleorLinks({
+            apiUrl: config.apiUrl,
+            tokenExpirationCallback,
+          });
 
-      const client = createSaleorClient(
-        config.apiUrl,
-        invalidTokenLink,
-        authLink,
-        cache
-      );
+      const saleorClient = createSaleorClient(cache, saleorLinks);
 
-      const manager = new SaleorManager(client, config);
+      const manager = new SaleorManager(saleorClient, config);
 
       manager.connect(saleorAPI => setContext({ ...saleorAPI }));
 
-      return client;
+      return saleorClient;
     }
     return undefined;
-  }, [cachePersisted]);
+  }, [cache]);
 
   useEffect(() => {
     if (tokenExpired) {

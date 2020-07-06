@@ -35,7 +35,10 @@ const config = { apiUrl: "http://localhost:8000/graphql/" };
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <SaleorProvider config={config}>
+  <SaleorProvider
+    config={config}
+    apolloConfig={/* Optional custom Apollo config */}
+  >
     <App />
   </SaleorProvider>,
   rootElement
@@ -72,35 +75,31 @@ const App = () => {
 npm install @saleor/sdk
 ```
 
-Create new saleor client by using our built-in pre-configured Apollo links and cache:
+Create new Saleor cache, Saleor links and Saleor client or use your own cache, Apollo links or even Apollo client:
 
 ```tsx
-import { createSaleorClient } from "@saleor/sdk";
-import { invalidTokenLinkWithTokenHandler, authLink } from "@saleor/sdk/auth";
+import { createSaleorClient, createSaleorLinks } from "@saleor/sdk";
+// import { invalidTokenLinkWithTokenHandler, authLink } from "@saleor/sdk/auth";
 import { cache } from "@saleor/sdk/cache";
 
-const config = { apiUrl: "http://localhost:8000/graphql/" };
+const apiUrl = "http://localhost:8000/graphql/";
 
-const invalidTokenLink = invalidTokenLinkWithTokenHandler(() => {
-  /* Handle token expiration case */
+const cache = await createSaleorCache();
+
+const links = createSaleorLinks({
+  apiUrl,
+  tokenExpirationCallback: () => {
+    /* Handle token expiration case */
+  },
 });
 
-await persistCache({
-  cache,
-  storage: window.localStorage,
-});
-
-const client = createSaleorClient(
-  config.apiUrl,
-  invalidTokenLink,
-  authLink,
-  cache
-);
+const client = createSaleorClient(apiUrl, cache, links);
 ```
 
 Then use SaleorManager to get `SaleorAPI` from `connect` method. This method takes function as an argument, which will be executed every time the `SaleorAPI` state changes.
 
 ```tsx
+const config = { apiUrl };
 const manager = new SaleorManager(client, config);
 
 let saleorAPI;

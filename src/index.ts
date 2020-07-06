@@ -7,30 +7,36 @@ import { RetryLink } from "apollo-link-retry";
 import { SaleorAPI } from "./api";
 import { ConfigInput } from "./types";
 import APIProxy from "./api/APIProxy";
+import { authLink, invalidTokenLinkWithTokenHandler } from "./auth";
 
-const getLink = (
-  apiUrl: string,
-  invalidTokenLink: ApolloLink,
-  authLink: ApolloLink
-) =>
-  ApolloLink.from([
+export function createSaleorClient(
+  cache: ApolloCache<any>,
+  links: ApolloLink[]
+) {
+  return new ApolloClient({
+    cache,
+    link: ApolloLink.from(links),
+  });
+}
+
+export const createSaleorLinks = ({
+  apiUrl,
+  tokenExpirationCallback,
+}: {
+  apiUrl: string;
+  tokenExpirationCallback: () => void;
+}) => {
+  const invalidTokenLink = invalidTokenLinkWithTokenHandler(
+    tokenExpirationCallback
+  );
+
+  return [
     invalidTokenLink,
     authLink,
     new RetryLink(),
     new BatchHttpLink({ uri: apiUrl }),
-  ]);
-
-export function createSaleorClient(
-  apiUrl: string,
-  invalidTokenLink: ApolloLink,
-  authLink: ApolloLink,
-  cache: ApolloCache<any>
-) {
-  return new ApolloClient({
-    cache,
-    link: getLink(apiUrl, invalidTokenLink, authLink),
-  });
-}
+  ];
+};
 
 export class SaleorManager {
   private apiProxy: APIProxy;

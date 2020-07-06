@@ -1,4 +1,6 @@
 import { ObservableQuery } from "apollo-client";
+import { ApolloLink } from "apollo-link";
+import { ApolloCache } from "apollo-cache";
 
 export type QueryShape = (...args: any) => any;
 
@@ -38,3 +40,8 @@ export type DefaultConfig = Pick<Config, "loadOnStart">;
 
 export type ConfigInput = Omit<Config, keyof DefaultConfig> &
   Partial<DefaultConfig>;
+
+export interface ApolloConfigInput {
+  cache?: ApolloCache<any>;
+  links?: ApolloLink[];
+}
