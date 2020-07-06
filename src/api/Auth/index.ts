@@ -15,20 +15,24 @@ export class AuthAPI extends ErrorListener {
    * Indicates if data is initialized, initially retrieved from cache or initially fetched.
    */
   loaded: boolean;
+
   /**
    * User object with currently signed in user data.
    */
   user?: User | null;
+
   /**
    * Indicates if user is signed in.
    */
   authenticated?: boolean;
+
   /**
    * Token used for user authentication.
    */
   token?: string;
 
   private saleorState: SaleorState;
+
   private jobsManager: JobsManager;
 
   constructor(saleorState: SaleorState, jobsManager: JobsManager) {
@@ -44,7 +48,7 @@ export class AuthAPI extends ErrorListener {
         this.authenticated = !!this.user;
       }
     });
-    this.saleorState.subscribeToChange(StateItems.SIGN_IN_TOKEN, (token) => {
+    this.saleorState.subscribeToChange(StateItems.SIGN_IN_TOKEN, token => {
       this.token = token;
     });
     this.saleorState.subscribeToChange(
@@ -88,6 +92,7 @@ export class AuthAPI extends ErrorListener {
         );
       }
     } catch (credentialsError) {
+      // eslint-disable-next-line no-console
       console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
@@ -115,6 +120,7 @@ export class AuthAPI extends ErrorListener {
         await navigator.credentials.preventSilentAccess();
       }
     } catch (credentialsError) {
+      // eslint-disable-next-line no-console
       console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
@@ -126,14 +132,15 @@ export class AuthAPI extends ErrorListener {
   private autoSignIn = async () => {
     let credentials;
     try {
-      credentials = await (navigator.credentials as any).get({
+      credentials = await navigator.credentials.get({
         password: true,
       });
     } catch (credentialsError) {
+      // eslint-disable-next-line no-console
       console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
-    if (credentials) {
+    if (credentials && "password" in credentials && credentials.password) {
       const { dataError } = await this.signIn(
         credentials.id,
         credentials.password,
