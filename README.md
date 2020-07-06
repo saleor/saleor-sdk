@@ -31,11 +31,11 @@ Use `SaleorProvider` with passed custom config in a prop. Then use React hooks i
 ```tsx
 import { SaleorProvider, useAuth } from "@saleor/sdk";
 
-const CUSTOM_CONFIG = { apiUrl: "http://localhost:8000/graphql/" };
+const config = { apiUrl: "http://localhost:8000/graphql/" };
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <SaleorProvider config={CUSTOM_CONFIG}>
+  <SaleorProvider config={config}>
     <App />
   </SaleorProvider>,
   rootElement
@@ -79,7 +79,7 @@ import { createSaleorClient } from "@saleor/sdk";
 import { invalidTokenLinkWithTokenHandler, authLink } from "@saleor/sdk/auth";
 import { cache } from "@saleor/sdk/cache";
 
-const CUSTOM_CONFIG = { apiUrl: "http://localhost:8000/graphql/" };
+const config = { apiUrl: "http://localhost:8000/graphql/" };
 
 const invalidTokenLink = invalidTokenLinkWithTokenHandler(() => {
   /* Handle token expiration case */
@@ -91,7 +91,7 @@ await persistCache({
 });
 
 const client = createSaleorClient(
-  CUSTOM_CONFIG.apiUrl,
+  config.apiUrl,
   invalidTokenLink,
   authLink,
   cache
@@ -105,7 +105,7 @@ const manager = new SaleorManager(client, config);
 
 let saleorAPI;
 
-manager.connect((referenceToSaleorAPI) => {
+manager.connect(referenceToSaleorAPI => {
   if (saleorAPI === undefined) {
     saleorAPI = referenceToSaleorAPI;
   }
