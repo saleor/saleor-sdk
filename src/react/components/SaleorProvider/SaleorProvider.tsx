@@ -3,7 +3,6 @@ import { persistCache } from "apollo-cache-persist";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
-import ApolloClient from "apollo-client";
 
 import { SaleorManager, createSaleorClient } from "../../..";
 import { SaleorAPI } from "../../../api";
@@ -13,10 +12,7 @@ import { cache } from "../../../cache";
 
 import { IProps } from "./types";
 
-export function SaleorProvider({
-  config,
-  children,
-}: IProps): React.ReactElement<IProps> {
+const SaleorProvider: React.FC<IProps> = ({ config, children }: IProps) => {
   const [cachePersisted, setCachePersisted] = useState(false);
   const [context, setContext] = useState<SaleorAPI | null>(null);
   const [tokenExpired, setTokenExpired] = useState(false);
@@ -25,7 +21,7 @@ export function SaleorProvider({
    * Persist cache for Apollo in local storage
    */
   useEffect(() => {
-    (async function anyNameFunction() {
+    (async () => {
       await persistCache({
         cache,
         storage: window.localStorage as PersistentStorage<
@@ -43,7 +39,7 @@ export function SaleorProvider({
   /**
    * Initialize Apollo Client and Saleor Manager
    */
-  const apolloClient = useMemo<ApolloClient<any> | undefined>(() => {
+  const apolloClient = useMemo(() => {
     if (cachePersisted) {
       const invalidTokenLink = invalidTokenLinkWithTokenHandler(
         tokenExpirationCallback
@@ -62,6 +58,7 @@ export function SaleorProvider({
 
       return client;
     }
+    return undefined;
   }, [cachePersisted]);
 
   useEffect(() => {
@@ -78,5 +75,8 @@ export function SaleorProvider({
       </SaleorContext.Provider>
     );
   }
-  return <></>;
-}
+  return null;
+};
+
+SaleorProvider.displayName = "SaleorProvider";
+export { SaleorProvider };
