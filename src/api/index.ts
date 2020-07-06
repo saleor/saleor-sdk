@@ -6,7 +6,7 @@ import { ApolloClientManager } from "../data/ApolloClientManager";
 import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
-import { CustomConfig } from "../types";
+import { ConfigInput } from "../types";
 import { AuthAPI } from "./Auth";
 import APIProxy from "./APIProxy";
 import { SaleorCartAPI } from "./Cart";
@@ -31,7 +31,7 @@ export class SaleorAPI {
   constructor(
     client: ApolloClient<any>,
     apiProxy: APIProxy,
-    config: CustomConfig,
+    config: ConfigInput,
     onStateUpdate?: () => any
   ) {
     this.legacyAPIProxy = apiProxy;

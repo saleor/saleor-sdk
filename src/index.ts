@@ -5,7 +5,7 @@ import { BatchHttpLink } from "apollo-link-batch-http";
 import { RetryLink } from "apollo-link-retry";
 
 import { SaleorAPI } from "./api";
-import { CustomConfig } from "./types";
+import { ConfigInput } from "./types";
 import APIProxy from "./api/APIProxy";
 
 const getLink = (
@@ -39,7 +39,7 @@ export class SaleorManager {
 
   private apiChangeListener: ((api: SaleorAPI) => any) | undefined;
 
-  constructor(client: ApolloClient<any>, config: CustomConfig) {
+  constructor(client: ApolloClient<any>, config: ConfigInput) {
     this.apiProxy = new APIProxy(client);
     this.api = new SaleorAPI(
       client,

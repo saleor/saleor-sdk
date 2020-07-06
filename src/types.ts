@@ -36,5 +36,5 @@ export interface Config {
 
 export type DefaultConfig = Pick<Config, "loadOnStart">;
 
-export type CustomConfig = Omit<Config, keyof DefaultConfig> &
+export type ConfigInput = Omit<Config, keyof DefaultConfig> &
   Partial<DefaultConfig>;

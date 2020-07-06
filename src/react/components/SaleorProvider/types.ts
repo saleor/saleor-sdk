@@ -1,6 +1,6 @@
-import { CustomConfig } from "../../../types";
+import { ConfigInput } from "../../../types";
 
 export interface IProps {
   children: React.ReactElement;
-  config: CustomConfig;
+  config: ConfigInput;
 }
