@@ -43,5 +43,6 @@ export type ConfigInput = Omit<Config, keyof DefaultConfig> &
 
 export interface ApolloConfigInput {
   cache?: ApolloCache<any>;
+  persistCache?: boolean;
   links?: ApolloLink[];
 }

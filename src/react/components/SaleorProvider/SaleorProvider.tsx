@@ -2,18 +2,26 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ApolloProvider } from "react-apollo";
 
 import { ApolloCache } from "apollo-cache";
-import { SaleorManager, createSaleorClient, createSaleorLinks } from "../../..";
+import { ApolloConfigInput } from "../../../types";
+import { SaleorManager } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
 import { createSaleorCache } from "../../../cache";
 
 import { IProps } from "./types";
+import { createSaleorLinks } from "../../../links";
+import { createSaleorClient } from "../../../client";
 
 const SaleorProvider: React.FC<IProps> = ({
-  apolloConfig,
+  apolloConfig: apolloConfigInput,
   config,
   children,
 }: IProps) => {
+  const apolloConfig: ApolloConfigInput = {
+    persistCache: true,
+    ...apolloConfigInput,
+  };
+
   const [cache, setCache] = useState<ApolloCache<any> | null>(null);
   const [context, setContext] = useState<SaleorAPI | null>(null);
   const [tokenExpired, setTokenExpired] = useState(false);
@@ -25,7 +33,9 @@ const SaleorProvider: React.FC<IProps> = ({
     (async () => {
       const saleorCache = apolloConfig?.cache
         ? apolloConfig.cache
-        : await createSaleorCache();
+        : await createSaleorCache({
+            persistCache: !!apolloConfig?.persistCache,
+          });
 
       setCache(saleorCache);
     })();

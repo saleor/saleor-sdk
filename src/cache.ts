@@ -3,10 +3,16 @@ import {
   defaultDataIdFromObject,
   NormalizedCacheObject,
 } from "apollo-cache-inmemory";
-import { persistCache } from "apollo-cache-persist";
+import { persistCache as apolloPersistCache } from "apollo-cache-persist";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
-export const createSaleorCache = async () => {
+interface SaleorCacheConfig {
+  persistCache?: boolean;
+}
+
+export const createSaleorCache = async (
+  { persistCache }: SaleorCacheConfig = { persistCache: true }
+) => {
   const saleorCache = new InMemoryCache({
     dataIdFromObject: obj => {
       // eslint-disable-next-line no-underscore-dangle
@@ -17,12 +23,14 @@ export const createSaleorCache = async () => {
     },
   });
 
-  await persistCache({
-    cache: saleorCache,
-    storage: window.localStorage as PersistentStorage<
-      PersistedData<NormalizedCacheObject>
-    >,
-  });
+  if (persistCache) {
+    await apolloPersistCache({
+      cache: saleorCache,
+      storage: window.localStorage as PersistentStorage<
+        PersistedData<NormalizedCacheObject>
+      >,
+    });
+  }
 
   return saleorCache;
 };

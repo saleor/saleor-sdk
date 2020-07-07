@@ -78,13 +78,18 @@ npm install @saleor/sdk
 Create new Saleor cache, Saleor links and Saleor client or use your own cache, Apollo links or even Apollo client:
 
 ```tsx
-import { createSaleorClient, createSaleorLinks } from "@saleor/sdk";
+import {
+  createSaleorCache,
+  createSaleorClient,
+  createSaleorLinks,
+} from "@saleor/sdk";
 // import { invalidTokenLinkWithTokenHandler, authLink } from "@saleor/sdk/auth";
-import { cache } from "@saleor/sdk/cache";
 
 const apiUrl = "http://localhost:8000/graphql/";
 
-const cache = await createSaleorCache();
+const cache = await createSaleorCache({
+  persistCache: true,
+});
 
 const links = createSaleorLinks({
   apiUrl,
