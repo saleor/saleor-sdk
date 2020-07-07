@@ -6,6 +6,8 @@ import {
 } from "apollo-client";
 import { GraphQLError } from "graphql";
 
+import { UserOrderByToken } from "../queries/gqlTypes/UserOrderByToken";
+import { OrderByToken } from "../queries/gqlTypes/OrderByToken";
 import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
 import { SetPassword } from "../mutations/gqlTypes/SetPassword";
 import { fireSignOut, getAuthToken, setAuthToken } from "../auth";
@@ -72,10 +74,33 @@ class APIProxy {
     data.me ? data.me.orders : null
   );
 
-  getOrderDetails = this.watchQuery(
-    QUERIES.OrderDetails,
-    data => data.orderByToken
-  );
+  getOrderDetails = (
+    variables: InferOptions<
+      QUERIES["OrderDetails"] | QUERIES["OrderDetailsByUser"]
+    >["variables"],
+    options: Omit<
+      InferOptions<QUERIES["OrderDetails"] | QUERIES["OrderDetailsByUser"]>,
+      "variables"
+    > & {
+      onUpdate: (
+        data:
+          | OrderByToken["orderByToken"]
+          | UserOrderByToken["orderByToken"]
+          | null
+      ) => void;
+    }
+  ) => {
+    if (this.isLoggedIn()) {
+      return this.watchQuery(
+        QUERIES.OrderDetailsByUser,
+        data => data.orderByToken
+      )(variables, options);
+    }
+    return this.watchQuery(QUERIES.OrderDetails, data => data.orderByToken)(
+      variables,
+      options
+    );
+  };
 
   getVariantsProducts = this.watchQuery(
     QUERIES.VariantsProducts,

@@ -163,7 +163,13 @@ export interface TokenAuth_tokenCreate_user {
 
 export interface TokenAuth_tokenCreate {
   __typename: "CreateToken";
+  /**
+   * JWT token, required to authenticate.
+   */
   token: string | null;
+  /**
+   * List of errors that occurred executing the mutation.
+   */
   errors: TokenAuth_tokenCreate_errors[];
   /**
    * A user instance.
@@ -173,11 +179,7 @@ export interface TokenAuth_tokenCreate {
 
 export interface TokenAuth {
   /**
-   * Mutation that authenticates a user and returns token and user data.
-   * 
-   * It overrides the default graphql_jwt.ObtainJSONWebToken to wrap potential
-   * authentication errors in our Error type, which is consistent to how the rest of
-   * the mutation works.
+   * Create JWT token.
    */
   tokenCreate: TokenAuth_tokenCreate | null;
 }
