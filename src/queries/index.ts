@@ -38,8 +38,6 @@ import {
   VariantsProductsVariables,
 } from "./gqlTypes/VariantsProducts";
 
-import * as User from "./user";
-
 type QueryOptions<T = {}> = T extends { [n: string]: never }
   ? Omit<ApolloQueryOptions<{}>, "query">
   : RequireOnlyOne<Omit<ApolloQueryOptions<T>, "query">, "variables">;
