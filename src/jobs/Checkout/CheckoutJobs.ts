@@ -32,7 +32,7 @@ class CheckoutJobs {
   }: {
     isUserSignedIn: boolean;
   }): PromiseCheckoutJobRunResponse => {
-    const checkout = this.localStorageHandler.getCheckout();
+    const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.getCheckout(
       isUserSignedIn,
