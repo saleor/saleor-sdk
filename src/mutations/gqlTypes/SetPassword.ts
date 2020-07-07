@@ -182,15 +182,18 @@ export interface SetPassword_setPassword_accountErrors {
 
 export interface SetPassword_setPassword {
   __typename: "SetPassword";
+  /**
+   * List of errors that occurred executing the mutation.
+   */
   errors: SetPassword_setPassword_errors[];
+  /**
+   * JWT token, required to authenticate.
+   */
   token: string | null;
   /**
    * A user instance.
    */
   user: SetPassword_setPassword_user | null;
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   accountErrors: SetPassword_setPassword_accountErrors[];
 }
 
