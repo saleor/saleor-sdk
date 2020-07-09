@@ -65,7 +65,7 @@ export class SaleorAPI {
       saleorState.subscribeToNotifiedChanges(onStateUpdate);
     }
 
-    this.auth = new AuthAPI(saleorState, jobsManager);
+    this.auth = new AuthAPI(saleorState, jobsManager, finalConfig);
     this.checkout = new SaleorCheckoutAPI(saleorState, jobsManager);
     this.cart = new SaleorCartAPI(
       localStorageManager,

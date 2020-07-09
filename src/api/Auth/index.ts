@@ -6,6 +6,7 @@ import { StateItems } from "../../state/types";
 
 import { PromiseRunResponse } from "../types";
 import { DataErrorAuthTypes, FunctionErrorAuthTypes } from "./types";
+import { Config } from "../../types";
 
 export const BROWSER_NO_CREDENTIAL_API_MESSAGE =
   "Saleor SDK is unable to use browser Credential Management API.";
@@ -35,10 +36,17 @@ export class AuthAPI extends ErrorListener {
 
   private jobsManager: JobsManager;
 
-  constructor(saleorState: SaleorState, jobsManager: JobsManager) {
+  private config: Config;
+
+  constructor(
+    saleorState: SaleorState,
+    jobsManager: JobsManager,
+    config: Config
+  ) {
     super();
     this.saleorState = saleorState;
     this.jobsManager = jobsManager;
+    this.config = config;
 
     this.loaded = false;
 
@@ -108,9 +116,11 @@ export class AuthAPI extends ErrorListener {
       data: userData,
       dataError: userDataError,
     } = await this.jobsManager.run("auth", "provideUser", undefined);
-    await this.jobsManager.run("checkout", "provideCheckout", {
-      isUserSignedIn: !!data?.user,
-    });
+    if (this.config.loadOnStart.checkout) {
+      await this.jobsManager.run("checkout", "provideCheckout", {
+        isUserSignedIn: !!data?.user,
+      });
+    }
 
     return {
       data: userData,
