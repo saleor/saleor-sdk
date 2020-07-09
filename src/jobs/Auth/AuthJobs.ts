@@ -17,6 +17,7 @@ export type PromiseAuthJobRunResponse = Promise<
 
 export class AuthJobs {
   private apolloClientManager: ApolloClientManager;
+
   private localStorageHandler: LocalStorageHandler;
 
   constructor(

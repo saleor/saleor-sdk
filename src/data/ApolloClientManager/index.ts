@@ -130,15 +130,8 @@ export class ApolloClientManager {
       TokenAuth,
       TokenAuthVariables
     >({
+      fetchPolicy: "no-cache",
       mutation: AuthMutations.tokenAuthMutation,
-      update: (store, { data: gqlData }) => {
-        const updateDataMe = gqlData?.tokenCreate?.user;
-
-        store.writeQuery({
-          data: updateDataMe ? { me: updateDataMe } : {},
-          query: UserQueries.getUserDetailsQuery,
-        });
-      },
       variables: {
         email,
         password,

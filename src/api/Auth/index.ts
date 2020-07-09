@@ -96,13 +96,25 @@ export class AuthAPI extends ErrorListener {
       console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
     }
 
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    const {
+      data: userData,
+      dataError: userDataError,
+    } = await this.jobsManager.run("auth", "provideUser", undefined);
     await this.jobsManager.run("checkout", "provideCheckout", {
       isUserSignedIn: !!data?.user,
     });
 
     return {
-      data,
-      dataError,
+      data: userData,
+      dataError: userDataError,
       pending: false,
     };
   };
