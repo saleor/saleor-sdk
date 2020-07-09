@@ -20,7 +20,9 @@ export interface FunctionRunResponse<D, F> {
 }
 
 export type PromiseQueuedResponse = Promise<FunctionQueueResponse>;
-export type PromiseRunResponse<D, F> = Promise<FunctionRunResponse<D, F>>;
+export type PromiseRunResponse<D, F = undefined> = Promise<
+  FunctionRunResponse<D, F>
+>;
 
 export type SignIn = {
   data: TokenAuth_tokenCreate | null;

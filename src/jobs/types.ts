@@ -6,7 +6,7 @@ export interface JobErrorResponse<T> {
   type?: T;
 }
 
-export interface JobRunResponse<D, F> {
+export interface JobRunResponse<D, F = undefined> {
   data?: any;
   dataError?: JobErrorResponse<D>;
 }

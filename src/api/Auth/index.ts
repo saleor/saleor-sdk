@@ -5,7 +5,7 @@ import { SaleorState, SaleorStateLoaded } from "../../state";
 import { StateItems } from "../../state/types";
 
 import { PromiseRunResponse } from "../types";
-import { DataErrorAuthTypes, FunctionErrorAuthTypes } from "./types";
+import { DataErrorAuthTypes } from "./types";
 import { Config } from "../../types";
 
 export const BROWSER_NO_CREDENTIAL_API_MESSAGE =
@@ -84,7 +84,7 @@ export class AuthAPI extends ErrorListener {
     email: string,
     password: string,
     autoSignIn: boolean = true
-  ): PromiseRunResponse<DataErrorAuthTypes, FunctionErrorAuthTypes> => {
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
     const { data, dataError } = await this.jobsManager.run("auth", "signIn", {
       email,
       password,
@@ -132,10 +132,7 @@ export class AuthAPI extends ErrorListener {
   /**
    * Sign out user by clearing cache, local storage and authentication token.
    */
-  signOut = async (): PromiseRunResponse<
-    DataErrorAuthTypes,
-    FunctionErrorAuthTypes
-  > => {
+  signOut = async (): PromiseRunResponse<DataErrorAuthTypes> => {
     await this.jobsManager.run("auth", "signOut", undefined);
     try {
       if (navigator.credentials && navigator.credentials.preventSilentAccess) {

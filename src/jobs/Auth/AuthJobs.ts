@@ -1,18 +1,12 @@
 import { DataErrorCheckoutTypes } from "../../api/Checkout/types";
 import { ApolloClientManager } from "../../data/ApolloClientManager";
 import { LocalStorageHandler } from "../../helpers/LocalStorageHandler";
-import {
-  DataErrorAuthTypes,
-  FunctionErrorAuthTypes,
-} from "../../api/Auth/types";
+import { DataErrorAuthTypes } from "../../api/Auth/types";
 
 import { JobRunResponse } from "../types";
 
 export type PromiseAuthJobRunResponse = Promise<
-  JobRunResponse<
-    DataErrorAuthTypes | DataErrorCheckoutTypes,
-    FunctionErrorAuthTypes
-  >
+  JobRunResponse<DataErrorAuthTypes | DataErrorCheckoutTypes>
 >;
 
 export class AuthJobs {
