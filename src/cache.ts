@@ -7,12 +7,19 @@ import { persistCache as apolloPersistCache } from "apollo-cache-persist";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 interface SaleorCacheConfig {
+  /**
+   * Determines if the cache has to be persisted in local storage. False by default.
+   */
   persistCache?: boolean;
 }
 
-export const createSaleorCache = async (
-  { persistCache }: SaleorCacheConfig = { persistCache: true }
-) => {
+/**
+ * Creates cache for Apollo client.
+ * @param cacheConfig Configuration for created cache.
+ */
+export const createSaleorCache = async ({
+  persistCache = false,
+}: SaleorCacheConfig) => {
   const saleorCache = new InMemoryCache({
     dataIdFromObject: obj => {
       // eslint-disable-next-line no-underscore-dangle

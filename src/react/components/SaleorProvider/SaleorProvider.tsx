@@ -27,7 +27,7 @@ const SaleorProvider: React.FC<IProps> = ({
   const [tokenExpired, setTokenExpired] = useState(false);
 
   /**
-   * Persist cache for Apollo in local storage
+   * Setup Apollo Cache and persist it in local storage by default
    */
   useEffect(() => {
     (async () => {
@@ -46,7 +46,7 @@ const SaleorProvider: React.FC<IProps> = ({
   };
 
   /**
-   * Initialize Apollo Links, Apollo Client and Saleor Manager
+   * Setup Apollo Links, Apollo Client and Saleor Manager
    */
   const apolloClient = useMemo(() => {
     if (cache) {

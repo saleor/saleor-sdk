@@ -32,13 +32,13 @@ Use `SaleorProvider` with passed custom config in a prop. Then use React hooks i
 import { SaleorProvider, useAuth } from "@saleor/sdk";
 
 const config = { apiUrl: "http://localhost:8000/graphql/" };
+const apolloConfig = {
+  /* Optional custom Apollo client config */
+};
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <SaleorProvider
-    config={config}
-    apolloConfig={/* Optional custom Apollo config */}
-  >
+  <SaleorProvider config={config} apolloConfig={apolloConfig}>
     <App />
   </SaleorProvider>,
   rootElement
@@ -98,7 +98,7 @@ const links = createSaleorLinks({
   },
 });
 
-const client = createSaleorClient(apiUrl, cache, links);
+const client = createSaleorClient(cache, links);
 ```
 
 Then use SaleorManager to get `SaleorAPI` from `connect` method. This method takes function as an argument, which will be executed every time the `SaleorAPI` state changes.
