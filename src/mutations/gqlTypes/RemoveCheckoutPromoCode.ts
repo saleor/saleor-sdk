@@ -505,6 +505,9 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_discou
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

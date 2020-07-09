@@ -522,6 +522,9 @@ export interface CreateCheckout_checkoutCreate_checkout_discount {
 
 export interface CreateCheckout_checkoutCreate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

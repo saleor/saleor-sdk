@@ -505,6 +505,9 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout_discount {
 
 export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

@@ -26,145 +26,12 @@ export interface TokenAuth_tokenCreate_errors {
   message: string | null;
 }
 
-export interface TokenAuth_tokenCreate_user_defaultShippingAddress_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface TokenAuth_tokenCreate_user_defaultShippingAddress {
-  __typename: "Address";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  streetAddress1: string;
-  streetAddress2: string;
-  city: string;
-  postalCode: string;
-  /**
-   * Shop's default country.
-   */
-  country: TokenAuth_tokenCreate_user_defaultShippingAddress_country;
-  countryArea: string;
-  phone: string | null;
-  /**
-   * Address is user's default billing address.
-   */
-  isDefaultBillingAddress: boolean | null;
-  /**
-   * Address is user's default shipping address.
-   */
-  isDefaultShippingAddress: boolean | null;
-}
-
-export interface TokenAuth_tokenCreate_user_defaultBillingAddress_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface TokenAuth_tokenCreate_user_defaultBillingAddress {
-  __typename: "Address";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  streetAddress1: string;
-  streetAddress2: string;
-  city: string;
-  postalCode: string;
-  /**
-   * Shop's default country.
-   */
-  country: TokenAuth_tokenCreate_user_defaultBillingAddress_country;
-  countryArea: string;
-  phone: string | null;
-  /**
-   * Address is user's default billing address.
-   */
-  isDefaultBillingAddress: boolean | null;
-  /**
-   * Address is user's default shipping address.
-   */
-  isDefaultShippingAddress: boolean | null;
-}
-
-export interface TokenAuth_tokenCreate_user_addresses_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface TokenAuth_tokenCreate_user_addresses {
-  __typename: "Address";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  streetAddress1: string;
-  streetAddress2: string;
-  city: string;
-  postalCode: string;
-  /**
-   * Shop's default country.
-   */
-  country: TokenAuth_tokenCreate_user_addresses_country;
-  countryArea: string;
-  phone: string | null;
-  /**
-   * Address is user's default billing address.
-   */
-  isDefaultBillingAddress: boolean | null;
-  /**
-   * Address is user's default shipping address.
-   */
-  isDefaultShippingAddress: boolean | null;
-}
-
 export interface TokenAuth_tokenCreate_user {
   __typename: "User";
   /**
    * The ID of the object.
    */
   id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  isStaff: boolean;
-  defaultShippingAddress: TokenAuth_tokenCreate_user_defaultShippingAddress | null;
-  defaultBillingAddress: TokenAuth_tokenCreate_user_defaultBillingAddress | null;
-  /**
-   * List of all user's addresses.
-   */
-  addresses: (TokenAuth_tokenCreate_user_addresses | null)[] | null;
 }
 
 export interface TokenAuth_tokenCreate {
@@ -173,9 +40,6 @@ export interface TokenAuth_tokenCreate {
    * JWT token, required to authenticate.
    */
   token: string | null;
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: TokenAuth_tokenCreate_errors[];
   /**
    * A user instance.

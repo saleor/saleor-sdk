@@ -522,6 +522,9 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
 
 export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
@@ -1069,6 +1072,9 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_disc
 
 export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

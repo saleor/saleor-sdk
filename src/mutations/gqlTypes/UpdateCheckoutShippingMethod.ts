@@ -505,6 +505,9 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
 
 export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

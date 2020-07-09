@@ -505,6 +505,9 @@ export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout_discount {
 
 export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.

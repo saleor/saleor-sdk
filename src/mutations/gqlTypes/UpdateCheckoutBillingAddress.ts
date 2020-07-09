@@ -522,6 +522,9 @@ export interface UpdateCheckoutBillingAddress_checkoutBillingAddressUpdate_check
 
 export interface UpdateCheckoutBillingAddress_checkoutBillingAddressUpdate_checkout {
   __typename: "Checkout";
+  /**
+   * The checkout's token.
+   */
   token: any;
   /**
    * The ID of the object.
