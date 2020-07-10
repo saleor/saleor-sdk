@@ -83,7 +83,6 @@ import {
   createSaleorClient,
   createSaleorLinks,
 } from "@saleor/sdk";
-// import { invalidTokenLinkWithTokenHandler, authLink } from "@saleor/sdk/auth";
 
 const apiUrl = "http://localhost:8000/graphql/";
 
