@@ -1,13 +1,5 @@
 import gql from "graphql-tag";
 
-export const checkoutErrorFragment = gql`
-  fragment CheckoutError on CheckoutError {
-    code
-    field
-    message
-  }
-`;
-
 export const checkoutPriceFragment = gql`
   fragment Price on TaxedMoney {
     gross {

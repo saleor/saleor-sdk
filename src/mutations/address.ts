@@ -1,14 +1,15 @@
 import gql from "graphql-tag";
 
+import { accountErrorFragment } from "../fragments/errors";
 import { userFragment } from "../fragments/auth";
 
 export const setCustomerDefaultAddress = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation SetCustomerDefaultAddress($id: ID!, $type: AddressTypeEnum!) {
     accountSetDefaultAddress(id: $id, type: $type) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       user {
         ...User
@@ -19,11 +20,11 @@ export const setCustomerDefaultAddress = gql`
 
 export const deleteUserAddress = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation DeleteUserAddress($addressId: ID!) {
     accountAddressDelete(id: $addressId) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       user {
         ...User
@@ -34,11 +35,11 @@ export const deleteUserAddress = gql`
 
 export const createUserAddress = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation CreateUserAddress($input: AddressInput!) {
     accountAddressCreate(input: $input) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       user {
         ...User
@@ -49,11 +50,11 @@ export const createUserAddress = gql`
 
 export const updateUserAddress = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation UpdateUserAddress($input: AddressInput!, $id: ID!) {
     accountAddressUpdate(input: $input, id: $id) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       user {
         ...User

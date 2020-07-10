@@ -1,12 +1,14 @@
 import gql from "graphql-tag";
+
 import { userFragment } from "../fragments/auth";
+import { accountErrorFragment } from "../fragments/errors";
 
 export const changeUserPassword = gql`
+  ${accountErrorFragment}
   mutation PasswordChange($newPassword: String!, $oldPassword: String!) {
     passwordChange(newPassword: $newPassword, oldPassword: $oldPassword) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
     }
   }
@@ -14,11 +16,11 @@ export const changeUserPassword = gql`
 
 export const accountUpdate = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation AccountUpdate($input: AccountInput!) {
     accountUpdate(input: $input) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       user {
         ...User
@@ -29,11 +31,11 @@ export const accountUpdate = gql`
 
 export const setPassword = gql`
   ${userFragment}
+  ${accountErrorFragment}
   mutation SetPassword($token: String!, $email: String!, $password: String!) {
     setPassword(token: $token, email: $email, password: $password) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountError
       }
       token
       user {

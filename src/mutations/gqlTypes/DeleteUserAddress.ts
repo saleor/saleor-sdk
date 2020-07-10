@@ -3,12 +3,18 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { AccountErrorCode } from "./../../gqlTypes/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: DeleteUserAddress
 // ====================================================
 
 export interface DeleteUserAddress_accountAddressDelete_errors {
-  __typename: "Error";
+  __typename: "AccountError";
+  /**
+   * The error code.
+   */
+  code: AccountErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -163,9 +169,6 @@ export interface DeleteUserAddress_accountAddressDelete_user {
 
 export interface DeleteUserAddress_accountAddressDelete {
   __typename: "AccountAddressDelete";
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: DeleteUserAddress_accountAddressDelete_errors[];
   /**
    * A user instance for which the address was deleted.

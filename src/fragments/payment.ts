@@ -14,11 +14,3 @@ export const paymentFragment = gql`
     }
   }
 `;
-
-export const paymentErrorFragment = gql`
-  fragment PaymentError on PaymentError {
-    code
-    field
-    message
-  }
-`;
