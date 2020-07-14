@@ -1,11 +1,18 @@
-import { DataErrorCheckoutTypes, ICreditCard } from "../../api/Checkout/types";
+import {
+  DataErrorCheckoutTypes,
+  FunctionErrorCheckoutTypes,
+  ICreditCard,
+} from "../../api/Checkout/types";
 import { ApolloClientManager } from "../../data/ApolloClientManager";
 import {
   ICheckoutAddress,
   LocalStorageHandler,
 } from "../../helpers/LocalStorageHandler";
+import { JobRunResponse } from "../types";
 
-import { PromiseCheckoutJobRunResponse } from "../types";
+export type PromiseCheckoutJobRunResponse = Promise<
+  JobRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes>
+>;
 
 class CheckoutJobs {
   private apolloClientManager: ApolloClientManager;
@@ -19,6 +26,50 @@ class CheckoutJobs {
     this.apolloClientManager = apolloClientManager;
     this.localStorageHandler = localStorageHandler;
   }
+
+  provideCheckout = async ({
+    isUserSignedIn,
+  }: {
+    isUserSignedIn: boolean;
+  }): PromiseCheckoutJobRunResponse => {
+    const checkout = LocalStorageHandler.getCheckout();
+
+    const { data, error } = await this.apolloClientManager.getCheckout(
+      isUserSignedIn,
+      checkout?.token
+    );
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorCheckoutTypes.GET_CHECKOUT,
+        },
+      };
+    }
+    this.localStorageHandler.setCheckout(data || checkout);
+
+    return {
+      data,
+    };
+  };
+
+  providePaymentGateways = async (): PromiseCheckoutJobRunResponse => {
+    const { data, error } = await this.apolloClientManager.getPaymentGateways();
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorCheckoutTypes.GET_PAYMENT_GATEWAYS,
+        },
+      };
+    }
+
+    return {
+      data,
+    };
+  };
 
   createCheckout = async ({
     email,

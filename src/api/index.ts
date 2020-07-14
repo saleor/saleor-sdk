@@ -6,7 +6,8 @@ import { ApolloClientManager } from "../data/ApolloClientManager";
 import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
-import { Config } from "../types";
+import { ConfigInput } from "../types";
+import { AuthAPI } from "./Auth";
 import APIProxy from "./APIProxy";
 import { SaleorCartAPI } from "./Cart";
 import { SaleorCheckoutAPI } from "./Checkout";
@@ -15,6 +16,8 @@ export * from "./Checkout";
 export * from "./Cart";
 
 export class SaleorAPI {
+  auth: AuthAPI;
+
   checkout: SaleorCheckoutAPI;
 
   cart: SaleorCartAPI;
@@ -28,7 +31,7 @@ export class SaleorAPI {
   constructor(
     client: ApolloClient<any>,
     apiProxy: APIProxy,
-    config?: Config,
+    config: ConfigInput,
     onStateUpdate?: () => any
   ) {
     this.legacyAPIProxy = apiProxy;
@@ -40,37 +43,34 @@ export class SaleorAPI {
         ...config?.loadOnStart,
       },
     };
-    const { loadOnStart } = finalConfig;
 
     const localStorageHandler = new LocalStorageHandler();
     const apolloClientManager = new ApolloClientManager(client);
-    const saleorState = new SaleorState(
+    const jobsManager = new JobsManager(
       localStorageHandler,
       apolloClientManager
+    );
+    const saleorState = new SaleorState(
+      finalConfig,
+      localStorageHandler,
+      apolloClientManager,
+      jobsManager
     );
     const localStorageManager = new LocalStorageManager(
       localStorageHandler,
       saleorState
-    );
-    const jobsManager = new JobsManager(
-      localStorageHandler,
-      apolloClientManager
     );
 
     if (onStateUpdate) {
       saleorState.subscribeToNotifiedChanges(onStateUpdate);
     }
 
-    this.checkout = new SaleorCheckoutAPI(
-      saleorState,
-      loadOnStart.checkout,
-      jobsManager
-    );
+    this.auth = new AuthAPI(saleorState, jobsManager, finalConfig);
+    this.checkout = new SaleorCheckoutAPI(saleorState, jobsManager);
     this.cart = new SaleorCartAPI(
       localStorageManager,
       apolloClientManager,
       saleorState,
-      loadOnStart.cart,
       jobsManager
     );
 

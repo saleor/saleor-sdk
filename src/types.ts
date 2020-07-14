@@ -1,4 +1,6 @@
 import { ObservableQuery } from "apollo-client";
+import { ApolloLink } from "apollo-link";
+import { ApolloCache } from "apollo-cache";
 
 export type QueryShape = (...args: any) => any;
 
@@ -27,8 +29,35 @@ export type WatchQueryData<T extends (...args: any) => any> = ReturnType<
   : never;
 
 export interface Config {
+  /**
+   * Url of the Saleor GraphQL API.
+   */
+  apiUrl: string;
+  /**
+   * Determines data which have to be queried on start.
+   */
   loadOnStart: {
+    auth: boolean;
     checkout: boolean;
-    cart: boolean;
   };
+}
+
+export type DefaultConfig = Pick<Config, "loadOnStart">;
+
+export type ConfigInput = Omit<Config, keyof DefaultConfig> &
+  Partial<DefaultConfig>;
+
+export interface ApolloConfigInput {
+  /**
+   * Custom cache to be used by Apollo client. By default preconfigured cache is created automatically.
+   */
+  cache?: ApolloCache<any>;
+  /**
+   * Determines if the cache has to be persisted in local storage. True by default.
+   */
+  persistCache?: boolean;
+  /**
+   * Custom list of links to be used by Apollo client. By default preconfigured links are created automatically.
+   */
+  links?: ApolloLink[];
 }

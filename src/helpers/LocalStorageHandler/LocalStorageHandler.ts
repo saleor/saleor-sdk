@@ -21,6 +21,14 @@ export class LocalStorageHandler extends LocalStorageHandlerProxy {
     );
   }
 
+  static getSignInToken(): string | null {
+    return LocalStorageHandlerProxy.retrieveItem(LocalStorageItems.TOKEN);
+  }
+
+  setSignInToken(token: string | null): void {
+    this.saveItem(LocalStorageItems.TOKEN, token);
+  }
+
   setCheckout(checkout: ICheckoutModel | null): void {
     this.saveObject(LocalStorageItems.CHECKOUT, checkout);
   }
@@ -31,5 +39,9 @@ export class LocalStorageHandler extends LocalStorageHandlerProxy {
 
   setJobs(jobs: IJobsModel | null): void {
     return this.saveObject(LocalStorageItems.JOB_QUEUE_CHECKOUT, jobs);
+  }
+
+  clear(): void {
+    this.clearStorage();
   }
 }

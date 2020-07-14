@@ -1,7 +1,3 @@
-import {
-  DataErrorCheckoutTypes,
-  FunctionErrorCheckoutTypes,
-} from "../api/Checkout/types";
 import { IJobs } from "./Jobs";
 import { IQueuedJobs } from "./QueuedJobs";
 
@@ -10,14 +6,10 @@ export interface JobErrorResponse<T> {
   type?: T;
 }
 
-export interface JobRunResponse<D, F> {
+export interface JobRunResponse<D, F = undefined> {
   data?: any;
   dataError?: JobErrorResponse<D>;
 }
-
-export type PromiseCheckoutJobRunResponse = Promise<
-  JobRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes>
->;
 
 export type JobFunctionParameters<
   G extends keyof IJobs,

@@ -10,11 +10,10 @@ import { UserOrderByToken } from "../queries/gqlTypes/UserOrderByToken";
 import { OrderByToken } from "../queries/gqlTypes/OrderByToken";
 import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
 import { SetPassword } from "../mutations/gqlTypes/SetPassword";
-import { fireSignOut, getAuthToken, setAuthToken } from "../auth";
+import { getAuthToken, setAuthToken } from "../auth";
 import { MUTATIONS } from "../mutations";
 import { TokenAuth_tokenCreate } from "../mutations/gqlTypes/TokenAuth";
 import { QUERIES } from "../queries";
-import { UserDetails } from "../queries/gqlTypes/UserDetails";
 import { RequireAtLeastOne } from "../tsHelpers";
 import {
   InferOptions,
@@ -30,6 +29,7 @@ import {
   mergeEdges,
 } from "../utils";
 import { SignIn, SetPasswordChange, SetPasswordResult } from "./types";
+import { BROWSER_NO_CREDENTIAL_API_MESSAGE } from "./Auth";
 
 const handleDataErrors = <T extends QueryShape, TData>(
   mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
@@ -140,30 +140,6 @@ class APIProxy {
     this.client = client;
   }
 
-  getUserDetails = (
-    variables: InferOptions<QUERIES["UserDetails"]>["variables"],
-    options: Omit<InferOptions<QUERIES["UserDetails"]>, "variables"> & {
-      onUpdate: (data: UserDetails["me"] | null) => void;
-    }
-  ) => {
-    if (this.isLoggedIn()) {
-      return this.watchQuery(QUERIES.UserDetails, data => data.me)(
-        variables,
-        options
-      );
-    }
-    if (options.onUpdate) {
-      options.onUpdate(null);
-    }
-    return {
-      refetch: () =>
-        new Promise<{ data: UserDetails["me"] }>(resolve => {
-          resolve({ data: null });
-        }),
-      unsubscribe: () => undefined,
-    };
-  };
-
   signIn = async (
     variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
     options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
@@ -185,12 +161,17 @@ class APIProxy {
     if (data?.token && data.errors.length === 0) {
       setAuthToken(data.token);
       if (window.PasswordCredential && variables) {
-        navigator.credentials.store(
-          new window.PasswordCredential({
-            id: variables.email,
-            password: variables.password,
-          })
-        );
+        navigator.credentials
+          .store(
+            new window.PasswordCredential({
+              id: variables.email,
+              password: variables.password,
+            })
+          )
+          .catch(credentialsError =>
+            // eslint-disable-next-line no-console
+            console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError)
+          );
       }
     }
     return {
@@ -198,17 +179,6 @@ class APIProxy {
       error: null,
     };
   };
-
-  signOut = () =>
-    new Promise(async (resolve, reject) => {
-      try {
-        fireSignOut(this.client);
-
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    });
 
   setPassword = async (
     variables: InferOptions<MUTATIONS["SetPassword"]>["variables"],

@@ -1,36 +1,8 @@
-import { ApolloCache } from "apollo-cache";
 import { ApolloClient } from "apollo-client";
-import { ApolloLink } from "apollo-link";
-import { BatchHttpLink } from "apollo-link-batch-http";
-import { RetryLink } from "apollo-link-retry";
 
 import { SaleorAPI } from "./api";
+import { ConfigInput } from "./types";
 import APIProxy from "./api/APIProxy";
-import { Config } from "./types";
-
-const getLink = (
-  apiUrl: string,
-  invalidTokenLink: ApolloLink,
-  authLink: ApolloLink
-) =>
-  ApolloLink.from([
-    invalidTokenLink,
-    authLink,
-    new RetryLink(),
-    new BatchHttpLink({ uri: apiUrl }),
-  ]);
-
-export function createSaleorClient(
-  apiUrl: string,
-  invalidTokenLink: ApolloLink,
-  authLink: ApolloLink,
-  cache: ApolloCache<any>
-) {
-  return new ApolloClient({
-    cache,
-    link: getLink(apiUrl, invalidTokenLink, authLink),
-  });
-}
 
 export class SaleorManager {
   private apiProxy: APIProxy;
@@ -39,7 +11,7 @@ export class SaleorManager {
 
   private apiChangeListener: ((api: SaleorAPI) => any) | undefined;
 
-  constructor(client: ApolloClient<any>, config?: Config) {
+  constructor(client: ApolloClient<any>, config: ConfigInput) {
     this.apiProxy = new APIProxy(client);
     this.api = new SaleorAPI(
       client,
@@ -66,6 +38,9 @@ export class SaleorManager {
 }
 
 export * from "./auth";
+export * from "./cache";
+export * from "./links";
+export * from "./client";
 export * from "./gqlTypes/globalTypes";
 
 // FIXME: It's imported here because it's not a monorepo yet

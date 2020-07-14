@@ -1,9 +1,13 @@
-import ApolloClient from "apollo-client";
-
-import { Config } from "../../../types";
+import { ConfigInput, ApolloConfigInput } from "../../../types";
 
 export interface IProps {
   children: React.ReactElement;
-  config?: Config;
-  client: ApolloClient<any>;
+  /**
+   * SDK configuration.
+   */
+  config: ConfigInput;
+  /**
+   * Apollo client configuration.
+   */
+  apolloConfig?: ApolloConfigInput;
 }

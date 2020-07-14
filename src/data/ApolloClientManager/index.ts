@@ -1,9 +1,10 @@
 import ApolloClient from "apollo-client";
 
-import { getAuthToken } from "../../auth";
 import { Checkout } from "../../fragments/gqlTypes/Checkout";
 import { OrderDetail } from "../../fragments/gqlTypes/OrderDetail";
 import { Payment } from "../../fragments/gqlTypes/Payment";
+import { PaymentGateway } from "../../fragments/gqlTypes/PaymentGateway";
+import { User } from "../../fragments/gqlTypes/User";
 import { CountryCode } from "../../gqlTypes/globalTypes";
 import {
   ICheckoutAddress,
@@ -12,6 +13,7 @@ import {
   IOrderModel,
   IPaymentModel,
 } from "../../helpers/LocalStorageHandler";
+import * as AuthMutations from "../../mutations/auth";
 import * as CheckoutMutations from "../../mutations/checkout";
 import {
   AddCheckoutPromoCode,
@@ -33,6 +35,10 @@ import {
   RemoveCheckoutPromoCode,
   RemoveCheckoutPromoCodeVariables,
 } from "../../mutations/gqlTypes/RemoveCheckoutPromoCode";
+import {
+  TokenAuth,
+  TokenAuthVariables,
+} from "../../mutations/gqlTypes/TokenAuth";
 import {
   UpdateCheckoutBillingAddress,
   UpdateCheckoutBillingAddressVariables,
@@ -59,28 +65,109 @@ import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
 } from "../../queries/gqlTypes/CheckoutProductVariants";
-import {
-  GetShopPaymentGateways,
-  GetShopPaymentGateways_shop_availablePaymentGateways,
-} from "../../queries/gqlTypes/GetShopPaymentGateways";
+import { GetShopPaymentGateways } from "../../queries/gqlTypes/GetShopPaymentGateways";
 import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails";
+import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as ShopQueries from "../../queries/shop";
+import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
 
-import { IApolloClientManager } from "./types";
-
-export class ApolloClientManager implements IApolloClientManager {
+export class ApolloClientManager {
   private client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;
   }
 
-  getCheckout = async (checkoutToken: string | null) => {
+  subscribeToUserChange = (
+    next: (value: User | null) => void,
+    error?: (error: any) => void,
+    complete?: () => void
+  ) => {
+    this.client
+      .watchQuery<UserDetails, any>({
+        fetchPolicy: "cache-only",
+        query: UserQueries.getUserDetailsQuery,
+      })
+      .subscribe(value => next(value.data?.me), error, complete);
+  };
+
+  subscribeToPaymentGatewaysChange = (
+    next: (value: PaymentGateway[] | null) => void,
+    error?: (error: any) => void,
+    complete?: () => void
+  ) => {
+    this.client
+      .watchQuery<GetShopPaymentGateways, any>({
+        fetchPolicy: "cache-only",
+        query: ShopQueries.getShopPaymentGateways,
+      })
+      .subscribe(
+        value => next(value.data.shop?.availablePaymentGateways),
+        error,
+        complete
+      );
+  };
+
+  getUser = async () => {
+    const { data, errors } = await this.client.query<UserDetails, any>({
+      fetchPolicy: "network-only",
+      query: UserQueries.getUserDetailsQuery,
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    return {
+      data: data?.me,
+    };
+  };
+
+  signIn = async (email: string, password: string) => {
+    const { data, errors } = await this.client.mutate<
+      TokenAuth,
+      TokenAuthVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: AuthMutations.tokenAuthMutation,
+      variables: {
+        email,
+        password,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.tokenCreate?.errors.length) {
+      return {
+        error: data.tokenCreate.errors,
+      };
+    }
+    return {
+      data: {
+        token: data?.tokenCreate?.token,
+        user: data?.tokenCreate?.user,
+      },
+    };
+  };
+
+  signOut = async () => {
+    await this.client.resetStore();
+  };
+
+  getCheckout = async (
+    isUserSignedIn: boolean,
+    checkoutToken: string | null
+  ) => {
     let checkout: Checkout | null;
     try {
       checkout = await new Promise((resolve, reject) => {
-        if (this.isLoggedIn()) {
+        if (isUserSignedIn) {
           const observable = this.client.watchQuery<UserCheckoutDetails, any>({
             fetchPolicy: "network-only",
             query: CheckoutQueries.userCheckoutDetails,
@@ -250,41 +337,22 @@ export class ApolloClientManager implements IApolloClientManager {
   };
 
   getPaymentGateways = async () => {
-    let paymentGateways:
-      | GetShopPaymentGateways_shop_availablePaymentGateways[]
-      | null;
-    try {
-      paymentGateways = await new Promise((resolve, reject) => {
-        const observable = this.client.watchQuery<GetShopPaymentGateways, any>({
-          fetchPolicy: "network-only",
-          query: ShopQueries.getShopPaymentGateways,
-        });
-        observable.subscribe(
-          result => {
-            const { data, errors } = result;
-            if (errors?.length) {
-              reject(errors);
-            } else {
-              resolve(data.shop.availablePaymentGateways);
-            }
-          },
-          error => {
-            reject(error);
-          }
-        );
-      });
+    const { data, errors } = await this.client.query<
+      GetShopPaymentGateways,
+      any
+    >({
+      fetchPolicy: "network-only",
+      query: ShopQueries.getShopPaymentGateways,
+    });
 
-      if (paymentGateways) {
-        return {
-          data: paymentGateways,
-        };
-      }
-    } catch (error) {
+    if (errors?.length) {
       return {
-        error,
+        error: errors,
       };
     }
-    return {};
+    return {
+      data: data.shop.availablePaymentGateways,
+    };
   };
 
   createCheckout = async (
@@ -791,10 +859,6 @@ export class ApolloClientManager implements IApolloClientManager {
         error,
       };
     }
-  };
-
-  private isLoggedIn = () => {
-    return !!getAuthToken();
   };
 
   private constructCheckoutModel = ({

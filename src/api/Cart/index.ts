@@ -1,23 +1,22 @@
 import { LocalStorageManager } from "../../data";
-import { ApolloClientManager } from "../../data/ApolloClientManager";
 import { ErrorListener } from "../../helpers";
 import { ICheckoutModel } from "../../helpers/LocalStorageHandler";
 import { JobsManager } from "../../jobs";
 import { ErrorCartTypes } from "../../jobs/Cart";
-import { SaleorState } from "../../state";
+import { SaleorState, SaleorStateLoaded } from "../../state";
 import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
+import { ApolloClientManager } from "../../data/ApolloClientManager";
 import { sortCheckoutLines } from "./utils";
 
 import {
   IDiscount,
   IItems,
-  ISaleorCartAPI,
   IShippingPrice,
   ISubtotalPrice,
   ITotalPrice,
 } from "./types";
 
-export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
+export class SaleorCartAPI extends ErrorListener {
   loaded: boolean;
 
   items: IItems;
@@ -32,21 +31,16 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
 
   private apolloClientManager: ApolloClientManager;
 
-  private checkoutLoaded: boolean;
-
   private jobsManager: JobsManager;
 
   private localStorageManager: LocalStorageManager;
 
   private saleorState: SaleorState;
 
-  private summaryPricesLoaded: boolean;
-
   constructor(
     localStorageManager: LocalStorageManager,
     apolloClientManager: ApolloClientManager,
     saleorState: SaleorState,
-    loadOnStart: boolean,
     jobsManager: JobsManager
   ) {
     super();
@@ -56,53 +50,37 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
     this.jobsManager = jobsManager;
 
     this.loaded = false;
-    this.checkoutLoaded = false;
-    this.summaryPricesLoaded = false;
 
     this.jobsManager.attachErrorListener("cart", this.fireError);
 
     this.saleorState.subscribeToChange(
       StateItems.CHECKOUT,
-      ({ lines }: ICheckoutModel) => {
-        this.items = lines
+      (checkout: ICheckoutModel) => {
+        this.items = checkout?.lines
           ?.filter(line => line.quantity > 0)
           .sort(sortCheckoutLines);
-        this.checkoutLoaded = true;
-        this.loaded = this.checkoutLoaded && this.summaryPricesLoaded;
       }
     );
     this.saleorState.subscribeToChange(
       StateItems.SUMMARY_PRICES,
-      ({
-        totalPrice,
-        subtotalPrice,
-        shippingPrice,
-        discount,
-      }: ISaleorStateSummeryPrices) => {
+      (summaryPrices: ISaleorStateSummeryPrices) => {
+        const { totalPrice, subtotalPrice, shippingPrice, discount } =
+          summaryPrices || {};
         this.totalPrice = totalPrice;
         this.subtotalPrice = subtotalPrice;
         this.shippingPrice = shippingPrice;
         this.discount = discount;
-        this.summaryPricesLoaded = true;
-        this.loaded = this.summaryPricesLoaded && this.checkoutLoaded;
       }
     );
-
-    if (loadOnStart) {
-      this.load();
-    }
+    this.saleorState.subscribeToChange(
+      StateItems.LOADED,
+      (loaded: SaleorStateLoaded) => {
+        this.loaded = loaded.checkout && loaded.summaryPrices;
+      }
+    );
   }
 
-  load = async () => {
-    await this.saleorState.provideCheckout(this.fireError, true);
-    return {
-      pending: false,
-    };
-  };
-
   addItem = async (variantId: string, quantity: number) => {
-    await this.saleorState.provideCheckout(this.fireError);
-
     // 1. save in local storage
     this.localStorageManager.addItemToCart(variantId, quantity);
 
@@ -136,8 +114,6 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
   };
 
   removeItem = async (variantId: string) => {
-    await this.saleorState.provideCheckout(this.fireError);
-
     // 1. save in local storage
     this.localStorageManager.removeItemFromCart(variantId);
     // 2. save online if possible (if checkout id available)
@@ -170,8 +146,6 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
   };
 
   subtractItem = async (variantId: string) => {
-    await this.saleorState.provideCheckout(this.fireError);
-
     // 1. save in local storage
     this.localStorageManager.subtractItemFromCart(variantId);
 
@@ -205,8 +179,6 @@ export class SaleorCartAPI extends ErrorListener implements ISaleorCartAPI {
   };
 
   updateItem = async (variantId: string, quantity: number) => {
-    await this.saleorState.provideCheckout(this.fireError);
-
     // 1. save in local storage
     this.localStorageManager.updateItemInCart(variantId, quantity);
 
