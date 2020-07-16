@@ -3,14 +3,18 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AddressInput } from "./../../gqlTypes/globalTypes";
+import { AddressInput, AccountErrorCode } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateUserAddress
 // ====================================================
 
 export interface UpdateUserAddress_accountAddressUpdate_errors {
-  __typename: "Error";
+  __typename: "AccountError";
+  /**
+   * The error code.
+   */
+  code: AccountErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -165,9 +169,6 @@ export interface UpdateUserAddress_accountAddressUpdate_user {
 
 export interface UpdateUserAddress_accountAddressUpdate {
   __typename: "AccountAddressUpdate";
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: UpdateUserAddress_accountAddressUpdate_errors[];
   /**
    * A user object for which the address was edited.

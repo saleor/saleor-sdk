@@ -10,7 +10,11 @@ import { AccountErrorCode } from "./../../gqlTypes/globalTypes";
 // ====================================================
 
 export interface SetPassword_setPassword_errors {
-  __typename: "Error";
+  __typename: "AccountError";
+  /**
+   * The error code.
+   */
+  code: AccountErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the
    * error isn't associated with a particular field.
@@ -182,9 +186,6 @@ export interface SetPassword_setPassword_accountErrors {
 
 export interface SetPassword_setPassword {
   __typename: "SetPassword";
-  /**
-   * List of errors that occurred executing the mutation.
-   */
   errors: SetPassword_setPassword_errors[];
   /**
    * JWT token, required to authenticate.
