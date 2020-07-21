@@ -871,9 +871,11 @@ export class ApolloClientManager {
     discountName,
     voucherCode,
     lines,
+    availablePaymentGateways,
     availableShippingMethods,
     shippingMethod,
   }: Checkout): ICheckoutModel => ({
+    availablePaymentGateways,
     availableShippingMethods: availableShippingMethods
       ? availableShippingMethods.filter(filterNotEmptyArrayItems)
       : [],
