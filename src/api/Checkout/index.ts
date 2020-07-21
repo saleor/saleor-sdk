@@ -62,6 +62,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
           selectedShippingAddressId,
           selectedBillingAddressId,
           billingAsShipping,
+          availablePaymentGateways,
           availableShippingMethods,
           shippingMethod,
           promoCodeDiscount,
@@ -76,6 +77,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         };
         this.selectedShippingAddressId = selectedShippingAddressId;
         this.selectedBillingAddressId = selectedBillingAddressId;
+        this.availablePaymentGateways = availablePaymentGateways;
         this.availableShippingMethods = availableShippingMethods;
         this.billingAsShipping = billingAsShipping;
         this.promoCodeDiscount = {
@@ -96,12 +98,12 @@ export class SaleorCheckoutAPI extends ErrorListener {
         };
       }
     );
-    this.saleorState.subscribeToChange(
-      StateItems.PAYMENT_GATEWAYS,
-      (paymentGateways: PaymentGateway[]) => {
-        this.availablePaymentGateways = paymentGateways;
-      }
-    );
+    // this.saleorState.subscribeToChange(
+    //   StateItems.PAYMENT_GATEWAYS,
+    //   (paymentGateways: PaymentGateway[]) => {
+    //     this.availablePaymentGateways = paymentGateways;
+    //   }
+    // );
     this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {

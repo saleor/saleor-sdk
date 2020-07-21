@@ -3,6 +3,7 @@ import {
   Checkout_lines_variant_attributes,
   Checkout_lines_variant_pricing,
   Checkout_lines_variant_product,
+  Checkout_availablePaymentGateways,
 } from "../../fragments/gqlTypes/Checkout";
 import { IQueuedJobs } from "../../jobs/QueuedJobs";
 
@@ -113,6 +114,7 @@ export interface ICheckoutModel {
   promoCodeDiscount?: ICheckoutModelPromoCodeDiscount;
   lines?: ICheckoutModelLine[] | null;
   availableShippingMethods?: Checkout_availableShippingMethods[];
+  availablePaymentGateways?: Checkout_availablePaymentGateways[];
   shippingMethod?: ICheckoutModelShippingMethod | null;
 }
 
