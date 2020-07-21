@@ -33,4 +33,8 @@ export interface PaymentGateway {
    * Payment gateway client configuration.
    */
   config: PaymentGateway_config[];
+  /**
+   * Payment gateway supported currencies.
+   */
+  currencies: (string | null)[];
 }

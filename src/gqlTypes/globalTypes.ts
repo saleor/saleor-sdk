@@ -378,6 +378,7 @@ export enum PaymentChargeStatusEnum {
   NOT_CHARGED = "NOT_CHARGED",
   PARTIALLY_CHARGED = "PARTIALLY_CHARGED",
   PARTIALLY_REFUNDED = "PARTIALLY_REFUNDED",
+  PENDING = "PENDING",
 }
 
 /**
@@ -459,7 +460,7 @@ export interface CollectionSortingInput {
 
 export interface PaymentInput {
   gateway: string;
-  token: string;
+  token?: string | null;
   amount?: any | null;
   billingAddress?: AddressInput | null;
 }

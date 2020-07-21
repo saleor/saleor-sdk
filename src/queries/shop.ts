@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { paymentGatewayFragment } from "../fragments/shop";
+import { paymentGatewayFragment } from "../fragments/payment";
 
 export const getShop = gql`
   query GetShop {

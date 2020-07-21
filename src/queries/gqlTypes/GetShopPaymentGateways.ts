@@ -33,6 +33,10 @@ export interface GetShopPaymentGateways_shop_availablePaymentGateways {
    * Payment gateway client configuration.
    */
   config: GetShopPaymentGateways_shop_availablePaymentGateways_config[];
+  /**
+   * Payment gateway supported currencies.
+   */
+  currencies: (string | null)[];
 }
 
 export interface GetShopPaymentGateways_shop {

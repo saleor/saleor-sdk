@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { paymentGatewayFragment } from "./payment";
 
 export const checkoutPriceFragment = gql`
   fragment Price on TaxedMoney {
@@ -111,6 +112,7 @@ export const checkoutFragment = gql`
   ${checkoutAddressFragment}
   ${checkoutPriceFragment}
   ${checkoutShippingMethodFragment}
+  ${paymentGatewayFragment}
   fragment Checkout on Checkout {
     token
     id
@@ -147,5 +149,8 @@ export const checkoutFragment = gql`
     discountName
     translatedDiscountName
     voucherCode
+    availablePaymentGateways {
+      ...PaymentGateway
+    }
   }
 `;
