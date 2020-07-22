@@ -445,17 +445,18 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  completeCheckout = async (): PromiseRunResponse<
-    DataErrorCheckoutTypes,
-    FunctionErrorCheckoutTypes
-  > => {
+  completeCheckout = async (
+    paymentData?: object,
+    redirectUrl?: string,
+    storeSource?: boolean
+  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
       const { data, dataError } = await this.jobsManager.run(
         "checkout",
         "completeCheckout",
-        { checkoutId }
+        { checkoutId, paymentData, redirectUrl, storeSource }
       );
       return {
         data,

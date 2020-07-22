@@ -828,14 +828,26 @@ export class ApolloClientManager {
     }
   };
 
-  completeCheckout = async (checkoutId: string) => {
+  completeCheckout = async (
+    checkoutId: string,
+    paymentData?: object,
+    redirectUrl?: string,
+    storeSource?: boolean
+  ) => {
     try {
+      const paymentDataString = paymentData && JSON.stringify(paymentData);
+
       const { data, errors } = await this.client.mutate<
         CompleteCheckout,
         CompleteCheckoutVariables
       >({
         mutation: CheckoutMutations.completeCheckoutMutation,
-        variables: { checkoutId },
+        variables: {
+          checkoutId,
+          paymentData: paymentDataString,
+          redirectUrl,
+          storeSource,
+        },
       });
 
       if (errors?.length) {
