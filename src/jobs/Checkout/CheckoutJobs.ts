@@ -368,11 +368,20 @@ class CheckoutJobs {
 
   completeCheckout = async ({
     checkoutId,
+    paymentData,
+    redirectUrl,
+    storeSource,
   }: {
     checkoutId: string;
+    paymentData?: object;
+    redirectUrl?: string;
+    storeSource?: boolean;
   }): PromiseCheckoutJobRunResponse => {
     const { data, error } = await this.apolloClientManager.completeCheckout(
-      checkoutId
+      checkoutId,
+      paymentData,
+      redirectUrl,
+      storeSource
     );
 
     if (error) {

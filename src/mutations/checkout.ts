@@ -197,14 +197,26 @@ export const createCheckoutPaymentMutation = gql`
 export const completeCheckoutMutation = gql`
   ${orderDetailFragment}
   ${checkoutErrorFragment}
-  mutation CompleteCheckout($checkoutId: ID!) {
-    checkoutComplete(checkoutId: $checkoutId) {
+  mutation CompleteCheckout(
+    $checkoutId: ID!
+    $paymentData: JSONString
+    $redirectUrl: String
+    $storeSource: Boolean
+  ) {
+    checkoutComplete(
+      checkoutId: $checkoutId
+      paymentData: $paymentData
+      redirectUrl: $redirectUrl
+      storeSource: $storeSource
+    ) {
       errors: checkoutErrors {
         ...CheckoutError
       }
       order {
         ...OrderDetail
       }
+      confirmationNeeded
+      confirmationData
     }
   }
 `;
