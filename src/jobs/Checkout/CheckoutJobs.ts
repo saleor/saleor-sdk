@@ -333,7 +333,7 @@ class CheckoutJobs {
     checkoutId: string;
     amount: number;
     paymentGateway: string;
-    paymentToken: string;
+    paymentToken?: string;
     billingAddress: ICheckoutAddress;
     creditCard?: ICreditCard;
   }): PromiseCheckoutJobRunResponse => {
@@ -343,8 +343,8 @@ class CheckoutJobs {
       amount,
       checkoutId,
       paymentGateway,
-      paymentToken,
-      billingAddress
+      billingAddress,
+      paymentToken
     );
 
     if (error) {

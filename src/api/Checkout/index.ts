@@ -403,7 +403,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
 
   createPayment = async (
     gateway: string,
-    token: string,
+    token?: string,
     creditCard?: ICreditCard
   ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
     const checkoutId = this.saleorState.checkout?.id;
