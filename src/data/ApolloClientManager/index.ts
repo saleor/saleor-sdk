@@ -770,8 +770,8 @@ export class ApolloClientManager {
     amount: number,
     checkoutId: string,
     paymentGateway: string,
-    paymentToken: string,
-    billingAddress: ICheckoutAddress
+    billingAddress: ICheckoutAddress,
+    paymentToken?: string
   ) => {
     try {
       const variables = {
