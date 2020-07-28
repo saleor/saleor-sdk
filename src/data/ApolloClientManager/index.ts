@@ -1,7 +1,6 @@
 import ApolloClient from "apollo-client";
 
 import { Checkout } from "../../fragments/gqlTypes/Checkout";
-import { OrderDetail } from "../../fragments/gqlTypes/OrderDetail";
 import { Payment } from "../../fragments/gqlTypes/Payment";
 import { PaymentGateway } from "../../fragments/gqlTypes/PaymentGateway";
 import { User } from "../../fragments/gqlTypes/User";
@@ -10,7 +9,6 @@ import {
   ICheckoutAddress,
   ICheckoutModel,
   ICheckoutModelLine,
-  IOrderModel,
   IPaymentModel,
 } from "../../helpers/LocalStorageHandler";
 import * as AuthMutations from "../../mutations/auth";
@@ -860,9 +858,9 @@ export class ApolloClientManager {
           error: data?.checkoutComplete?.errors,
         };
       }
-      if (data?.checkoutComplete?.order) {
+      if (data?.checkoutComplete) {
         return {
-          data: this.constructOrderModel(data.checkoutComplete.order),
+          data: data.checkoutComplete,
         };
       }
       return {};
@@ -934,16 +932,6 @@ export class ApolloClientManager {
     creditCard,
     gateway,
     id,
-    token,
-  });
-
-  private constructOrderModel = ({
-    id,
-    token,
-    number: orderNumber,
-  }: OrderDetail): IOrderModel => ({
-    id,
-    number: orderNumber,
     token,
   });
 }
