@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collection object can get a list of collections 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
