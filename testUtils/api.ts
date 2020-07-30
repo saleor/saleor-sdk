@@ -19,6 +19,19 @@ function setupAPI() {
       },
     },
     adapters: ["node-http"],
+    matchRequestsBy: {
+      headers: false,
+      url: {
+        hash: false,
+        hostname: false,
+        password: false,
+        pathname: false,
+        port: false,
+        protocol: false,
+        query: false,
+        username: false,
+      },
+    },
     persister: "fs",
     persisterOptions: {
       fs: {
@@ -31,7 +44,7 @@ function setupAPI() {
   const link = new BatchHttpLink({
     // @ts-ignore
     fetch,
-    uri: process.env.API_URL,
+    uri: process.env.API_URL || "http://localhost:8000/graphql/",
   });
   const client = new ApolloClient({
     cache,
