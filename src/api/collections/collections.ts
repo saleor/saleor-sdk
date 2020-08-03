@@ -6,7 +6,7 @@ import {
 import { BaseCollection } from "../../fragments/gqlTypes/BaseCollection";
 import { collections } from "../../queries/collections";
 import { WithList, ListParameters } from "../types";
-import { COLLECTIONS_PER_API_CALL, CollectionList } from "./CollectionList";
+import { CollectionList } from "./CollectionList";
 
 export class CollectionsAPI
   implements WithList<CollectionListQuery, BaseCollection> {
@@ -16,8 +16,8 @@ export class CollectionsAPI
     this.client = client;
   }
 
-  getList = (params: Partial<ListParameters>): CollectionList => {
-    const getPerCall = params.count || COLLECTIONS_PER_API_CALL;
+  getList = (params: ListParameters): CollectionList => {
+    const getPerCall = params.count;
 
     const query = (variables: CollectionListVariables) =>
       this.client.query<CollectionListQuery, CollectionListVariables>({
