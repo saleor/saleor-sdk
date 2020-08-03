@@ -42,8 +42,8 @@ export type SetPasswordResult = {
 
 export interface ListParameters {
   count: number;
-  endCursor: string;
+  endCursor?: string;
 }
 export interface WithList<TQuery, TObject> {
-  getList(params: Partial<ListParameters>): BaseList<TQuery, TObject>;
+  getList(params: ListParameters): BaseList<TQuery, TObject>;
 }

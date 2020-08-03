@@ -30,7 +30,6 @@ import {
 } from "../utils";
 import { SignIn, SetPasswordChange, SetPasswordResult } from "./types";
 import { BROWSER_NO_CREDENTIAL_API_MESSAGE } from "./Auth";
-import { CollectionsAPI } from "./collections/collections";
 
 const handleDataErrors = <T extends QueryShape, TData>(
   mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
@@ -57,13 +56,10 @@ const handleDataErrors = <T extends QueryShape, TData>(
 };
 
 class APIProxy {
-  collections: CollectionsAPI;
-
   client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;
-    this.collections = new CollectionsAPI(this.client);
   }
 
   getAttributes = this.watchQuery(QUERIES.Attributes, data => data.attributes);
