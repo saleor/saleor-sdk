@@ -16,6 +16,10 @@ export class CollectionsAPI
     this.client = client;
   }
 
+  /**
+   * Method returning list of collections with ability to request next page
+   * @param params List parameters
+   */
   getList = (params: ListParameters): CollectionList => {
     const getPerCall = params.count;
 
