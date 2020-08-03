@@ -5,21 +5,18 @@ import {
 } from "../../queries/gqlTypes/CollectionList";
 import { BaseCollection } from "../../fragments/gqlTypes/BaseCollection";
 import { collections } from "../../queries/collections";
-import { WithList, ListParameters, List } from "../types";
+import { WithList, ListParameters } from "../types";
 import { COLLECTIONS_PER_API_CALL, CollectionList } from "./CollectionList";
 
 export class CollectionsAPI
-  implements
-    WithList<CollectionListQuery, BaseCollection, CollectionListVariables> {
+  implements WithList<CollectionListQuery, BaseCollection> {
   client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;
   }
 
-  getList = (
-    params: Partial<ListParameters>
-  ): List<CollectionListQuery, BaseCollection, CollectionListVariables> => {
+  getList = (params: Partial<ListParameters>): CollectionList => {
     const getPerCall = params.count || COLLECTIONS_PER_API_CALL;
 
     const query = (variables: CollectionListVariables) =>
