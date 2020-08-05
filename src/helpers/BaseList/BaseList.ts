@@ -26,7 +26,10 @@ abstract class BaseList<TQuery, TObject> {
   /**
    * Status of the current query
    */
-  loading: boolean = false;
+
+  public get loading(): boolean {
+    return this.current !== null;
+  }
 
   /**
    * PageInfo object holding information about last encountered cursor and
@@ -62,14 +65,10 @@ abstract class BaseList<TQuery, TObject> {
    * @param variables Query variables containing pagination, sorting, etc.
    */
   init = async (variables: BaseListVariables): Promise<void> => {
-    this.loading = true;
-
     this.current = this.query(variables);
     const result = await this.current;
-
     this.current = null;
     this.data = this.mapQueryData(result.data);
-    this.loading = false;
     this.pageInfo = this.getPageInfo(result);
   };
 
@@ -78,8 +77,6 @@ abstract class BaseList<TQuery, TObject> {
    */
   next = async (): Promise<TObject[]> => {
     if (!this.loading && this.data && this.pageInfo?.hasNextPage) {
-      this.loading = true;
-
       this.current = this.query({
         after: this.pageInfo?.endCursor,
         first: this.getPerCall,
@@ -87,7 +84,6 @@ abstract class BaseList<TQuery, TObject> {
       const result = await this.current;
 
       this.current = null;
-      this.loading = false;
       this.data = [...this.data, ...(this.mapQueryData(result.data) || [])];
       this.pageInfo = this.getPageInfo(result);
 
