@@ -52,12 +52,7 @@ describe("useCollection", () => {
     expect(result.current.data).toMatchSnapshot();
     expect(result.current.loading).toBe(false);
 
-    const nextPromise = act(result.current.next);
-
-    expect(result.current.data).toMatchSnapshot();
-    expect(result.current.loading).toBe(true);
-
-    await act(() => nextPromise);
+    await act(result.current.next);
 
     expect(result.current.data).toMatchSnapshot();
     expect(result.current.loading).toBe(false);
