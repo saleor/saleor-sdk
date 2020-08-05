@@ -20,3 +20,37 @@ Array [
   },
 ]
 `;
+
+exports[`Collection object can get new page 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+]
+`;
+
+exports[`Collection object can get new page 2`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
