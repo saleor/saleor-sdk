@@ -21,16 +21,19 @@ function query(client: ApolloClient<any>) {
 function useCollectionList(params: ListParameters) {
   const client = useApolloClient();
   const [data, setData] = useState<BaseCollection[] | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   const list = useRef<CollectionList>();
   const willMount = useRef(true);
 
   async function initList() {
+    setLoading(true);
     list.current = new CollectionList(query(client), params.count);
     await list.current.init({
       after: params.endCursor,
       first: params.count,
     });
     setData(list.current.data);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -45,14 +48,16 @@ function useCollectionList(params: ListParameters) {
   }
 
   const next = async () => {
+    setLoading(true);
     const nextData = await list.current?.next();
     setData(nextData);
+    setLoading(false);
   };
 
   return {
     current: list.current?.current,
     data,
-    loading: list.current?.loading,
+    loading,
     next,
     pageInfo: list.current?.pageInfo,
   };

@@ -44,5 +44,13 @@ Array [
     "seoTitle": null,
     "slug": "summer-collection",
   },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
 ]
 `;
