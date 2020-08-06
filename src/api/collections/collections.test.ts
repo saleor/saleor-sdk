@@ -7,7 +7,7 @@ describe("Collection object", () => {
   it("can get a list of collections", async () => {
     const collectionsAPI = new CollectionsAPI(client);
     const list = collectionsAPI.getList({
-      count: 20,
+      first: 20,
     });
 
     expect(list.data).toBeUndefined();
@@ -21,7 +21,7 @@ describe("Collection object", () => {
   it("can get new page", async () => {
     const collectionsAPI = new CollectionsAPI(client);
     const list = collectionsAPI.getList({
-      count: 1,
+      first: 1,
     });
 
     expect(list.data).toBeUndefined();
