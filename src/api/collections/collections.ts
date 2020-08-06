@@ -4,12 +4,12 @@ import {
   CollectionListVariables,
 } from "../../queries/gqlTypes/CollectionList";
 import { BaseCollection } from "../../fragments/gqlTypes/BaseCollection";
-import { collections } from "../../queries/collections";
-import { WithList, ListParameters } from "../types";
+import { WithList } from "../types";
 import { CollectionList } from "./CollectionList";
 
 export class CollectionsAPI
-  implements WithList<CollectionListQuery, BaseCollection> {
+  implements
+    WithList<CollectionListQuery, BaseCollection, CollectionListVariables> {
   client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
@@ -20,21 +20,10 @@ export class CollectionsAPI
    * Method returning list of collections with ability to request next page
    * @param params List parameters
    */
-  getList = (params: ListParameters): CollectionList => {
-    const getPerCall = params.count;
+  getList = (variables: CollectionListVariables): CollectionList => {
+    const list = new CollectionList(this.client);
 
-    const query = (variables: CollectionListVariables) =>
-      this.client.query<CollectionListQuery, CollectionListVariables>({
-        query: collections,
-        variables,
-      });
-
-    const list = new CollectionList(query, getPerCall);
-
-    list.init({
-      after: params.endCursor,
-      first: getPerCall,
-    });
+    list.init(variables);
 
     return list;
   };

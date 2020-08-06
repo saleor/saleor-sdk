@@ -56,6 +56,6 @@ export interface CollectionList {
 }
 
 export interface CollectionListVariables {
-  first?: number | null;
+  first: number;
   after?: string | null;
 }
