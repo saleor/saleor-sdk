@@ -1,4 +1,4 @@
-import { ApolloQueryResult } from "apollo-client";
+import ApolloClient, { ApolloQueryResult } from "apollo-client";
 import { PageInfo } from "../../fragments/gqlTypes/PageInfo";
 import {
   GetBaseList,
@@ -7,11 +7,16 @@ import {
   GetPageInfo,
 } from "./types";
 
-abstract class BaseList<TQuery, TObject> {
+abstract class BaseList<TQuery, TObject, TVariables extends BaseListVariables> {
   /**
    * Awaitable promise of the current query
    */
   current: Promise<ApolloQueryResult<TQuery>> | null = null;
+
+  /**
+   * Apollo client
+   */
+  client: ApolloClient<any> | undefined = undefined;
 
   /**
    * List of objects, undefined if the first query is not finished yet
@@ -19,9 +24,9 @@ abstract class BaseList<TQuery, TObject> {
   data: TObject[] | undefined = undefined;
 
   /**
-   * Page size
+   * Query variables containing pagination, sorting, etc.
    */
-  getPerCall: number;
+  variables: TVariables | undefined = undefined;
 
   /**
    * Status of the current query
@@ -40,7 +45,7 @@ abstract class BaseList<TQuery, TObject> {
   /**
    * Method called to get objects from API
    */
-  query: GetBaseList<TQuery, BaseListVariables>;
+  abstract query: GetBaseList<TQuery, BaseListVariables>;
 
   /**
    * Function getting PageInfo object from query result
@@ -52,20 +57,22 @@ abstract class BaseList<TQuery, TObject> {
    */
   abstract mapQueryData: MapQueryData<TQuery, TObject>;
 
-  constructor(
-    query: GetBaseList<TQuery, BaseListVariables>,
-    getPerCall: number
-  ) {
-    this.getPerCall = getPerCall;
-    this.query = query;
+  constructor(client: ApolloClient<any>) {
+    this.client = client;
   }
+
+  cleanup = () => {
+    this.data = undefined;
+    this.pageInfo = undefined;
+  };
 
   /**
    * Initialize list by querying first page
-   * @param variables Query variables containing pagination, sorting, etc.
    */
-  init = async (variables: BaseListVariables): Promise<void> => {
-    this.current = this.query(variables);
+  init = async (variables: TVariables): Promise<void> => {
+    this.cleanup();
+    this.variables = variables;
+    this.current = this.query(this.variables);
     const result = await this.current;
     this.current = null;
     this.data = this.mapQueryData(result.data);
@@ -76,10 +83,15 @@ abstract class BaseList<TQuery, TObject> {
    * Get next page of objects
    */
   next = async (): Promise<TObject[]> => {
-    if (!this.loading && this.data && this.pageInfo?.hasNextPage) {
+    if (
+      !this.loading &&
+      this.data &&
+      this.pageInfo?.hasNextPage &&
+      this.variables
+    ) {
       this.current = this.query({
         after: this.pageInfo?.endCursor,
-        first: this.getPerCall,
+        first: this.variables.first,
       });
       const result = await this.current;
 

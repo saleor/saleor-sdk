@@ -15,7 +15,7 @@ describe("useCollection", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          count: 20,
+          first: 20,
         }),
       {
         wrapper,
@@ -36,7 +36,7 @@ describe("useCollection", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          count: 1,
+          first: 1,
         }),
       {
         wrapper,

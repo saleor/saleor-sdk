@@ -10,7 +10,7 @@ export type MapQueryData<TQuery, TObject> = (
 ) => TObject[] | undefined;
 
 export interface BaseListVariables {
-  after: string | null | undefined;
+  after?: string | null;
   first: number;
 }
 
