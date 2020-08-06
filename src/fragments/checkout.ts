@@ -73,6 +73,7 @@ export const checkoutProductVariantFragment = gql`
         url
       }
       productType {
+        id
         isShippingRequired
       }
     }
