@@ -1,8 +1,8 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import setupAPI from "../../../../testUtils/api";
-import useCollectionList from "./useCollectionList";
+import setupAPI from "../../../testUtils/api";
+import { useCollectionList } from "./collections";
 
 const { client } = setupAPI();
 
@@ -10,7 +10,7 @@ const wrapper: React.FC = ({ children }) => (
   <ApolloProvider client={client}>{children}</ApolloProvider>
 );
 
-describe("useCollection", () => {
+describe("useCollectionList", () => {
   it("can fetch collections", async () => {
     const { result } = renderHook(
       () =>
