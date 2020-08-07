@@ -1,5 +1,5 @@
 import { CollectionList } from "../../../api/collections/CollectionList";
-import makeList from "./makeList";
+import { makeList } from "../utils";
 
 const useCollectionList = makeList(client => new CollectionList(client));
 
