@@ -329,6 +329,7 @@ class CheckoutJobs {
     paymentToken,
     billingAddress,
     creditCard,
+    returnUrl,
   }: {
     checkoutId: string;
     amount: number;
@@ -336,16 +337,18 @@ class CheckoutJobs {
     paymentToken?: string;
     billingAddress: ICheckoutAddress;
     creditCard?: ICreditCard;
+    returnUrl?: string;
   }): PromiseCheckoutJobRunResponse => {
     const payment = LocalStorageHandler.getPayment();
 
-    const { data, error } = await this.apolloClientManager.createPayment(
+    const { data, error } = await this.apolloClientManager.createPayment({
       amount,
+      billingAddress,
       checkoutId,
       paymentGateway,
-      billingAddress,
-      paymentToken
-    );
+      paymentToken,
+      returnUrl,
+    });
 
     if (error) {
       return {

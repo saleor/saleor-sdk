@@ -83,15 +83,15 @@ export interface IPaymentCreditCard {
   /**
    * Card brand.
    */
-  brand?: string;
+  brand: string;
   /**
-   * The host name of the domain.
+   * First 4 digits of the card number.
    */
   firstDigits?: string | null;
   /**
    * Last 4 digits of the card number.
    */
-  lastDigits?: string;
+  lastDigits: string;
   /**
    * Two-digit number representing the card’s expiration month.
    */
@@ -121,6 +121,7 @@ export interface ICheckoutModel {
 export interface IPaymentModel {
   id?: string;
   token?: string;
+  returnUrl?: string;
   gateway?: string;
   creditCard?: IPaymentCreditCard | null;
 }
