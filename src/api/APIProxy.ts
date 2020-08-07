@@ -168,7 +168,7 @@ class APIProxy {
               password: variables.password,
             })
           )
-          .catch(credentialsError =>
+          .catch((credentialsError: any) =>
             // eslint-disable-next-line no-console
             console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError)
           );
