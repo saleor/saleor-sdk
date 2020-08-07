@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import ApolloClient from "apollo-client";
 import BaseList, { BaseListVariables } from "../../../helpers/BaseList";
 
-function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
+export function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
   createList: (
     client: ApolloClient<any>
   ) => BaseList<TQuery, TObject, TVariables>
@@ -50,5 +50,3 @@ function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
     };
   };
 }
-
-export default makeList;
