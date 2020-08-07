@@ -45,7 +45,7 @@ abstract class BaseList<TQuery, TObject, TVariables extends BaseListVariables> {
   /**
    * Method called to get objects from API
    */
-  abstract query: GetBaseList<TQuery, BaseListVariables>;
+  abstract query: GetBaseList<TQuery, TVariables>;
 
   /**
    * Function getting PageInfo object from query result
@@ -90,6 +90,7 @@ abstract class BaseList<TQuery, TObject, TVariables extends BaseListVariables> {
       this.variables
     ) {
       this.current = this.query({
+        ...this.variables,
         after: this.pageInfo?.endCursor,
         first: this.variables.first,
       });

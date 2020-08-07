@@ -3,6 +3,10 @@ import React from "react";
 import { ApolloProvider } from "react-apollo";
 import setupAPI from "../../../testUtils/api";
 import { useCollectionList } from "./collections";
+import {
+  OrderDirection,
+  CollectionSortField,
+} from "../../gqlTypes/globalTypes";
 
 const { client } = setupAPI();
 
@@ -43,18 +47,55 @@ describe("useCollectionList", () => {
       }
     );
 
-    expect(result.current.data).toBe(undefined);
-    expect(result.current.loading).toBe(true);
-
     // @ts-ignore
     await act(() => result.current.current);
 
     expect(result.current.data).toMatchSnapshot();
-    expect(result.current.loading).toBe(false);
 
     await act(result.current.next);
 
     expect(result.current.data).toMatchSnapshot();
     expect(result.current.loading).toBe(false);
+  });
+
+  it("can sort", async () => {
+    const { result } = renderHook(
+      () =>
+        useCollectionList({
+          first: 10,
+          sortBy: {
+            direction: OrderDirection.DESC,
+            field: CollectionSortField.NAME,
+          },
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    // @ts-ignore
+    await act(() => result.current.current);
+
+    expect(result.current.data).toMatchSnapshot();
+  });
+
+  it("can filter", async () => {
+    const { result } = renderHook(
+      () =>
+        useCollectionList({
+          filter: {
+            search: "winter",
+          },
+          first: 10,
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    // @ts-ignore
+    await act(() => result.current.current);
+
+    expect(result.current.data).toMatchSnapshot();
   });
 });
