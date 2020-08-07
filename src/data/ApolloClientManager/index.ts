@@ -764,13 +764,21 @@ export class ApolloClientManager {
     }
   };
 
-  createPayment = async (
-    amount: number,
-    checkoutId: string,
-    paymentGateway: string,
-    billingAddress: ICheckoutAddress,
-    paymentToken?: string
-  ) => {
+  createPayment = async ({
+    amount,
+    checkoutId,
+    paymentGateway,
+    billingAddress,
+    paymentToken,
+    returnUrl,
+  }: {
+    amount: number;
+    checkoutId: string;
+    paymentGateway: string;
+    billingAddress: ICheckoutAddress;
+    paymentToken?: string;
+    returnUrl?: string;
+  }) => {
     try {
       const variables = {
         checkoutId,
@@ -792,6 +800,7 @@ export class ApolloClientManager {
             streetAddress2: billingAddress.streetAddress2,
           },
           gateway: paymentGateway,
+          returnUrl,
           token: paymentToken,
         },
       };
