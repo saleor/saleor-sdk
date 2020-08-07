@@ -1,5 +1,6 @@
 import setupAPI from "../../../testUtils/api";
 import { CategoriesAPI } from "./categories";
+import * as fixtures from "./fixtures";
 
 const { client } = setupAPI();
 
@@ -44,7 +45,7 @@ describe("Categories object", () => {
   it("can get a list of subcategories", async () => {
     const list = categoriesAPI.getChildren({
       first: 20,
-      id: "Q2F0ZWdvcnk6Nw==",
+      id: fixtures.categoryWithChildren,
     });
 
     expect(list.data).toBeUndefined();
@@ -58,7 +59,7 @@ describe("Categories object", () => {
   it("can get a list of ancestor categories", async () => {
     const list = categoriesAPI.getAncestors({
       first: 20,
-      id: "Q2F0ZWdvcnk6MjI=",
+      id: fixtures.categoryWithParent,
     });
 
     expect(list.data).toBeUndefined();
