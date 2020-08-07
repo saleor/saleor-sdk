@@ -54,3 +54,37 @@ Array [
   },
 ]
 `;
+
+exports[`useCollectionList can filter 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
+
+exports[`useCollectionList can sort 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+]
+`;

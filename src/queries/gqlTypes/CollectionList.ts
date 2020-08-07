@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { CollectionSortingInput, CollectionFilterInput } from "./../../gqlTypes/globalTypes";
+
 // ====================================================
 // GraphQL query operation: CollectionList
 // ====================================================
@@ -58,4 +60,6 @@ export interface CollectionList {
 export interface CollectionListVariables {
   first: number;
   after?: string | null;
+  sortBy?: CollectionSortingInput | null;
+  filter?: CollectionFilterInput | null;
 }
