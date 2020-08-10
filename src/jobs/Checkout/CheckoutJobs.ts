@@ -396,9 +396,11 @@ class CheckoutJobs {
       };
     }
 
-    // TEMP DISABLED FOR ADYEN CHECKOUT TESTS
-    // this.localStorageHandler.setCheckout({});
-    // this.localStorageHandler.setPayment({});
+    if (!data?.confirmationNeeded) {
+      this.localStorageHandler.setCheckout({});
+      this.localStorageHandler.setPayment({});
+    }
+
     return { data };
   };
 }
