@@ -56,6 +56,12 @@ const handleDataErrors = <T extends QueryShape, TData>(
 };
 
 class APIProxy {
+  client: ApolloClient<any>;
+
+  constructor(client: ApolloClient<any>) {
+    this.client = client;
+  }
+
   getAttributes = this.watchQuery(QUERIES.Attributes, data => data.attributes);
 
   getProductDetails = this.watchQuery(
@@ -134,12 +140,6 @@ class APIProxy {
     data => data!.accountUpdate
   );
 
-  client: ApolloClient<any>;
-
-  constructor(client: ApolloClient<any>) {
-    this.client = client;
-  }
-
   signIn = async (
     variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
     options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
@@ -168,7 +168,7 @@ class APIProxy {
               password: variables.password,
             })
           )
-          .catch(credentialsError =>
+          .catch((credentialsError: any) =>
             // eslint-disable-next-line no-console
             console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError)
           );

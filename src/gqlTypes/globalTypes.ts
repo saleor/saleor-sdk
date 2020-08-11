@@ -76,6 +76,17 @@ export enum CheckoutErrorCode {
   ZERO_QUANTITY = "ZERO_QUANTITY",
 }
 
+export enum CollectionPublished {
+  HIDDEN = "HIDDEN",
+  PUBLISHED = "PUBLISHED",
+}
+
+export enum CollectionSortField {
+  AVAILABILITY = "AVAILABILITY",
+  NAME = "NAME",
+  PRODUCT_COUNT = "PRODUCT_COUNT",
+}
+
 /**
  * An enumeration.
  */
@@ -433,6 +444,17 @@ export interface CheckoutCreateInput {
 export interface CheckoutLineInput {
   quantity: number;
   variantId: string;
+}
+
+export interface CollectionFilterInput {
+  published?: CollectionPublished | null;
+  search?: string | null;
+  ids?: (string | null)[] | null;
+}
+
+export interface CollectionSortingInput {
+  direction: OrderDirection;
+  field: CollectionSortField;
 }
 
 export interface PaymentInput {

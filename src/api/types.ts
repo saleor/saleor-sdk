@@ -3,6 +3,7 @@ import { ApolloError } from "apollo-client";
 import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
 import { SetPassword } from "../mutations/gqlTypes/SetPassword";
 import { TokenAuth_tokenCreate } from "../mutations/gqlTypes/TokenAuth";
+import BaseList, { BaseListVariables } from "../helpers/BaseList";
 
 export interface ErrorResponse<T> {
   error?: any;
@@ -38,3 +39,11 @@ export type SetPasswordResult = {
   data: SetPassword | null;
   error: ApolloError | null;
 } | null;
+
+export interface WithList<
+  TQuery,
+  TObject,
+  TVariables extends BaseListVariables
+> {
+  getList(variables: TVariables): BaseList<TQuery, TObject, TVariables>;
+}

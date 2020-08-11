@@ -7,6 +7,7 @@ import {
 import { RequireOnlyOne } from "../tsHelpers";
 import * as AttributesList from "./attributes";
 import * as Category from "./category";
+import * as Collections from "./collections";
 import * as Orders from "./orders";
 import * as Product from "./products";
 import * as Shop from "./shop";
@@ -37,6 +38,10 @@ import {
   VariantsProducts,
   VariantsProductsVariables,
 } from "./gqlTypes/VariantsProducts";
+import {
+  CollectionListVariables,
+  CollectionList,
+} from "./gqlTypes/CollectionList";
 
 type QueryOptions<T = {}> = T extends { [n: string]: never }
   ? Omit<ApolloQueryOptions<{}>, "query">
@@ -58,6 +63,14 @@ export const QUERIES = {
   ): ObservableQuery<CategoryDetails, any> =>
     client.watchQuery({
       query: Category.categoryQuery,
+      ...options,
+    }),
+  CollectionList: (
+    client: ApolloClient<any>,
+    options: QueryOptions<CollectionListVariables>
+  ): ObservableQuery<CollectionList, any> =>
+    client.watchQuery({
+      query: Collections.collections,
       ...options,
     }),
   GetShopDetails: <TCacheShape>(

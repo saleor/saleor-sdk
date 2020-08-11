@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useCollectionList can fetch collections 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
+
+exports[`useCollectionList can fetch next page 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+]
+`;
+
+exports[`useCollectionList can fetch next page 2`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
+
+exports[`useCollectionList can filter 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+]
+`;
+
+exports[`useCollectionList can sort 1`] = `
+Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoy",
+    "name": "Winter sale",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "winter-sale",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjox",
+    "name": "Summer collection",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "summer-collection",
+  },
+]
+`;
