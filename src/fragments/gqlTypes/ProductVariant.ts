@@ -157,6 +157,10 @@ export interface ProductVariant_product_thumbnail2x {
 
 export interface ProductVariant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 

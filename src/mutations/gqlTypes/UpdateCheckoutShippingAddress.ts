@@ -446,6 +446,10 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
 
 export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 
@@ -996,6 +1000,10 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_line
 
 export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 

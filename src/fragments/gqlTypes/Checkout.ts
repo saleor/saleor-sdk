@@ -427,6 +427,10 @@ export interface Checkout_lines_variant_product_thumbnail2x {
 
 export interface Checkout_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 

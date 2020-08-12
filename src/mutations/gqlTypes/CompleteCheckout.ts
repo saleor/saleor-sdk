@@ -217,6 +217,10 @@ export interface CompleteCheckout_checkoutComplete_order_lines_variant_product_t
 
 export interface CompleteCheckout_checkoutComplete_order_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 
