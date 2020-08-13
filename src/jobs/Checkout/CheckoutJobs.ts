@@ -54,23 +54,6 @@ class CheckoutJobs {
     };
   };
 
-  providePaymentGateways = async (): PromiseCheckoutJobRunResponse => {
-    const { data, error } = await this.apolloClientManager.getPaymentGateways();
-
-    if (error) {
-      return {
-        dataError: {
-          error,
-          type: DataErrorCheckoutTypes.GET_PAYMENT_GATEWAYS,
-        },
-      };
-    }
-
-    return {
-      data,
-    };
-  };
-
   createCheckout = async ({
     email,
     lines,

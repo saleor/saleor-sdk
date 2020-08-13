@@ -103,12 +103,6 @@ export class SaleorCheckoutAPI extends ErrorListener {
         };
       }
     );
-    // this.saleorState.subscribeToChange(
-    //   StateItems.PAYMENT_GATEWAYS,
-    //   (paymentGateways: PaymentGateway[]) => {
-    //     this.availablePaymentGateways = paymentGateways;
-    //   }
-    // );
     this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {
