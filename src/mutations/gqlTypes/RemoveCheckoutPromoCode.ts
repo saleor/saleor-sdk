@@ -429,6 +429,10 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 

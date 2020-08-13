@@ -86,7 +86,7 @@ export interface IPaymentCreditCard {
   /**
    * The host name of the domain.
    */
-  firstDigits?: string;
+  firstDigits?: string | null;
   /**
    * Last 4 digits of the card number.
    */
@@ -94,11 +94,11 @@ export interface IPaymentCreditCard {
   /**
    * Two-digit number representing the card’s expiration month.
    */
-  expMonth?: number;
+  expMonth?: number | null;
   /**
    * Four-digit number representing the card’s expiration year.
    */
-  expYear?: number;
+  expYear?: number | null;
 }
 
 export interface ICheckoutModel {

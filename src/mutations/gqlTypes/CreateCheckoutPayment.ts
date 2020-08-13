@@ -429,6 +429,10 @@ export interface CreateCheckoutPayment_checkoutPaymentCreate_checkout_lines_vari
 
 export interface CreateCheckoutPayment_checkoutPaymentCreate_checkout_lines_variant_product_productType {
   __typename: "ProductType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   isShippingRequired: boolean;
 }
 
@@ -557,9 +561,9 @@ export interface CreateCheckoutPayment_checkoutPaymentCreate_payment_creditCard 
    */
   brand: string;
   /**
-   * The host name of the domain.
+   * First 4 digits of the card number.
    */
-  firstDigits: string;
+  firstDigits: string | null;
   /**
    * Last 4 digits of the card number.
    */
@@ -567,11 +571,11 @@ export interface CreateCheckoutPayment_checkoutPaymentCreate_payment_creditCard 
   /**
    * Two-digit number representing the card’s expiration month.
    */
-  expMonth: number;
+  expMonth: number | null;
   /**
    * Four-digit number representing the card’s expiration year.
    */
-  expYear: number;
+  expYear: number | null;
 }
 
 export interface CreateCheckoutPayment_checkoutPaymentCreate_payment {
