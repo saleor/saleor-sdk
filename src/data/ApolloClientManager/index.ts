@@ -2,7 +2,6 @@ import ApolloClient from "apollo-client";
 
 import { Checkout } from "../../fragments/gqlTypes/Checkout";
 import { Payment } from "../../fragments/gqlTypes/Payment";
-import { PaymentGateway } from "../../fragments/gqlTypes/PaymentGateway";
 import { User } from "../../fragments/gqlTypes/User";
 import { CountryCode } from "../../gqlTypes/globalTypes";
 import {
@@ -63,10 +62,8 @@ import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
 } from "../../queries/gqlTypes/CheckoutProductVariants";
-import { GetShopPaymentGateways } from "../../queries/gqlTypes/GetShopPaymentGateways";
 import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails";
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
-import * as ShopQueries from "../../queries/shop";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
 
@@ -88,23 +85,6 @@ export class ApolloClientManager {
         query: UserQueries.getUserDetailsQuery,
       })
       .subscribe(value => next(value.data?.me), error, complete);
-  };
-
-  subscribeToPaymentGatewaysChange = (
-    next: (value: PaymentGateway[] | null) => void,
-    error?: (error: any) => void,
-    complete?: () => void
-  ) => {
-    this.client
-      .watchQuery<GetShopPaymentGateways, any>({
-        fetchPolicy: "cache-only",
-        query: ShopQueries.getShopPaymentGateways,
-      })
-      .subscribe(
-        value => next(value.data.shop?.availablePaymentGateways),
-        error,
-        complete
-      );
   };
 
   getUser = async () => {
@@ -331,25 +311,6 @@ export class ApolloClientManager {
         ...linesWithMissingVariantUpdated,
         ...linesWithProperVariantUpdated,
       ],
-    };
-  };
-
-  getPaymentGateways = async () => {
-    const { data, errors } = await this.client.query<
-      GetShopPaymentGateways,
-      any
-    >({
-      fetchPolicy: "network-only",
-      query: ShopQueries.getShopPaymentGateways,
-    });
-
-    if (errors?.length) {
-      return {
-        error: errors,
-      };
-    }
-    return {
-      data: data.shop.availablePaymentGateways,
     };
   };
 
