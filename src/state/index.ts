@@ -20,14 +20,12 @@ export interface SaleorStateLoaded {
   signInToken: boolean;
   checkout: boolean;
   payment: boolean;
-  paymentGateways: boolean;
   summaryPrices: boolean;
 }
 
 const defaultSaleorStateLoaded = {
   checkout: false,
   payment: false,
-  paymentGateways: false,
   signInToken: false,
   summaryPrices: false,
   user: false,

@@ -106,8 +106,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {
-        this.loaded =
-          loaded.checkout && loaded.payment && loaded.paymentGateways;
+        this.loaded = loaded.checkout && loaded.payment;
       }
     );
   }
