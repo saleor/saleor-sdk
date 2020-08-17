@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Auth API Can sign in 1`] = `
+Object {
+  "__typename": "User",
+  "addresses": Array [],
+  "defaultBillingAddress": null,
+  "defaultShippingAddress": null,
+  "email": "admin@example.com",
+  "firstName": "",
+  "id": "VXNlcjoyNA==",
+  "isStaff": true,
+  "lastName": "",
+}
+`;
+
+exports[`Auth API Returns error if credentials are invalid 1`] = `undefined`;

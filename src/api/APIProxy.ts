@@ -10,9 +10,8 @@ import { UserOrderByToken } from "../queries/gqlTypes/UserOrderByToken";
 import { OrderByToken } from "../queries/gqlTypes/OrderByToken";
 import { PasswordChange } from "../mutations/gqlTypes/PasswordChange";
 import { SetPassword } from "../mutations/gqlTypes/SetPassword";
-import { getAuthToken, setAuthToken } from "../auth";
+import { getAuthToken } from "../auth";
 import { MUTATIONS } from "../mutations";
-import { TokenAuth_tokenCreate } from "../mutations/gqlTypes/TokenAuth";
 import { QUERIES } from "../queries";
 import { RequireAtLeastOne } from "../tsHelpers";
 import {
@@ -28,8 +27,7 @@ import {
   isDataEmpty,
   mergeEdges,
 } from "../utils";
-import { SignIn, SetPasswordChange, SetPasswordResult } from "./types";
-import { BROWSER_NO_CREDENTIAL_API_MESSAGE } from "./Auth";
+import { SetPasswordChange, SetPasswordResult } from "./types";
 
 const handleDataErrors = <T extends QueryShape, TData>(
   mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
@@ -139,46 +137,6 @@ class APIProxy {
     MUTATIONS.AccountUpdate,
     data => data!.accountUpdate
   );
-
-  signIn = async (
-    variables: InferOptions<MUTATIONS["TokenAuth"]>["variables"],
-    options?: Omit<InferOptions<MUTATIONS["TokenAuth"]>, "variables">
-  ): Promise<SignIn> => {
-    await this.client.resetStore();
-    let result: {
-      data: TokenAuth_tokenCreate | null;
-    } | null = null;
-
-    result = await this.fireQuery(
-      MUTATIONS.TokenAuth,
-      mutationData => mutationData!.tokenCreate
-    )(variables, {
-      ...options,
-      fetchPolicy: "no-cache",
-    });
-    const { data } = result;
-
-    if (data?.token && data.errors.length === 0) {
-      setAuthToken(data.token);
-      if (window.PasswordCredential && variables) {
-        navigator.credentials
-          .store(
-            new window.PasswordCredential({
-              id: variables.email,
-              password: variables.password,
-            })
-          )
-          .catch((credentialsError: any) =>
-            // eslint-disable-next-line no-console
-            console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError)
-          );
-      }
-    }
-    return {
-      data,
-      error: null,
-    };
-  };
 
   setPassword = async (
     variables: InferOptions<MUTATIONS["SetPassword"]>["variables"],
