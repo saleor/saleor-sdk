@@ -308,16 +308,16 @@ class CheckoutJobs {
   createPayment = async ({
     checkoutId,
     amount,
-    paymentGateway,
-    paymentToken,
+    gateway,
+    token,
     billingAddress,
     creditCard,
     returnUrl,
   }: {
     checkoutId: string;
     amount: number;
-    paymentGateway: string;
-    paymentToken?: string;
+    gateway: string;
+    token?: string;
     billingAddress: ICheckoutAddress;
     creditCard?: ICreditCard;
     returnUrl?: string;
@@ -328,9 +328,9 @@ class CheckoutJobs {
       amount,
       billingAddress,
       checkoutId,
-      paymentGateway,
-      paymentToken,
+      gateway,
       returnUrl,
+      token,
     });
 
     if (error) {

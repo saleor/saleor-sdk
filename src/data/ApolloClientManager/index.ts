@@ -729,9 +729,9 @@ export class ApolloClientManager {
   createPayment = async ({
     amount,
     checkoutId,
-    paymentGateway,
+    gateway,
     billingAddress,
-    paymentToken,
+    token,
     returnUrl,
   }: CreatePaymentInput) => {
     try {
@@ -754,9 +754,9 @@ export class ApolloClientManager {
             streetAddress1: billingAddress.streetAddress1,
             streetAddress2: billingAddress.streetAddress2,
           },
-          gateway: paymentGateway,
+          gateway,
           returnUrl,
-          token: paymentToken,
+          token,
         },
       };
       const { data, errors } = await this.client.mutate<
