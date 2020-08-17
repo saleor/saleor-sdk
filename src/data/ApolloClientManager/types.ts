@@ -23,9 +23,9 @@ export interface IApolloClientManagerResponse<T> {
 export interface CreatePaymentInput {
   amount: number;
   checkoutId: string;
-  paymentGateway: string;
+  gateway: string;
   billingAddress: ICheckoutAddress;
-  paymentToken?: string;
+  token?: string;
   returnUrl?: string;
 }
 

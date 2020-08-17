@@ -394,12 +394,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  createPayment = async ({
-    gateway,
-    token,
-    creditCard,
-    returnUrl,
-  }: CreatePaymentInput): CheckoutResponse => {
+  createPayment = async (input: CreatePaymentInput): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
     const billingAddress = this.saleorState.checkout?.billingAddress;
     const amount = this.saleorState.summaryPrices?.totalPrice?.gross.amount;
@@ -414,13 +409,10 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "createPayment",
         {
+          ...input,
           amount,
           billingAddress,
           checkoutId,
-          creditCard,
-          paymentGateway: gateway,
-          paymentToken: token,
-          returnUrl,
         }
       );
       return {
@@ -440,18 +432,16 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  completeCheckout = async ({
-    paymentData,
-    redirectUrl,
-    storeSource,
-  }: CompleteCheckoutInput): CheckoutResponse => {
+  completeCheckout = async (
+    input?: CompleteCheckoutInput
+  ): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
       const { data, dataError } = await this.jobsManager.run(
         "checkout",
         "completeCheckout",
-        { checkoutId, paymentData, redirectUrl, storeSource }
+        { ...input, checkoutId }
       );
       return {
         data,
