@@ -15,9 +15,10 @@ import {
   IAddress,
   IAvailableShippingMethods,
   ICheckout,
-  ICreditCard,
   IPayment,
   IPromoCodeDiscount,
+  CreatePaymentInput,
+  CompleteCheckoutInput,
 } from "./types";
 
 type CheckoutResponse = PromiseRunResponse<
@@ -398,12 +399,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     token,
     creditCard,
     returnUrl,
-  }: {
-    gateway: string;
-    token?: string;
-    creditCard?: ICreditCard;
-    returnUrl?: string;
-  }): CheckoutResponse => {
+  }: CreatePaymentInput): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
     const billingAddress = this.saleorState.checkout?.billingAddress;
     const amount = this.saleorState.summaryPrices?.totalPrice?.gross.amount;
@@ -444,11 +440,11 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  completeCheckout = async (
-    paymentData?: object,
-    redirectUrl?: string,
-    storeSource?: boolean
-  ): CheckoutResponse => {
+  completeCheckout = async ({
+    paymentData,
+    redirectUrl,
+    storeSource,
+  }: CompleteCheckoutInput): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {

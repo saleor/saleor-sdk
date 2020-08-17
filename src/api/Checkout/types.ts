@@ -72,3 +72,16 @@ export enum DataErrorCheckoutTypes {
   "GET_CHECKOUT",
   "GET_PAYMENT_GATEWAYS",
 }
+
+export interface CreatePaymentInput {
+  gateway: string;
+  token?: string;
+  creditCard?: ICreditCard;
+  returnUrl?: string;
+}
+
+export interface CompleteCheckoutInput {
+  paymentData?: object;
+  redirectUrl?: string;
+  storeSource?: boolean;
+}

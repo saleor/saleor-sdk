@@ -363,12 +363,12 @@ class CheckoutJobs {
     redirectUrl?: string;
     storeSource?: boolean;
   }): PromiseCheckoutJobRunResponse => {
-    const { data, error } = await this.apolloClientManager.completeCheckout(
+    const { data, error } = await this.apolloClientManager.completeCheckout({
       checkoutId,
       paymentData,
       redirectUrl,
-      storeSource
-    );
+      storeSource,
+    });
 
     if (error) {
       return {
