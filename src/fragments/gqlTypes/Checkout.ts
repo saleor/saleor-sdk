@@ -505,6 +505,38 @@ export interface Checkout_discount {
   amount: number;
 }
 
+export interface Checkout_availablePaymentGateways_config {
+  __typename: "GatewayConfigLine";
+  /**
+   * Gateway config key.
+   */
+  field: string;
+  /**
+   * Gateway config value for key.
+   */
+  value: string | null;
+}
+
+export interface Checkout_availablePaymentGateways {
+  __typename: "PaymentGateway";
+  /**
+   * Payment gateway ID.
+   */
+  id: string;
+  /**
+   * Payment gateway name.
+   */
+  name: string;
+  /**
+   * Payment gateway client configuration.
+   */
+  config: Checkout_availablePaymentGateways_config[];
+  /**
+   * Payment gateway supported currencies.
+   */
+  currencies: (string | null)[];
+}
+
 export interface Checkout {
   __typename: "Checkout";
   /**
@@ -550,4 +582,8 @@ export interface Checkout {
   discountName: string | null;
   translatedDiscountName: string | null;
   voucherCode: string | null;
+  /**
+   * List of available payment gateways.
+   */
+  availablePaymentGateways: Checkout_availablePaymentGateways[];
 }

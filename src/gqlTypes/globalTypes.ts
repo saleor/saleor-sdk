@@ -373,11 +373,14 @@ export enum OrderStatus {
  * An enumeration.
  */
 export enum PaymentChargeStatusEnum {
+  CANCELLED = "CANCELLED",
   FULLY_CHARGED = "FULLY_CHARGED",
   FULLY_REFUNDED = "FULLY_REFUNDED",
   NOT_CHARGED = "NOT_CHARGED",
   PARTIALLY_CHARGED = "PARTIALLY_CHARGED",
   PARTIALLY_REFUNDED = "PARTIALLY_REFUNDED",
+  PENDING = "PENDING",
+  REFUSED = "REFUSED",
 }
 
 /**
@@ -459,9 +462,10 @@ export interface CollectionSortingInput {
 
 export interface PaymentInput {
   gateway: string;
-  token: string;
+  token?: string | null;
   amount?: any | null;
   billingAddress?: AddressInput | null;
+  returnUrl?: string | null;
 }
 
 export interface ProductOrder {

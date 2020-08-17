@@ -1,16 +1,13 @@
 import ApolloClient from "apollo-client";
 
 import { Checkout } from "../../fragments/gqlTypes/Checkout";
-import { OrderDetail } from "../../fragments/gqlTypes/OrderDetail";
 import { Payment } from "../../fragments/gqlTypes/Payment";
-import { PaymentGateway } from "../../fragments/gqlTypes/PaymentGateway";
 import { User } from "../../fragments/gqlTypes/User";
 import { CountryCode } from "../../gqlTypes/globalTypes";
 import {
   ICheckoutAddress,
   ICheckoutModel,
   ICheckoutModelLine,
-  IOrderModel,
   IPaymentModel,
 } from "../../helpers/LocalStorageHandler";
 import * as AuthMutations from "../../mutations/auth";
@@ -65,12 +62,11 @@ import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
 } from "../../queries/gqlTypes/CheckoutProductVariants";
-import { GetShopPaymentGateways } from "../../queries/gqlTypes/GetShopPaymentGateways";
 import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails";
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
-import * as ShopQueries from "../../queries/shop";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
+import { CreatePaymentInput, CompleteCheckoutInput } from "./types";
 
 export class ApolloClientManager {
   private client: ApolloClient<any>;
@@ -90,23 +86,6 @@ export class ApolloClientManager {
         query: UserQueries.getUserDetailsQuery,
       })
       .subscribe(value => next(value.data?.me), error, complete);
-  };
-
-  subscribeToPaymentGatewaysChange = (
-    next: (value: PaymentGateway[] | null) => void,
-    error?: (error: any) => void,
-    complete?: () => void
-  ) => {
-    this.client
-      .watchQuery<GetShopPaymentGateways, any>({
-        fetchPolicy: "cache-only",
-        query: ShopQueries.getShopPaymentGateways,
-      })
-      .subscribe(
-        value => next(value.data.shop?.availablePaymentGateways),
-        error,
-        complete
-      );
   };
 
   getUser = async () => {
@@ -333,25 +312,6 @@ export class ApolloClientManager {
         ...linesWithMissingVariantUpdated,
         ...linesWithProperVariantUpdated,
       ],
-    };
-  };
-
-  getPaymentGateways = async () => {
-    const { data, errors } = await this.client.query<
-      GetShopPaymentGateways,
-      any
-    >({
-      fetchPolicy: "network-only",
-      query: ShopQueries.getShopPaymentGateways,
-    });
-
-    if (errors?.length) {
-      return {
-        error: errors,
-      };
-    }
-    return {
-      data: data.shop.availablePaymentGateways,
     };
   };
 
@@ -766,13 +726,14 @@ export class ApolloClientManager {
     }
   };
 
-  createPayment = async (
-    amount: number,
-    checkoutId: string,
-    paymentGateway: string,
-    paymentToken: string,
-    billingAddress: ICheckoutAddress
-  ) => {
+  createPayment = async ({
+    amount,
+    checkoutId,
+    gateway,
+    billingAddress,
+    token,
+    returnUrl,
+  }: CreatePaymentInput) => {
     try {
       const variables = {
         checkoutId,
@@ -793,8 +754,9 @@ export class ApolloClientManager {
             streetAddress1: billingAddress.streetAddress1,
             streetAddress2: billingAddress.streetAddress2,
           },
-          gateway: paymentGateway,
-          token: paymentToken,
+          gateway,
+          returnUrl,
+          token,
         },
       };
       const { data, errors } = await this.client.mutate<
@@ -828,14 +790,26 @@ export class ApolloClientManager {
     }
   };
 
-  completeCheckout = async (checkoutId: string) => {
+  completeCheckout = async ({
+    checkoutId,
+    paymentData,
+    redirectUrl,
+    storeSource,
+  }: CompleteCheckoutInput) => {
     try {
+      const paymentDataString = paymentData && JSON.stringify(paymentData);
+
       const { data, errors } = await this.client.mutate<
         CompleteCheckout,
         CompleteCheckoutVariables
       >({
         mutation: CheckoutMutations.completeCheckoutMutation,
-        variables: { checkoutId },
+        variables: {
+          checkoutId,
+          paymentData: paymentDataString,
+          redirectUrl,
+          storeSource,
+        },
       });
 
       if (errors?.length) {
@@ -848,9 +822,9 @@ export class ApolloClientManager {
           error: data?.checkoutComplete?.errors,
         };
       }
-      if (data?.checkoutComplete?.order) {
+      if (data?.checkoutComplete) {
         return {
-          data: this.constructOrderModel(data.checkoutComplete.order),
+          data: data.checkoutComplete,
         };
       }
       return {};
@@ -871,9 +845,11 @@ export class ApolloClientManager {
     discountName,
     voucherCode,
     lines,
+    availablePaymentGateways,
     availableShippingMethods,
     shippingMethod,
   }: Checkout): ICheckoutModel => ({
+    availablePaymentGateways,
     availableShippingMethods: availableShippingMethods
       ? availableShippingMethods.filter(filterNotEmptyArrayItems)
       : [],
@@ -920,16 +896,6 @@ export class ApolloClientManager {
     creditCard,
     gateway,
     id,
-    token,
-  });
-
-  private constructOrderModel = ({
-    id,
-    token,
-    number: orderNumber,
-  }: OrderDetail): IOrderModel => ({
-    id,
-    number: orderNumber,
     token,
   });
 }

@@ -20,14 +20,12 @@ export interface SaleorStateLoaded {
   signInToken: boolean;
   checkout: boolean;
   payment: boolean;
-  paymentGateways: boolean;
   summaryPrices: boolean;
 }
 
 const defaultSaleorStateLoaded = {
   checkout: false,
   payment: false,
-  paymentGateways: false,
   signInToken: false,
   summaryPrices: false,
   user: false,
@@ -91,9 +89,6 @@ export class SaleorState extends NamedObservable<StateItems> {
       LocalStorageItems.PAYMENT,
       this.onPaymentUpdate
     );
-    this.apolloClientManager.subscribeToPaymentGatewaysChange(
-      this.onPaymentGatewaysUpdate
-    );
     this.localStorageHandler.subscribeToChange(
       LocalStorageItems.TOKEN,
       this.onSignInTokenUpdate
@@ -118,11 +113,6 @@ export class SaleorState extends NamedObservable<StateItems> {
         isUserSignedIn: !!this.user,
       });
       this.onPaymentUpdate(LocalStorageHandler.getPayment());
-      await this.jobsManager.run(
-        "checkout",
-        "providePaymentGateways",
-        undefined
-      );
     }
   };
 
@@ -173,19 +163,6 @@ export class SaleorState extends NamedObservable<StateItems> {
     this.notifyChange(StateItems.PAYMENT, this.payment);
     this.onLoadedUpdate({
       payment: true,
-    });
-  };
-
-  private onPaymentGatewaysUpdate = (
-    paymentGateways?: PaymentGateway[] | null
-  ) => {
-    this.availablePaymentGateways = paymentGateways;
-    this.notifyChange(
-      StateItems.PAYMENT_GATEWAYS,
-      this.availablePaymentGateways
-    );
-    this.onLoadedUpdate({
-      paymentGateways: true,
     });
   };
 

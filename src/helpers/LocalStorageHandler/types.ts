@@ -3,6 +3,7 @@ import {
   Checkout_lines_variant_attributes,
   Checkout_lines_variant_pricing,
   Checkout_lines_variant_product,
+  Checkout_availablePaymentGateways,
 } from "../../fragments/gqlTypes/Checkout";
 import { IQueuedJobs } from "../../jobs/QueuedJobs";
 
@@ -82,15 +83,15 @@ export interface IPaymentCreditCard {
   /**
    * Card brand.
    */
-  brand?: string;
+  brand: string;
   /**
-   * The host name of the domain.
+   * First 4 digits of the card number.
    */
   firstDigits?: string | null;
   /**
    * Last 4 digits of the card number.
    */
-  lastDigits?: string;
+  lastDigits: string;
   /**
    * Two-digit number representing the card’s expiration month.
    */
@@ -113,12 +114,14 @@ export interface ICheckoutModel {
   promoCodeDiscount?: ICheckoutModelPromoCodeDiscount;
   lines?: ICheckoutModelLine[] | null;
   availableShippingMethods?: Checkout_availableShippingMethods[];
+  availablePaymentGateways?: Checkout_availablePaymentGateways[];
   shippingMethod?: ICheckoutModelShippingMethod | null;
 }
 
 export interface IPaymentModel {
   id?: string;
   token?: string;
+  returnUrl?: string;
   gateway?: string;
   creditCard?: IPaymentCreditCard | null;
 }

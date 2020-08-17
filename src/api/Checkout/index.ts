@@ -15,10 +15,16 @@ import {
   IAddress,
   IAvailableShippingMethods,
   ICheckout,
-  ICreditCard,
   IPayment,
   IPromoCodeDiscount,
+  CreatePaymentInput,
+  CompleteCheckoutInput,
 } from "./types";
+
+type CheckoutResponse = PromiseRunResponse<
+  DataErrorCheckoutTypes,
+  FunctionErrorCheckoutTypes
+>;
 
 export class SaleorCheckoutAPI extends ErrorListener {
   loaded: boolean;
@@ -62,6 +68,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
           selectedShippingAddressId,
           selectedBillingAddressId,
           billingAsShipping,
+          availablePaymentGateways,
           availableShippingMethods,
           shippingMethod,
           promoCodeDiscount,
@@ -76,6 +83,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         };
         this.selectedShippingAddressId = selectedShippingAddressId;
         this.selectedBillingAddressId = selectedBillingAddressId;
+        this.availablePaymentGateways = availablePaymentGateways;
         this.availableShippingMethods = availableShippingMethods;
         this.billingAsShipping = billingAsShipping;
         this.promoCodeDiscount = {
@@ -97,16 +105,9 @@ export class SaleorCheckoutAPI extends ErrorListener {
       }
     );
     this.saleorState.subscribeToChange(
-      StateItems.PAYMENT_GATEWAYS,
-      (paymentGateways: PaymentGateway[]) => {
-        this.availablePaymentGateways = paymentGateways;
-      }
-    );
-    this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {
-        this.loaded =
-          loaded.checkout && loaded.payment && loaded.paymentGateways;
+        this.loaded = loaded.checkout && loaded.payment;
       }
     );
   }
@@ -114,7 +115,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
   setShippingAddress = async (
     shippingAddress: IAddress,
     email: string
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  ): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
     const alteredLines = this.saleorState.checkout?.lines?.map(item => ({
       quantity: item!.quantity,
@@ -171,7 +172,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
   setBillingAddress = async (
     billingAddress: IAddress,
     email?: string
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  ): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
     const isShippingRequiredForProducts = this.saleorState.checkout?.lines
       ?.filter(line => line.quantity > 0)
@@ -307,9 +308,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  setShippingMethod = async (
-    shippingMethodId: string
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  setShippingMethod = async (shippingMethodId: string): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
@@ -338,9 +337,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  addPromoCode = async (
-    promoCode: string
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  addPromoCode = async (promoCode: string): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
@@ -370,9 +367,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  removePromoCode = async (
-    promoCode: string
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  removePromoCode = async (promoCode: string): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
@@ -399,11 +394,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  createPayment = async (
-    gateway: string,
-    token: string,
-    creditCard?: ICreditCard
-  ): PromiseRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes> => {
+  createPayment = async (input: CreatePaymentInput): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
     const billingAddress = this.saleorState.checkout?.billingAddress;
     const amount = this.saleorState.summaryPrices?.totalPrice?.gross.amount;
@@ -418,12 +409,10 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "createPayment",
         {
+          ...input,
           amount,
           billingAddress,
           checkoutId,
-          creditCard,
-          paymentGateway: gateway,
-          paymentToken: token,
         }
       );
       return {
@@ -443,17 +432,16 @@ export class SaleorCheckoutAPI extends ErrorListener {
     };
   };
 
-  completeCheckout = async (): PromiseRunResponse<
-    DataErrorCheckoutTypes,
-    FunctionErrorCheckoutTypes
-  > => {
+  completeCheckout = async (
+    input?: CompleteCheckoutInput
+  ): CheckoutResponse => {
     const checkoutId = this.saleorState.checkout?.id;
 
     if (checkoutId) {
       const { data, dataError } = await this.jobsManager.run(
         "checkout",
         "completeCheckout",
-        { checkoutId }
+        { ...input, checkoutId }
       );
       return {
         data,

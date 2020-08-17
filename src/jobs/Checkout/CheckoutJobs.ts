@@ -1,14 +1,22 @@
 import {
   DataErrorCheckoutTypes,
   FunctionErrorCheckoutTypes,
-  ICreditCard,
 } from "../../api/Checkout/types";
 import { ApolloClientManager } from "../../data/ApolloClientManager";
-import {
-  ICheckoutAddress,
-  LocalStorageHandler,
-} from "../../helpers/LocalStorageHandler";
+import { LocalStorageHandler } from "../../helpers/LocalStorageHandler";
 import { JobRunResponse } from "../types";
+import {
+  CompleteCheckoutJobInput,
+  CreatePaymentJobInput,
+  RemovePromoCodeJobInput,
+  AddPromoCodeJobInput,
+  SetShippingMethodJobInput,
+  ProvideCheckoutJobInput,
+  CreateCheckoutJobInput,
+  SetShippingAddressJobInput,
+  SetBillingAddressJobInput,
+  SetBillingAddressWithEmailJobInput,
+} from "./types";
 
 export type PromiseCheckoutJobRunResponse = Promise<
   JobRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes>
@@ -29,9 +37,7 @@ class CheckoutJobs {
 
   provideCheckout = async ({
     isUserSignedIn,
-  }: {
-    isUserSignedIn: boolean;
-  }): PromiseCheckoutJobRunResponse => {
+  }: ProvideCheckoutJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.getCheckout(
@@ -54,23 +60,6 @@ class CheckoutJobs {
     };
   };
 
-  providePaymentGateways = async (): PromiseCheckoutJobRunResponse => {
-    const { data, error } = await this.apolloClientManager.getPaymentGateways();
-
-    if (error) {
-      return {
-        dataError: {
-          error,
-          type: DataErrorCheckoutTypes.GET_PAYMENT_GATEWAYS,
-        },
-      };
-    }
-
-    return {
-      data,
-    };
-  };
-
   createCheckout = async ({
     email,
     lines,
@@ -78,14 +67,7 @@ class CheckoutJobs {
     selectedShippingAddressId,
     billingAddress,
     selectedBillingAddressId,
-  }: {
-    email: string;
-    lines: Array<{ variantId: string; quantity: number }>;
-    shippingAddress?: ICheckoutAddress;
-    selectedShippingAddressId?: string;
-    billingAddress?: ICheckoutAddress;
-    selectedBillingAddressId?: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: CreateCheckoutJobInput): PromiseCheckoutJobRunResponse => {
     const { data, error } = await this.apolloClientManager.createCheckout(
       email,
       lines,
@@ -121,12 +103,7 @@ class CheckoutJobs {
     shippingAddress,
     email,
     selectedShippingAddressId,
-  }: {
-    checkoutId: string;
-    shippingAddress: ICheckoutAddress;
-    email: string;
-    selectedShippingAddressId?: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: SetShippingAddressJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingAddress(
@@ -159,12 +136,7 @@ class CheckoutJobs {
     billingAddress,
     billingAsShipping,
     selectedBillingAddressId,
-  }: {
-    checkoutId: string;
-    billingAddress: ICheckoutAddress;
-    billingAsShipping?: boolean;
-    selectedBillingAddressId?: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: SetBillingAddressJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setBillingAddress(
@@ -195,12 +167,7 @@ class CheckoutJobs {
     email,
     billingAddress,
     selectedBillingAddressId,
-  }: {
-    checkoutId: string;
-    email: string;
-    billingAddress: ICheckoutAddress;
-    selectedBillingAddressId?: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: SetBillingAddressWithEmailJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const {
@@ -234,10 +201,7 @@ class CheckoutJobs {
   setShippingMethod = async ({
     checkoutId,
     shippingMethodId,
-  }: {
-    checkoutId: string;
-    shippingMethodId: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: SetShippingMethodJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingMethod(
@@ -265,10 +229,7 @@ class CheckoutJobs {
   addPromoCode = async ({
     checkoutId,
     promoCode,
-  }: {
-    checkoutId: string;
-    promoCode: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: AddPromoCodeJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.addPromoCode(
@@ -295,10 +256,7 @@ class CheckoutJobs {
   removePromoCode = async ({
     checkoutId,
     promoCode,
-  }: {
-    checkoutId: string;
-    promoCode: string;
-  }): PromiseCheckoutJobRunResponse => {
+  }: RemovePromoCodeJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.removePromoCode(
@@ -325,27 +283,22 @@ class CheckoutJobs {
   createPayment = async ({
     checkoutId,
     amount,
-    paymentGateway,
-    paymentToken,
+    gateway,
+    token,
     billingAddress,
     creditCard,
-  }: {
-    checkoutId: string;
-    amount: number;
-    paymentGateway: string;
-    paymentToken: string;
-    billingAddress: ICheckoutAddress;
-    creditCard?: ICreditCard;
-  }): PromiseCheckoutJobRunResponse => {
+    returnUrl,
+  }: CreatePaymentJobInput): PromiseCheckoutJobRunResponse => {
     const payment = LocalStorageHandler.getPayment();
 
-    const { data, error } = await this.apolloClientManager.createPayment(
+    const { data, error } = await this.apolloClientManager.createPayment({
       amount,
+      billingAddress,
       checkoutId,
-      paymentGateway,
-      paymentToken,
-      billingAddress
-    );
+      gateway,
+      returnUrl,
+      token,
+    });
 
     if (error) {
       return {
@@ -368,12 +321,16 @@ class CheckoutJobs {
 
   completeCheckout = async ({
     checkoutId,
-  }: {
-    checkoutId: string;
-  }): PromiseCheckoutJobRunResponse => {
-    const { data, error } = await this.apolloClientManager.completeCheckout(
-      checkoutId
-    );
+    paymentData,
+    redirectUrl,
+    storeSource,
+  }: CompleteCheckoutJobInput): PromiseCheckoutJobRunResponse => {
+    const { data, error } = await this.apolloClientManager.completeCheckout({
+      checkoutId,
+      paymentData,
+      redirectUrl,
+      storeSource,
+    });
 
     if (error) {
       return {
@@ -384,8 +341,11 @@ class CheckoutJobs {
       };
     }
 
-    this.localStorageHandler.setCheckout({});
-    this.localStorageHandler.setPayment({});
+    if (!data?.confirmationNeeded) {
+      this.localStorageHandler.setCheckout({});
+      this.localStorageHandler.setPayment({});
+    }
+
     return { data };
   };
 }
