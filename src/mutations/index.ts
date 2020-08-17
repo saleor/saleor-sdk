@@ -4,7 +4,6 @@ import {
 } from "apollo-client";
 
 import * as Address from "./address";
-import * as Auth from "./auth";
 import * as User from "./user";
 
 import {
@@ -28,8 +27,6 @@ import {
 } from "./gqlTypes/UpdateUserAddress";
 
 import { SetPassword, SetPasswordVariables } from "./gqlTypes/SetPassword";
-
-import { TokenAuth, TokenAuthVariables } from "./gqlTypes/TokenAuth";
 
 import {
   PasswordChange,
@@ -97,14 +94,6 @@ export const MUTATIONS = {
   ) =>
     client.mutate({
       mutation: User.setPassword,
-      ...options,
-    }),
-  TokenAuth: <TCacheShape>(
-    client: ApolloClient<TCacheShape>,
-    options: MutationOptions<TokenAuth, TokenAuthVariables>
-  ) =>
-    client.mutate({
-      mutation: Auth.tokenAuthMutation,
       ...options,
     }),
   UpdateUserAddress: <TCacheShape>(

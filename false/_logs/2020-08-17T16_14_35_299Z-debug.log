@@ -1,0 +1,43 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'test',
+1 verbose cli   '-t',
+1 verbose cli   'auth',
+1 verbose cli   '--clearCache',
+1 verbose cli   '--no-cache'
+1 verbose cli ]
+2 info using npm@6.14.5
+3 info using node@v12.13.1
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle @saleor/sdk@0.1.0-6~pretest: @saleor/sdk@0.1.0-6
+6 info lifecycle @saleor/sdk@0.1.0-6~test: @saleor/sdk@0.1.0-6
+7 verbose lifecycle @saleor/sdk@0.1.0-6~test: unsafe-perm in lifecycle true
+8 verbose lifecycle @saleor/sdk@0.1.0-6~test: PATH: /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/dawidtarasiuk/Projects/saleor-sdk/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/dawidtarasiuk/.fzf/bin
+9 verbose lifecycle @saleor/sdk@0.1.0-6~test: CWD: /Users/dawidtarasiuk/Projects/saleor-sdk
+10 silly lifecycle @saleor/sdk@0.1.0-6~test: Args: [ '-c', 'jest "auth"' ]
+11 silly lifecycle @saleor/sdk@0.1.0-6~test: Returned: code: 1  signal: null
+12 info lifecycle @saleor/sdk@0.1.0-6~test: Failed to exec test script
+13 verbose stack Error: @saleor/sdk@0.1.0-6 test: `jest "auth"`
+13 verbose stack Exit status 1
+13 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:332:16)
+13 verbose stack     at EventEmitter.emit (events.js:210:5)
+13 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+13 verbose stack     at ChildProcess.emit (events.js:210:5)
+13 verbose stack     at maybeClose (internal/child_process.js:1021:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:283:5)
+14 verbose pkgid @saleor/sdk@0.1.0-6
+15 verbose cwd /Users/dawidtarasiuk/Projects/saleor-sdk
+16 verbose Darwin 19.4.0
+17 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "test" "-t" "auth" "--clearCache" "--no-cache"
+18 verbose node v12.13.1
+19 verbose npm  v6.14.5
+20 error code ELIFECYCLE
+21 error errno 1
+22 error @saleor/sdk@0.1.0-6 test: `jest "auth"`
+22 error Exit status 1
+23 error Failed at the @saleor/sdk@0.1.0-6 test script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 1, true ]

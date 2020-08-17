@@ -1,3 +1,4 @@
+import ApolloClient from "apollo-client";
 import setupAPI from "../../../testUtils/api";
 import { CollectionsAPI } from "./collections";
 import {
@@ -5,10 +6,15 @@ import {
   CollectionSortField,
 } from "../../gqlTypes/globalTypes";
 
-const { client } = setupAPI();
-
 describe("Collection object", () => {
-  const collectionsAPI = new CollectionsAPI(client);
+  let client: ApolloClient<any>;
+  let collectionsAPI: CollectionsAPI;
+
+  beforeAll(async () => {
+    client = (await setupAPI()).client;
+    collectionsAPI = new CollectionsAPI(client);
+  });
+
   it("can get a list of collections", async () => {
     const list = collectionsAPI.getList({
       first: 20,

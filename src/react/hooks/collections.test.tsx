@@ -8,13 +8,17 @@ import {
   CollectionSortField,
 } from "../../gqlTypes/globalTypes";
 
-const { client } = setupAPI();
-
-const wrapper: React.FC = ({ children }) => (
-  <ApolloProvider client={client}>{children}</ApolloProvider>
-);
-
 describe("useCollectionList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
+
   it("can fetch collections", async () => {
     const { result } = renderHook(
       () =>
