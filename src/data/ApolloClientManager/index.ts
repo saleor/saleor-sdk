@@ -66,6 +66,7 @@ import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails"
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
+import { CreatePaymentInput, CompleteCheckoutInput } from "./types";
 
 export class ApolloClientManager {
   private client: ApolloClient<any>;
@@ -732,14 +733,7 @@ export class ApolloClientManager {
     billingAddress,
     paymentToken,
     returnUrl,
-  }: {
-    amount: number;
-    checkoutId: string;
-    paymentGateway: string;
-    billingAddress: ICheckoutAddress;
-    paymentToken?: string;
-    returnUrl?: string;
-  }) => {
+  }: CreatePaymentInput) => {
     try {
       const variables = {
         checkoutId,
@@ -796,12 +790,12 @@ export class ApolloClientManager {
     }
   };
 
-  completeCheckout = async (
-    checkoutId: string,
-    paymentData?: object,
-    redirectUrl?: string,
-    storeSource?: boolean
-  ) => {
+  completeCheckout = async ({
+    checkoutId,
+    paymentData,
+    redirectUrl,
+    storeSource,
+  }: CompleteCheckoutInput) => {
     try {
       const paymentDataString = paymentData && JSON.stringify(paymentData);
 
