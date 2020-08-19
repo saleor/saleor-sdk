@@ -123,7 +123,6 @@ class CheckoutJobs {
 
     this.localStorageHandler.setCheckout({
       ...checkout,
-      availableShippingMethods: data?.availableShippingMethods,
       billingAsShipping: false,
       email: data?.email,
       selectedShippingAddressId,
@@ -156,7 +155,6 @@ class CheckoutJobs {
 
     this.localStorageHandler.setCheckout({
       ...checkout,
-      availablePaymentGateways: data?.availablePaymentGateways,
       billingAddress: data?.billingAddress,
       billingAsShipping: !!billingAsShipping,
       selectedBillingAddressId,
@@ -192,7 +190,6 @@ class CheckoutJobs {
 
     this.localStorageHandler.setCheckout({
       ...checkout,
-      availablePaymentGateways: data?.availablePaymentGateways,
       billingAddress: data?.billingAddress,
       billingAsShipping: false,
       email: data?.email,
