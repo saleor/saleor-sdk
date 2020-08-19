@@ -33,6 +33,8 @@ export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
       } else if (data) {
         this.localStorageHandler.setCheckout({
           ...checkout,
+          availablePaymentGateways: data.availablePaymentGateways,
+          availableShippingMethods: data.availableShippingMethods,
           lines: data.lines,
           promoCodeDiscount: data.promoCodeDiscount,
         });
