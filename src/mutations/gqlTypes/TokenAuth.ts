@@ -37,6 +37,14 @@ export interface TokenAuth_tokenCreate_user {
 export interface TokenAuth_tokenCreate {
   __typename: "CreateToken";
   /**
+   * CSRF token required to re-generate access token.
+   */
+  csrfToken: string | null;
+  /**
+   * JWT refresh token, required to re-generate access token.
+   */
+  refreshToken: string | null;
+  /**
    * JWT token, required to authenticate.
    */
   token: string | null;

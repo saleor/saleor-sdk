@@ -148,6 +148,35 @@ export class AuthAPI extends ErrorListener {
     };
   };
 
+  /**
+   * Tries to refresh user token to keep previously signed in user authenticated.
+   * @param csrfToken CSRF token required to refresh token. This argument is required when refreshToken is provided as a cookie.
+   * @param refreshToken Refresh token.
+   */
+  refreshSignInToken = async (csrfToken: string, refreshToken: string) => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "refreshSignInToken",
+      {
+        csrfToken,
+        refreshToken,
+      }
+    );
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    return {
+      data,
+      pending: false,
+    };
+  };
+
   private autoSignIn = async () => {
     let credentials;
     try {

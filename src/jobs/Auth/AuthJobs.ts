@@ -74,4 +74,32 @@ export class AuthJobs {
 
     return {};
   };
+
+  refreshSignInToken = async ({
+    csrfToken,
+    refreshToken,
+  }: {
+    csrfToken: string;
+    refreshToken: string;
+  }): PromiseAuthJobRunResponse => {
+    const { data, error } = await this.apolloClientManager.refreshSignInToken(
+      csrfToken,
+      refreshToken
+    );
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.SIGN_IN,
+        },
+      };
+    }
+
+    this.localStorageHandler.setSignInToken(data?.token || null);
+
+    return {
+      data,
+    };
+  };
 }
