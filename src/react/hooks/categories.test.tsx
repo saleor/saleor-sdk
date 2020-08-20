@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import setupAPI from "../../../testUtils/api";
+import { setupRecording, setupAPI } from "../../../testUtils/api";
 import {
   useCategoryList,
   useCategoryChildrenList,
@@ -9,13 +9,19 @@ import {
 } from "./categories";
 import * as fixtures from "../../api/categories/fixtures";
 
-const { client } = setupAPI();
-
-const wrapper: React.FC = ({ children }) => (
-  <ApolloProvider client={client}>{children}</ApolloProvider>
-);
+setupRecording();
 
 describe("useCategoryList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
+
   it("can fetch categories", async () => {
     const { result } = renderHook(
       () =>
@@ -65,6 +71,16 @@ describe("useCategoryList", () => {
 });
 
 describe("useCategoryAncestorsList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
+
   it("can fetch category ancestors", async () => {
     const { result } = renderHook(
       () =>
@@ -89,6 +105,16 @@ describe("useCategoryAncestorsList", () => {
 });
 
 describe("useCategoryChildrenList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
+
   it("can fetch subcategories", async () => {
     const { result } = renderHook(
       () =>

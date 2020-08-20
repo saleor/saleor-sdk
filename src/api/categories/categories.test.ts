@@ -1,11 +1,20 @@
-import setupAPI from "../../../testUtils/api";
+import ApolloClient from "apollo-client";
+import { setupRecording, setupAPI } from "../../../testUtils/api";
 import { CategoriesAPI } from "./categories";
 import * as fixtures from "./fixtures";
 
-const { client } = setupAPI();
+setupRecording();
 
 describe("Categories object", () => {
-  const categoriesAPI = new CategoriesAPI(client);
+  let client: ApolloClient<any>;
+  let categoriesAPI: CategoriesAPI;
+
+  beforeAll(async done => {
+    client = (await setupAPI()).client;
+    categoriesAPI = new CategoriesAPI(client);
+
+    done();
+  });
 
   it("can get a list of categories", async () => {
     const list = categoriesAPI.getList({
