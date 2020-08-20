@@ -1,10 +1,12 @@
 import ApolloClient from "apollo-client";
-import setupAPI from "../../../testUtils/api";
+import { setupRecording, setupAPI } from "../../../testUtils/api";
 import { CollectionsAPI } from "./collections";
 import {
   OrderDirection,
   CollectionSortField,
 } from "../../gqlTypes/globalTypes";
+
+setupRecording();
 
 describe("Collection object", () => {
   let client: ApolloClient<any>;
