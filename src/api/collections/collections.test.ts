@@ -10,9 +10,11 @@ describe("Collection object", () => {
   let client: ApolloClient<any>;
   let collectionsAPI: CollectionsAPI;
 
-  beforeAll(async () => {
+  beforeAll(async done => {
     client = (await setupAPI()).client;
     collectionsAPI = new CollectionsAPI(client);
+
+    done();
   });
 
   it("can get a list of collections", async () => {
