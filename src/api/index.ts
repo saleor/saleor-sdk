@@ -12,6 +12,7 @@ import APIProxy from "./APIProxy";
 import { SaleorCartAPI } from "./Cart";
 import { SaleorCheckoutAPI } from "./Checkout";
 import { CollectionsAPI } from "./collections/collections";
+import { CategoriesAPI } from "./categories/categories";
 
 export * from "./Checkout";
 export * from "./Cart";
@@ -22,6 +23,8 @@ export class SaleorAPI {
   checkout: SaleorCheckoutAPI;
 
   cart: SaleorCartAPI;
+
+  categories: CategoriesAPI;
 
   collections: CollectionsAPI;
 
@@ -76,6 +79,7 @@ export class SaleorAPI {
       saleorState,
       jobsManager
     );
+    this.categories = new CategoriesAPI(client);
     this.collections = new CollectionsAPI(client);
 
     this.legacyAPIProxy.attachAuthListener(authenticated => {

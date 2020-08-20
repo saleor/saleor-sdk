@@ -1,0 +1,196 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useCategoryAncestorsList can fetch category ancestors 1`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6Nw==",
+    "name": "Accessories",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "accessories",
+  },
+]
+`;
+
+exports[`useCategoryChildrenList can fetch next page 1`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjA=",
+    "name": "Paints",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "paints",
+  },
+]
+`;
+
+exports[`useCategoryChildrenList can fetch next page 2`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjA=",
+    "name": "Paints",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "paints",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjI=",
+    "name": "Homewares",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "homewares",
+  },
+]
+`;
+
+exports[`useCategoryChildrenList can fetch subcategories 1`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjA=",
+    "name": "Paints",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "paints",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjI=",
+    "name": "Homewares",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "homewares",
+  },
+]
+`;
+
+exports[`useCategoryList can fetch categories 1`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6Nw==",
+    "name": "Accessories",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "accessories",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6OA==",
+    "name": "Groceries",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "groceries",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6OQ==",
+    "name": "Apparel",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "apparel",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTA=",
+    "name": "T-shirts",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "t-shirts",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTE=",
+    "name": "Polo Shirts",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "polo-shirts",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTI=",
+    "name": "Hoodies",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "hoodies",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTM=",
+    "name": "Footwear",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "footwear",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTQ=",
+    "name": "Juices",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "juices",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTU=",
+    "name": "Alcohol",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "alcohol",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjA=",
+    "name": "Paints",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "paints",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MjI=",
+    "name": "Homewares",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "homewares",
+  },
+]
+`;
+
+exports[`useCategoryList can fetch next page 1`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6Nw==",
+    "name": "Accessories",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "accessories",
+  },
+]
+`;
+
+exports[`useCategoryList can fetch next page 2`] = `
+Array [
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6Nw==",
+    "name": "Accessories",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "accessories",
+  },
+  Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6OA==",
+    "name": "Groceries",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "groceries",
+  },
+]
+`;
