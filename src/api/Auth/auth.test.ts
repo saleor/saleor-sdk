@@ -13,7 +13,7 @@ describe("Auth API", () => {
   let cache: InMemoryCache;
   let apiProxy: APIProxy;
 
-  beforeAll(async () => {
+  beforeAll(async done => {
     const { client, cache: apiCache, apiUrl } = await setupAPI();
     cache = apiCache;
 
@@ -37,6 +37,8 @@ describe("Auth API", () => {
     authAPI = new AuthAPI(saleorState, jobsManager, config);
 
     apiProxy = new APIProxy(client);
+
+    done();
   });
 
   it("Returns error if credentials are invalid", async () => {
