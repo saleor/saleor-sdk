@@ -22,7 +22,7 @@ import {
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
-async function setupAPI() {
+export function setupRecording() {
   setupPolly({
     adapterOptions: {
       fetch: {
@@ -51,7 +51,9 @@ async function setupAPI() {
     },
     recordIfMissing: true,
   });
+}
 
+export async function setupAPI() {
   const cache = await createSaleorCache({ persistCache: true });
   const apiUrl = process.env.API_URL || "http://localhost:8000/graphql/";
   const invalidTokenLink = invalidTokenLinkWithTokenHandler(() => null);
@@ -69,5 +71,3 @@ async function setupAPI() {
 
   return { apiUrl, cache, client };
 }
-
-export default setupAPI;
