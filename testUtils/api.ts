@@ -1,14 +1,8 @@
 import { BatchHttpLink } from "apollo-link-batch-http";
-// import ApolloClient from "apollo-client";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { setupPolly } from "setup-polly-jest";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Polly } from "@pollyjs/core";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import fetch from "node-fetch";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import FSPersister from "@pollyjs/persister-fs";
 import path from "path";
 import { RetryLink } from "apollo-link-retry";
