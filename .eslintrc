@@ -29,6 +29,10 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/quotes": "off",
     "no-nested-ternary": "off",
-    "no-async-promise-executor": "warn"
+    "no-async-promise-executor": "warn",
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["testUtils/*.ts", "**/*.test.ts", "**/*.test.tsx"] }
+    ]
   }
 }

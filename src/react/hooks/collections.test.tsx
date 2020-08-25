@@ -1,20 +1,26 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import setupAPI from "../../../testUtils/api";
+import { setupRecording, setupAPI } from "../../../testUtils/api";
 import { useCollectionList } from "./collections";
 import {
   OrderDirection,
   CollectionSortField,
 } from "../../gqlTypes/globalTypes";
 
-const { client } = setupAPI();
-
-const wrapper: React.FC = ({ children }) => (
-  <ApolloProvider client={client}>{children}</ApolloProvider>
-);
+setupRecording();
 
 describe("useCollectionList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
+
   it("can fetch collections", async () => {
     const { result } = renderHook(
       () =>
