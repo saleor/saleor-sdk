@@ -5,3 +5,4 @@ export * from "./hooks";
 export * from "./helpers";
 export * from "./hooks/categories";
 export * from "./hooks/collections";
+export * from "./hooks/products";

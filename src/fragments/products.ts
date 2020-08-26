@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 import { checkoutPriceFragment } from "./checkout";
 
-export const basicProductFragment = gql`
-  fragment BasicProductFields on Product {
+export const baseProduct = gql`
+  fragment BaseProduct on Product {
     id
     name
     thumbnail {

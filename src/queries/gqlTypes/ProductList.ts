@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AttributeInput, ProductOrder } from "./../../gqlTypes/globalTypes";
+import { ProductOrder, ProductFilterInput } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ProductList
@@ -213,15 +213,6 @@ export interface ProductList_products_edges_node_pricing {
   priceRange: ProductList_products_edges_node_pricing_priceRange | null;
 }
 
-export interface ProductList_products_edges_node_category {
-  __typename: "Category";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  name: string;
-}
-
 export interface ProductList_products_edges_node {
   __typename: "Product";
   /**
@@ -241,7 +232,6 @@ export interface ProductList_products_edges_node {
    * Lists the storefront product's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: ProductList_products_edges_node_pricing | null;
-  category: ProductList_products_edges_node_category | null;
 }
 
 export interface ProductList_products_edges {
@@ -262,22 +252,10 @@ export interface ProductList_products_pageInfo {
    * When paginating forwards, are there more items?
    */
   hasNextPage: boolean;
-  /**
-   * When paginating backwards, are there more items?
-   */
-  hasPreviousPage: boolean;
-  /**
-   * When paginating backwards, the cursor to continue.
-   */
-  startCursor: string | null;
 }
 
 export interface ProductList_products {
   __typename: "ProductCountableConnection";
-  /**
-   * A total count of items in the collection.
-   */
-  totalCount: number | null;
   edges: ProductList_products_edges[];
   /**
    * Pagination data for this connection.
@@ -293,11 +271,8 @@ export interface ProductList {
 }
 
 export interface ProductListVariables {
-  id: string;
-  attributes?: (AttributeInput | null)[] | null;
   after?: string | null;
-  pageSize?: number | null;
+  first: number;
   sortBy?: ProductOrder | null;
-  priceLte?: number | null;
-  priceGte?: number | null;
+  filter?: ProductFilterInput | null;
 }

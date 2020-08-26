@@ -13,6 +13,7 @@ import { SaleorCartAPI } from "./Cart";
 import { SaleorCheckoutAPI } from "./Checkout";
 import { CollectionsAPI } from "./collections/collections";
 import { CategoriesAPI } from "./categories/categories";
+import { ProductsAPI } from "./products/products";
 
 export * from "./Checkout";
 export * from "./Cart";
@@ -27,6 +28,8 @@ export class SaleorAPI {
   categories: CategoriesAPI;
 
   collections: CollectionsAPI;
+
+  products: ProductsAPI;
 
   /**
    * @deprecated Please do not use it anymore. Reference to API Proxy will be removed in future.
@@ -81,6 +84,7 @@ export class SaleorAPI {
     );
     this.categories = new CategoriesAPI(client);
     this.collections = new CollectionsAPI(client);
+    this.products = new ProductsAPI(client);
 
     this.legacyAPIProxy.attachAuthListener(authenticated => {
       if (!authenticated) {

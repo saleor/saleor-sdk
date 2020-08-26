@@ -1,12 +1,15 @@
 import gql from "graphql-tag";
 
+import { checkoutPriceFragment } from "../fragments/checkout";
+import { pageInfo } from "../fragments/pageInfo";
 import {
-  basicProductFragment,
+  baseProduct,
   productVariantFragment,
   selectedAttributeFragment,
 } from "../fragments/products";
 
 export const productPricingFragment = gql`
+  ${checkoutPriceFragment}
   fragment ProductPricingField on Product {
     pricing {
       onSale
@@ -30,57 +33,38 @@ export const productPricingFragment = gql`
   }
 `;
 
-export const productListDetails = gql`
-  ${basicProductFragment}
+export const productList = gql`
+  ${baseProduct}
   ${productPricingFragment}
+  ${pageInfo}
   query ProductList(
-    $id: ID!
-    $attributes: [AttributeInput]
     $after: String
-    $pageSize: Int
+    $first: Int!
     $sortBy: ProductOrder
-    $priceLte: Float
-    $priceGte: Float
+    $filter: ProductFilterInput
   ) {
-    products(
-      after: $after
-      first: $pageSize
-      sortBy: $sortBy
-      filter: {
-        attributes: $attributes
-        categories: [$id]
-        minimalPrice: { gte: $priceGte, lte: $priceLte }
-      }
-    ) {
-      totalCount
+    products(after: $after, first: $first, sortBy: $sortBy, filter: $filter) {
       edges {
         node {
-          ...BasicProductFields
+          ...BaseProduct
           ...ProductPricingField
-          category {
-            id
-            name
-          }
         }
       }
       pageInfo {
-        endCursor
-        hasNextPage
-        hasPreviousPage
-        startCursor
+        ...PageInfo
       }
     }
   }
 `;
 
 export const productDetails = gql`
-  ${basicProductFragment}
+  ${baseProduct}
   ${selectedAttributeFragment}
   ${productVariantFragment}
   ${productPricingFragment}
   query ProductDetails($id: ID!, $countryCode: CountryCode) {
     product(id: $id) {
-      ...BasicProductFields
+      ...BaseProduct
       ...ProductPricingField
       descriptionJson
       category {
@@ -89,7 +73,7 @@ export const productDetails = gql`
         products(first: 3) {
           edges {
             node {
-              ...BasicProductFields
+              ...BaseProduct
               ...ProductPricingField
               category {
                 id
