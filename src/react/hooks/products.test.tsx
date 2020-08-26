@@ -1,17 +1,22 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import setupAPI from "../../../testUtils/api";
+import { setupAPI, setupRecording } from "../../../testUtils/api";
 import { useProductList } from "./products";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 
-const { client } = setupAPI();
-
-const wrapper: React.FC = ({ children }) => (
-  <ApolloProvider client={client}>{children}</ApolloProvider>
-);
+setupRecording();
 
 describe("useProductList", () => {
+  let wrapper: React.FC<{}>;
+
+  beforeAll(async () => {
+    const { client } = await setupAPI();
+
+    wrapper = ({ children }) => (
+      <ApolloProvider client={client}>{children}</ApolloProvider>
+    );
+  });
   it("can fetch products", async () => {
     const { result } = renderHook(
       () =>

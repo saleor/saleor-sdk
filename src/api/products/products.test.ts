@@ -1,11 +1,21 @@
-import setupAPI from "../../../testUtils/api";
+import ApolloClient from "apollo-client";
 import { ProductsAPI } from "./products";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
+import { setupAPI, setupRecording } from "../../../testUtils/api";
 
-const { client } = setupAPI();
+setupRecording();
 
 describe("Product object", () => {
-  const productsAPI = new ProductsAPI(client);
+  let client: ApolloClient<any>;
+  let productsAPI: ProductsAPI;
+
+  beforeAll(async done => {
+    client = (await setupAPI()).client;
+    productsAPI = new ProductsAPI(client);
+
+    done();
+  });
+
   it("can get a list of products", async () => {
     const list = productsAPI.getList({
       first: 20,
