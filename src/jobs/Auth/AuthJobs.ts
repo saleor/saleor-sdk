@@ -61,6 +61,7 @@ export class AuthJobs {
     }
 
     this.localStorageHandler.setSignInToken(data?.token || null);
+    this.localStorageHandler.setCsrfToken(data?.csrfToken || null);
 
     return {
       data,
@@ -73,5 +74,37 @@ export class AuthJobs {
     await this.apolloClientManager.signOut();
 
     return {};
+  };
+
+  refreshSignInToken = async ({
+    refreshToken,
+  }: {
+    refreshToken?: string;
+  }): PromiseAuthJobRunResponse => {
+    const csrfToken = LocalStorageHandler.getCsrfToken();
+
+    if (!csrfToken && !refreshToken) {
+      return {};
+    }
+
+    const { data, error } = await this.apolloClientManager.refreshSignInToken({
+      csrfToken,
+      refreshToken,
+    });
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.SIGN_IN,
+        },
+      };
+    }
+
+    this.localStorageHandler.setSignInToken(data?.token || null);
+
+    return {
+      data,
+    };
   };
 }

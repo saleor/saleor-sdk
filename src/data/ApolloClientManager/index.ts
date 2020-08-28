@@ -37,6 +37,10 @@ import {
   TokenAuthVariables,
 } from "../../mutations/gqlTypes/TokenAuth";
 import {
+  RefreshToken,
+  RefreshTokenVariables,
+} from "../../mutations/gqlTypes/RefreshToken";
+import {
   UpdateCheckoutBillingAddress,
   UpdateCheckoutBillingAddressVariables,
 } from "../../mutations/gqlTypes/UpdateCheckoutBillingAddress";
@@ -129,6 +133,7 @@ export class ApolloClientManager {
     }
     return {
       data: {
+        csrfToken: data?.tokenCreate?.csrfToken,
         token: data?.tokenCreate?.token,
         user: data?.tokenCreate?.user,
       },
@@ -137,6 +142,43 @@ export class ApolloClientManager {
 
   signOut = async () => {
     await this.client.resetStore();
+  };
+
+  refreshSignInToken = async ({
+    csrfToken,
+    refreshToken,
+  }: {
+    csrfToken?: string | null;
+    refreshToken?: string;
+  }) => {
+    const { data, errors } = await this.client.mutate<
+      RefreshToken,
+      RefreshTokenVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: AuthMutations.tokenRefreshMutation,
+      variables: {
+        csrfToken,
+        refreshToken,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.tokenRefresh?.errors.length) {
+      return {
+        error: data.tokenRefresh.errors,
+      };
+    }
+    return {
+      data: {
+        token: data?.tokenRefresh?.token,
+        user: data?.tokenRefresh?.user,
+      },
+    };
   };
 
   getCheckout = async (

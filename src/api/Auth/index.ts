@@ -148,6 +148,33 @@ export class AuthAPI extends ErrorListener {
     };
   };
 
+  /**
+   * Tries to refresh user token to keep previously signed in user authenticated.
+   * @param refreshToken Refresh token. Required when refreshToken is not provided as a cookie.
+   */
+  refreshSignInToken = async (refreshToken?: string) => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "refreshSignInToken",
+      {
+        refreshToken,
+      }
+    );
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    return {
+      data,
+      pending: false,
+    };
+  };
+
   private autoSignIn = async () => {
     let credentials;
     try {

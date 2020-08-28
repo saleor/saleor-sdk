@@ -45,6 +45,15 @@ const SaleorProvider: React.FC<IProps> = ({
     setTokenExpired(true);
   };
 
+  const handleTokenExpiration = async () => {
+    const tokenRefreshResult = await context?.auth.refreshSignInToken();
+
+    if (!tokenRefreshResult?.data?.token || tokenRefreshResult?.dataError) {
+      await context?.auth.signOut();
+    }
+    setTokenExpired(false);
+  };
+
   /**
    * Setup Apollo Links, Apollo Client and Saleor Manager
    */
@@ -70,8 +79,7 @@ const SaleorProvider: React.FC<IProps> = ({
 
   useEffect(() => {
     if (tokenExpired) {
-      context?.auth.signOut();
-      setTokenExpired(false);
+      handleTokenExpiration();
     }
   }, [tokenExpired, context]);
 
