@@ -32,6 +32,11 @@ export class AuthAPI extends ErrorListener {
    */
   token?: string;
 
+  /**
+   * Indicate if token refreshing is in progress.
+   */
+  tokenRefreshing: boolean;
+
   private saleorState: SaleorState;
 
   private jobsManager: JobsManager;
@@ -49,6 +54,7 @@ export class AuthAPI extends ErrorListener {
     this.config = config;
 
     this.loaded = false;
+    this.tokenRefreshing = false;
 
     this.saleorState.subscribeToChange(StateItems.USER, (user: User | null) => {
       this.user = user;
@@ -59,6 +65,12 @@ export class AuthAPI extends ErrorListener {
     this.saleorState.subscribeToChange(StateItems.SIGN_IN_TOKEN, token => {
       this.token = token;
     });
+    this.saleorState.subscribeToChange(
+      StateItems.SIGN_IN_TOKEN_REFRESHING,
+      tokenRefreshing => {
+        this.tokenRefreshing = tokenRefreshing;
+      }
+    );
     this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {

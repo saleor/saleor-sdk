@@ -12,6 +12,12 @@ import { IProps } from "./types";
 import { createSaleorLinks } from "../../../links";
 import { createSaleorClient } from "../../../client";
 
+enum TokenState {
+  VALID,
+  EXPIRED,
+  REFRESHING,
+}
+
 const SaleorProvider: React.FC<IProps> = ({
   apolloConfig: apolloConfigInput,
   config,
@@ -24,7 +30,7 @@ const SaleorProvider: React.FC<IProps> = ({
 
   const [cache, setCache] = useState<ApolloCache<any> | null>(null);
   const [context, setContext] = useState<SaleorAPI | null>(null);
-  const [tokenExpired, setTokenExpired] = useState(false);
+  const [tokenState, setTokenState] = useState(TokenState.VALID);
 
   /**
    * Setup Apollo Cache and persist it in local storage by default
@@ -42,7 +48,9 @@ const SaleorProvider: React.FC<IProps> = ({
   }, []);
 
   const tokenExpirationCallback = () => {
-    setTokenExpired(true);
+    if (tokenState !== TokenState.REFRESHING) {
+      setTokenState(TokenState.EXPIRED);
+    }
   };
 
   const handleTokenExpiration = async () => {
@@ -51,7 +59,7 @@ const SaleorProvider: React.FC<IProps> = ({
     if (!tokenRefreshResult?.data?.token || tokenRefreshResult?.dataError) {
       await context?.auth.signOut();
     }
-    setTokenExpired(false);
+    setTokenState(TokenState.VALID);
   };
 
   /**
@@ -78,10 +86,11 @@ const SaleorProvider: React.FC<IProps> = ({
   }, [cache]);
 
   useEffect(() => {
-    if (tokenExpired) {
+    if (tokenState === TokenState.EXPIRED) {
+      setTokenState(TokenState.REFRESHING);
       handleTokenExpiration();
     }
-  }, [tokenExpired, context]);
+  }, [tokenState, context]);
 
   if (apolloClient && context) {
     return (

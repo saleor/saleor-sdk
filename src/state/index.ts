@@ -36,6 +36,8 @@ export class SaleorState extends NamedObservable<StateItems> {
 
   signInToken?: string | null;
 
+  signInTokenRefreshing?: boolean;
+
   checkout?: ICheckoutModel;
 
   promoCode?: string;
@@ -98,6 +100,9 @@ export class SaleorState extends NamedObservable<StateItems> {
       this.onClearLocalStorage
     );
     this.apolloClientManager.subscribeToUserChange(this.onUserUpdate);
+    this.apolloClientManager.subscribeToSignInTokenRefresh(
+      this.onSignInTokenRefreshUpdate
+    );
   };
 
   /**
@@ -134,9 +139,20 @@ export class SaleorState extends NamedObservable<StateItems> {
   private onSignInTokenUpdate = (token: string | null) => {
     this.signInToken = token;
     this.notifyChange(StateItems.SIGN_IN_TOKEN, this.signInToken);
+    this.onSignInTokenRefreshUpdate(false);
     this.onLoadedUpdate({
       signInToken: true,
     });
+  };
+
+  private onSignInTokenRefreshUpdate = (tokenRefreshing: boolean = true) => {
+    if (this.signInTokenRefreshing !== tokenRefreshing) {
+      this.signInTokenRefreshing = tokenRefreshing;
+      this.notifyChange(
+        StateItems.SIGN_IN_TOKEN_REFRESHING,
+        this.signInTokenRefreshing
+      );
+    }
   };
 
   private onUserUpdate = (user: User | null) => {
