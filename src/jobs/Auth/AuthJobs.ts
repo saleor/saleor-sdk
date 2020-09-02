@@ -84,7 +84,14 @@ export class AuthJobs {
     const csrfToken = LocalStorageHandler.getCsrfToken();
 
     if (!csrfToken && !refreshToken) {
-      return {};
+      return {
+        dataError: {
+          error: new Error(
+            "Refresh sign in token impossible. No refresh token received."
+          ),
+          type: DataErrorAuthTypes.REFRESH_TOKEN,
+        },
+      };
     }
 
     const { data, error } = await this.apolloClientManager.refreshSignInToken({
@@ -96,7 +103,7 @@ export class AuthJobs {
       return {
         dataError: {
           error,
-          type: DataErrorAuthTypes.SIGN_IN,
+          type: DataErrorAuthTypes.REFRESH_TOKEN,
         },
       };
     }
