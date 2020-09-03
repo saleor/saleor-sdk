@@ -39,6 +39,8 @@ export class SaleorState extends NamedObservable<StateItems> {
 
   signInTokenRefreshing?: boolean;
 
+  signInTokenVerifying?: boolean;
+
   checkout?: ICheckoutModel;
 
   promoCode?: string;
@@ -147,6 +149,14 @@ export class SaleorState extends NamedObservable<StateItems> {
     });
   };
 
+  private onSignInTokenVerifyingUpdate = (tokenVerifying: boolean) => {
+    this.signInTokenVerifying = tokenVerifying;
+    this.notifyChange(
+      StateItems.SIGN_IN_TOKEN_VERIFYING,
+      this.signInTokenVerifying
+    );
+  };
+
   private onSignInTokenRefreshUpdate = (tokenRefreshing: boolean) => {
     this.signInTokenRefreshing = tokenRefreshing;
     this.notifyChange(
@@ -158,6 +168,7 @@ export class SaleorState extends NamedObservable<StateItems> {
   private onUserUpdate = (user: User | null) => {
     this.user = user;
     this.notifyChange(StateItems.USER, this.user);
+    this.onSignInTokenVerifyingUpdate(false);
     this.onLoadedUpdate({
       user: true,
     });

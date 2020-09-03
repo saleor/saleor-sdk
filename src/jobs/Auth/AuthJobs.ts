@@ -85,6 +85,38 @@ export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
     return {};
   };
 
+  verifySignInToken = async () => {
+    const token = LocalStorageHandler.getSignInToken();
+
+    if (!token) {
+      return {
+        dataError: {
+          error: new Error(
+            "Verify sign in token impossible. No token to verify received."
+          ),
+          type: DataErrorAuthTypes.VERIFY_TOKEN,
+        },
+      };
+    }
+
+    const { data, error } = await this.apolloClientManager.verifySignInToken({
+      token,
+    });
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.VERIFY_TOKEN,
+        },
+      };
+    }
+
+    return {
+      data,
+    };
+  };
+
   refreshSignInToken = async ({
     refreshToken,
   }: {

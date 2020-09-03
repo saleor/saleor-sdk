@@ -37,6 +37,11 @@ export class AuthAPI extends ErrorListener {
    */
   tokenRefreshing: boolean;
 
+  /**
+   * Indicate if token verifying is in progress.
+   */
+  tokenVerifying: boolean;
+
   private saleorState: SaleorState;
 
   private jobsManager: JobsManager;
@@ -55,6 +60,7 @@ export class AuthAPI extends ErrorListener {
 
     this.loaded = false;
     this.tokenRefreshing = false;
+    this.tokenVerifying = true;
 
     this.saleorState.subscribeToChange(StateItems.USER, (user: User | null) => {
       this.user = user;
@@ -72,6 +78,12 @@ export class AuthAPI extends ErrorListener {
       }
     );
     this.saleorState.subscribeToChange(
+      StateItems.SIGN_IN_TOKEN_VERIFYING,
+      tokenVerifying => {
+        this.tokenVerifying = tokenVerifying;
+      }
+    );
+    this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {
         this.loaded = loaded.user && loaded.signInToken;
@@ -81,7 +93,9 @@ export class AuthAPI extends ErrorListener {
       }
     );
 
-    if (!this.saleorState.signInToken && window.PasswordCredential) {
+    if (this.saleorState.signInToken) {
+      this.verityToken();
+    } else if (window.PasswordCredential) {
       this.autoSignIn();
     }
   }
@@ -185,6 +199,22 @@ export class AuthAPI extends ErrorListener {
     return {
       data,
     };
+  };
+
+  private verityToken = async () => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "verifySignInToken",
+      undefined
+    );
+
+    if (dataError || !data?.isValid) {
+      await this.signOut();
+
+      if (dataError?.error) {
+        this.fireError(dataError.error, DataErrorAuthTypes.VERIFY_TOKEN);
+      }
+    }
   };
 
   private autoSignIn = async () => {

@@ -37,6 +37,10 @@ import {
   TokenAuthVariables,
 } from "../../mutations/gqlTypes/TokenAuth";
 import {
+  VerifyToken,
+  VerifyTokenVariables,
+} from "../../mutations/gqlTypes/VerifyToken";
+import {
   RefreshToken,
   RefreshTokenVariables,
 } from "../../mutations/gqlTypes/RefreshToken";
@@ -142,6 +146,37 @@ export class ApolloClientManager {
 
   signOut = async () => {
     await this.client.resetStore();
+  };
+
+  verifySignInToken = async ({ token }: { token: string }) => {
+    const { data, errors } = await this.client.mutate<
+      VerifyToken,
+      VerifyTokenVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: AuthMutations.tokenVeryficationMutation,
+      variables: {
+        token,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.tokenVerify?.errors.length) {
+      return {
+        error: data.tokenVerify.errors,
+      };
+    }
+    return {
+      data: {
+        isValid: data?.tokenVerify?.isValid,
+        payload: data?.tokenVerify?.payload,
+        user: data?.tokenVerify?.user,
+      },
+    };
   };
 
   refreshSignInToken = async ({
