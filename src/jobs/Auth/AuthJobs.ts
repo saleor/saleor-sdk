@@ -90,6 +90,8 @@ export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
   }: {
     refreshToken?: string;
   }): PromiseAuthJobRunResponse => {
+    this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, true);
+
     const csrfToken = LocalStorageHandler.getCsrfToken();
 
     if (!csrfToken && !refreshToken) {
@@ -118,6 +120,8 @@ export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
     }
 
     this.localStorageHandler.setSignInToken(data?.token || null);
+
+    this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, false);
 
     return {
       data,

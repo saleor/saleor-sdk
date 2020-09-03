@@ -75,16 +75,9 @@ import { CreatePaymentInput, CompleteCheckoutInput } from "./types";
 export class ApolloClientManager {
   private client: ApolloClient<any>;
 
-  private signInTokenRefreshListeners: Array<() => void>;
-
   constructor(client: ApolloClient<any>) {
     this.client = client;
-    this.signInTokenRefreshListeners = [];
   }
-
-  subscribeToSignInTokenRefresh = (signInTokenRefreshListener: () => void) => {
-    this.signInTokenRefreshListeners.push(signInTokenRefreshListener);
-  };
 
   subscribeToUserChange = (
     next: (value: User | null) => void,
@@ -158,9 +151,6 @@ export class ApolloClientManager {
     csrfToken?: string | null;
     refreshToken?: string;
   }) => {
-    this.signInTokenRefreshListeners.forEach(listener => {
-      listener();
-    });
     const { data, errors } = await this.client.mutate<
       RefreshToken,
       RefreshTokenVariables
