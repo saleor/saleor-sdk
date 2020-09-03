@@ -4,12 +4,20 @@ import { LocalStorageHandler } from "../../helpers/LocalStorageHandler";
 import { DataErrorAuthTypes } from "../../api/Auth/types";
 
 import { JobRunResponse } from "../types";
+import { JobsHandler } from "../JobsHandler";
+
+export enum AuthJobsEvents {
+  SIGN_IN_TOKEN_REFRESHING,
+}
+export interface AuthJobsEventsValues {
+  [AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING]: boolean;
+}
 
 export type PromiseAuthJobRunResponse = Promise<
   JobRunResponse<DataErrorAuthTypes | DataErrorCheckoutTypes>
 >;
 
-export class AuthJobs {
+export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
   private apolloClientManager: ApolloClientManager;
 
   private localStorageHandler: LocalStorageHandler;
@@ -18,6 +26,7 @@ export class AuthJobs {
     localStorageHandler: LocalStorageHandler,
     apolloClientManager: ApolloClientManager
   ) {
+    super();
     this.apolloClientManager = apolloClientManager;
     this.localStorageHandler = localStorageHandler;
   }
