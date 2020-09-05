@@ -15,6 +15,7 @@ import { JobsManager } from "../jobs";
 import { Config } from "../types";
 import { ISaleorStateSummeryPrices, StateItems } from "./types";
 import { AuthJobsEvents } from "../jobs/Auth";
+import { BROWSER_NO_CREDENTIAL_API_MESSAGE } from "../api/Auth";
 
 export interface SaleorStateLoaded {
   user: boolean;
@@ -76,6 +77,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     this.jobsManager = jobsManager;
 
     this.loaded = defaultSaleorStateLoaded;
+    this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken());
 
     this.subscribeStateToChanges();
     this.initializeState(config);
@@ -114,8 +116,19 @@ export class SaleorState extends NamedObservable<StateItems> {
    * Initialize class members with cached or fetched data.
    */
   private initializeState = async (config: Config) => {
+    /**
+     * Before making any fetch, first try to verify token if it exists.
+     */
+    if (LocalStorageHandler.getSignInToken()) {
+      this.onSignInTokenVerifyingUpdate(true);
+      await this.verityToken();
+    }
+    this.onSignInTokenVerifyingUpdate(false);
+
+    /**
+     * Proceed with state initialization.
+     */
     if (config.loadOnStart.auth) {
-      this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken());
       await this.jobsManager.run("auth", "provideUser", undefined);
     }
     if (config.loadOnStart.checkout) {
@@ -123,6 +136,29 @@ export class SaleorState extends NamedObservable<StateItems> {
         isUserSignedIn: !!this.user,
       });
       this.onPaymentUpdate(LocalStorageHandler.getPayment());
+    }
+  };
+
+  private verityToken = async () => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "verifySignInToken",
+      undefined
+    );
+
+    if (dataError || !data?.isValid) {
+      await this.jobsManager.run("auth", "signOut", undefined);
+      try {
+        if (
+          navigator.credentials &&
+          navigator.credentials.preventSilentAccess
+        ) {
+          await navigator.credentials.preventSilentAccess();
+        }
+      } catch (credentialsError) {
+        // eslint-disable-next-line no-console
+        console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
+      }
     }
   };
 
@@ -149,7 +185,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     });
   };
 
-  private onSignInTokenVerifyingUpdate = (tokenVerifying: boolean) => {
+  private onSignInTokenVerifyingUpdate = async (tokenVerifying: boolean) => {
     this.signInTokenVerifying = tokenVerifying;
     this.notifyChange(
       StateItems.SIGN_IN_TOKEN_VERIFYING,
@@ -168,7 +204,6 @@ export class SaleorState extends NamedObservable<StateItems> {
   private onUserUpdate = (user: User | null) => {
     this.user = user;
     this.notifyChange(StateItems.USER, this.user);
-    this.onSignInTokenVerifyingUpdate(false);
     this.onLoadedUpdate({
       user: true,
     });

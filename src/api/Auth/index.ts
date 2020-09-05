@@ -93,9 +93,8 @@ export class AuthAPI extends ErrorListener {
       }
     );
 
-    if (this.saleorState.signInToken) {
-      this.verityToken();
-    } else if (window.PasswordCredential) {
+    if (!this.saleorState.signInToken && window.PasswordCredential) {
+      this.tokenVerifying = false;
       this.autoSignIn();
     }
   }
@@ -199,22 +198,6 @@ export class AuthAPI extends ErrorListener {
     return {
       data,
     };
-  };
-
-  private verityToken = async () => {
-    const { data, dataError } = await this.jobsManager.run(
-      "auth",
-      "verifySignInToken",
-      undefined
-    );
-
-    if (dataError || !data?.isValid) {
-      await this.signOut();
-
-      if (dataError?.error) {
-        this.fireError(dataError.error, DataErrorAuthTypes.VERIFY_TOKEN);
-      }
-    }
   };
 
   private autoSignIn = async () => {
