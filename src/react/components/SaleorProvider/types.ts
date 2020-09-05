@@ -7,7 +7,7 @@ export interface IProps {
    */
   config: ConfigInput;
   /**
-   * Apollo client configuration.
+   * Custom Apollo client configuration.
    */
   apolloConfig?: ApolloConfigInput;
 }
