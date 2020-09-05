@@ -111,6 +111,8 @@ export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
     });
 
     if (error) {
+      this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, false);
+
       return {
         dataError: {
           error,
