@@ -74,7 +74,12 @@ import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails"
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
-import { CreatePaymentInput, CompleteCheckoutInput } from "./types";
+import {
+  CreatePaymentInput,
+  CompleteCheckoutInput,
+  VerifySignInTokenInput,
+  RefreshSignInTokenInput,
+} from "./types";
 
 export class ApolloClientManager {
   private client: ApolloClient<any>;
@@ -148,7 +153,7 @@ export class ApolloClientManager {
     await this.client.resetStore();
   };
 
-  verifySignInToken = async ({ token }: { token: string }) => {
+  verifySignInToken = async ({ token }: VerifySignInTokenInput) => {
     const { data, errors } = await this.client.mutate<
       VerifyToken,
       VerifyTokenVariables
@@ -182,10 +187,7 @@ export class ApolloClientManager {
   refreshSignInToken = async ({
     csrfToken,
     refreshToken,
-  }: {
-    csrfToken?: string | null;
-    refreshToken?: string;
-  }) => {
+  }: RefreshSignInTokenInput) => {
     const { data, errors } = await this.client.mutate<
       RefreshToken,
       RefreshTokenVariables
