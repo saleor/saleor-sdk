@@ -214,7 +214,10 @@ class APIProxy {
         skip?: boolean;
         onComplete?: () => void;
         onError?: (error: ApolloError) => void;
-        onUpdate: (data: ReturnType<typeof mapFn> | null) => void;
+        onUpdate: (
+          data: ReturnType<typeof mapFn> | null,
+          loading?: boolean
+        ) => void;
       }
     ) => {
       const { onComplete, onError, onUpdate, ...apolloClientOptions } = options;
@@ -240,7 +243,7 @@ class APIProxy {
 
       const subscription = observable.subscribe(
         result => {
-          const { data, errors: apolloErrors } = result;
+          const { data, errors: apolloErrors, loading } = result;
           const errorHandledData = handleDataErrors(
             mapFn,
             data as any,
@@ -252,7 +255,7 @@ class APIProxy {
                 onError(errorHandledData.errors);
               }
             } else {
-              onUpdate(errorHandledData.data as TResult);
+              onUpdate(errorHandledData.data as TResult, loading);
               if (onComplete) {
                 onComplete();
               }
