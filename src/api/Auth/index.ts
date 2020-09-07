@@ -164,7 +164,9 @@ export class AuthAPI extends ErrorListener {
    * Tries to refresh user token to keep previously signed in user authenticated.
    * @param refreshToken Refresh token. Required when refreshToken is not provided as a cookie.
    */
-  refreshSignInToken = async (refreshToken?: string) => {
+  refreshSignInToken = async (
+    refreshToken?: string
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
     const { data, dataError } = await this.jobsManager.run(
       "auth",
       "refreshSignInToken",
@@ -177,13 +179,11 @@ export class AuthAPI extends ErrorListener {
       return {
         data,
         dataError,
-        pending: false,
       };
     }
 
     return {
       data,
-      pending: false,
     };
   };
 

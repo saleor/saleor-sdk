@@ -17,7 +17,7 @@ export interface FunctionRunResponse<D, F> {
   data?: any;
   dataError?: ErrorResponse<D>;
   functionError?: ErrorResponse<F>;
-  pending: boolean;
+  pending?: boolean;
 }
 
 export type PromiseQueuedResponse = Promise<FunctionQueueResponse>;
