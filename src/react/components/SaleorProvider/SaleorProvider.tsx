@@ -1,84 +1,42 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState, useEffect } from "react";
+import ApolloClient from "apollo-client";
 import { ApolloProvider } from "react-apollo";
 
-import { ApolloCache } from "apollo-cache";
-import { ApolloConfigInput } from "../../../types";
 import { SaleorManager } from "../../..";
 import { SaleorAPI } from "../../../api";
 import { SaleorContext } from "../../context";
-import { createSaleorCache } from "../../../cache";
 
 import { IProps } from "./types";
-import { createSaleorLinks } from "../../../links";
-import { createSaleorClient } from "../../../client";
 
 const SaleorProvider: React.FC<IProps> = ({
-  apolloConfig: apolloConfigInput,
+  apolloConfig,
   config,
   children,
 }: IProps) => {
-  const apolloConfig: ApolloConfigInput = {
-    persistCache: true,
-    ...apolloConfigInput,
+  const [context, setContext] = useState<SaleorAPI | null>(null);
+  const [client, setClient] = useState<ApolloClient<any> | null>(null);
+
+  const getSaleorApiAndClient = async (manager: SaleorManager) => {
+    const { api, apolloClient } = await manager.connect(saleorAPI => {
+      if (saleorAPI) {
+        setContext({ ...saleorAPI });
+      }
+    });
+
+    setContext({ ...api });
+    setClient(apolloClient);
   };
 
-  const [cache, setCache] = useState<ApolloCache<any> | null>(null);
-  const [context, setContext] = useState<SaleorAPI | null>(null);
-  const [tokenExpired, setTokenExpired] = useState(false);
-
-  /**
-   * Setup Apollo Cache and persist it in local storage by default
-   */
   useEffect(() => {
-    (async () => {
-      const saleorCache = apolloConfig?.cache
-        ? apolloConfig.cache
-        : await createSaleorCache({
-            persistCache: !!apolloConfig?.persistCache,
-          });
+    const manager = new SaleorManager(config, apolloConfig);
 
-      setCache(saleorCache);
-    })();
+    getSaleorApiAndClient(manager);
   }, []);
 
-  const tokenExpirationCallback = () => {
-    setTokenExpired(true);
-  };
-
-  /**
-   * Setup Apollo Links, Apollo Client and Saleor Manager
-   */
-  const apolloClient = useMemo(() => {
-    if (cache) {
-      const saleorLinks = apolloConfig?.links
-        ? apolloConfig.links
-        : createSaleorLinks({
-            apiUrl: config.apiUrl,
-            tokenExpirationCallback,
-          });
-
-      const saleorClient = createSaleorClient(cache, saleorLinks);
-
-      const manager = new SaleorManager(saleorClient, config);
-
-      manager.connect(saleorAPI => setContext({ ...saleorAPI }));
-
-      return saleorClient;
-    }
-    return undefined;
-  }, [cache]);
-
-  useEffect(() => {
-    if (tokenExpired) {
-      context?.auth.signOut();
-      setTokenExpired(false);
-    }
-  }, [tokenExpired, context]);
-
-  if (apolloClient && context) {
+  if (client && context) {
     return (
       <SaleorContext.Provider value={context}>
-        <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
+        <ApolloProvider client={client}>{children}</ApolloProvider>
       </SaleorContext.Provider>
     );
   }

@@ -33,7 +33,11 @@ import { SaleorProvider, useAuth } from "@saleor/sdk";
 
 const config = { apiUrl: "http://localhost:8000/graphql/" };
 const apolloConfig = {
-  /* Optional custom Apollo client config */
+  /* 
+    Optional custom Apollo client config.
+    Here you may append custom Apollo cache, links or the whole client. 
+    You may also use import { createSaleorCache, createSaleorClient, createSaleorLinks } from "@saleor/sdk" to create semi-custom implementation of Apollo.
+  */
 };
 
 const rootElement = document.getElementById("root");
@@ -75,53 +79,28 @@ const App = () => {
 npm install @saleor/sdk
 ```
 
-Create new Saleor cache, Saleor links and Saleor client or use your own cache, Apollo links or even Apollo client:
+Then use SaleorManager to get `SaleorAPI` from `connect` method. This method may also take optional function as an argument, which will be executed every time the `SaleorAPI` state changes.
 
 ```tsx
-import {
-  createSaleorCache,
-  createSaleorClient,
-  createSaleorLinks,
-} from "@saleor/sdk";
+const config = { apiUrl: "http://localhost:8000/graphql/" };
+const apolloConfig = {
+  /* 
+    Optional custom Apollo client config.
+    Here you may append custom Apollo cache, links or the whole client. 
+    You may also use import { createSaleorCache, createSaleorClient, createSaleorLinks } from "@saleor/sdk" to create semi-custom implementation of Apollo.
+  */
+};
+const manager = new SaleorManager(config, apolloConfig);
 
-const apiUrl = "http://localhost:8000/graphql/";
-
-const cache = await createSaleorCache({
-  persistCache: true,
-});
-
-const links = createSaleorLinks({
-  apiUrl,
-  tokenExpirationCallback: () => {
-    /* Handle token expiration case */
-  },
-});
-
-const client = createSaleorClient(cache, links);
-```
-
-Then use SaleorManager to get `SaleorAPI` from `connect` method. This method takes function as an argument, which will be executed every time the `SaleorAPI` state changes.
-
-```tsx
-const config = { apiUrl };
-const manager = new SaleorManager(client, config);
-
-let saleorAPI;
-
-manager.connect(referenceToSaleorAPI => {
-  if (saleorAPI === undefined) {
-    saleorAPI = referenceToSaleorAPI;
-  }
+const { api, apolloClient } = await manager.connect(saleorAPI => {
+  /* Optional listener to API state change. You may use it to update your app state reactively - e.g. trigger the React context update. */
 });
 ```
 
-Finally, methods from `saleorAPI` might be used:
+Finally, methods from `api` might be used:
 
 ```tsx
-const { data, dataError } = await saleorAPI.auth.signIn(
-  "admin@example.com",
-  "admin"
-);
+const { data, dataError } = await api.auth.signIn("admin@example.com", "admin");
 
 if (dataError) {
   /**
@@ -129,9 +108,9 @@ if (dataError) {
    **/
 } else if (data) {
   /**
-   * User signed in succesfully. Read user object from data or from saleorAPI.auth.
+   * User signed in succesfully. Read user object from data or from api.auth.
    **/
-  const userData = saleorAPI.auth.user;
+  const userData = api.auth.user;
 }
 ```
 
@@ -139,11 +118,14 @@ if (dataError) {
 
 We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `SaleorAPI` or use React hooks, depending on [which setup do you select](#setup).
 
-| API object           | React hook      | Description                                                                     |
-| :------------------- | :-------------- | :------------------------------------------------------------------------------ |
-| `SaleorAPI.auth`     | `useAuth()`     | Handles user authentication and stores data about the currently signed in user. |
-| `SaleorAPI.cart`     | `useCart()`     | Collects products to cart and calculates their prices.                          |
-| `SaleorAPI.checkout` | `useCheckout()` | Uses cart and handles the whole checkout process.                               |
+| API object              | React hook                                                                     | Description                                                                     |
+| :---------------------- | :----------------------------------------------------------------------------- | :------------------------------------------------------------------------------ |
+| `SaleorAPI.auth`        | `useAuth()`                                                                    | Handles user authentication and stores data about the currently signed in user. |
+| `SaleorAPI.cart`        | `useCart()`                                                                    | Collects products to cart and calculates their prices.                          |
+| `SaleorAPI.checkout`    | `useCheckout()`                                                                | Uses cart and handles the whole checkout process.                               |
+| `SaleorAPI.products`    | `useProductList()`                                                             | Obtains products.                                                               |
+| `SaleorAPI.collections` | `useCollectionList()`                                                          | Obtains collections.                                                            |
+| `SaleorAPI.categories`  | `useCategoryList()`, `useCategoryAncestorsList()`, `useCategoryChildrenList()` | Obtains categories.                                                             |
 
 ## Local development
 

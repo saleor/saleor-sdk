@@ -14,6 +14,7 @@ import {
 import { JobsManager } from "../jobs";
 import { Config } from "../types";
 import { ISaleorStateSummeryPrices, StateItems } from "./types";
+import { AuthJobsEvents } from "../jobs/Auth";
 
 export interface SaleorStateLoaded {
   user: boolean;
@@ -35,6 +36,8 @@ export class SaleorState extends NamedObservable<StateItems> {
   user?: User | null;
 
   signInToken?: string | null;
+
+  signInTokenRefreshing?: boolean;
 
   checkout?: ICheckoutModel;
 
@@ -98,6 +101,11 @@ export class SaleorState extends NamedObservable<StateItems> {
       this.onClearLocalStorage
     );
     this.apolloClientManager.subscribeToUserChange(this.onUserUpdate);
+    this.jobsManager.attachEventListener("auth", (event, value) => {
+      if (event === AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING) {
+        this.onSignInTokenRefreshUpdate(value);
+      }
+    });
   };
 
   /**
@@ -137,6 +145,14 @@ export class SaleorState extends NamedObservable<StateItems> {
     this.onLoadedUpdate({
       signInToken: true,
     });
+  };
+
+  private onSignInTokenRefreshUpdate = (tokenRefreshing: boolean) => {
+    this.signInTokenRefreshing = tokenRefreshing;
+    this.notifyChange(
+      StateItems.SIGN_IN_TOKEN_REFRESHING,
+      this.signInTokenRefreshing
+    );
   };
 
   private onUserUpdate = (user: User | null) => {

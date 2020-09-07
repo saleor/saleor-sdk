@@ -17,12 +17,13 @@ import {
   SetBillingAddressJobInput,
   SetBillingAddressWithEmailJobInput,
 } from "./types";
+import { JobsHandler } from "../JobsHandler";
 
 export type PromiseCheckoutJobRunResponse = Promise<
   JobRunResponse<DataErrorCheckoutTypes, FunctionErrorCheckoutTypes>
 >;
 
-class CheckoutJobs {
+class CheckoutJobs extends JobsHandler<{}> {
   private apolloClientManager: ApolloClientManager;
 
   private localStorageHandler: LocalStorageHandler;
@@ -31,6 +32,7 @@ class CheckoutJobs {
     localStorageHandler: LocalStorageHandler,
     apolloClientManager: ApolloClientManager
   ) {
+    super();
     this.apolloClientManager = apolloClientManager;
     this.localStorageHandler = localStorageHandler;
   }

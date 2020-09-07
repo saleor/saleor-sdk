@@ -25,8 +25,16 @@ export class LocalStorageHandler extends LocalStorageHandlerProxy {
     return LocalStorageHandlerProxy.retrieveItem(LocalStorageItems.TOKEN);
   }
 
+  static getCsrfToken(): string | null {
+    return LocalStorageHandlerProxy.retrieveItem(LocalStorageItems.CSRF_TOKEN);
+  }
+
   setSignInToken(token: string | null): void {
     this.saveItem(LocalStorageItems.TOKEN, token);
+  }
+
+  setCsrfToken(csrfToken: string | null): void {
+    this.saveItem(LocalStorageItems.CSRF_TOKEN, csrfToken);
   }
 
   setCheckout(checkout: ICheckoutModel | null): void {

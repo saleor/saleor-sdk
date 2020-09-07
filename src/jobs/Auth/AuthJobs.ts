@@ -4,12 +4,20 @@ import { LocalStorageHandler } from "../../helpers/LocalStorageHandler";
 import { DataErrorAuthTypes } from "../../api/Auth/types";
 
 import { JobRunResponse } from "../types";
+import { JobsHandler } from "../JobsHandler";
+
+export enum AuthJobsEvents {
+  SIGN_IN_TOKEN_REFRESHING,
+}
+export interface AuthJobsEventsValues {
+  [AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING]: boolean;
+}
 
 export type PromiseAuthJobRunResponse = Promise<
   JobRunResponse<DataErrorAuthTypes | DataErrorCheckoutTypes>
 >;
 
-export class AuthJobs {
+export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
   private apolloClientManager: ApolloClientManager;
 
   private localStorageHandler: LocalStorageHandler;
@@ -18,6 +26,7 @@ export class AuthJobs {
     localStorageHandler: LocalStorageHandler,
     apolloClientManager: ApolloClientManager
   ) {
+    super();
     this.apolloClientManager = apolloClientManager;
     this.localStorageHandler = localStorageHandler;
   }
@@ -61,6 +70,7 @@ export class AuthJobs {
     }
 
     this.localStorageHandler.setSignInToken(data?.token || null);
+    this.localStorageHandler.setCsrfToken(data?.csrfToken || null);
 
     return {
       data,
@@ -73,5 +83,50 @@ export class AuthJobs {
     await this.apolloClientManager.signOut();
 
     return {};
+  };
+
+  refreshSignInToken = async ({
+    refreshToken,
+  }: {
+    refreshToken?: string;
+  }): PromiseAuthJobRunResponse => {
+    this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, true);
+
+    const csrfToken = LocalStorageHandler.getCsrfToken();
+
+    if (!csrfToken && !refreshToken) {
+      return {
+        dataError: {
+          error: new Error(
+            "Refresh sign in token impossible. No refresh token received."
+          ),
+          type: DataErrorAuthTypes.REFRESH_TOKEN,
+        },
+      };
+    }
+
+    const { data, error } = await this.apolloClientManager.refreshSignInToken({
+      csrfToken,
+      refreshToken,
+    });
+
+    if (error) {
+      this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, false);
+
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.REFRESH_TOKEN,
+        },
+      };
+    }
+
+    this.localStorageHandler.setSignInToken(data?.token || null);
+
+    this.notifyEvent(AuthJobsEvents.SIGN_IN_TOKEN_REFRESHING, false);
+
+    return {
+      data,
+    };
   };
 }

@@ -48,3 +48,16 @@ export function filterNotEmptyArrayItems<TValue>(
 ): value is TValue {
   return value !== null && value !== undefined;
 }
+
+export function findValueInEnum<TEnum extends object>(
+  needle: string,
+  haystack: TEnum
+): TEnum[keyof TEnum] {
+  const match = Object.entries(haystack).find(([, value]) => value === needle);
+
+  if (!match) {
+    throw new Error(`Value ${needle} not found in enum`);
+  }
+
+  return (needle as unknown) as TEnum[keyof TEnum];
+}

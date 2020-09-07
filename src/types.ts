@@ -1,4 +1,4 @@
-import { ObservableQuery } from "apollo-client";
+import ApolloClient, { ObservableQuery } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { ApolloCache } from "apollo-cache";
 
@@ -60,4 +60,9 @@ export interface ApolloConfigInput {
    * Custom list of links to be used by Apollo client. By default preconfigured links are created automatically.
    */
   links?: ApolloLink[];
+  /**
+   * Custom Apollo client to be used by Saleor API. By default client is created automatically with default custom cache and links.
+   * If you pass custom client, custom cache and links passed in this config will not be used, you must pass them to client oneself.
+   */
+  client?: ApolloClient<any>;
 }

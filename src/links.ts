@@ -30,6 +30,6 @@ export const createSaleorLinks = ({
     invalidTokenLink,
     authLink,
     new RetryLink(),
-    new BatchHttpLink({ uri: apiUrl }),
+    new BatchHttpLink({ credentials: "include", uri: apiUrl }),
   ];
 };

@@ -76,6 +76,23 @@ export class JobsManager {
   }
 
   /**
+   * Attach event listener to the job group.
+   * @param jobGroup Job group name referencing to the class with job functions.
+   * @param onEventListener Function to be called if event will occur during job execution.
+   */
+  attachEventListener<
+    G extends keyof IJobs,
+    P extends IJobs[G]["attachEventListener"]
+  >(
+    jobGroup: G,
+    onEventListener: JobFunctionParameters<G, "attachEventListener", P>[0]
+  ) {
+    const typedEventListener = onEventListener as P;
+
+    this.jobs[jobGroup].attachEventListener(typedEventListener);
+  }
+
+  /**
    * Attach error listener to the queued job group.
    * @param jobGroup Job group name referencing to the class with job functions.
    * @param onErrorListener Function to be called if error will occur during job execution.

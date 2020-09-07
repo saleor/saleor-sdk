@@ -32,6 +32,11 @@ export class AuthAPI extends ErrorListener {
    */
   token?: string;
 
+  /**
+   * Indicate if token refreshing is in progress.
+   */
+  tokenRefreshing: boolean;
+
   private saleorState: SaleorState;
 
   private jobsManager: JobsManager;
@@ -49,6 +54,7 @@ export class AuthAPI extends ErrorListener {
     this.config = config;
 
     this.loaded = false;
+    this.tokenRefreshing = false;
 
     this.saleorState.subscribeToChange(StateItems.USER, (user: User | null) => {
       this.user = user;
@@ -59,6 +65,12 @@ export class AuthAPI extends ErrorListener {
     this.saleorState.subscribeToChange(StateItems.SIGN_IN_TOKEN, token => {
       this.token = token;
     });
+    this.saleorState.subscribeToChange(
+      StateItems.SIGN_IN_TOKEN_REFRESHING,
+      tokenRefreshing => {
+        this.tokenRefreshing = tokenRefreshing;
+      }
+    );
     this.saleorState.subscribeToChange(
       StateItems.LOADED,
       (loaded: SaleorStateLoaded) => {
@@ -145,6 +157,33 @@ export class AuthAPI extends ErrorListener {
 
     return {
       pending: false,
+    };
+  };
+
+  /**
+   * Tries to refresh user token to keep previously signed in user authenticated.
+   * @param refreshToken Refresh token. Required when refreshToken is not provided as a cookie.
+   */
+  refreshSignInToken = async (
+    refreshToken?: string
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "refreshSignInToken",
+      {
+        refreshToken,
+      }
+    );
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+      };
+    }
+
+    return {
+      data,
     };
   };
 
