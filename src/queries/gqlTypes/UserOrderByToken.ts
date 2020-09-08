@@ -292,6 +292,46 @@ export interface UserOrderByToken_orderByToken_lines_unitPrice {
   net: UserOrderByToken_orderByToken_lines_unitPrice_net;
 }
 
+export interface UserOrderByToken_orderByToken_lines_totalPrice_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface UserOrderByToken_orderByToken_lines_totalPrice_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface UserOrderByToken_orderByToken_lines_totalPrice {
+  __typename: "TaxedMoney";
+  /**
+   * Currency code.
+   */
+  currency: string;
+  /**
+   * Amount of money including taxes.
+   */
+  gross: UserOrderByToken_orderByToken_lines_totalPrice_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: UserOrderByToken_orderByToken_lines_totalPrice_net;
+}
+
 export interface UserOrderByToken_orderByToken_lines {
   __typename: "OrderLine";
   productName: string;
@@ -304,6 +344,10 @@ export interface UserOrderByToken_orderByToken_lines {
    * Price of the single item in the order line.
    */
   unitPrice: UserOrderByToken_orderByToken_lines_unitPrice | null;
+  /**
+   * Price of the order line.
+   */
+  totalPrice: UserOrderByToken_orderByToken_lines_totalPrice | null;
 }
 
 export interface UserOrderByToken_orderByToken_subtotal_gross {
