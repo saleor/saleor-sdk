@@ -44,12 +44,12 @@ const useQuery = <
     loading: true,
   });
 
-  const setData = React.useCallback((data: TData) => {
+  const setData = React.useCallback((data: TData, loading?: boolean) => {
     if (!isEqual(data, prevDataRef.current)) {
       prevDataRef.current = data;
       setResult({ data, error: null, loading: false });
     } else {
-      setResult(previousResult => ({ ...previousResult, loading: false }));
+      setResult(previousResult => ({ ...previousResult, loading: !!loading }));
     }
   }, []);
 
@@ -68,8 +68,8 @@ const useQuery = <
             error,
             loading: false,
           })),
-        onUpdate: (data: TData) => {
-          setData(data);
+        onUpdate: (data: TData, loading?: boolean) => {
+          setData(data, loading);
         },
       }),
     [query, options.skip, authenticated]
