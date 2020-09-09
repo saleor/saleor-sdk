@@ -160,7 +160,7 @@ export class AuthAPI extends ErrorListener {
   signOut = async (): PromiseRunResponse<DataErrorAuthTypes> => {
     await this.jobsManager.run("auth", "signOut", undefined);
     try {
-      if (navigator.credentials && navigator.credentials.preventSilentAccess) {
+      if (navigator.credentials?.preventSilentAccess) {
         await navigator.credentials.preventSilentAccess();
       }
     } catch (credentialsError) {

@@ -149,10 +149,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     if (dataError || !data?.isValid) {
       await this.jobsManager.run("auth", "signOut", undefined);
       try {
-        if (
-          navigator.credentials &&
-          navigator.credentials.preventSilentAccess
-        ) {
+        if (navigator.credentials?.preventSilentAccess) {
           await navigator.credentials.preventSilentAccess();
         }
       } catch (credentialsError) {
