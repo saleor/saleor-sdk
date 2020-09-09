@@ -292,6 +292,46 @@ export interface OrderDetail_lines_unitPrice {
   net: OrderDetail_lines_unitPrice_net;
 }
 
+export interface OrderDetail_lines_totalPrice_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrderDetail_lines_totalPrice_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrderDetail_lines_totalPrice {
+  __typename: "TaxedMoney";
+  /**
+   * Currency code.
+   */
+  currency: string;
+  /**
+   * Amount of money including taxes.
+   */
+  gross: OrderDetail_lines_totalPrice_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: OrderDetail_lines_totalPrice_net;
+}
+
 export interface OrderDetail_lines {
   __typename: "OrderLine";
   productName: string;
@@ -304,6 +344,10 @@ export interface OrderDetail_lines {
    * Price of the single item in the order line.
    */
   unitPrice: OrderDetail_lines_unitPrice | null;
+  /**
+   * Price of the order line.
+   */
+  totalPrice: OrderDetail_lines_totalPrice | null;
 }
 
 export interface OrderDetail_subtotal_gross {

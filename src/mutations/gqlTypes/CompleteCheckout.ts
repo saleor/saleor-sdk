@@ -309,6 +309,46 @@ export interface CompleteCheckout_checkoutComplete_order_lines_unitPrice {
   net: CompleteCheckout_checkoutComplete_order_lines_unitPrice_net;
 }
 
+export interface CompleteCheckout_checkoutComplete_order_lines_totalPrice_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface CompleteCheckout_checkoutComplete_order_lines_totalPrice_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface CompleteCheckout_checkoutComplete_order_lines_totalPrice {
+  __typename: "TaxedMoney";
+  /**
+   * Currency code.
+   */
+  currency: string;
+  /**
+   * Amount of money including taxes.
+   */
+  gross: CompleteCheckout_checkoutComplete_order_lines_totalPrice_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: CompleteCheckout_checkoutComplete_order_lines_totalPrice_net;
+}
+
 export interface CompleteCheckout_checkoutComplete_order_lines {
   __typename: "OrderLine";
   productName: string;
@@ -321,6 +361,10 @@ export interface CompleteCheckout_checkoutComplete_order_lines {
    * Price of the single item in the order line.
    */
   unitPrice: CompleteCheckout_checkoutComplete_order_lines_unitPrice | null;
+  /**
+   * Price of the order line.
+   */
+  totalPrice: CompleteCheckout_checkoutComplete_order_lines_totalPrice | null;
 }
 
 export interface CompleteCheckout_checkoutComplete_order_subtotal_gross {
