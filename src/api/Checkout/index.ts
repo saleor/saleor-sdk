@@ -95,12 +95,13 @@ export class SaleorCheckoutAPI extends ErrorListener {
     this.saleorState.subscribeToChange(
       StateItems.PAYMENT,
       (payment: IPaymentModel) => {
-        const { id, token, gateway, creditCard } = payment || {};
+        const { id, token, gateway, creditCard, total } = payment || {};
         this.payment = {
           creditCard,
           gateway,
           id,
           token,
+          total,
         };
       }
     );

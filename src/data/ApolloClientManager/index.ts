@@ -934,10 +934,12 @@ export class ApolloClientManager {
     gateway,
     token,
     creditCard,
+    total,
   }: Payment): IPaymentModel => ({
     creditCard,
     gateway,
     id,
     token,
+    total,
   });
 }

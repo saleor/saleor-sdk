@@ -5,6 +5,7 @@ import {
   Checkout_lines_variant_product,
   Checkout_availablePaymentGateways,
 } from "../../fragments/gqlTypes/Checkout";
+import { Payment_total } from "../../fragments/gqlTypes/Payment";
 import { IQueuedJobs } from "../../jobs/QueuedJobs";
 
 export enum LocalStorageItems {
@@ -125,6 +126,7 @@ export interface IPaymentModel {
   returnUrl?: string;
   gateway?: string;
   creditCard?: IPaymentCreditCard | null;
+  total?: Payment_total | null;
 }
 
 export interface IOrderModel {
