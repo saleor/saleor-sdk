@@ -320,6 +320,7 @@ class CheckoutJobs extends JobsHandler<{}> {
       gateway: data?.gateway,
       id: data?.id,
       token: data?.token,
+      total: data?.total,
     });
     return { data };
   };

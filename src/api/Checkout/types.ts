@@ -1,4 +1,5 @@
 import { Checkout_availableShippingMethods } from "../../fragments/gqlTypes/Checkout";
+import { Payment_total } from "../../fragments/gqlTypes/Payment";
 import {
   ICheckoutModelPrice,
   ICheckoutModelPriceValue,
@@ -45,6 +46,7 @@ export interface IPayment {
   token?: string;
   gateway?: string;
   creditCard?: ICreditCard | null;
+  total?: Payment_total | null;
 }
 
 export interface ICheckout {

@@ -31,6 +31,18 @@ export interface Payment_creditCard {
   expYear: number | null;
 }
 
+export interface Payment_total {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
 export interface Payment {
   __typename: "Payment";
   /**
@@ -43,4 +55,8 @@ export interface Payment {
    * The details of the card used for this payment.
    */
   creditCard: Payment_creditCard | null;
+  /**
+   * Total amount of the payment.
+   */
+  total: Payment_total | null;
 }

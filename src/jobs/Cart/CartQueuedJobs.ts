@@ -37,6 +37,7 @@ export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
           availableShippingMethods: data.availableShippingMethods,
           lines: data.lines,
           promoCodeDiscount: data.promoCodeDiscount,
+          shippingMethod: data.shippingMethod,
         });
       }
     }

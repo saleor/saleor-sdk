@@ -12,6 +12,10 @@ export const paymentFragment = gql`
       expMonth
       expYear
     }
+    total {
+      amount
+      currency
+    }
   }
 `;
 

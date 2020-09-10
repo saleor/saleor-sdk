@@ -614,6 +614,18 @@ export interface CreateCheckoutPayment_checkoutPaymentCreate_payment_creditCard 
   expYear: number | null;
 }
 
+export interface CreateCheckoutPayment_checkoutPaymentCreate_payment_total {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
 export interface CreateCheckoutPayment_checkoutPaymentCreate_payment {
   __typename: "Payment";
   /**
@@ -626,6 +638,10 @@ export interface CreateCheckoutPayment_checkoutPaymentCreate_payment {
    * The details of the card used for this payment.
    */
   creditCard: CreateCheckoutPayment_checkoutPaymentCreate_payment_creditCard | null;
+  /**
+   * Total amount of the payment.
+   */
+  total: CreateCheckoutPayment_checkoutPaymentCreate_payment_total | null;
 }
 
 export interface CreateCheckoutPayment_checkoutPaymentCreate_errors {
