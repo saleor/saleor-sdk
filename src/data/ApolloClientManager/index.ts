@@ -37,6 +37,10 @@ import {
   TokenAuthVariables,
 } from "../../mutations/gqlTypes/TokenAuth";
 import {
+  VerifyToken,
+  VerifyTokenVariables,
+} from "../../mutations/gqlTypes/VerifyToken";
+import {
   RefreshToken,
   RefreshTokenVariables,
 } from "../../mutations/gqlTypes/RefreshToken";
@@ -70,7 +74,12 @@ import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails"
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
-import { CreatePaymentInput, CompleteCheckoutInput } from "./types";
+import {
+  CreatePaymentInput,
+  CompleteCheckoutInput,
+  VerifySignInTokenInput,
+  RefreshSignInTokenInput,
+} from "./types";
 
 export class ApolloClientManager {
   private client: ApolloClient<any>;
@@ -144,13 +153,41 @@ export class ApolloClientManager {
     await this.client.resetStore();
   };
 
+  verifySignInToken = async ({ token }: VerifySignInTokenInput) => {
+    const { data, errors } = await this.client.mutate<
+      VerifyToken,
+      VerifyTokenVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: AuthMutations.tokenVeryficationMutation,
+      variables: {
+        token,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.tokenVerify?.errors.length) {
+      return {
+        error: data.tokenVerify.errors,
+      };
+    }
+    return {
+      data: {
+        isValid: data?.tokenVerify?.isValid,
+        payload: data?.tokenVerify?.payload,
+        user: data?.tokenVerify?.user,
+      },
+    };
+  };
+
   refreshSignInToken = async ({
     csrfToken,
     refreshToken,
-  }: {
-    csrfToken?: string | null;
-    refreshToken?: string;
-  }) => {
+  }: RefreshSignInTokenInput) => {
     const { data, errors } = await this.client.mutate<
       RefreshToken,
       RefreshTokenVariables

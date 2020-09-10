@@ -20,6 +20,15 @@ export interface IApolloClientManagerResponse<T> {
   error?: ApolloErrorWithUserInput;
 }
 
+export interface VerifySignInTokenInput {
+  token: string;
+}
+
+export interface RefreshSignInTokenInput {
+  csrfToken?: string | null;
+  refreshToken?: string;
+}
+
 export interface CreatePaymentInput {
   amount: number;
   checkoutId: string;
