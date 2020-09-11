@@ -60,7 +60,7 @@ export class AuthAPI extends ErrorListener {
 
     this.loaded = false;
     this.tokenRefreshing = false;
-    this.tokenVerifying = true;
+    this.tokenVerifying = !!this.saleorState.signInToken;
 
     this.saleorState.subscribeToChange(StateItems.USER, (user: User | null) => {
       this.user = user;
@@ -94,7 +94,6 @@ export class AuthAPI extends ErrorListener {
     );
 
     if (!this.saleorState.signInToken && window.PasswordCredential) {
-      this.tokenVerifying = false;
       this.autoSignIn();
     }
   }

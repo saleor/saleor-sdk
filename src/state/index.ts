@@ -182,7 +182,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     });
   };
 
-  private onSignInTokenVerifyingUpdate = async (tokenVerifying: boolean) => {
+  private onSignInTokenVerifyingUpdate = (tokenVerifying: boolean) => {
     this.signInTokenVerifying = tokenVerifying;
     this.notifyChange(
       StateItems.SIGN_IN_TOKEN_VERIFYING,
