@@ -80,7 +80,7 @@ export class SaleorManager {
     tokenExpirationCallback: () => void,
     onSaleorApiChange: () => void
   ): Promise<CreateAPIResult> => {
-    const { cache, persistCache, links, client } = apolloConfig;
+    const { cache, persistCache, links, client, options } = apolloConfig;
 
     const saleorCache =
       !client && cache
@@ -95,7 +95,8 @@ export class SaleorManager {
             apiUrl: config.apiUrl,
             tokenExpirationCallback,
           });
-    const apolloClient = client || createSaleorClient(saleorCache, saleorLinks);
+    const apolloClient =
+      client || createSaleorClient(saleorCache, saleorLinks, options);
 
     const apiProxy = new APIProxy(apolloClient);
     const api = new SaleorAPI(
