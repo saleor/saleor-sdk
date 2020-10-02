@@ -30,7 +30,7 @@ export const createSaleorCache = async ({
     },
   });
 
-  if (persistCache) {
+  if (persistCache && window?.localStorage) {
     await apolloPersistCache({
       cache: saleorCache,
       storage: window.localStorage as PersistentStorage<
