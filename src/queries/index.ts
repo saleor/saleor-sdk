@@ -60,7 +60,7 @@ export const QUERIES = {
     options: QueryOptions<CategoryDetailsVariables>
   ): ObservableQuery<CategoryDetails, any> =>
     client.watchQuery({
-      query: Category.categoryQuery,
+      query: Category.categoryDetails,
       ...options,
     }),
   CollectionList: (

@@ -10,6 +10,11 @@ import { WithList } from "../types";
 import { CategoryList } from "./CategoryList";
 import { CategoryAncestorsList } from "./CategoryAncestorsList";
 import { CategoryChildrenList } from "./CategoryChildrenList";
+import { categoryDetails } from "../../queries/category";
+import {
+  CategoryDetails,
+  CategoryDetailsVariables,
+} from "../../queries/gqlTypes/CategoryDetails";
 
 export class CategoriesAPI
   implements WithList<CategoryListQuery, BaseCategory, CategoryListVariables> {
@@ -18,6 +23,27 @@ export class CategoriesAPI
   constructor(client: ApolloClient<any>) {
     this.client = client;
   }
+
+  // CategoryDetails: <TCacheShape>(
+  //   client: ApolloClient<TCacheShape>,
+  //   options: QueryOptions<CategoryDetailsVariables>
+  // ): ObservableQuery<CategoryDetails, any> =>
+  //   client.watchQuery({
+  //     query: Category.categoryQuery,
+  //     ...options,
+  //   }),
+
+  /**
+   * Method returning category details
+   * @param variables Category details parameters
+   */
+  getDetails = (variables: CategoryDetailsVariables) =>
+    this.client.watchQuery<CategoryDetails, CategoryDetailsVariables>({
+      query: categoryDetails,
+      variables,
+    });
+  //   observable.subscribe(value => next(value.data?.me), error, complete)
+  // }
 
   /**
    * Method returning list of categories with ability to request next page

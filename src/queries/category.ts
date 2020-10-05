@@ -59,7 +59,7 @@ export const categoryAncestorsList = gql`
   }
 `;
 
-export const categoryQuery = gql`
+export const categoryDetails = gql`
   query CategoryDetails($id: ID!) {
     category(id: $id) {
       seoDescription
