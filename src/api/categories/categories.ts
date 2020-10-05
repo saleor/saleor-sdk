@@ -24,15 +24,6 @@ export class CategoriesAPI
     this.client = client;
   }
 
-  // CategoryDetails: <TCacheShape>(
-  //   client: ApolloClient<TCacheShape>,
-  //   options: QueryOptions<CategoryDetailsVariables>
-  // ): ObservableQuery<CategoryDetails, any> =>
-  //   client.watchQuery({
-  //     query: Category.categoryQuery,
-  //     ...options,
-  //   }),
-
   /**
    * Method returning category details
    * @param variables Category details parameters
@@ -42,8 +33,6 @@ export class CategoriesAPI
       query: categoryDetails,
       variables,
     });
-  //   observable.subscribe(value => next(value.data?.me), error, complete)
-  // }
 
   /**
    * Method returning list of categories with ability to request next page

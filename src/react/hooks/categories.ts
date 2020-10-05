@@ -17,4 +17,4 @@ export const useCategoryChildrenList = makeList(
 export const useCategoryDetails = makeQuery<
   CategoryDetails,
   CategoryDetailsVariables
->((saleor, params) => saleor.categories.getDetails(params));
+>((saleor, variables) => saleor.categories.getDetails(variables));

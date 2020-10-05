@@ -3,54 +3,28 @@ import { useMemo, useState } from "react";
 import { SaleorAPI } from "../../../api";
 import { useSaleorClient } from "../../helpers";
 
-// <T extends keyof SaleorAPI>(dataName: T): SaleorAPI[T]
+export type QueryResult<TQuery> = Partial<
+  Exclude<ApolloQueryResult<TQuery>, "loading">
+> &
+  Pick<ApolloQueryResult<TQuery>, "loading">;
 
-export type ApiMethodParameters<
-  G extends keyof SaleorAPI,
-  J extends keyof SaleorAPI[G],
-  T extends SaleorAPI[G][J]
-> = T extends (...args: infer P) => any ? P : never;
-
-export interface Result {
-  data: any;
-  error: any;
-  loading: any;
-}
-
-export function makeQuery<
-  // TApiGroup extends keyof SaleorAPI,
-  // TApiMethod extends keyof SaleorAPI[TApiGroup],
-  // TApiMethodInstance extends SaleorAPI[TApiGroup][TApiMethod]
-  // TSubscriptionResult extends ReturnType<SaleorAPI[TApiGroup][TApiMethod]>,
-  // TObject,
-  TQuery,
-  TVariables
->(
+export function makeQuery<TQuery, TVariables>(
   createQuery: (
     client: SaleorAPI,
     variables: TVariables
   ) => ObservableQuery<TQuery, TVariables>
 ) {
-  return (
-    variables: TVariables
-    // ...variables: ApiMethodParameters<TApiGroup, TApiMethod, TApiMethodInstance>
-  ) => {
+  return (variables: TVariables) => {
     const saleor = useSaleorClient();
-    const [result, setResult] = useState<ApolloQueryResult<TQuery> | Result>({
-      data: undefined,
-      error: undefined,
-      loading: undefined,
+    const [result, setResult] = useState<QueryResult<TQuery>>({
+      loading: true,
     });
 
     useMemo(() => {
-      createQuery(saleor, variables).subscribe(setResult);
-      // setResult();
-      // const func = saleor[apiGroup][apiMethod];
-
-      // if (typeof func === "function") {
-      //   func(variables).subscribe(setResult);
-      // }
-    }, [saleor, variables]);
+      createQuery(saleor, variables).subscribe(value => {
+        setResult(value);
+      });
+    }, [saleor]);
 
     return result;
   };

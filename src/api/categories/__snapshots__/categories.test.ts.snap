@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Categories object can get a details of category 1`] = `
+Object {
+  "category": Object {
+    "__typename": "Category",
+    "ancestors": Object {
+      "__typename": "CategoryCountableConnection",
+      "edges": Array [],
+    },
+    "backgroundImage": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/category-backgrounds/accessories_JIXY7af.jpg",
+    },
+    "id": "Q2F0ZWdvcnk6Nw==",
+    "name": "Accessories",
+    "seoDescription": "",
+    "seoTitle": "",
+  },
+}
+`;
+
 exports[`Categories object can get a list of ancestor categories 1`] = `
 Array [
   Object {
