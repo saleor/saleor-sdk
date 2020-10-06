@@ -68,7 +68,7 @@ Array [
 ]
 `;
 
-exports[`useCategoryList can fetch categoriers 1`] = `
+exports[`useCategoryList can fetch categories 1`] = `
 Array [
   Object {
     "__typename": "Category",
@@ -157,14 +157,6 @@ Array [
     "seoDescription": "",
     "seoTitle": "",
     "slug": "homewares",
-  },
-  Object {
-    "__typename": "Category",
-    "id": "Q2F0ZWdvcnk6MjM=",
-    "name": "Audiobooks",
-    "seoDescription": "",
-    "seoTitle": "",
-    "slug": "ebooks",
   },
 ]
 `;

@@ -49,7 +49,7 @@ describe("useCategoryList", () => {
     expect(result.current.loading).toBe(false);
   });
 
-  it("can fetch categoriers", async () => {
+  it("can fetch categories", async () => {
     const { result } = renderHook(
       () =>
         useCategoryList({
