@@ -1,4 +1,7 @@
-import ApolloClient, { ObservableQuery } from "apollo-client";
+import ApolloClient, {
+  ApolloClientOptions,
+  ObservableQuery,
+} from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { ApolloCache } from "apollo-cache";
 
@@ -27,6 +30,11 @@ export type WatchQueryData<T extends (...args: any) => any> = ReturnType<
 > extends ObservableQuery<infer R>
   ? R
   : never;
+
+export type ApolloConfigOptions = Omit<
+  ApolloClientOptions<any>,
+  "link" | "cache"
+>;
 
 export interface Config {
   /**
@@ -65,4 +73,8 @@ export interface ApolloConfigInput {
    * If you pass custom client, custom cache and links passed in this config will not be used, you must pass them to client oneself.
    */
   client?: ApolloClient<any>;
+  /**
+   * The rest of Apollo client options, which might be passed to it during its initialization.
+   */
+  options?: ApolloConfigOptions;
 }
