@@ -165,7 +165,7 @@ export class JobsManager {
     G extends keyof IQueuedJobs,
     J extends keyof IQueuedJobs[G]
   >(jobGroup: G, jobName: J, state: boolean) {
-    if (!localStorage) {
+    if (!window?.localStorage) {
       return;
     }
     let jobs = LocalStorageHandler.getJobs();
@@ -189,7 +189,7 @@ export class JobsManager {
   }
 
   private enqueueAllSavedInRepository() {
-    if (!localStorage) {
+    if (!window?.localStorage) {
       return;
     }
     const jobs = LocalStorageHandler.getJobs();
