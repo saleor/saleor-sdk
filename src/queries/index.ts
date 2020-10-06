@@ -6,7 +6,6 @@ import {
 
 import { RequireOnlyOne } from "../tsHelpers";
 import * as AttributesList from "./attributes";
-import * as Category from "./category";
 import * as Collections from "./collections";
 import * as Orders from "./orders";
 import * as Product from "./products";
@@ -23,11 +22,6 @@ import {
   ProductDetails,
   ProductDetailsVariables,
 } from "./gqlTypes/ProductDetails";
-
-import {
-  CategoryDetails,
-  CategoryDetailsVariables,
-} from "./gqlTypes/CategoryDetails";
 
 import { GetShop } from "./gqlTypes/GetShop";
 
@@ -53,14 +47,6 @@ export const QUERIES = {
   ): ObservableQuery<Attributes, any> =>
     client.watchQuery({
       query: AttributesList.attributes,
-      ...options,
-    }),
-  CategoryDetails: <TCacheShape>(
-    client: ApolloClient<TCacheShape>,
-    options: QueryOptions<CategoryDetailsVariables>
-  ): ObservableQuery<CategoryDetails, any> =>
-    client.watchQuery({
-      query: Category.categoryDetails,
       ...options,
     }),
   CollectionList: (
