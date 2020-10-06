@@ -17,14 +17,16 @@ describe("Categories object", () => {
   });
 
   it("can get a details of category", async () => {
-    const detailsPromise = categoriesAPI.getDetails({
+    const details = categoriesAPI.getDetails({
       id: fixtures.categoryWithChildren,
     });
-    const details = await detailsPromise.result();
 
-    expect(details.data).toBeDefined();
-    expect(details.loading).toBe(false);
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
     expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
   });
 
   it("can get a list of categories", async () => {

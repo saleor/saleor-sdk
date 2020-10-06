@@ -1,11 +1,13 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
+import ApolloClient from "apollo-client";
 import { setupRecording, setupAPI } from "../../../testUtils/api";
 import {
   useCategoryList,
   useCategoryChildrenList,
   useCategoryAncestorsList,
+  useCategoryDetails,
 } from "./categories";
 import * as fixtures from "../../api/categories/fixtures";
 
@@ -14,15 +16,40 @@ setupRecording();
 describe("useCategoryList", () => {
   let wrapper: React.FC<{}>;
 
-  beforeAll(async () => {
-    const { client } = await setupAPI();
+  let client: ApolloClient<any>;
+
+  beforeAll(async done => {
+    client = (await setupAPI()).client;
 
     wrapper = ({ children }) => (
       <ApolloProvider client={client}>{children}</ApolloProvider>
     );
+
+    done();
   });
 
-  it("can fetch categories", async () => {
+  it("can fetch category", async () => {
+    const { result } = renderHook(
+      () =>
+        useCategoryDetails({
+          id: fixtures.categoryWithChildren,
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    expect(result.current.data).toBe(undefined);
+    expect(result.current.loading).toBe(true);
+
+    // @ts-ignore
+    await act(() => result.current.current);
+
+    expect(result.current.data).toMatchSnapshot();
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("can fetch categoriers", async () => {
     const { result } = renderHook(
       () =>
         useCategoryList({

@@ -2,21 +2,19 @@
 
 exports[`Categories object can get a details of category 1`] = `
 Object {
-  "category": Object {
-    "__typename": "Category",
-    "ancestors": Object {
-      "__typename": "CategoryCountableConnection",
-      "edges": Array [],
-    },
-    "backgroundImage": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/category-backgrounds/accessories_JIXY7af.jpg",
-    },
-    "id": "Q2F0ZWdvcnk6Nw==",
-    "name": "Accessories",
-    "seoDescription": "",
-    "seoTitle": "",
+  "__typename": "Category",
+  "backgroundImage": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "http://localhost:8000/media/category-backgrounds/accessories_JIXY7af.jpg",
   },
+  "description": "",
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "id": "Q2F0ZWdvcnk6Nw==",
+  "name": "Accessories",
+  "seoDescription": "",
+  "seoTitle": "",
+  "slug": "accessories",
 }
 `;
 

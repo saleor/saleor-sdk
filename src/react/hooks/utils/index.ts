@@ -1,2 +1,2 @@
 export * from "./makeList";
-export * from "./makeQuery";
+export * from "./makeDetails";
