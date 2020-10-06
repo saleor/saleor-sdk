@@ -10,7 +10,7 @@ abstract class BaseDetails<TQuery, TObject, TVariables> {
   /**
    * Apollo client
    */
-  client: ApolloClient<any> | undefined = undefined;
+  protected client: ApolloClient<any> | undefined = undefined;
 
   /**
    * Object, undefined if the initial query is not finished yet

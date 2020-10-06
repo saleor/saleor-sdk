@@ -16,7 +16,7 @@ abstract class BaseList<TQuery, TObject, TVariables extends BaseListVariables> {
   /**
    * Apollo client
    */
-  client: ApolloClient<any> | undefined = undefined;
+  protected client: ApolloClient<any> | undefined = undefined;
 
   /**
    * List of objects, undefined if the first query is not finished yet
