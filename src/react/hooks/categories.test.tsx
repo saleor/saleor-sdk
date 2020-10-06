@@ -1,7 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import ApolloClient from "apollo-client";
 import { setupRecording, setupAPI } from "../../../testUtils/api";
 import {
   useCategoryList,
@@ -16,16 +15,12 @@ setupRecording();
 describe("useCategoryList", () => {
   let wrapper: React.FC<{}>;
 
-  let client: ApolloClient<any>;
-
-  beforeAll(async done => {
-    client = (await setupAPI()).client;
+  beforeAll(async () => {
+    const { client } = await setupAPI();
 
     wrapper = ({ children }) => (
       <ApolloProvider client={client}>{children}</ApolloProvider>
     );
-
-    done();
   });
 
   it("can fetch category", async () => {
