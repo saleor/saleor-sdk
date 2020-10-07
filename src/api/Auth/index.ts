@@ -99,6 +99,45 @@ export class AuthAPI extends ErrorListener {
   }
 
   /**
+   * Tries to register a user account with given email and password.
+   * @param email Email used for new account.
+   * @param password Password used for new account.
+   * @param redirectUrl URL used for redirection.
+   */
+  registerAccount = async (
+    email: string,
+    password: string,
+    redirectUrl: string
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "registerAccount",
+      {
+        email,
+        password,
+        redirectUrl,
+      }
+    );
+
+    if (dataError?.error) {
+      this.fireError(dataError.error, DataErrorAuthTypes.REGISTER_ACCOUNT);
+    }
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    return {
+      data,
+      pending: false,
+    };
+  };
+
+  /**
    * Tries to authenticate user with given email and password.
    * @param email Email used for authentication.
    * @param password Password used for authentication.

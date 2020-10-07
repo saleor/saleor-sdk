@@ -11,6 +11,7 @@ import {
   IPaymentModel,
 } from "../../helpers/LocalStorageHandler";
 import * as AuthMutations from "../../mutations/auth";
+import * as UserMutations from "../../mutations/user";
 import * as CheckoutMutations from "../../mutations/checkout";
 import {
   AddCheckoutPromoCode,
@@ -32,6 +33,10 @@ import {
   RemoveCheckoutPromoCode,
   RemoveCheckoutPromoCodeVariables,
 } from "../../mutations/gqlTypes/RemoveCheckoutPromoCode";
+import {
+  RegisterAccount,
+  RegisterAccountVariables,
+} from "../../mutations/gqlTypes/RegisterAccount";
 import {
   TokenAuth,
   TokenAuthVariables,
@@ -114,6 +119,41 @@ export class ApolloClientManager {
     }
     return {
       data: data?.me,
+    };
+  };
+
+  registerAccount = async (
+    email: string,
+    password: string,
+    redirectUrl: string
+  ) => {
+    const { data, errors } = await this.client.mutate<
+      RegisterAccount,
+      RegisterAccountVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: UserMutations.registerAccount,
+      variables: {
+        email,
+        password,
+        redirectUrl,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.accountRegister?.accountErrors.length) {
+      return {
+        error: data.accountRegister.accountErrors,
+      };
+    }
+    return {
+      data: {
+        requiresConfirmation: data?.accountRegister?.requiresConfirmation,
+      },
     };
   };
 
