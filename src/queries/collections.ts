@@ -1,5 +1,8 @@
 import gql from "graphql-tag";
-import { baseCollectionFragment } from "../fragments/collections";
+import {
+  baseCollectionFragment,
+  collectionFragment,
+} from "../fragments/collections";
 import { pageInfo } from "../fragments/pageInfo";
 
 export const collections = gql`
@@ -25,6 +28,15 @@ export const collections = gql`
       pageInfo {
         ...PageInfo
       }
+    }
+  }
+`;
+
+export const collectionDetails = gql`
+  ${collectionFragment}
+  query CollectionDetails($id: ID, $slug: String) {
+    collection(id: $id, slug: $slug) {
+      ...CollectionDetails
     }
   }
 `;

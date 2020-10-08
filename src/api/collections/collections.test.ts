@@ -5,6 +5,7 @@ import {
   OrderDirection,
   CollectionSortField,
 } from "../../gqlTypes/globalTypes";
+import * as fixtures from "./fixtures";
 
 setupRecording();
 
@@ -17,6 +18,32 @@ describe("Collection object", () => {
     collectionsAPI = new CollectionsAPI(client);
 
     done();
+  });
+
+  it("can get a details of collection by id", async () => {
+    const details = collectionsAPI.getDetails({
+      id: fixtures.collectionId,
+    });
+
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
+    expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
+  });
+
+  it("can get a details of collection by slug", async () => {
+    const details = collectionsAPI.getDetails({
+      slug: fixtures.collectionSlug,
+    });
+
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
+    expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
   });
 
   it("can get a list of collections", async () => {
