@@ -1,16 +1,25 @@
 import ApolloClient from "apollo-client";
-import { ProductDetailsVariables } from "../../queries/gqlTypes/ProductDetails";
+import {
+  ProductDetails as ProductDetailsQuery,
+  ProductDetailsVariables,
+} from "../../queries/gqlTypes/ProductDetails";
+import { ProductDetails as ProductDetailsFragment } from "../../fragments/gqlTypes/ProductDetails";
 import {
   ProductList as ProductListQuery,
   ProductList_products_edges_node,
   ProductListVariables,
 } from "../../queries/gqlTypes/ProductList";
-import { WithList } from "../types";
+import { WithDetails, WithList } from "../types";
 import { ProductDetails } from "./ProductDetails";
 import { ProductList } from "./ProductList";
 
 export class ProductsAPI
   implements
+    WithDetails<
+      ProductDetailsQuery,
+      ProductDetailsFragment,
+      ProductDetailsVariables
+    >,
     WithList<
       ProductListQuery,
       ProductList_products_edges_node,
@@ -26,10 +35,10 @@ export class ProductsAPI
    * Method returning product details
    * @param variables Details parameters
    */
-  getDetails = (variables: ProductDetailsVariables) => {
+  getDetails = async (variables: ProductDetailsVariables) => {
     const details = new ProductDetails(this.client);
 
-    details.init(variables);
+    await details.init(variables);
 
     return details;
   };
@@ -38,10 +47,10 @@ export class ProductsAPI
    * Method returning list of products with ability to request next page
    * @param params List parameters
    */
-  getList = (variables: ProductListVariables): ProductList => {
+  getList = async (variables: ProductListVariables) => {
     const list = new ProductList(this.client);
 
-    list.init(variables);
+    await list.init(variables);
 
     return list;
   };
