@@ -81,6 +81,840 @@ Array [
 ]
 `;
 
+exports[`Product object can get a details of product by id 1`] = `
+Object {
+  "__typename": "Product",
+  "attributes": Array [
+    Object {
+      "__typename": "SelectedAttribute",
+      "attribute": Object {
+        "__typename": "Attribute",
+        "id": "QXR0cmlidXRlOjIx",
+        "name": "ABV",
+        "slug": "abv",
+      },
+      "values": Array [
+        Object {
+          "__typename": "AttributeValue",
+          "id": "QXR0cmlidXRlVmFsdWU6Njk=",
+          "name": "6.7%",
+        },
+      ],
+    },
+  ],
+  "category": Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTU=",
+    "name": "Alcohol",
+    "products": Object {
+      "__typename": "ProductCountableConnection",
+      "edges": Array [
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4MQ==",
+            "name": "Red Wine",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4NA==",
+            "name": "Seaman Beer",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4Mw==",
+            "name": "Seaman Lager",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": false,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-510x510.png",
+            },
+          },
+        },
+      ],
+    },
+  },
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "id": "UHJvZHVjdDo4NA==",
+  "images": Array [
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjE5",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_vjCaZry.png",
+    },
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjIw",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_2rzsOLb.png",
+    },
+  ],
+  "isAvailable": true,
+  "name": "Seaman Beer",
+  "pricing": Object {
+    "__typename": "ProductPricingInfo",
+    "onSale": true,
+    "priceRange": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+    },
+    "priceRangeUndiscounted": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+    },
+  },
+  "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
+  "seoTitle": "",
+  "thumbnail": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+  },
+  "thumbnail2x": Object {
+    "__typename": "Image",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+  },
+  "variants": Array [
+    Object {
+      "__typename": "ProductVariant",
+      "attributes": Array [],
+      "id": "UHJvZHVjdFZhcmlhbnQ6MTk2",
+      "images": Array [],
+      "isAvailable": true,
+      "name": "",
+      "pricing": Object {
+        "__typename": "VariantPricingInfo",
+        "onSale": true,
+        "price": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+        },
+        "priceUndiscounted": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+      },
+      "quantityAvailable": 50,
+      "sku": "98616713",
+    },
+  ],
+}
+`;
+
+exports[`Product object can get a details of product by slug 1`] = `
+Object {
+  "__typename": "Product",
+  "attributes": Array [
+    Object {
+      "__typename": "SelectedAttribute",
+      "attribute": Object {
+        "__typename": "Attribute",
+        "id": "QXR0cmlidXRlOjIx",
+        "name": "ABV",
+        "slug": "abv",
+      },
+      "values": Array [
+        Object {
+          "__typename": "AttributeValue",
+          "id": "QXR0cmlidXRlVmFsdWU6Njk=",
+          "name": "6.7%",
+        },
+      ],
+    },
+  ],
+  "category": Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTU=",
+    "name": "Alcohol",
+    "products": Object {
+      "__typename": "ProductCountableConnection",
+      "edges": Array [
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4MQ==",
+            "name": "Red Wine",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3.5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4NA==",
+            "name": "Seaman Beer",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4Mw==",
+            "name": "Seaman Lager",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": false,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-510x510.png",
+            },
+          },
+        },
+      ],
+    },
+  },
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "id": "UHJvZHVjdDo4NA==",
+  "images": Array [
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjE5",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_vjCaZry.png",
+    },
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjIw",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_2rzsOLb.png",
+    },
+  ],
+  "isAvailable": true,
+  "name": "Seaman Beer",
+  "pricing": Object {
+    "__typename": "ProductPricingInfo",
+    "onSale": true,
+    "priceRange": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+    },
+    "priceRangeUndiscounted": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+    },
+  },
+  "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
+  "seoTitle": "",
+  "thumbnail": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+  },
+  "thumbnail2x": Object {
+    "__typename": "Image",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+  },
+  "variants": Array [
+    Object {
+      "__typename": "ProductVariant",
+      "attributes": Array [],
+      "id": "UHJvZHVjdFZhcmlhbnQ6MTk2",
+      "images": Array [],
+      "isAvailable": true,
+      "name": "",
+      "pricing": Object {
+        "__typename": "VariantPricingInfo",
+        "onSale": true,
+        "price": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+        },
+        "priceUndiscounted": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+      },
+      "quantityAvailable": 50,
+      "sku": "98616713",
+    },
+  ],
+}
+`;
+
 exports[`Product object can get a list of products 1`] = `
 Array [
   Object {

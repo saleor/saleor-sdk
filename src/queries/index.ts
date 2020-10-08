@@ -18,10 +18,6 @@ import {
 } from "./gqlTypes/UserOrderByToken";
 
 import { Attributes, AttributesVariables } from "./gqlTypes/Attributes";
-import {
-  ProductDetails,
-  ProductDetailsVariables,
-} from "./gqlTypes/ProductDetails";
 
 import { GetShop } from "./gqlTypes/GetShop";
 
@@ -87,14 +83,6 @@ export const QUERIES = {
   ): ObservableQuery<OrdersByUser, any> =>
     client.watchQuery({
       query: Orders.ordersByUser,
-      ...options,
-    }),
-  ProductDetails: <TCacheShape>(
-    client: ApolloClient<TCacheShape>,
-    options: QueryOptions<ProductDetailsVariables>
-  ): ObservableQuery<ProductDetails, any> =>
-    client.watchQuery({
-      query: Product.productDetails,
       ...options,
     }),
   VariantsProducts: <TCacheShape>(
