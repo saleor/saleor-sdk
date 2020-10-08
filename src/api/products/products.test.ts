@@ -2,6 +2,7 @@ import ApolloClient from "apollo-client";
 import { ProductsAPI } from "./products";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 import { setupAPI, setupRecording } from "../../../testUtils/api";
+import * as fixtures from "./fixtures";
 
 setupRecording();
 
@@ -14,6 +15,32 @@ describe("Product object", () => {
     productsAPI = new ProductsAPI(client);
 
     done();
+  });
+
+  it("can get a details of product by id", async () => {
+    const details = productsAPI.getDetails({
+      id: fixtures.productId,
+    });
+
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
+    expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
+  });
+
+  it("can get a details of product by slug", async () => {
+    const details = productsAPI.getDetails({
+      slug: fixtures.productSlug,
+    });
+
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
+    expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
   });
 
   it("can get a list of products", async () => {

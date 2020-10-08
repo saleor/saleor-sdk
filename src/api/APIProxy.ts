@@ -62,11 +62,6 @@ class APIProxy {
 
   getAttributes = this.watchQuery(QUERIES.Attributes, data => data.attributes);
 
-  getProductDetails = this.watchQuery(
-    QUERIES.ProductDetails,
-    data => data.product
-  );
-
   getOrdersByUser = this.watchQuery(QUERIES.OrdersByUser, data =>
     data.me ? data.me.orders : null
   );
