@@ -6,6 +6,7 @@ import {
   useCategoryList,
   useCategoryChildrenList,
   useCategoryAncestorsList,
+  useCategoryDetails,
 } from "./categories";
 import * as fixtures from "../../api/categories/fixtures";
 
@@ -20,6 +21,27 @@ describe("useCategoryList", () => {
     wrapper = ({ children }) => (
       <ApolloProvider client={client}>{children}</ApolloProvider>
     );
+  });
+
+  it("can fetch category", async () => {
+    const { result } = renderHook(
+      () =>
+        useCategoryDetails({
+          id: fixtures.categoryWithChildren,
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    expect(result.current.data).toBe(undefined);
+    expect(result.current.loading).toBe(true);
+
+    // @ts-ignore
+    await act(() => result.current.current);
+
+    expect(result.current.data).toMatchSnapshot();
+    expect(result.current.loading).toBe(false);
   });
 
   it("can fetch categories", async () => {

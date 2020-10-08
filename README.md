@@ -118,14 +118,14 @@ if (dataError) {
 
 We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `SaleorAPI` or use React hooks, depending on [which setup do you select](#setup).
 
-| API object              | React hook                                                                     | Description                                                                     |
-| :---------------------- | :----------------------------------------------------------------------------- | :------------------------------------------------------------------------------ |
-| `SaleorAPI.auth`        | `useAuth()`                                                                    | Handles user authentication and stores data about the currently signed in user. |
-| `SaleorAPI.cart`        | `useCart()`                                                                    | Collects products to cart and calculates their prices.                          |
-| `SaleorAPI.checkout`    | `useCheckout()`                                                                | Uses cart and handles the whole checkout process.                               |
-| `SaleorAPI.products`    | `useProductList()`                                                             | Obtains products.                                                               |
-| `SaleorAPI.collections` | `useCollectionList()`                                                          | Obtains collections.                                                            |
-| `SaleorAPI.categories`  | `useCategoryList()`, `useCategoryAncestorsList()`, `useCategoryChildrenList()` | Obtains categories.                                                             |
+| API object              | React hook                                                                                             | Description                                                                     |
+| :---------------------- | :----------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------ |
+| `SaleorAPI.auth`        | `useAuth()`                                                                                            | Handles user authentication and stores data about the currently signed in user. |
+| `SaleorAPI.cart`        | `useCart()`                                                                                            | Collects products to cart and calculates their prices.                          |
+| `SaleorAPI.checkout`    | `useCheckout()`                                                                                        | Uses cart and handles the whole checkout process.                               |
+| `SaleorAPI.products`    | `useProductList()`                                                                                     | Obtains products.                                                               |
+| `SaleorAPI.collections` | `useCollectionList()`                                                                                  | Obtains collections.                                                            |
+| `SaleorAPI.categories`  | `useCategoryDetails()`, `useCategoryList()`, `useCategoryAncestorsList()`, `useCategoryChildrenList()` | Obtains categories.                                                             |
 
 ## Local development
 

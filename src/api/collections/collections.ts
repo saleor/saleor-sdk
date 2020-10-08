@@ -10,7 +10,7 @@ import { CollectionList } from "./CollectionList";
 export class CollectionsAPI
   implements
     WithList<CollectionListQuery, BaseCollection, CollectionListVariables> {
-  client: ApolloClient<any>;
+  private client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;

@@ -10,47 +10,28 @@
 export interface CategoryDetails_category_backgroundImage {
   __typename: "Image";
   /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+  /**
    * The URL of the image.
    */
   url: string;
 }
 
-export interface CategoryDetails_category_ancestors_edges_node {
-  __typename: "Category";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  name: string;
-}
-
-export interface CategoryDetails_category_ancestors_edges {
-  __typename: "CategoryCountableEdge";
-  /**
-   * The item at the end of the edge.
-   */
-  node: CategoryDetails_category_ancestors_edges_node;
-}
-
-export interface CategoryDetails_category_ancestors {
-  __typename: "CategoryCountableConnection";
-  edges: CategoryDetails_category_ancestors_edges[];
-}
-
 export interface CategoryDetails_category {
   __typename: "Category";
-  seoDescription: string | null;
-  seoTitle: string | null;
   /**
    * The ID of the object.
    */
   id: string;
   name: string;
+  slug: string;
+  seoDescription: string | null;
+  seoTitle: string | null;
   backgroundImage: CategoryDetails_category_backgroundImage | null;
-  /**
-   * List of ancestors of the category.
-   */
-  ancestors: CategoryDetails_category_ancestors | null;
+  description: string;
+  descriptionJson: any;
 }
 
 export interface CategoryDetails {

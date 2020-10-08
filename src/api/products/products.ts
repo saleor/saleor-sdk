@@ -14,7 +14,7 @@ export class ProductsAPI
       ProductList_products_edges_node,
       ProductListVariables
     > {
-  client: ApolloClient<any>;
+  private client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;

@@ -5,19 +5,33 @@ import {
   CategoryList as CategoryListQuery,
   CategoryListVariables,
 } from "../../queries/gqlTypes/CategoryList";
+import { CategoryDetailsVariables } from "../../queries/gqlTypes/CategoryDetails";
 import { BaseCategory } from "../../fragments/gqlTypes/BaseCategory";
 import { WithList } from "../types";
 import { CategoryList } from "./CategoryList";
 import { CategoryAncestorsList } from "./CategoryAncestorsList";
 import { CategoryChildrenList } from "./CategoryChildrenList";
+import { CategoryDetails } from "./CategoryDetails";
 
 export class CategoriesAPI
   implements WithList<CategoryListQuery, BaseCategory, CategoryListVariables> {
-  client: ApolloClient<any>;
+  private client: ApolloClient<any>;
 
   constructor(client: ApolloClient<any>) {
     this.client = client;
   }
+
+  /**
+   * Method returning category details
+   * @param variables Details parameters
+   */
+  getDetails = (variables: CategoryDetailsVariables) => {
+    const details = new CategoryDetails(this.client);
+
+    details.init(variables);
+
+    return details;
+  };
 
   /**
    * Method returning list of categories with ability to request next page

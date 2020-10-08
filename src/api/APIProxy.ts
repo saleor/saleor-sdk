@@ -67,11 +67,6 @@ class APIProxy {
     data => data.product
   );
 
-  getCategoryDetails = this.watchQuery(
-    QUERIES.CategoryDetails,
-    data => data.category
-  );
-
   getOrdersByUser = this.watchQuery(QUERIES.OrdersByUser, data =>
     data.me ? data.me.orders : null
   );

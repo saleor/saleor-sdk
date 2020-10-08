@@ -16,6 +16,19 @@ describe("Categories object", () => {
     done();
   });
 
+  it("can get a details of category", async () => {
+    const details = categoriesAPI.getDetails({
+      id: fixtures.categoryWithChildren,
+    });
+
+    expect(details.data).toBeUndefined();
+    expect(details.loading).toBe(true);
+    await details.current;
+
+    expect(details.data).toMatchSnapshot();
+    expect(details.loading).toBe(false);
+  });
+
   it("can get a list of categories", async () => {
     const list = categoriesAPI.getList({
       first: 20,

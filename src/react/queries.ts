@@ -7,10 +7,6 @@ export const useShopDetails = queryFactory("getShopDetails");
 export const useOrderDetails = queryWithVariablesFactory("getOrderDetails");
 export const useOrdersByUser = queryWithVariablesFactory("getOrdersByUser");
 
-export const useCategoryDetails = queryWithVariablesFactory(
-  "getCategoryDetails"
-);
-
 export const useAtrributes = queryWithVariablesFactory("getAttributes");
 
 export const useVariantsProducts = queryWithVariablesFactory(
