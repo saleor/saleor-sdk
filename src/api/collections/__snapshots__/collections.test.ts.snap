@@ -13,6 +13,42 @@ Array [
 ]
 `;
 
+exports[`Collection object can get a details of collection by id 1`] = `
+Object {
+  "__typename": "Collection",
+  "backgroundImage": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "http://localhost:8000/media/collection-backgrounds/summer_DSww4Ad.jpg",
+  },
+  "description": "The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.",
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "id": "Q29sbGVjdGlvbjox",
+  "name": "Summer collection",
+  "seoDescription": null,
+  "seoTitle": null,
+  "slug": "summer-collection",
+}
+`;
+
+exports[`Collection object can get a details of collection by slug 1`] = `
+Object {
+  "__typename": "Collection",
+  "backgroundImage": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "http://localhost:8000/media/collection-backgrounds/summer_DSww4Ad.jpg",
+  },
+  "description": "The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.",
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "id": "Q29sbGVjdGlvbjox",
+  "name": "Summer collection",
+  "seoDescription": null,
+  "seoTitle": null,
+  "slug": "summer-collection",
+}
+`;
+
 exports[`Collection object can get a list of collections 1`] = `
 Array [
   Object {
