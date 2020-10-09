@@ -123,8 +123,8 @@ We provide an API with methods and fields, performing one, scoped type of work. 
 | `SaleorAPI.auth`        | `useAuth()`                                                                                            | Handles user authentication and stores data about the currently signed in user. |
 | `SaleorAPI.cart`        | `useCart()`                                                                                            | Collects products to cart and calculates their prices.                          |
 | `SaleorAPI.checkout`    | `useCheckout()`                                                                                        | Uses cart and handles the whole checkout process.                               |
-| `SaleorAPI.products`    | `useProductList()`                                                                                     | Obtains products.                                                               |
-| `SaleorAPI.collections` | `useCollectionList()`                                                                                  | Obtains collections.                                                            |
+| `SaleorAPI.products`    | `useProductDetails()`, `useProductList()`                                                              | Obtains products.                                                               |
+| `SaleorAPI.collections` | `useCollectionDetails()`, `useCollectionList()`                                                        | Obtains collections.                                                            |
 | `SaleorAPI.categories`  | `useCategoryDetails()`, `useCategoryList()`, `useCategoryAncestorsList()`, `useCategoryChildrenList()` | Obtains categories.                                                             |
 
 ## Local development
