@@ -93,7 +93,11 @@ export class AuthAPI extends ErrorListener {
       }
     );
 
-    if (!this.saleorState.signInToken && window.PasswordCredential) {
+    if (
+      !this.saleorState.signInToken &&
+      typeof window !== "undefined" &&
+      window.PasswordCredential
+    ) {
       this.autoSignIn();
     }
   }
@@ -115,7 +119,12 @@ export class AuthAPI extends ErrorListener {
     });
 
     try {
-      if (autoSignIn && !dataError?.error && window.PasswordCredential) {
+      if (
+        autoSignIn &&
+        !dataError?.error &&
+        typeof window !== "undefined" &&
+        window.PasswordCredential
+      ) {
         await navigator.credentials.store(
           new window.PasswordCredential({
             id: email,

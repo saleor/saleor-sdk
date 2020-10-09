@@ -34,7 +34,9 @@ export class JobsManager {
 
     this.enqueueAllSavedInRepository();
 
-    window?.addEventListener("online", this.onOnline);
+    if (typeof window !== "undefined") {
+      window.addEventListener("online", this.onOnline);
+    }
   }
 
   /**
@@ -165,7 +167,7 @@ export class JobsManager {
     G extends keyof IQueuedJobs,
     J extends keyof IQueuedJobs[G]
   >(jobGroup: G, jobName: J, state: boolean) {
-    if (!window?.localStorage) {
+    if (typeof window === "undefined" || !window.localStorage) {
       return;
     }
     let jobs = LocalStorageHandler.getJobs();
@@ -189,7 +191,7 @@ export class JobsManager {
   }
 
   private enqueueAllSavedInRepository() {
-    if (!window?.localStorage) {
+    if (typeof window === "undefined" || !window.localStorage) {
       return;
     }
     const jobs = LocalStorageHandler.getJobs();
