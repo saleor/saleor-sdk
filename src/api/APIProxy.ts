@@ -177,10 +177,14 @@ class APIProxy {
       callback(this.isLoggedIn());
     };
 
-    window.addEventListener("auth", eventHandler);
+    if (typeof window !== "undefined") {
+      window.addEventListener("auth", eventHandler);
+    }
 
     return () => {
-      window.removeEventListener("auth", eventHandler);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("auth", eventHandler);
+      }
     };
   };
 
