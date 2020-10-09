@@ -18,52 +18,39 @@ describe("Product object", () => {
   });
 
   it("can get a details of product by id", async () => {
-    const details = productsAPI.getDetails({
+    const details = await productsAPI.getDetails({
       id: fixtures.productId,
     });
-
-    expect(details.data).toBeUndefined();
-    expect(details.loading).toBe(true);
-    await details.current;
 
     expect(details.data).toMatchSnapshot();
     expect(details.loading).toBe(false);
   });
 
   it("can get a details of product by slug", async () => {
-    const details = productsAPI.getDetails({
+    const details = await productsAPI.getDetails({
       slug: fixtures.productSlug,
     });
-
-    expect(details.data).toBeUndefined();
-    expect(details.loading).toBe(true);
-    await details.current;
 
     expect(details.data).toMatchSnapshot();
     expect(details.loading).toBe(false);
   });
 
   it("can get a list of products", async () => {
-    const list = productsAPI.getList({
+    const list = await productsAPI.getList({
       first: 20,
     });
-
-    expect(list.data).toBeUndefined();
-    expect(list.loading).toBe(true);
-    await list.current;
 
     expect(list.data).toMatchSnapshot();
     expect(list.loading).toBe(false);
   });
 
   it("can get new page", async () => {
-    const list = productsAPI.getList({
+    const list = await productsAPI.getList({
       first: 1,
     });
 
-    await list.current;
-
     expect(list.data).toMatchSnapshot();
+    expect(list.loading).toBe(false);
 
     list.next();
 
@@ -76,7 +63,7 @@ describe("Product object", () => {
   });
 
   it("can sort", async () => {
-    const list = productsAPI.getList({
+    const list = await productsAPI.getList({
       first: 20,
       sortBy: {
         direction: OrderDirection.DESC,
@@ -84,21 +71,19 @@ describe("Product object", () => {
       },
     });
 
-    await list.current;
-
     expect(list.data).toMatchSnapshot();
+    expect(list.loading).toBe(false);
   });
 
   it("can filter", async () => {
-    const list = productsAPI.getList({
+    const list = await productsAPI.getList({
       filter: {
         search: "beer",
       },
       first: 20,
     });
 
-    await list.current;
-
     expect(list.data).toMatchSnapshot();
+    expect(list.loading).toBe(false);
   });
 });
