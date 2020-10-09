@@ -42,5 +42,6 @@ export interface CategoryDetails {
 }
 
 export interface CategoryDetailsVariables {
-  id: string;
+  id?: string | null;
+  slug?: string | null;
 }
