@@ -78,6 +78,9 @@ class LocalStorageHandlerProxy extends NamedObservable<
   }
 
   protected clearStorage(): void {
+    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+      return;
+    }
     window.localStorage.clear();
     this.notifyChange(LocalStorageEvents.CLEAR, undefined);
   }
