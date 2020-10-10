@@ -138,6 +138,42 @@ export class AuthAPI extends ErrorListener {
   };
 
   /**
+   * Requests a password reset for an user account with given email.
+   * @param email Email used for account.
+   * @param redirectUrl URL used for redirection.
+   */
+  resetPasswordRequest = async (
+    email: string,
+    redirectUrl: string
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "resetPasswordRequest",
+      {
+        email,
+        redirectUrl,
+      }
+    );
+
+    if (dataError?.error) {
+      this.fireError(dataError.error, DataErrorAuthTypes.RESET_PASSWORD_REQUEST);
+    }
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    return {
+      data,
+      pending: false,
+    };
+  };
+
+  /**
    * Tries to authenticate user with given email and password.
    * @param email Email used for authentication.
    * @param password Password used for authentication.

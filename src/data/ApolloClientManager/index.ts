@@ -38,6 +38,10 @@ import {
   RegisterAccountVariables,
 } from "../../mutations/gqlTypes/RegisterAccount";
 import {
+  ResetPasswordRequest,
+  ResetPasswordRequestVariables,
+} from "../../mutations/gqlTypes/ResetPasswordRequest";
+import {
   TokenAuth,
   TokenAuthVariables,
 } from "../../mutations/gqlTypes/TokenAuth";
@@ -155,6 +159,35 @@ export class ApolloClientManager {
         requiresConfirmation: data?.accountRegister?.requiresConfirmation,
       },
     };
+  };
+
+  resetPasswordRequest = async (
+    email: string,
+    redirectUrl: string
+  ) => {
+    const { data, errors } = await this.client.mutate<
+      ResetPasswordRequest,
+      ResetPasswordRequestVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: UserMutations.resetPasswordRequest,
+      variables: {
+        email,
+        redirectUrl,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.requestPasswordReset?.accountErrors.length) {
+      return {
+        error: data.requestPasswordReset.accountErrors,
+      };
+    }
+    return {};
   };
 
   signIn = async (email: string, password: string) => {
