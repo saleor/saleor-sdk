@@ -5,6 +5,9 @@ export const baseProductFragment = gql`
   fragment BaseProduct on Product {
     id
     name
+    slug
+    seoDescription
+    seoTitle
     thumbnail {
       url
       alt
@@ -126,8 +129,6 @@ export const productFragment = gql`
     variants {
       ...ProductVariantFields
     }
-    seoDescription
-    seoTitle
     isAvailable
   }
 `;

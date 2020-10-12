@@ -34,6 +34,9 @@ export interface BaseProduct {
    */
   id: string;
   name: string;
+  slug: string;
+  seoDescription: string | null;
+  seoTitle: string | null;
   /**
    * The main thumbnail for a product.
    */
