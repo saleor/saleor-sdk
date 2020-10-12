@@ -64,8 +64,8 @@ export const categoryAncestorsList = gql`
 
 export const categoryDetails = gql`
   ${categoryFragment}
-  query CategoryDetails($id: ID!) {
-    category(id: $id) {
+  query CategoryDetails($id: ID, $slug: String) {
+    category(id: $id, slug: $slug) {
       ...CategoryDetails
     }
   }
