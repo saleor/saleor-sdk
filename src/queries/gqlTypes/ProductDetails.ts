@@ -433,6 +433,9 @@ export interface ProductDetails_product_category_products_edges_node {
    */
   id: string;
   name: string;
+  slug: string;
+  seoDescription: string | null;
+  seoTitle: string | null;
   /**
    * The main thumbnail for a product.
    */
@@ -708,6 +711,9 @@ export interface ProductDetails_product {
    */
   id: string;
   name: string;
+  slug: string;
+  seoDescription: string | null;
+  seoTitle: string | null;
   /**
    * The main thumbnail for a product.
    */
@@ -734,8 +740,6 @@ export interface ProductDetails_product {
    * List of variants for the product.
    */
   variants: (ProductDetails_product_variants | null)[] | null;
-  seoDescription: string | null;
-  seoTitle: string | null;
   /**
    * Whether the product is in stock and visible or not.
    */
