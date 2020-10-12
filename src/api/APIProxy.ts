@@ -28,6 +28,7 @@ import {
   mergeEdges,
 } from "../utils";
 import { SetPasswordChange, SetPasswordResult } from "./types";
+import { WINDOW_EXISTS } from "../consts";
 
 const handleDataErrors = <T extends QueryShape, TData>(
   mapFn: MapFn<T, TData> | WatchMapFn<T, TData>,
@@ -177,12 +178,12 @@ class APIProxy {
       callback(this.isLoggedIn());
     };
 
-    if (typeof window !== "undefined") {
+    if (WINDOW_EXISTS) {
       window.addEventListener("auth", eventHandler);
     }
 
     return () => {
-      if (typeof window !== "undefined") {
+      if (WINDOW_EXISTS) {
         window.removeEventListener("auth", eventHandler);
       }
     };

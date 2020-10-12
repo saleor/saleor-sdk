@@ -5,6 +5,7 @@ import {
 } from "apollo-cache-inmemory";
 import { persistCache as apolloPersistCache } from "apollo-cache-persist";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import { LOCAL_STORAGE_EXISTS } from "./consts";
 
 interface SaleorCacheConfig {
   /**
@@ -30,7 +31,7 @@ export const createSaleorCache = async ({
     },
   });
 
-  if (persistCache && typeof window !== "undefined" && window.localStorage) {
+  if (persistCache && LOCAL_STORAGE_EXISTS) {
     await apolloPersistCache({
       cache: saleorCache,
       storage: window.localStorage as PersistentStorage<

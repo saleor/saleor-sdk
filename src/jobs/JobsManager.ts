@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_EXISTS, WINDOW_EXISTS } from "../consts";
 import { ApolloClientManager } from "../data/ApolloClientManager";
 import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { IJobs, Jobs } from "./Jobs";
@@ -34,7 +35,7 @@ export class JobsManager {
 
     this.enqueueAllSavedInRepository();
 
-    if (typeof window !== "undefined") {
+    if (WINDOW_EXISTS) {
       window.addEventListener("online", this.onOnline);
     }
   }
@@ -167,7 +168,7 @@ export class JobsManager {
     G extends keyof IQueuedJobs,
     J extends keyof IQueuedJobs[G]
   >(jobGroup: G, jobName: J, state: boolean) {
-    if (typeof window === "undefined" || !window.localStorage) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return;
     }
     let jobs = LocalStorageHandler.getJobs();
@@ -191,7 +192,7 @@ export class JobsManager {
   }
 
   private enqueueAllSavedInRepository() {
-    if (typeof window === "undefined" || !window.localStorage) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return;
     }
     const jobs = LocalStorageHandler.getJobs();

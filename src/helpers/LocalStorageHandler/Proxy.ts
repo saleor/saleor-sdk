@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_EXISTS } from "../../consts";
 import { NamedObservable } from "../NamedObservable";
 import { LocalStorageItems, LocalStorageEvents } from "./types";
 
@@ -9,16 +10,13 @@ import { LocalStorageItems, LocalStorageEvents } from "./types";
 class LocalStorageHandlerProxy extends NamedObservable<
   LocalStorageItems | LocalStorageEvents
 > {
-  private static LOCAL_STORAGE_EXISTS =
-    typeof window !== "undefined" && !!window.localStorage;
-
   /**
    * Save string item to local storage.
    * @param name Unique key by which item is identified.
    * @param item String to be saved. If null, then item is completely removed from local storage.
    */
   protected saveItem(name: LocalStorageItems, item: string | null): void {
-    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return;
     }
     if (item) {
@@ -34,7 +32,7 @@ class LocalStorageHandlerProxy extends NamedObservable<
    * @param name Unique key by which item is identified.
    */
   protected static retrieveItem(name: LocalStorageItems): string | null {
-    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return null;
     }
     return window.localStorage.getItem(name);
@@ -49,7 +47,7 @@ class LocalStorageHandlerProxy extends NamedObservable<
     name: LocalStorageItems,
     object: T | null
   ): void {
-    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return;
     }
     if (object) {
@@ -67,7 +65,7 @@ class LocalStorageHandlerProxy extends NamedObservable<
   protected static retrieveObject<T extends object>(
     name: LocalStorageItems
   ): T | null {
-    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return null;
     }
     const item = window.localStorage.getItem(name);
@@ -78,7 +76,7 @@ class LocalStorageHandlerProxy extends NamedObservable<
   }
 
   protected clearStorage(): void {
-    if (!LocalStorageHandlerProxy.LOCAL_STORAGE_EXISTS) {
+    if (!LOCAL_STORAGE_EXISTS) {
       return;
     }
     window.localStorage.clear();
