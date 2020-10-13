@@ -7,6 +7,7 @@ import { StateItems } from "../../state/types";
 import { PromiseRunResponse } from "../types";
 import { DataErrorAuthTypes } from "./types";
 import { Config } from "../../types";
+import { CREDENTIAL_API_EXISTS } from "../../consts";
 
 export const BROWSER_NO_CREDENTIAL_API_MESSAGE =
   "Saleor SDK is unable to use browser Credential Management API.";
@@ -93,7 +94,7 @@ export class AuthAPI extends ErrorListener {
       }
     );
 
-    if (!this.saleorState.signInToken && window.PasswordCredential) {
+    if (!this.saleorState.signInToken && CREDENTIAL_API_EXISTS) {
       this.autoSignIn();
     }
   }
@@ -115,7 +116,7 @@ export class AuthAPI extends ErrorListener {
     });
 
     try {
-      if (autoSignIn && !dataError?.error && window.PasswordCredential) {
+      if (autoSignIn && !dataError?.error && CREDENTIAL_API_EXISTS) {
         await navigator.credentials.store(
           new window.PasswordCredential({
             id: email,

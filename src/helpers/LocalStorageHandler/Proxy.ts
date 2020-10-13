@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_EXISTS } from "../../consts";
 import { NamedObservable } from "../NamedObservable";
 import { LocalStorageItems, LocalStorageEvents } from "./types";
 
@@ -15,10 +16,13 @@ class LocalStorageHandlerProxy extends NamedObservable<
    * @param item String to be saved. If null, then item is completely removed from local storage.
    */
   protected saveItem(name: LocalStorageItems, item: string | null): void {
+    if (!LOCAL_STORAGE_EXISTS) {
+      return;
+    }
     if (item) {
-      localStorage.setItem(name, item);
+      window.localStorage.setItem(name, item);
     } else {
-      localStorage.removeItem(name);
+      window.localStorage.removeItem(name);
     }
     this.notifyChange(name, item);
   }
@@ -28,7 +32,10 @@ class LocalStorageHandlerProxy extends NamedObservable<
    * @param name Unique key by which item is identified.
    */
   protected static retrieveItem(name: LocalStorageItems): string | null {
-    return localStorage.getItem(name);
+    if (!LOCAL_STORAGE_EXISTS) {
+      return null;
+    }
+    return window.localStorage.getItem(name);
   }
 
   /**
@@ -40,10 +47,13 @@ class LocalStorageHandlerProxy extends NamedObservable<
     name: LocalStorageItems,
     object: T | null
   ): void {
+    if (!LOCAL_STORAGE_EXISTS) {
+      return;
+    }
     if (object) {
-      localStorage.setItem(name, JSON.stringify(object));
+      window.localStorage.setItem(name, JSON.stringify(object));
     } else {
-      localStorage.removeItem(name);
+      window.localStorage.removeItem(name);
     }
     this.notifyChange(name, object);
   }
@@ -55,7 +65,10 @@ class LocalStorageHandlerProxy extends NamedObservable<
   protected static retrieveObject<T extends object>(
     name: LocalStorageItems
   ): T | null {
-    const item = localStorage.getItem(name);
+    if (!LOCAL_STORAGE_EXISTS) {
+      return null;
+    }
+    const item = window.localStorage.getItem(name);
     if (item) {
       return JSON.parse(item);
     }
@@ -63,7 +76,10 @@ class LocalStorageHandlerProxy extends NamedObservable<
   }
 
   protected clearStorage(): void {
-    localStorage.clear();
+    if (!LOCAL_STORAGE_EXISTS) {
+      return;
+    }
+    window.localStorage.clear();
     this.notifyChange(LocalStorageEvents.CLEAR, undefined);
   }
 }
