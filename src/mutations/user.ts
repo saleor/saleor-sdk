@@ -14,6 +14,33 @@ export const changeUserPassword = gql`
   }
 `;
 
+export const registerAccount = gql`
+  mutation RegisterAccount($email: String!, $password: String!, $redirectUrl: String!) {
+    accountRegister(
+      input: { email: $email, password: $password, redirectUrl: $redirectUrl }
+    ) {
+      accountErrors {
+        field
+        message
+        code
+      }
+      requiresConfirmation
+    }
+  }
+`;
+
+export const resetPasswordRequest = gql`
+  mutation ResetPasswordRequest($email: String!, $redirectUrl: String!) {
+    requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
+      accountErrors {
+        field
+        message
+        code
+      }
+    }
+  }
+`;
+
 export const accountUpdate = gql`
   ${userFragment}
   ${accountErrorFragment}

@@ -48,6 +48,59 @@ export class AuthJobs extends JobsHandler<AuthJobsEventsValues> {
     };
   };
 
+  registerAccount = async ({
+    email,
+    password,
+    redirectUrl,
+  }: {
+    email: string;
+    password: string;
+    redirectUrl: string;
+  }): PromiseAuthJobRunResponse => {
+    const { data, error } = await this.apolloClientManager.registerAccount(
+      email,
+      password,
+      redirectUrl
+    );
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.REGISTER_ACCOUNT,
+        },
+      };
+    }
+
+    return {
+      data,
+    };
+  };
+
+  resetPasswordRequest = async ({
+    email,
+    redirectUrl,
+  }: {
+    email: string;
+    redirectUrl: string;
+  }): PromiseAuthJobRunResponse => {
+    const { error } = await this.apolloClientManager.resetPasswordRequest(
+      email,
+      redirectUrl
+    );
+
+    if (error) {
+      return {
+        dataError: {
+          error,
+          type: DataErrorAuthTypes.RESET_PASSWORD_REQUEST,
+        },
+      };
+    }
+
+    return {};
+  };
+
   signIn = async ({
     email,
     password,
