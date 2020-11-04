@@ -180,6 +180,9 @@ export interface UserCheckoutDetails_me_checkout_availableShippingMethods {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UserCheckoutDetails_me_checkout_availableShippingMethods_price | null;
 }
 
@@ -202,6 +205,9 @@ export interface UserCheckoutDetails_me_checkout_shippingMethod {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UserCheckoutDetails_me_checkout_shippingMethod_price | null;
 }
 
@@ -565,6 +571,9 @@ export interface UserCheckoutDetails_me_checkout {
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (UserCheckoutDetails_me_checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: UserCheckoutDetails_me_checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.

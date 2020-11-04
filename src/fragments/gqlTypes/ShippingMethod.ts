@@ -26,5 +26,8 @@ export interface ShippingMethod {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: ShippingMethod_price | null;
 }

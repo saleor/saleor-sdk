@@ -8,6 +8,7 @@ export interface ProvideCheckoutJobInput {
 export interface CreateCheckoutJobInput {
   email: string;
   lines: Array<{ variantId: string; quantity: number }>;
+  channel: string;
   shippingAddress?: ICheckoutAddress;
   selectedShippingAddressId?: string;
   billingAddress?: ICheckoutAddress;
@@ -18,6 +19,7 @@ export interface SetShippingAddressJobInput {
   checkoutId: string;
   shippingAddress: ICheckoutAddress;
   email: string;
+  channel: string;
   selectedShippingAddressId?: string;
 }
 

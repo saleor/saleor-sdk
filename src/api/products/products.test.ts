@@ -37,6 +37,7 @@ describe("Product object", () => {
 
   it("can get a list of products", async () => {
     const list = await productsAPI.getList({
+      channel: "default-channel",
       first: 20,
     });
 
@@ -46,6 +47,7 @@ describe("Product object", () => {
 
   it("can get new page", async () => {
     const list = await productsAPI.getList({
+      channel: "default-channel",
       first: 1,
     });
 
@@ -64,6 +66,7 @@ describe("Product object", () => {
 
   it("can sort", async () => {
     const list = await productsAPI.getList({
+      channel: "default-channel",
       first: 20,
       sortBy: {
         direction: OrderDirection.DESC,
@@ -77,7 +80,9 @@ describe("Product object", () => {
 
   it("can filter", async () => {
     const list = await productsAPI.getList({
+      channel: "default-channel",
       filter: {
+        channel: "default-channel",
         search: "beer",
       },
       first: 20,

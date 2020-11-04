@@ -52,4 +52,5 @@ export interface VariantsProducts {
 
 export interface VariantsProductsVariables {
   ids?: (string | null)[] | null;
+  channel?: string | null;
 }

@@ -68,6 +68,7 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
+          channel: "default-channel",
           first: 20,
         }),
       {
@@ -89,6 +90,7 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
+          channel: "default-channel",
           first: 1,
         }),
       {
@@ -111,6 +113,7 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
+          channel: "default-channel",
           first: 10,
           sortBy: {
             direction: OrderDirection.DESC,
@@ -132,6 +135,7 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
+          channel: "default-channel",
           filter: {
             search: "winter",
           },

@@ -56,11 +56,13 @@ export enum AddressTypeEnum {
  */
 export enum CheckoutErrorCode {
   BILLING_ADDRESS_NOT_SET = "BILLING_ADDRESS_NOT_SET",
+  CHANNEL_INACTIVE = "CHANNEL_INACTIVE",
   CHECKOUT_NOT_FULLY_PAID = "CHECKOUT_NOT_FULLY_PAID",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INSUFFICIENT_STOCK = "INSUFFICIENT_STOCK",
   INVALID = "INVALID",
   INVALID_SHIPPING_METHOD = "INVALID_SHIPPING_METHOD",
+  MISSING_CHANNEL_SLUG = "MISSING_CHANNEL_SLUG",
   NOT_FOUND = "NOT_FOUND",
   PAYMENT_ERROR = "PAYMENT_ERROR",
   PRODUCT_NOT_PUBLISHED = "PRODUCT_NOT_PUBLISHED",
@@ -86,6 +88,7 @@ export enum CollectionSortField {
   AVAILABILITY = "AVAILABILITY",
   NAME = "NAME",
   PRODUCT_COUNT = "PRODUCT_COUNT",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
 }
 
 /**
@@ -407,6 +410,7 @@ export enum ProductOrderField {
   MINIMAL_PRICE = "MINIMAL_PRICE",
   NAME = "NAME",
   PRICE = "PRICE",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
   PUBLISHED = "PUBLISHED",
   TYPE = "TYPE",
 }
@@ -444,6 +448,7 @@ export interface AttributeInput {
 }
 
 export interface CheckoutCreateInput {
+  channel?: string | null;
   lines: (CheckoutLineInput | null)[];
   email?: string | null;
   shippingAddress?: AddressInput | null;
@@ -459,10 +464,12 @@ export interface CollectionFilterInput {
   published?: CollectionPublished | null;
   search?: string | null;
   ids?: (string | null)[] | null;
+  channel?: string | null;
 }
 
 export interface CollectionSortingInput {
   direction: OrderDirection;
+  channel?: string | null;
   field: CollectionSortField;
 }
 
@@ -497,10 +504,13 @@ export interface ProductFilterInput {
   price?: PriceRangeInput | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
+  ids?: (string | null)[] | null;
+  channel?: string | null;
 }
 
 export interface ProductOrder {
   direction: OrderDirection;
+  channel?: string | null;
   attributeId?: string | null;
   field?: ProductOrderField | null;
 }

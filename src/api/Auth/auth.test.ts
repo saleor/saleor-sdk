@@ -22,6 +22,7 @@ describe("Auth API", () => {
     const config = {
       ...defaultConfig,
       apiUrl,
+      channel: "default-channel",
     };
     const localStorageHandler = new LocalStorageHandler();
     const apolloClientManager = new ApolloClientManager(client);

@@ -40,6 +40,7 @@ describe("Collection object", () => {
 
   it("can get a list of collections", async () => {
     const list = await collectionsAPI.getList({
+      channel: "default-channel",
       first: 20,
     });
 
@@ -49,6 +50,7 @@ describe("Collection object", () => {
 
   it("can get new page", async () => {
     const list = await collectionsAPI.getList({
+      channel: "default-channel",
       first: 1,
     });
 
@@ -67,6 +69,7 @@ describe("Collection object", () => {
 
   it("can sort", async () => {
     const list = await collectionsAPI.getList({
+      channel: "default-channel",
       first: 20,
       sortBy: {
         direction: OrderDirection.DESC,
@@ -80,6 +83,7 @@ describe("Collection object", () => {
 
   it("can filter", async () => {
     const list = await collectionsAPI.getList({
+      channel: "default-channel",
       filter: {
         search: "winter",
       },

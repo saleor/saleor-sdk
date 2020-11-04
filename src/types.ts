@@ -48,6 +48,10 @@ export interface Config {
     auth: boolean;
     checkout: boolean;
   };
+  /**
+   * Default channel slug.
+   */
+  channel: string;
 }
 
 export type DefaultConfig = Pick<Config, "loadOnStart">;

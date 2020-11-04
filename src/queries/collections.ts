@@ -13,12 +13,14 @@ export const collections = gql`
     $after: String
     $sortBy: CollectionSortingInput
     $filter: CollectionFilterInput
+    $channel: String
   ) {
     collections(
       first: $first
       after: $after
       sortBy: $sortBy
       filter: $filter
+      channel: $channel
     ) {
       edges {
         node {

@@ -128,6 +128,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "setShippingAddress",
         {
+          channel: this.saleorState.channel,
           checkoutId,
           email,
           selectedShippingAddressId: shippingAddress.id,
@@ -146,6 +147,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "createCheckout",
         {
+          channel: this.saleorState.channel,
           email,
           lines: alteredLines,
           selectedShippingAddressId: shippingAddress.id,
@@ -240,6 +242,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "createCheckout",
         {
           billingAddress,
+          channel: this.saleorState.channel,
           email,
           lines: alteredLines,
           selectedBillingAddressId: billingAddress.id,

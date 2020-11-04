@@ -180,6 +180,9 @@ export interface CheckoutDetails_checkout_availableShippingMethods {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: CheckoutDetails_checkout_availableShippingMethods_price | null;
 }
 
@@ -202,6 +205,9 @@ export interface CheckoutDetails_checkout_shippingMethod {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: CheckoutDetails_checkout_shippingMethod_price | null;
 }
 
@@ -565,6 +571,9 @@ export interface CheckoutDetails_checkout {
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (CheckoutDetails_checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: CheckoutDetails_checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.
@@ -590,7 +599,7 @@ export interface CheckoutDetails_checkout {
 
 export interface CheckoutDetails {
   /**
-   * Look up a checkout by token.
+   * Look up a checkout by token and slug of channel.
    */
   checkout: CheckoutDetails_checkout | null;
 }

@@ -65,6 +65,7 @@ class CheckoutJobs extends JobsHandler<{}> {
   createCheckout = async ({
     email,
     lines,
+    channel,
     shippingAddress,
     selectedShippingAddressId,
     billingAddress,
@@ -73,6 +74,7 @@ class CheckoutJobs extends JobsHandler<{}> {
     const { data, error } = await this.apolloClientManager.createCheckout(
       email,
       lines,
+      channel,
       shippingAddress,
       billingAddress
     );
@@ -105,13 +107,15 @@ class CheckoutJobs extends JobsHandler<{}> {
     shippingAddress,
     email,
     selectedShippingAddressId,
+    channel,
   }: SetShippingAddressJobInput): PromiseCheckoutJobRunResponse => {
     const checkout = LocalStorageHandler.getCheckout();
 
     const { data, error } = await this.apolloClientManager.setShippingAddress(
       shippingAddress,
       email,
-      checkoutId
+      checkoutId,
+      channel
     );
 
     if (error) {

@@ -182,6 +182,9 @@ export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout_availableShi
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: AddCheckoutPromoCode_checkoutAddPromoCode_checkout_availableShippingMethods_price | null;
 }
 
@@ -204,6 +207,9 @@ export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout_shippingMeth
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: AddCheckoutPromoCode_checkoutAddPromoCode_checkout_shippingMethod_price | null;
 }
 
@@ -567,6 +573,9 @@ export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout {
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (AddCheckoutPromoCode_checkoutAddPromoCode_checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: AddCheckoutPromoCode_checkoutAddPromoCode_checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.

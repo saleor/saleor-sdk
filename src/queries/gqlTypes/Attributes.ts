@@ -65,4 +65,5 @@ export interface Attributes {
 
 export interface AttributesVariables {
   id: string;
+  channel?: string | null;
 }

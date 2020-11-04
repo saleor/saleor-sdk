@@ -161,10 +161,7 @@ export class ApolloClientManager {
     };
   };
 
-  resetPasswordRequest = async (
-    email: string,
-    redirectUrl: string
-  ) => {
+  resetPasswordRequest = async (email: string, redirectUrl: string) => {
     const { data, errors } = await this.client.mutate<
       ResetPasswordRequest,
       ResetPasswordRequestVariables
@@ -356,7 +353,8 @@ export class ApolloClientManager {
   };
 
   getRefreshedCheckoutLines = async (
-    checkoutlines: ICheckoutModelLine[] | null
+    checkoutlines: ICheckoutModelLine[] | null,
+    channel: string
   ) => {
     const idsOfMissingVariants = checkoutlines
       ?.filter(line => !line.variant || !line.totalPrice)
@@ -371,6 +369,7 @@ export class ApolloClientManager {
           {
             query: CheckoutQueries.checkoutProductVariants,
             variables: {
+              channel,
               ids: idsOfMissingVariants,
             },
           }
@@ -470,6 +469,7 @@ export class ApolloClientManager {
   createCheckout = async (
     email: string,
     lines: Array<{ variantId: string; quantity: number }>,
+    channel: string,
     shippingAddress?: ICheckoutAddress,
     billingAddress?: ICheckoutAddress
   ) => {
@@ -491,6 +491,7 @@ export class ApolloClientManager {
             streetAddress1: billingAddress.streetAddress1,
             streetAddress2: billingAddress.streetAddress2,
           },
+          channel,
           email,
           lines,
           shippingAddress: shippingAddress && {
@@ -592,10 +593,12 @@ export class ApolloClientManager {
   setShippingAddress = async (
     shippingAddress: ICheckoutAddress,
     email: string,
-    checkoutId: string
+    checkoutId: string,
+    channel: string
   ) => {
     try {
       const variables = {
+        channel,
         checkoutId,
         email,
         shippingAddress: {

@@ -65,6 +65,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
+          channel: "default-channel",
           first: 5,
         }),
       {
@@ -86,6 +87,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
+          channel: "default-channel",
           first: 1,
         }),
       {
@@ -110,6 +112,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
+          channel: "default-channel",
           first: 5,
           sortBy: {
             direction: OrderDirection.DESC,
@@ -131,7 +134,9 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
+          channel: "default-channel",
           filter: {
+            channel: "default-channel",
             search: "beer",
           },
           first: 2,

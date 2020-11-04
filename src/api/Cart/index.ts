@@ -90,7 +90,8 @@ export class SaleorCartAPI extends ErrorListener {
         data,
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
-        this.saleorState.checkout.lines
+        this.saleorState.checkout.lines,
+        this.saleorState.channel
       );
 
       if (error) {
@@ -122,7 +123,8 @@ export class SaleorCartAPI extends ErrorListener {
         data,
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
-        this.saleorState.checkout.lines
+        this.saleorState.checkout.lines,
+        this.saleorState.channel
       );
 
       if (error) {
@@ -155,7 +157,8 @@ export class SaleorCartAPI extends ErrorListener {
         data,
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
-        this.saleorState.checkout.lines
+        this.saleorState.checkout.lines,
+        this.saleorState.channel
       );
 
       if (error) {
@@ -188,7 +191,8 @@ export class SaleorCartAPI extends ErrorListener {
         data,
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
-        this.saleorState.checkout.lines
+        this.saleorState.checkout.lines,
+        this.saleorState.channel
       );
 
       if (error) {
