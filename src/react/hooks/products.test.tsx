@@ -23,6 +23,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductDetails({
+          channel: "default-channel",
           id: fixtures.productId,
         }),
       {
@@ -44,6 +45,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductDetails({
+          channel: "default-channel",
           slug: fixtures.productSlug,
         }),
       {

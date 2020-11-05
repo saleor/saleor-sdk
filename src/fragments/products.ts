@@ -106,7 +106,7 @@ export const productFragment = gql`
     category {
       id
       name
-      products(first: 3) {
+      products(first: 3, channel: $channel) {
         edges {
           node {
             ...BaseProduct

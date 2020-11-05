@@ -19,6 +19,7 @@ describe("Product object", () => {
 
   it("can get a details of product by id", async () => {
     const details = await productsAPI.getDetails({
+      channel: "default-channel",
       id: fixtures.productId,
     });
 
@@ -28,6 +29,7 @@ describe("Product object", () => {
 
   it("can get a details of product by slug", async () => {
     const details = await productsAPI.getDetails({
+      channel: "default-channel",
       slug: fixtures.productSlug,
     });
 

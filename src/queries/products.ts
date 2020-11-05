@@ -40,8 +40,13 @@ export const productList = gql`
 
 export const productDetails = gql`
   ${productFragment}
-  query ProductDetails($id: ID, $slug: String, $countryCode: CountryCode) {
-    product(id: $id, slug: $slug) {
+  query ProductDetails(
+    $id: ID
+    $slug: String
+    $countryCode: CountryCode
+    $channel: String
+  ) {
+    product(id: $id, slug: $slug, channel: $channel) {
       ...ProductDetails
     }
   }
