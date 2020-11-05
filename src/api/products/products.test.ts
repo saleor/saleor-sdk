@@ -82,7 +82,6 @@ describe("Product object", () => {
     const list = await productsAPI.getList({
       channel: "default-channel",
       filter: {
-        channel: "default-channel",
         search: "beer",
       },
       first: 20,
