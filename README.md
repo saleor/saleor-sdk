@@ -31,7 +31,7 @@ Use `SaleorProvider` with passed custom config in a prop. Then use React hooks i
 ```tsx
 import { SaleorProvider, useAuth } from "@saleor/sdk";
 
-const config = { apiUrl: "http://localhost:8000/graphql/" };
+const config = { apiUrl: "http://localhost:8000/graphql/", channel: "" };
 const apolloConfig = {
   /* 
     Optional custom Apollo client config.
@@ -82,7 +82,7 @@ npm install @saleor/sdk
 Then use SaleorManager to get `SaleorAPI` from `connect` method. This method may also take optional function as an argument, which will be executed every time the `SaleorAPI` state changes.
 
 ```tsx
-const config = { apiUrl: "http://localhost:8000/graphql/" };
+const config = { apiUrl: "http://localhost:8000/graphql/", channel: "" };
 const apolloConfig = {
   /* 
     Optional custom Apollo client config.

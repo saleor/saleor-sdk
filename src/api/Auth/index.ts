@@ -47,6 +47,7 @@ export class AuthAPI extends ErrorListener {
 
   private jobsManager: JobsManager;
 
+  // temporary solution, might change in future
   private config: Config;
 
   constructor(
@@ -157,7 +158,10 @@ export class AuthAPI extends ErrorListener {
     );
 
     if (dataError?.error) {
-      this.fireError(dataError.error, DataErrorAuthTypes.RESET_PASSWORD_REQUEST);
+      this.fireError(
+        dataError.error,
+        DataErrorAuthTypes.RESET_PASSWORD_REQUEST
+      );
     }
 
     if (dataError) {

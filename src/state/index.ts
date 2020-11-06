@@ -59,8 +59,6 @@ export class SaleorState extends NamedObservable<StateItems> {
 
   loaded: SaleorStateLoaded;
 
-  channel: string;
-
   private apolloClientManager: ApolloClientManager;
 
   private jobsManager: JobsManager;
@@ -77,8 +75,6 @@ export class SaleorState extends NamedObservable<StateItems> {
     this.localStorageHandler = localStorageHandler;
     this.apolloClientManager = apolloClientManager;
     this.jobsManager = jobsManager;
-
-    this.channel = config.channel;
 
     this.loaded = defaultSaleorStateLoaded;
     this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken());

@@ -1,6 +1,7 @@
 import { useApolloClient } from "react-apollo";
 import { useEffect, useRef, useState } from "react";
 import ApolloClient from "apollo-client";
+import { useSaleorConfig } from "../../helpers";
 import BaseList, { BaseListVariables } from "../../../helpers/BaseList";
 
 export function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
@@ -10,6 +11,7 @@ export function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
 ) {
   return (variables: TVariables) => {
     const client = useApolloClient();
+    const config = useSaleorConfig();
     const [data, setData] = useState<TObject[] | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const list = useRef<BaseList<TQuery, TObject, TVariables>>();
@@ -18,7 +20,7 @@ export function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
     async function initList() {
       setLoading(true);
       list.current = createList(client);
-      await list.current.init(variables);
+      await list.current.init({ channel: config.channel, ...variables });
       setData(list.current.data);
       setLoading(false);
     }
@@ -27,7 +29,7 @@ export function makeList<TObject, TQuery, TVariables extends BaseListVariables>(
       if (!willMount.current) {
         initList();
       }
-    }, [JSON.stringify(variables)]);
+    }, [JSON.stringify({ channel: config.channel, ...variables })]);
 
     if (willMount.current) {
       initList();

@@ -1,7 +1,9 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import { setupRecording, setupAPI } from "../../../testUtils/api";
+import { setupRecording } from "../../../testUtils/api";
+import { SaleorContext } from "../context";
+import { setupContextAndAPI } from "../../../testUtils/context";
 import { useCollectionDetails, useCollectionList } from "./collections";
 import {
   OrderDirection,
@@ -15,10 +17,12 @@ describe("useCollectionList", () => {
   let wrapper: React.FC<{}>;
 
   beforeAll(async () => {
-    const { client } = await setupAPI();
+    const { client, context } = await setupContextAndAPI();
 
     wrapper = ({ children }) => (
-      <ApolloProvider client={client}>{children}</ApolloProvider>
+      <SaleorContext.Provider value={context}>
+        <ApolloProvider client={client}>{children}</ApolloProvider>
+      </SaleorContext.Provider>
     );
   });
 
@@ -68,7 +72,6 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          channel: "default-channel",
           first: 20,
         }),
       {
@@ -90,7 +93,6 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          channel: "default-channel",
           first: 1,
         }),
       {
@@ -113,7 +115,6 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          channel: "default-channel",
           first: 10,
           sortBy: {
             direction: OrderDirection.DESC,
@@ -135,7 +136,6 @@ describe("useCollectionList", () => {
     const { result } = renderHook(
       () =>
         useCollectionList({
-          channel: "default-channel",
           filter: {
             search: "winter",
           },

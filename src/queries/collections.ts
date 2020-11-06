@@ -36,8 +36,8 @@ export const collections = gql`
 
 export const collectionDetails = gql`
   ${collectionFragment}
-  query CollectionDetails($id: ID, $slug: String) {
-    collection(id: $id, slug: $slug) {
+  query CollectionDetails($id: ID, $slug: String, $channel: String) {
+    collection(id: $id, slug: $slug, channel: $channel) {
       ...CollectionDetails
     }
   }

@@ -8,6 +8,7 @@ import { ISaleorStateSummeryPrices, StateItems } from "../../state/types";
 import { ApolloClientManager } from "../../data/ApolloClientManager";
 import { sortCheckoutLines } from "./utils";
 
+import { Config } from "../../types";
 import {
   IDiscount,
   IItems,
@@ -37,17 +38,22 @@ export class SaleorCartAPI extends ErrorListener {
 
   private saleorState: SaleorState;
 
+  // temporary solution, might change in future
+  private config: Config;
+
   constructor(
     localStorageManager: LocalStorageManager,
     apolloClientManager: ApolloClientManager,
     saleorState: SaleorState,
-    jobsManager: JobsManager
+    jobsManager: JobsManager,
+    config: Config
   ) {
     super();
     this.saleorState = saleorState;
     this.localStorageManager = localStorageManager;
     this.apolloClientManager = apolloClientManager;
     this.jobsManager = jobsManager;
+    this.config = config;
 
     this.loaded = false;
 
@@ -91,7 +97,7 @@ export class SaleorCartAPI extends ErrorListener {
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
         this.saleorState.checkout.lines,
-        this.saleorState.channel
+        this.config.channel
       );
 
       if (error) {
@@ -124,7 +130,7 @@ export class SaleorCartAPI extends ErrorListener {
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
         this.saleorState.checkout.lines,
-        this.saleorState.channel
+        this.config.channel
       );
 
       if (error) {
@@ -158,7 +164,7 @@ export class SaleorCartAPI extends ErrorListener {
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
         this.saleorState.checkout.lines,
-        this.saleorState.channel
+        this.config.channel
       );
 
       if (error) {
@@ -192,7 +198,7 @@ export class SaleorCartAPI extends ErrorListener {
         error,
       } = await this.apolloClientManager.getRefreshedCheckoutLines(
         this.saleorState.checkout.lines,
-        this.saleorState.channel
+        this.config.channel
       );
 
       if (error) {

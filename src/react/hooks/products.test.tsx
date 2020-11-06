@@ -1,7 +1,9 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import { setupAPI, setupRecording } from "../../../testUtils/api";
+import { SaleorContext } from "../context";
+import { setupRecording } from "../../../testUtils/api";
+import { setupContextAndAPI } from "../../../testUtils/context";
 import { useProductDetails, useProductList } from "./products";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 import * as fixtures from "../../api/products/fixtures";
@@ -12,10 +14,12 @@ describe("useProductList", () => {
   let wrapper: React.FC<{}>;
 
   beforeAll(async () => {
-    const { client } = await setupAPI();
+    const { client, context } = await setupContextAndAPI();
 
     wrapper = ({ children }) => (
-      <ApolloProvider client={client}>{children}</ApolloProvider>
+      <SaleorContext.Provider value={context}>
+        <ApolloProvider client={client}>{children}</ApolloProvider>
+      </SaleorContext.Provider>
     );
   });
 
@@ -23,14 +27,12 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductDetails({
-          channel: "default-channel",
           id: fixtures.productId,
         }),
       {
         wrapper,
       }
     );
-
     expect(result.current.data).toBe(undefined);
     expect(result.current.loading).toBe(true);
 
@@ -45,7 +47,6 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductDetails({
-          channel: "default-channel",
           slug: fixtures.productSlug,
         }),
       {
@@ -67,7 +68,6 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
-          channel: "default-channel",
           first: 5,
         }),
       {
@@ -89,7 +89,6 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
-          channel: "default-channel",
           first: 1,
         }),
       {
@@ -114,7 +113,6 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
-          channel: "default-channel",
           first: 5,
           sortBy: {
             direction: OrderDirection.DESC,
@@ -136,9 +134,7 @@ describe("useProductList", () => {
     const { result } = renderHook(
       () =>
         useProductList({
-          channel: "default-channel",
           filter: {
-            channel: "default-channel",
             search: "beer",
           },
           first: 2,

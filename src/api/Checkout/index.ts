@@ -8,6 +8,7 @@ import { JobsManager } from "../../jobs";
 import { SaleorState, SaleorStateLoaded } from "../../state";
 import { StateItems } from "../../state/types";
 
+import { Config } from "../../types";
 import { PromiseRunResponse } from "../types";
 import {
   DataErrorCheckoutTypes,
@@ -49,10 +50,18 @@ export class SaleorCheckoutAPI extends ErrorListener {
 
   private jobsManager: JobsManager;
 
-  constructor(saleorState: SaleorState, jobsManager: JobsManager) {
+  // temporary solution, might change in future
+  private config: Config;
+
+  constructor(
+    saleorState: SaleorState,
+    jobsManager: JobsManager,
+    config: Config
+  ) {
     super();
     this.saleorState = saleorState;
     this.jobsManager = jobsManager;
+    this.config = config;
 
     this.loaded = false;
 
@@ -128,7 +137,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "setShippingAddress",
         {
-          channel: this.saleorState.channel,
+          channel: this.config.channel,
           checkoutId,
           email,
           selectedShippingAddressId: shippingAddress.id,
@@ -147,7 +156,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "checkout",
         "createCheckout",
         {
-          channel: this.saleorState.channel,
+          channel: this.config.channel,
           email,
           lines: alteredLines,
           selectedShippingAddressId: shippingAddress.id,
@@ -242,7 +251,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         "createCheckout",
         {
           billingAddress,
-          channel: this.saleorState.channel,
+          channel: this.config.channel,
           email,
           lines: alteredLines,
           selectedBillingAddressId: billingAddress.id,

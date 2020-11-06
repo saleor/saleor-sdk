@@ -1,6 +1,7 @@
 import ApolloClient from "apollo-client";
 import { setupRecording, setupAPI } from "../../../testUtils/api";
 import { CollectionsAPI } from "./collections";
+import { defaultConfig } from "../../config";
 import {
   OrderDirection,
   CollectionSortField,
@@ -15,7 +16,11 @@ describe("Collection object", () => {
 
   beforeAll(async done => {
     client = (await setupAPI()).client;
-    collectionsAPI = new CollectionsAPI(client);
+    collectionsAPI = new CollectionsAPI(client, {
+      ...defaultConfig,
+      apiUrl: "",
+      channel: "default-channel",
+    });
 
     done();
   });
@@ -40,7 +45,6 @@ describe("Collection object", () => {
 
   it("can get a list of collections", async () => {
     const list = await collectionsAPI.getList({
-      channel: "default-channel",
       first: 20,
     });
 
@@ -50,7 +54,6 @@ describe("Collection object", () => {
 
   it("can get new page", async () => {
     const list = await collectionsAPI.getList({
-      channel: "default-channel",
       first: 1,
     });
 
@@ -69,7 +72,6 @@ describe("Collection object", () => {
 
   it("can sort", async () => {
     const list = await collectionsAPI.getList({
-      channel: "default-channel",
       first: 20,
       sortBy: {
         direction: OrderDirection.DESC,
@@ -83,7 +85,6 @@ describe("Collection object", () => {
 
   it("can filter", async () => {
     const list = await collectionsAPI.getList({
-      channel: "default-channel",
       filter: {
         search: "winter",
       },

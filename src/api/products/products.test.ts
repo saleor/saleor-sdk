@@ -1,5 +1,6 @@
 import ApolloClient from "apollo-client";
 import { ProductsAPI } from "./products";
+import { defaultConfig } from "../../config";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 import { setupAPI, setupRecording } from "../../../testUtils/api";
 import * as fixtures from "./fixtures";
@@ -12,14 +13,17 @@ describe("Product object", () => {
 
   beforeAll(async done => {
     client = (await setupAPI()).client;
-    productsAPI = new ProductsAPI(client);
+    productsAPI = new ProductsAPI(client, {
+      ...defaultConfig,
+      apiUrl: "",
+      channel: "default-channel",
+    });
 
     done();
   });
 
   it("can get a details of product by id", async () => {
     const details = await productsAPI.getDetails({
-      channel: "default-channel",
       id: fixtures.productId,
     });
 
@@ -29,7 +33,6 @@ describe("Product object", () => {
 
   it("can get a details of product by slug", async () => {
     const details = await productsAPI.getDetails({
-      channel: "default-channel",
       slug: fixtures.productSlug,
     });
 
@@ -39,7 +42,6 @@ describe("Product object", () => {
 
   it("can get a list of products", async () => {
     const list = await productsAPI.getList({
-      channel: "default-channel",
       first: 20,
     });
 
@@ -49,7 +51,6 @@ describe("Product object", () => {
 
   it("can get new page", async () => {
     const list = await productsAPI.getList({
-      channel: "default-channel",
       first: 1,
     });
 
@@ -68,7 +69,6 @@ describe("Product object", () => {
 
   it("can sort", async () => {
     const list = await productsAPI.getList({
-      channel: "default-channel",
       first: 20,
       sortBy: {
         direction: OrderDirection.DESC,
@@ -82,7 +82,6 @@ describe("Product object", () => {
 
   it("can filter", async () => {
     const list = await productsAPI.getList({
-      channel: "default-channel",
       filter: {
         search: "beer",
       },

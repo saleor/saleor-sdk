@@ -1,12 +1,11 @@
 import ApolloClient from "apollo-client";
 
-import { defaultConfig } from "../config";
 import { LocalStorageManager } from "../data";
 import { ApolloClientManager } from "../data/ApolloClientManager";
 import { LocalStorageHandler } from "../helpers/LocalStorageHandler";
 import { JobsManager } from "../jobs";
 import { SaleorState } from "../state";
-import { ConfigInput } from "../types";
+import { Config } from "../types";
 import { AuthAPI } from "./Auth";
 import APIProxy from "./APIProxy";
 import { SaleorCartAPI } from "./Cart";
@@ -40,18 +39,10 @@ export class SaleorAPI {
   constructor(
     client: ApolloClient<any>,
     apiProxy: APIProxy,
-    config: ConfigInput,
+    config: Config,
     onStateUpdate?: () => any
   ) {
     this.legacyAPIProxy = apiProxy;
-    const finalConfig = {
-      ...defaultConfig,
-      ...config,
-      loadOnStart: {
-        ...defaultConfig.loadOnStart,
-        ...config?.loadOnStart,
-      },
-    };
 
     const localStorageHandler = new LocalStorageHandler();
     const apolloClientManager = new ApolloClientManager(client);
@@ -60,7 +51,7 @@ export class SaleorAPI {
       apolloClientManager
     );
     const saleorState = new SaleorState(
-      finalConfig,
+      config,
       localStorageHandler,
       apolloClientManager,
       jobsManager
@@ -74,17 +65,18 @@ export class SaleorAPI {
       saleorState.subscribeToNotifiedChanges(onStateUpdate);
     }
 
-    this.auth = new AuthAPI(saleorState, jobsManager, finalConfig);
-    this.checkout = new SaleorCheckoutAPI(saleorState, jobsManager);
+    this.auth = new AuthAPI(saleorState, jobsManager, config);
+    this.checkout = new SaleorCheckoutAPI(saleorState, jobsManager, config);
     this.cart = new SaleorCartAPI(
       localStorageManager,
       apolloClientManager,
       saleorState,
-      jobsManager
+      jobsManager,
+      config
     );
     this.categories = new CategoriesAPI(client);
-    this.collections = new CollectionsAPI(client);
-    this.products = new ProductsAPI(client);
+    this.collections = new CollectionsAPI(client, config);
+    this.products = new ProductsAPI(client, config);
 
     this.legacyAPIProxy.attachAuthListener(authenticated => {
       if (!authenticated) {

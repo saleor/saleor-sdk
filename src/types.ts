@@ -54,7 +54,7 @@ export interface Config {
   channel: string;
 }
 
-export type DefaultConfig = Pick<Config, "loadOnStart">;
+export type DefaultConfig = Omit<Config, "apiUrl">;
 
 export type ConfigInput = Omit<Config, keyof DefaultConfig> &
   Partial<DefaultConfig>;
