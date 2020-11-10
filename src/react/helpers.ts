@@ -14,7 +14,7 @@ export function useSaleorClient(): SaleorAPI {
     );
   }
 
-  return saleor;
+  return saleor.api;
 }
 
 export function useSaleorConfig(): ConfigInput {

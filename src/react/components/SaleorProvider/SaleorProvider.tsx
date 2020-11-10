@@ -18,10 +18,10 @@ const SaleorProvider: React.FC<IProps> = ({
   const getSaleorApiAndClient = async (manager: SaleorManager) => {
     const { api, apolloClient } = await manager.connect(saleorAPI => {
       if (saleorAPI) {
-        setContext({ ...saleorAPI, config });
+        setContext({ api: saleorAPI, config });
       }
     });
-    setContext({ ...api, config });
+    setContext({ api, config });
     setClient(apolloClient);
   };
 

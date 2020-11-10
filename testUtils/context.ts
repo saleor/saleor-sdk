@@ -57,14 +57,16 @@ export async function setupContextAndAPI(): Promise<{
   return {
     client,
     context: {
-      auth: authAPI,
-      cart,
-      categories,
-      checkout,
-      collections,
+      api: {
+        auth: authAPI,
+        cart,
+        categories,
+        checkout,
+        collections,
+        legacyAPIProxy: apiProxy,
+        products,
+      },
       config,
-      legacyAPIProxy: apiProxy,
-      products,
     },
   };
 }
