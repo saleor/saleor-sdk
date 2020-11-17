@@ -44,4 +44,5 @@ export interface CollectionDetails {
 export interface CollectionDetailsVariables {
   id?: string | null;
   slug?: string | null;
+  channel?: string | null;
 }

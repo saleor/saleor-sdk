@@ -1,5 +1,6 @@
 import ApolloClient from "apollo-client";
 import { ProductsAPI } from "./products";
+import { defaultConfig } from "../../config";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 import { setupAPI, setupRecording } from "../../../testUtils/api";
 import * as fixtures from "./fixtures";
@@ -12,7 +13,11 @@ describe("Product object", () => {
 
   beforeAll(async done => {
     client = (await setupAPI()).client;
-    productsAPI = new ProductsAPI(client);
+    productsAPI = new ProductsAPI(client, {
+      ...defaultConfig,
+      apiUrl: "",
+      channel: "default-channel",
+    });
 
     done();
   });

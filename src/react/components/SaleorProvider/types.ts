@@ -1,7 +1,7 @@
 import { ConfigInput, ApolloConfigInput } from "../../../types";
 
 export interface IProps {
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactNode;
   /**
    * SDK configuration.
    */

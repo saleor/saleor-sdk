@@ -8,19 +8,19 @@ Array [
     "name": "Seaman Beer",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": true,
+      "onSale": false,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -28,12 +28,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -74,11 +74,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
     },
   },
 ]
@@ -123,180 +123,6 @@ Object {
             },
             "id": "UHJvZHVjdDo4MQ==",
             "name": "Red Wine",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": true,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3.5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3.5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3.5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3.5,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
-            "seoTitle": "",
-            "slug": "red-wine",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-510x510.png",
-            },
-          },
-        },
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4NA==",
-            "name": "Seaman Beer",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": true,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
-            "seoTitle": "",
-            "slug": "seaman-beer",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
-            },
-          },
-        },
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4Mw==",
-            "name": "Seaman Lager",
             "pricing": Object {
               "__typename": "ProductPricingInfo",
               "onSale": false,
@@ -359,54 +185,228 @@ Object {
                 },
               },
             },
+            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
+            "seoTitle": "",
+            "slug": "red-wine",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4NA==",
+            "name": "Seaman Beer",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": false,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
+            "seoTitle": "",
+            "slug": "seaman-beer",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4Mw==",
+            "name": "Seaman Lager",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
             "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
             "seoTitle": "",
             "slug": "seaman-lager",
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-255x255.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-510x510.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-510x510.png",
             },
           },
         },
       ],
     },
   },
-  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"eu91\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
   "id": "UHJvZHVjdDo4NA==",
   "images": Array [
     Object {
       "__typename": "ProductImage",
       "id": "UHJvZHVjdEltYWdlOjE5",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_vjCaZry.png",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_5NbfeMg.png",
     },
     Object {
       "__typename": "ProductImage",
       "id": "UHJvZHVjdEltYWdlOjIw",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_2rzsOLb.png",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_akoc8fN.png",
     },
   ],
   "isAvailable": true,
   "name": "Seaman Beer",
   "pricing": Object {
     "__typename": "ProductPricingInfo",
-    "onSale": true,
+    "onSale": false,
     "priceRange": Object {
       "__typename": "TaxedMoneyRange",
       "start": Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
       },
@@ -414,12 +414,12 @@ Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
       },
@@ -460,11 +460,11 @@ Object {
   "thumbnail": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
   },
   "thumbnail2x": Object {
     "__typename": "Image",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
   },
   "variants": Array [
     Object {
@@ -476,17 +476,17 @@ Object {
       "name": "",
       "pricing": Object {
         "__typename": "VariantPricingInfo",
-        "onSale": true,
+        "onSale": false,
         "price": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -552,19 +552,19 @@ Object {
             "name": "Red Wine",
             "pricing": Object {
               "__typename": "ProductPricingInfo",
-              "onSale": true,
+              "onSale": false,
               "priceRange": Object {
                 "__typename": "TaxedMoneyRange",
                 "start": Object {
                   "__typename": "TaxedMoney",
                   "gross": Object {
                     "__typename": "Money",
-                    "amount": 3.5,
+                    "amount": 5,
                     "currency": "USD",
                   },
                   "net": Object {
                     "__typename": "Money",
-                    "amount": 3.5,
+                    "amount": 5,
                     "currency": "USD",
                   },
                 },
@@ -572,12 +572,12 @@ Object {
                   "__typename": "TaxedMoney",
                   "gross": Object {
                     "__typename": "Money",
-                    "amount": 3.5,
+                    "amount": 5,
                     "currency": "USD",
                   },
                   "net": Object {
                     "__typename": "Money",
-                    "amount": 3.5,
+                    "amount": 5,
                     "currency": "USD",
                   },
                 },
@@ -618,11 +618,11 @@ Object {
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-255x255.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-510x510.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-510x510.png",
             },
           },
         },
@@ -637,93 +637,6 @@ Object {
             },
             "id": "UHJvZHVjdDo4NA==",
             "name": "Seaman Beer",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": true,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
-            "seoTitle": "",
-            "slug": "seaman-beer",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
-            },
-          },
-        },
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4Mw==",
-            "name": "Seaman Lager",
             "pricing": Object {
               "__typename": "ProductPricingInfo",
               "onSale": false,
@@ -786,54 +699,141 @@ Object {
                 },
               },
             },
+            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
+            "seoTitle": "",
+            "slug": "seaman-beer",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4Mw==",
+            "name": "Seaman Lager",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 4.5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
             "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
             "seoTitle": "",
             "slug": "seaman-lager",
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-255x255.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-510x510.png",
+              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-510x510.png",
             },
           },
         },
       ],
     },
   },
-  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"eu91\\", \\"data\\": {}, \\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
   "id": "UHJvZHVjdDo4NA==",
   "images": Array [
     Object {
       "__typename": "ProductImage",
       "id": "UHJvZHVjdEltYWdlOjE5",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_vjCaZry.png",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_5NbfeMg.png",
     },
     Object {
       "__typename": "ProductImage",
       "id": "UHJvZHVjdEltYWdlOjIw",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_2rzsOLb.png",
+      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_akoc8fN.png",
     },
   ],
   "isAvailable": true,
   "name": "Seaman Beer",
   "pricing": Object {
     "__typename": "ProductPricingInfo",
-    "onSale": true,
+    "onSale": false,
     "priceRange": Object {
       "__typename": "TaxedMoneyRange",
       "start": Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
       },
@@ -841,12 +841,12 @@ Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 3,
+          "amount": 5,
           "currency": "USD",
         },
       },
@@ -887,11 +887,11 @@ Object {
   "thumbnail": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
   },
   "thumbnail2x": Object {
     "__typename": "Image",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
   },
   "variants": Array [
     Object {
@@ -903,17 +903,17 @@ Object {
       "name": "",
       "pricing": Object {
         "__typename": "VariantPricingInfo",
-        "onSale": true,
+        "onSale": false,
         "price": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -942,102 +942,23 @@ exports[`Product object can get a list of products 1`] = `
 Array [
   Object {
     "__typename": "Product",
-    "id": "UHJvZHVjdDo3Mg==",
-    "name": "Apple Juice",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": false,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-    },
-    "seoDescription": "Fell straight from the tree, on to Newton’s head, then into the bottle. The autumn taste of English apples. Brought to you by gravity.",
-    "seoTitle": "",
-    "slug": "apple-juice",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-510x510.png",
-    },
-  },
-  Object {
-    "__typename": "Product",
     "id": "UHJvZHVjdDo3NA==",
     "name": "Banana Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -1045,12 +966,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 3.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 3.5,
             "currency": "USD",
           },
         },
@@ -1091,11 +1012,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_kvXtgO6-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_kvXtgO6-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1111,12 +1032,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -1124,12 +1045,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 6.3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 6.3,
             "currency": "USD",
           },
         },
@@ -1170,11 +1091,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_q3CGVt7-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_v4jKYIL-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_q3CGVt7-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_v4jKYIL-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1190,12 +1111,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -1203,12 +1124,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -1249,11 +1170,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo01_1_KV3OrZx-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo01_1_3bOJCfq-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo01_1_KV3OrZx-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo01_1_3bOJCfq-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1262,19 +1183,19 @@ Array [
     "name": "Blue Hoodie",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": true,
+      "onSale": false,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -1282,12 +1203,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -1328,11 +1249,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo02_1_EFfidDu-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo02_1_7JbWhXq-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo02_1_EFfidDu-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo02_1_7JbWhXq-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1348,12 +1269,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -1361,12 +1282,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 6.3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 6.3,
             "currency": "USD",
           },
         },
@@ -1407,11 +1328,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_05_aPRndmf-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_05_MVvbqCZ-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_05_aPRndmf-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_05_MVvbqCZ-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1420,19 +1341,19 @@ Array [
     "name": "Coconut Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -1440,12 +1361,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 4.2,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 4.2,
             "currency": "USD",
           },
         },
@@ -1486,11 +1407,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_HTD3RSt-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_SVcCWXO-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_HTD3RSt-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_SVcCWXO-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1499,19 +1420,19 @@ Array [
     "name": "Code Division T-shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -1519,12 +1440,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -1565,11 +1486,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot07_1_SxQgueQ-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot07_1_jRbYQU6-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot07_1_SxQgueQ-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot07_1_jRbYQU6-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1578,19 +1499,19 @@ Array [
     "name": "Colored Parrot Cushion",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -1598,12 +1519,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 20,
+            "amount": 10,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 20,
+            "amount": 10,
             "currency": "USD",
           },
         },
@@ -1644,11 +1565,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion01_pzvhidM-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion01_qmgoagF-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion01_pzvhidM-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion01_qmgoagF-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1657,19 +1578,19 @@ Array [
     "name": "Green Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": true,
+      "onSale": false,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -1677,12 +1598,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 6.3,
+            "amount": 7,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 6.3,
+            "amount": 7,
             "currency": "USD",
           },
         },
@@ -1723,11 +1644,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_04_dr7YtKt-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_04_Ark4wkr-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_04_dr7YtKt-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_04_Ark4wkr-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1736,19 +1657,19 @@ Array [
     "name": "Hyperspace Turquoise Paint",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 15,
+            "amount": 10.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 15,
+            "amount": 10.5,
             "currency": "USD",
           },
         },
@@ -1756,12 +1677,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 49,
+            "amount": 34.3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 49,
+            "amount": 34.3,
             "currency": "USD",
           },
         },
@@ -1802,11 +1723,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_05_m2q24aP-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_05_I9Hu3R8-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_05_m2q24aP-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_05_I9Hu3R8-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1881,11 +1802,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_2_fIFLmMT-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_2_YoyRGbC-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_2_fIFLmMT-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_2_YoyRGbC-thumbnail-510x510.png",
     },
   },
   Object {
@@ -1960,11 +1881,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_04_Vv47FyN-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_04_Czxkqg9-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_04_Vv47FyN-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_04_Czxkqg9-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2039,11 +1960,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo03_1_KdJenR5-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo03_1_gkEDGuV-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo03_1_KdJenR5-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo03_1_gkEDGuV-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2052,19 +1973,19 @@ Array [
     "name": "Nebula Night Sky Paint",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 15,
+            "amount": 13.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 15,
+            "amount": 13.5,
             "currency": "USD",
           },
         },
@@ -2072,12 +1993,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 49,
+            "amount": 44.1,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 49,
+            "amount": 44.1,
             "currency": "USD",
           },
         },
@@ -2118,96 +2039,17 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_01_l7bhnBD-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_01_blhwZkM-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_01_l7bhnBD-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_01_blhwZkM-thumbnail-510x510.png",
     },
   },
   Object {
     "__typename": "Product",
     "id": "UHJvZHVjdDo3MQ==",
     "name": "Orange Juice",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": false,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-    },
-    "seoDescription": "Fell from a tree straight into the bottle. No additives, no preservatives, just the refreshing taste of pure sun-kissed Californian oranges.",
-    "seoTitle": "",
-    "slug": "orange-juice",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_deJO9kx-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_deJO9kx-thumbnail-510x510.png",
-    },
-  },
-  Object {
-    "__typename": "Product",
-    "id": "UHJvZHVjdDo3NQ==",
-    "name": "Pineapple Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
       "onSale": true,
@@ -2270,17 +2112,96 @@ Array [
         },
       },
     },
+    "seoDescription": "Fell from a tree straight into the bottle. No additives, no preservatives, just the refreshing taste of pure sun-kissed Californian oranges.",
+    "seoTitle": "",
+    "slug": "orange-juice",
+    "thumbnail": Object {
+      "__typename": "Image",
+      "alt": "",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_53zCicS-thumbnail-255x255.png",
+    },
+    "thumbnail2x": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_53zCicS-thumbnail-510x510.png",
+    },
+  },
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDo3NQ==",
+    "name": "Pineapple Juice",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": false,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+        },
+      },
+    },
     "seoDescription": "I can’t stand pineapples, so this one is not for me. They have a weird, fluffy, tangy taste. But if it is your kind of thing, then knock yourself out.",
     "seoTitle": "",
     "slug": "pineapple-juice",
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_08BYCWv-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_oFAIjbD-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_08BYCWv-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_oFAIjbD-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2355,11 +2276,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_BG5Y1yQ-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_hgUBB9R-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_BG5Y1yQ-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_hgUBB9R-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2434,11 +2355,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_uLZhqt4-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_17FHPmF-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_uLZhqt4-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_17FHPmF-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2447,19 +2368,19 @@ Array [
     "name": "Polo Shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -2467,12 +2388,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -2513,11 +2434,90 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_2xg8tJW-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_cgxW3ns-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_2xg8tJW-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_cgxW3ns-thumbnail-510x510.png",
+    },
+  },
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDoxMTA=",
+    "name": "Polo Shirt",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": true,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+      },
+    },
+    "seoDescription": "They say polo is the sport of kings. Or was that stamp collecting? Either way, this shirt is fit for a king of Saturday night.",
+    "seoTitle": "",
+    "slug": "polo-shirt-4",
+    "thumbnail": Object {
+      "__typename": "Image",
+      "alt": "",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_vzpCX0b-thumbnail-255x255.png",
+    },
+    "thumbnail2x": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_vzpCX0b-thumbnail-510x510.png",
     },
   },
 ]
@@ -2527,186 +2527,23 @@ exports[`Product object can get new page 1`] = `
 Array [
   Object {
     "__typename": "Product",
-    "id": "UHJvZHVjdDo3Mg==",
-    "name": "Apple Juice",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": false,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-    },
-    "seoDescription": "Fell straight from the tree, on to Newton’s head, then into the bottle. The autumn taste of English apples. Brought to you by gravity.",
-    "seoTitle": "",
-    "slug": "apple-juice",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-510x510.png",
-    },
-  },
-]
-`;
-
-exports[`Product object can get new page 2`] = `
-Array [
-  Object {
-    "__typename": "Product",
-    "id": "UHJvZHVjdDo3Mg==",
-    "name": "Apple Juice",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": false,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 7,
-            "currency": "USD",
-          },
-        },
-      },
-    },
-    "seoDescription": "Fell straight from the tree, on to Newton’s head, then into the bottle. The autumn taste of English apples. Brought to you by gravity.",
-    "seoTitle": "",
-    "slug": "apple-juice",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_06_bG5vk5Z-thumbnail-510x510.png",
-    },
-  },
-  Object {
-    "__typename": "Product",
     "id": "UHJvZHVjdDo3NA==",
     "name": "Banana Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -2714,12 +2551,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 3.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 7,
+            "amount": 3.5,
             "currency": "USD",
           },
         },
@@ -2760,22 +2597,22 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_kvXtgO6-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_kvXtgO6-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-510x510.png",
     },
   },
 ]
 `;
 
-exports[`Product object can sort 1`] = `
+exports[`Product object can get new page 2`] = `
 Array [
   Object {
     "__typename": "Product",
-    "id": "UHJvZHVjdDo4Nw==",
-    "name": "Yellow Plimsolls",
+    "id": "UHJvZHVjdDo3NA==",
+    "name": "Banana Juice",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
       "onSale": true,
@@ -2785,12 +2622,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 2.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 2.5,
             "currency": "USD",
           },
         },
@@ -2804,6 +2641,241 @@ Array [
           "net": Object {
             "__typename": "Money",
             "amount": 3.5,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+        },
+      },
+    },
+    "seoDescription": "Build your protein the natural way, with exotic banana juice made from ripe fruit and packed with all the goodness of the tropical sun.",
+    "seoTitle": "",
+    "slug": "banana-juice",
+    "thumbnail": Object {
+      "__typename": "Image",
+      "alt": "",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-255x255.png",
+    },
+    "thumbnail2x": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_01_U9QW7GB-thumbnail-510x510.png",
+    },
+  },
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDo3OQ==",
+    "name": "Bean Juice",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": true,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 6.3,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 6.3,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 7,
+            "currency": "USD",
+          },
+        },
+      },
+    },
+    "seoDescription": "Bean there, drunk that! The energy drink for the health-conscious. Brand new bean juice; from allotment to bottle in under 8 hours.",
+    "seoTitle": "",
+    "slug": "bean-juice",
+    "thumbnail": Object {
+      "__typename": "Image",
+      "alt": "",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_v4jKYIL-thumbnail-255x255.png",
+    },
+    "thumbnail2x": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_02_v4jKYIL-thumbnail-510x510.png",
+    },
+  },
+]
+`;
+
+exports[`Product object can sort 1`] = `
+Array [
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDoxMjU=",
+    "name": "treds",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": false,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 1,
+            "currency": "USD",
+          },
+        },
+      },
+    },
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "treds",
+    "thumbnail": null,
+    "thumbnail2x": null,
+  },
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDo4Nw==",
+    "name": "Yellow Plimsolls",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": true,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -2844,11 +2916,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_01_1_Q6e4mF5-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_01_1_4BvZNPr-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_01_1_Q6e4mF5-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_01_1_4BvZNPr-thumbnail-510x510.png",
     },
   },
   Object {
@@ -2864,12 +2936,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -2877,12 +2949,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 2.5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -2923,11 +2995,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-white_lcdGVGM-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-white_BwJwESW-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-white_lcdGVGM-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-white_BwJwESW-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3002,11 +3074,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_02_1_GY62JwO-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_02_1_PgG4kGe-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_02_1_GY62JwO-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_sneakers_02_1_PgG4kGe-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3015,19 +3087,19 @@ Array [
     "name": "White Parrot Cushion",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -3035,12 +3107,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -3081,11 +3153,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion02_fZVpYM5-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion02_Juk1FuA-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion02_fZVpYM5-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cuschion02_Juk1FuA-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3160,11 +3232,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo04_1_Bkis1Zt-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo04_1_WasCYmR-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo04_1_Bkis1Zt-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_bogo04_1_WasCYmR-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3173,19 +3245,19 @@ Array [
     "name": "T-shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
         },
@@ -3193,12 +3265,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
         },
@@ -3239,11 +3311,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_xInB30k-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_x5AijMP-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_xInB30k-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_x5AijMP-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3318,11 +3390,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_u7k9US0-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_fNvW2aj-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_u7k9US0-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot06_1_fNvW2aj-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3331,19 +3403,19 @@ Array [
     "name": "T-shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -3351,12 +3423,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
@@ -3397,11 +3469,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot01_1_DM26W3x-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot01_1_fu1H2zq-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot01_1_DM26W3x-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot01_1_fu1H2zq-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3417,12 +3489,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 3.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 3.5,
             "currency": "USD",
           },
         },
@@ -3430,12 +3502,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 3.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.5,
+            "amount": 3.5,
             "currency": "USD",
           },
         },
@@ -3476,11 +3548,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot03_1_yTKkmgk-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot03_1_dfKDrqY-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot03_1_yTKkmgk-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_boot03_1_dfKDrqY-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3555,17 +3627,96 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_02_XQuBcUN-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_02_h1zIbcX-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_02_XQuBcUN-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_02_h1zIbcX-thumbnail-510x510.png",
     },
   },
   Object {
     "__typename": "Product",
     "id": "UHJvZHVjdDo4Mw==",
     "name": "Seaman Lager",
+    "pricing": Object {
+      "__typename": "ProductPricingInfo",
+      "onSale": true,
+      "priceRange": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 4.5,
+            "currency": "USD",
+          },
+        },
+      },
+      "priceRangeUndiscounted": Object {
+        "__typename": "TaxedMoneyRange",
+        "start": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+        "stop": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+      },
+    },
+    "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
+    "seoTitle": "",
+    "slug": "seaman-lager",
+    "thumbnail": Object {
+      "__typename": "Image",
+      "alt": "",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-255x255.png",
+    },
+    "thumbnail2x": Object {
+      "__typename": "Image",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_aR2Uu2D-thumbnail-510x510.png",
+    },
+  },
+  Object {
+    "__typename": "Product",
+    "id": "UHJvZHVjdDo4NA==",
+    "name": "Seaman Beer",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
       "onSale": false,
@@ -3628,96 +3779,17 @@ Array [
         },
       },
     },
-    "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
-    "seoTitle": "",
-    "slug": "seaman-lager",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_VCwt5Vl-thumbnail-510x510.png",
-    },
-  },
-  Object {
-    "__typename": "Product",
-    "id": "UHJvZHVjdDo4NA==",
-    "name": "Seaman Beer",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": true,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 3,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 3,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 3,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 3,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-      },
-    },
     "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
     "seoTitle": "",
     "slug": "seaman-beer",
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_vjCaZry-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_5NbfeMg-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3792,11 +3864,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_1_x7nSEuJ-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_1_gc461dF-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_1_x7nSEuJ-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleor-digital-03_1_gc461dF-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3805,19 +3877,19 @@ Array [
     "name": "Red Wine",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": true,
+      "onSale": false,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -3825,12 +3897,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3.5,
+            "amount": 5,
             "currency": "USD",
           },
         },
@@ -3871,11 +3943,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_LFqwInS-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_OoR4CiZ-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3884,19 +3956,19 @@ Array [
     "name": "Red Dwarf Red Paint",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": true,
+      "onSale": false,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 9,
+            "amount": 15,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 9,
+            "amount": 15,
             "currency": "USD",
           },
         },
@@ -3904,12 +3976,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 29.4,
+            "amount": 49,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 29.4,
+            "amount": 49,
             "currency": "USD",
           },
         },
@@ -3950,11 +4022,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_03_pjVxjWy-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_03_EloxflN-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_03_pjVxjWy-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_paints_03_EloxflN-thumbnail-510x510.png",
     },
   },
   Object {
@@ -3970,12 +4042,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 4,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 3,
+            "amount": 4,
             "currency": "USD",
           },
         },
@@ -3983,12 +4055,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 4.2,
+            "amount": 5.6,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 4.2,
+            "amount": 5.6,
             "currency": "USD",
           },
         },
@@ -4029,11 +4101,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_NnSR8D0-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_gpgvyrO-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_NnSR8D0-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_fd_juice_03_gpgvyrO-thumbnail-510x510.png",
     },
   },
   Object {
@@ -4042,19 +4114,19 @@ Array [
     "name": "Polo Shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
         },
@@ -4062,12 +4134,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4,
             "currency": "USD",
           },
         },
@@ -4108,11 +4180,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_dzQ07a3-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_vzpCX0b-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_dzQ07a3-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo04-woman_vzpCX0b-thumbnail-510x510.png",
     },
   },
   Object {
@@ -4121,19 +4193,19 @@ Array [
     "name": "Polo Shirt",
     "pricing": Object {
       "__typename": "ProductPricingInfo",
-      "onSale": false,
+      "onSale": true,
       "priceRange": Object {
         "__typename": "TaxedMoneyRange",
         "start": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -4141,12 +4213,12 @@ Array [
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 4.5,
             "currency": "USD",
           },
         },
@@ -4187,11 +4259,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_2xg8tJW-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_cgxW3ns-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_2xg8tJW-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo03-woman_cgxW3ns-thumbnail-510x510.png",
     },
   },
   Object {
@@ -4266,90 +4338,11 @@ Array [
     "thumbnail": Object {
       "__typename": "Image",
       "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_uLZhqt4-thumbnail-255x255.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_17FHPmF-thumbnail-255x255.png",
     },
     "thumbnail2x": Object {
       "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_uLZhqt4-thumbnail-510x510.png",
-    },
-  },
-  Object {
-    "__typename": "Product",
-    "id": "UHJvZHVjdDoxMDc=",
-    "name": "Polo Shirt",
-    "pricing": Object {
-      "__typename": "ProductPricingInfo",
-      "onSale": false,
-      "priceRange": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-      },
-      "priceRangeUndiscounted": Object {
-        "__typename": "TaxedMoneyRange",
-        "start": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "stop": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-      },
-    },
-    "seoDescription": "Ever have those days where you feel a bit geometric? Can't quite shape yourself up right? Show your different sides with a Saleor styles.",
-    "seoTitle": "",
-    "slug": "polo-shirt",
-    "thumbnail": Object {
-      "__typename": "Image",
-      "alt": "",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_BG5Y1yQ-thumbnail-255x255.png",
-    },
-    "thumbnail2x": Object {
-      "__typename": "Image",
-      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo01_BG5Y1yQ-thumbnail-510x510.png",
+      "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_cl_polo02_17FHPmF-thumbnail-510x510.png",
     },
   },
 ]

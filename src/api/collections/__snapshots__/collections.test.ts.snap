@@ -19,7 +19,7 @@ Object {
   "backgroundImage": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/collection-backgrounds/summer_DSww4Ad.jpg",
+    "url": "http://localhost:8000/media/collection-backgrounds/summer_vuZMbvb.jpg",
   },
   "description": "The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.",
   "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
@@ -37,7 +37,7 @@ Object {
   "backgroundImage": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/collection-backgrounds/summer_DSww4Ad.jpg",
+    "url": "http://localhost:8000/media/collection-backgrounds/summer_vuZMbvb.jpg",
   },
   "description": "The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.",
   "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"The Saleor Summer Collection features a range of products that feel the heat of the market. A demo store for all seasons. Saleor captures the open source, e-commerce sun.\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
@@ -51,6 +51,14 @@ Object {
 
 exports[`Collection object can get a list of collections 1`] = `
 Array [
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoz",
+    "name": "Featured Products",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "featured-products",
+  },
   Object {
     "__typename": "Collection",
     "id": "Q29sbGVjdGlvbjox",
@@ -74,11 +82,11 @@ exports[`Collection object can get new page 1`] = `
 Array [
   Object {
     "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjox",
-    "name": "Summer collection",
+    "id": "Q29sbGVjdGlvbjoz",
+    "name": "Featured Products",
     "seoDescription": null,
     "seoTitle": null,
-    "slug": "summer-collection",
+    "slug": "featured-products",
   },
 ]
 `;
@@ -87,19 +95,19 @@ exports[`Collection object can get new page 2`] = `
 Array [
   Object {
     "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoz",
+    "name": "Featured Products",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "featured-products",
+  },
+  Object {
+    "__typename": "Collection",
     "id": "Q29sbGVjdGlvbjox",
     "name": "Summer collection",
     "seoDescription": null,
     "seoTitle": null,
     "slug": "summer-collection",
-  },
-  Object {
-    "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjoy",
-    "name": "Winter sale",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "winter-sale",
   },
 ]
 `;
@@ -121,6 +129,14 @@ Array [
     "seoDescription": null,
     "seoTitle": null,
     "slug": "summer-collection",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoz",
+    "name": "Featured Products",
+    "seoDescription": null,
+    "seoTitle": null,
+    "slug": "featured-products",
   },
 ]
 `;

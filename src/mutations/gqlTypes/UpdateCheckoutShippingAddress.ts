@@ -199,6 +199,9 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_availableShippingMethods_price | null;
 }
 
@@ -221,6 +224,9 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_shippingMethod_price | null;
 }
 
@@ -584,6 +590,9 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.
@@ -789,6 +798,9 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_avai
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_availableShippingMethods_price | null;
 }
 
@@ -811,6 +823,9 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_ship
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_shippingMethod_price | null;
 }
 
@@ -1174,6 +1189,9 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout {
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.

@@ -1,6 +1,7 @@
 import ApolloClient from "apollo-client";
 import { setupRecording, setupAPI } from "../../../testUtils/api";
 import { CollectionsAPI } from "./collections";
+import { defaultConfig } from "../../config";
 import {
   OrderDirection,
   CollectionSortField,
@@ -15,7 +16,11 @@ describe("Collection object", () => {
 
   beforeAll(async done => {
     client = (await setupAPI()).client;
-    collectionsAPI = new CollectionsAPI(client);
+    collectionsAPI = new CollectionsAPI(client, {
+      ...defaultConfig,
+      apiUrl: "",
+      channel: "default-channel",
+    });
 
     done();
   });

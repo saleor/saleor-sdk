@@ -757,4 +757,5 @@ export interface ProductDetailsVariables {
   id?: string | null;
   slug?: string | null;
   countryCode?: CountryCode | null;
+  channel?: string | null;
 }

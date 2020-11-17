@@ -10,6 +10,8 @@ import {
   ProductListVariables,
 } from "../../queries/gqlTypes/ProductList";
 import { WithDetails, WithList } from "../types";
+import { Config } from "../../types";
+
 import { ProductDetails } from "./ProductDetails";
 import { ProductList } from "./ProductList";
 
@@ -27,8 +29,12 @@ export class ProductsAPI
     > {
   private client: ApolloClient<any>;
 
-  constructor(client: ApolloClient<any>) {
+  // temporary solution, might change in future
+  private config: Config;
+
+  constructor(client: ApolloClient<any>, config: Config) {
     this.client = client;
+    this.config = config;
   }
 
   /**
@@ -38,7 +44,7 @@ export class ProductsAPI
   getDetails = async (variables: ProductDetailsVariables) => {
     const details = new ProductDetails(this.client);
 
-    await details.init(variables);
+    await details.init({ channel: this.config.channel, ...variables });
 
     return details;
   };
@@ -50,7 +56,7 @@ export class ProductsAPI
   getList = async (variables: ProductListVariables) => {
     const list = new ProductList(this.client);
 
-    await list.init(variables);
+    await list.init({ channel: this.config.channel, ...variables });
 
     return list;
   };

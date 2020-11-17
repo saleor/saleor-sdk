@@ -10,6 +10,7 @@ import {
 } from "../../queries/gqlTypes/CollectionList";
 import { BaseCollection } from "../../fragments/gqlTypes/BaseCollection";
 import { WithDetails, WithList } from "../types";
+import { ConfigInput } from "../../types";
 import { CollectionList } from "./CollectionList";
 import { CollectionDetails } from "./CollectionDetails";
 
@@ -23,8 +24,12 @@ export class CollectionsAPI
     WithList<CollectionListQuery, BaseCollection, CollectionListVariables> {
   private client: ApolloClient<any>;
 
-  constructor(client: ApolloClient<any>) {
+  // temporary solution, might change in future
+  private config: ConfigInput;
+
+  constructor(client: ApolloClient<any>, config: ConfigInput) {
     this.client = client;
+    this.config = config;
   }
 
   /**
@@ -34,7 +39,7 @@ export class CollectionsAPI
   getDetails = async (variables: CollectionDetailsVariables) => {
     const details = new CollectionDetails(this.client);
 
-    await details.init(variables);
+    await details.init({ channel: this.config.channel, ...variables });
 
     return details;
   };
@@ -46,7 +51,7 @@ export class CollectionsAPI
   getList = async (variables: CollectionListVariables) => {
     const list = new CollectionList(this.client);
 
-    await list.init(variables);
+    await list.init({ channel: this.config.channel, ...variables });
 
     return list;
   };

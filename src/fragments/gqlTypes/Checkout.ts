@@ -180,6 +180,9 @@ export interface Checkout_availableShippingMethods {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: Checkout_availableShippingMethods_price | null;
 }
 
@@ -202,6 +205,9 @@ export interface Checkout_shippingMethod {
    */
   id: string;
   name: string;
+  /**
+   * The price of the cheapest variant (including discounts).
+   */
   price: Checkout_shippingMethod_price | null;
 }
 
@@ -565,6 +571,9 @@ export interface Checkout {
    * Shipping methods that can be used with this order.
    */
   availableShippingMethods: (Checkout_availableShippingMethods | null)[];
+  /**
+   * The shipping method related with checkout.
+   */
   shippingMethod: Checkout_shippingMethod | null;
   /**
    * The price of the shipping, with all the taxes included.

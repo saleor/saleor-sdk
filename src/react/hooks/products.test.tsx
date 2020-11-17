@@ -1,7 +1,9 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import { setupAPI, setupRecording } from "../../../testUtils/api";
+import { SaleorContext } from "../context";
+import { setupRecording } from "../../../testUtils/api";
+import { setupContextAndAPI } from "../../../testUtils/context";
 import { useProductDetails, useProductList } from "./products";
 import { OrderDirection, ProductOrderField } from "../../gqlTypes/globalTypes";
 import * as fixtures from "../../api/products/fixtures";
@@ -12,10 +14,12 @@ describe("useProductList", () => {
   let wrapper: React.FC<{}>;
 
   beforeAll(async () => {
-    const { client } = await setupAPI();
+    const { client, context } = await setupContextAndAPI();
 
     wrapper = ({ children }) => (
-      <ApolloProvider client={client}>{children}</ApolloProvider>
+      <SaleorContext.Provider value={context}>
+        <ApolloProvider client={client}>{children}</ApolloProvider>
+      </SaleorContext.Provider>
     );
   });
 
@@ -29,7 +33,6 @@ describe("useProductList", () => {
         wrapper,
       }
     );
-
     expect(result.current.data).toBe(undefined);
     expect(result.current.loading).toBe(true);
 
