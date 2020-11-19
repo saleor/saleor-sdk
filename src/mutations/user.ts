@@ -15,7 +15,11 @@ export const changeUserPassword = gql`
 `;
 
 export const registerAccount = gql`
-  mutation RegisterAccount($email: String!, $password: String!, $redirectUrl: String!) {
+  mutation RegisterAccount(
+    $email: String!
+    $password: String!
+    $redirectUrl: String!
+  ) {
     accountRegister(
       input: { email: $email, password: $password, redirectUrl: $redirectUrl }
     ) {
