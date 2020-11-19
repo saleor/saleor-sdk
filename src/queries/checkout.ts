@@ -14,14 +14,11 @@ export const checkoutDetails = gql`
   }
 `;
 
-export const userCheckoutDetails = gql`
-  ${checkoutFragment}
-  query UserCheckoutDetails {
+export const userCheckoutTokenList = gql`
+  query UserCheckoutTokenList {
     me {
       id
-      checkout {
-        ...Checkout
-      }
+      checkoutTokens
     }
   }
 `;

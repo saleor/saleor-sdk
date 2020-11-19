@@ -79,7 +79,7 @@ import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
 } from "../../queries/gqlTypes/CheckoutProductVariants";
-import { UserCheckoutDetails } from "../../queries/gqlTypes/UserCheckoutDetails";
+import { UserCheckoutTokenList } from "../../queries/gqlTypes/UserCheckoutTokenList";
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
@@ -294,31 +294,30 @@ export class ApolloClientManager {
   ) => {
     let checkout: Checkout | null;
     try {
-      checkout = await new Promise((resolve, reject) => {
+      checkout = await new Promise(async (resolve, reject) => {
+        let token = checkoutToken;
         if (isUserSignedIn) {
-          const observable = this.client.watchQuery<UserCheckoutDetails, any>({
+          const { data, errors } = await this.client.query<
+            UserCheckoutTokenList,
+            any
+          >({
             fetchPolicy: "network-only",
-            query: CheckoutQueries.userCheckoutDetails,
+            query: CheckoutQueries.userCheckoutTokenList,
           });
-          observable.subscribe(
-            result => {
-              const { data, errors } = result;
-              if (errors?.length) {
-                reject(errors);
-              } else {
-                resolve(data.me?.checkout);
-              }
-            },
-            error => {
-              reject(error);
-            }
-          );
-        } else if (checkoutToken) {
+
+          if (errors?.length) {
+            reject(errors);
+          } else if (data.me?.checkoutTokens) {
+            [token] = data.me.checkoutTokens;
+          }
+        }
+
+        if (token) {
           const observable = this.client.watchQuery<CheckoutDetails, any>({
             fetchPolicy: "network-only",
             query: CheckoutQueries.checkoutDetails,
             variables: {
-              token: checkoutToken,
+              token,
             },
           });
           observable.subscribe(
