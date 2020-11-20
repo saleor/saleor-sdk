@@ -222,6 +222,7 @@ export class AuthAPI extends ErrorListener {
     } = await this.jobsManager.run("auth", "provideUser", undefined);
     if (this.config.loadOnStart.checkout) {
       await this.jobsManager.run("checkout", "provideCheckout", {
+        channel: this.config.channel,
         isUserSignedIn: !!data?.user,
       });
     }
