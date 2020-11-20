@@ -79,7 +79,10 @@ import {
   CheckoutProductVariants,
   CheckoutProductVariants_productVariants,
 } from "../../queries/gqlTypes/CheckoutProductVariants";
-import { UserCheckoutTokenList } from "../../queries/gqlTypes/UserCheckoutTokenList";
+import {
+  UserCheckoutTokenList,
+  UserCheckoutTokenListVariables,
+} from "../../queries/gqlTypes/UserCheckoutTokenList";
 import { UserDetails } from "../../queries/gqlTypes/UserDetails";
 import * as UserQueries from "../../queries/user";
 import { filterNotEmptyArrayItems } from "../../utils";
@@ -290,6 +293,7 @@ export class ApolloClientManager {
 
   getCheckout = async (
     isUserSignedIn: boolean,
+    channel: string,
     checkoutToken: string | null
   ) => {
     let checkout: Checkout | null;
@@ -299,10 +303,13 @@ export class ApolloClientManager {
         if (isUserSignedIn) {
           const { data, errors } = await this.client.query<
             UserCheckoutTokenList,
-            any
+            UserCheckoutTokenListVariables
           >({
             fetchPolicy: "network-only",
             query: CheckoutQueries.userCheckoutTokenList,
+            variables: {
+              channel,
+            },
           });
 
           if (errors?.length) {

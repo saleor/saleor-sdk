@@ -25,3 +25,7 @@ export interface UserCheckoutTokenList {
    */
   me: UserCheckoutTokenList_me | null;
 }
+
+export interface UserCheckoutTokenListVariables {
+  channel?: string | null;
+}

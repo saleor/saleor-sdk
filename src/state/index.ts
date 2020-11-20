@@ -133,6 +133,7 @@ export class SaleorState extends NamedObservable<StateItems> {
     }
     if (config.loadOnStart.checkout) {
       await this.jobsManager.run("checkout", "provideCheckout", {
+        channel: config.channel,
         isUserSignedIn: !!this.user,
       });
       this.onPaymentUpdate(LocalStorageHandler.getPayment());

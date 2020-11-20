@@ -15,10 +15,10 @@ export const checkoutDetails = gql`
 `;
 
 export const userCheckoutTokenList = gql`
-  query UserCheckoutTokenList {
+  query UserCheckoutTokenList($channel: String) {
     me {
       id
-      checkoutTokens
+      checkoutTokens(channel: $channel)
     }
   }
 `;

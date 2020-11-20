@@ -3,6 +3,7 @@ import { ICheckoutAddress } from "../../helpers/LocalStorageHandler";
 
 export interface ProvideCheckoutJobInput {
   isUserSignedIn: boolean;
+  channel: string;
 }
 
 export interface CreateCheckoutJobInput {
