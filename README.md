@@ -60,7 +60,7 @@ const App = () => {
        **/
     } else if (data) {
       /**
-       * User signed in succesfully.
+       * User signed in successfully.
        **/
     }
   };
@@ -108,7 +108,7 @@ if (dataError) {
    **/
 } else if (data) {
   /**
-   * User signed in succesfully. Read user object from data or from api.auth.
+   * User signed in successfully. Read user object from data or from api.auth.
    **/
   const userData = api.auth.user;
 }
@@ -129,7 +129,7 @@ We provide an API with methods and fields, performing one, scoped type of work. 
 
 ## Local development
 
-Our aim it to build SDK, highly configurable, as a separate package, which you will not require modifications. Although if you want to alter the project, escecially if you want to contribute, it is possible to develop storefront and SDK simultaneously. To do this, you need
+Our aim it to build SDK, highly configurable, as a separate package, which you will not require modifications. Although if you want to alter the project, especially if you want to contribute, it is possible to develop storefront and SDK simultaneously. To do this, you need
 to link it to the storefront's project.
 
 ```bash
@@ -142,5 +142,5 @@ $ npm link @saleor/sdk
 Notice that in [our example storefront](https://github.com/mirumee/saleor-storefront)
 webpack is configured to always resolve `react` to `./node_modules/react`. It may
 seem redundant for the most use cases, but helps in sdk's local development, because
-it overcomes `npm`'s limitations regarding peer dependencies hoisting, explicitely
+it overcomes `npm`'s limitations regarding peer dependencies hoisting, explicitly
 telling webpack to always have one and only copy of `react`.
