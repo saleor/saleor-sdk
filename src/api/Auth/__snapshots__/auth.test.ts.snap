@@ -8,8 +8,8 @@ Object {
   "defaultShippingAddress": null,
   "email": "sdk@example.com",
   "firstName": "",
-  "id": "VXNlcjoyNzk=",
-  "isStaff": false,
+  "id": "VXNlcjo2OA==",
+  "isStaff": true,
   "lastName": "",
 }
 `;
