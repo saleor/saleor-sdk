@@ -183,10 +183,10 @@ Object {
   "backgroundImage": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/category-backgrounds/accessories_Sitn66V.jpg",
+    "url": "http://localhost:8000/media/category-backgrounds/accessories_lG4wU3b.jpg",
   },
   "description": "",
-  "descriptionJson": "{\\"blocks\\": [{\\"key\\": \\"\\", \\"data\\": {}, \\"text\\": \\"\\", \\"type\\": \\"unstyled\\", \\"depth\\": 0, \\"entityRanges\\": [], \\"inlineStyleRanges\\": []}], \\"entityMap\\": {}}",
+  "descriptionJson": "{\\"blocks\\": [{\\"data\\": {\\"text\\": \\"\\"}, \\"type\\": \\"paragraph\\"}]}",
   "id": "Q2F0ZWdvcnk6Nw==",
   "name": "Accessories",
   "seoDescription": "",
