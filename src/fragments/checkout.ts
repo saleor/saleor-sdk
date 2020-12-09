@@ -42,7 +42,6 @@ export const checkoutProductVariantFragment = gql`
     name
     sku
     quantityAvailable
-    isAvailable
     pricing {
       onSale
       priceUndiscounted {

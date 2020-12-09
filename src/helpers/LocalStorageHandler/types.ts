@@ -31,7 +31,6 @@ export interface ICheckoutModelLineVariant {
   sku?: string;
   pricing?: Checkout_lines_variant_pricing | null;
   product?: Checkout_lines_variant_product;
-  isAvailable?: boolean | null;
   attributes?: Checkout_lines_variant_attributes[];
 }
 
