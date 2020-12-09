@@ -479,7 +479,6 @@ Object {
           "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
         },
       ],
-      "isAvailable": true,
       "name": "",
       "pricing": Object {
         "__typename": "VariantPricingInfo",
@@ -913,7 +912,6 @@ Object {
           "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
         },
       ],
-      "isAvailable": true,
       "name": "",
       "pricing": Object {
         "__typename": "VariantPricingInfo",
