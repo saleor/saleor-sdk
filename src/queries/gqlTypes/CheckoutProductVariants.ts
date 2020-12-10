@@ -195,10 +195,6 @@ export interface CheckoutProductVariants_productVariants_edges_node {
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: CheckoutProductVariants_productVariants_edges_node_pricing | null;

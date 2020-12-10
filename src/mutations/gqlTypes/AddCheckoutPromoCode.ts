@@ -473,10 +473,6 @@ export interface AddCheckoutPromoCode_checkoutAddPromoCode_checkout_lines_varian
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: AddCheckoutPromoCode_checkoutAddPromoCode_checkout_lines_variant_pricing | null;

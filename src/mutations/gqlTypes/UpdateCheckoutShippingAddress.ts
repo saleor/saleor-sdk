@@ -490,10 +490,6 @@ export interface UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_che
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: UpdateCheckoutShippingAddress_checkoutShippingAddressUpdate_checkout_lines_variant_pricing | null;
@@ -1088,10 +1084,6 @@ export interface UpdateCheckoutShippingAddress_checkoutEmailUpdate_checkout_line
    * Quantity of a product available for sale in one checkout.
    */
   quantityAvailable: number;
-  /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
   /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
