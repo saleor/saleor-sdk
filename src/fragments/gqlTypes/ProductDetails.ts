@@ -685,10 +685,6 @@ export interface ProductDetails_variants {
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * List of images for the product variant.
    */
   images: (ProductDetails_variants_images | null)[] | null;

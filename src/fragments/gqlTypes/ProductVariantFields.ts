@@ -165,10 +165,6 @@ export interface ProductVariantFields {
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * List of images for the product variant.
    */
   images: (ProductVariantFields_images | null)[] | null;

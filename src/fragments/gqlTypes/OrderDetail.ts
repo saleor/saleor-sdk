@@ -238,10 +238,6 @@ export interface OrderDetail_lines_variant {
    */
   quantityAvailable: number;
   /**
-   * Whether the variant is in stock and visible or not.
-   */
-  isAvailable: boolean | null;
-  /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: OrderDetail_lines_variant_pricing | null;
