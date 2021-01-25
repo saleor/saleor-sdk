@@ -30,6 +30,9 @@ export interface CollectionDetails {
   seoDescription: string | null;
   seoTitle: string | null;
   backgroundImage: CollectionDetails_backgroundImage | null;
-  description: string;
-  descriptionJson: any;
+  description: any;
+  /**
+   * Description of the collection (JSON).
+   */
+  descriptionJson: any | null;
 }

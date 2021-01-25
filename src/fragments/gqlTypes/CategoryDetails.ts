@@ -30,6 +30,9 @@ export interface CategoryDetails {
   seoDescription: string | null;
   seoTitle: string | null;
   backgroundImage: CategoryDetails_backgroundImage | null;
-  description: string;
-  descriptionJson: any;
+  description: any;
+  /**
+   * Description of the category (JSON).
+   */
+  descriptionJson: any | null;
 }

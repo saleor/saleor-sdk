@@ -435,6 +435,14 @@ export interface ProductDetails_product_category_products_edges_node {
   name: string;
   slug: string;
   seoDescription: string | null;
+  /**
+   * Whether the product is available for purchase.
+   */
+  isAvailableForPurchase: boolean | null;
+  /**
+   * Date when product is available for purchase. 
+   */
+  availableForPurchase: any | null;
   seoTitle: string | null;
   /**
    * The main thumbnail for a product.
@@ -709,6 +717,14 @@ export interface ProductDetails_product {
   name: string;
   slug: string;
   seoDescription: string | null;
+  /**
+   * Whether the product is available for purchase.
+   */
+  isAvailableForPurchase: boolean | null;
+  /**
+   * Date when product is available for purchase. 
+   */
+  availableForPurchase: any | null;
   seoTitle: string | null;
   /**
    * The main thumbnail for a product.
@@ -722,7 +738,10 @@ export interface ProductDetails_product {
    * Lists the storefront product's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: ProductDetails_product_pricing | null;
-  descriptionJson: any;
+  /**
+   * Description of the product (JSON).
+   */
+  descriptionJson: any | null;
   category: ProductDetails_product_category | null;
   /**
    * List of images for the product.

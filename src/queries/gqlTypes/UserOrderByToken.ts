@@ -339,11 +339,11 @@ export interface UserOrderByToken_orderByToken_lines {
   /**
    * Price of the single item in the order line.
    */
-  unitPrice: UserOrderByToken_orderByToken_lines_unitPrice | null;
+  unitPrice: UserOrderByToken_orderByToken_lines_unitPrice;
   /**
    * Price of the order line.
    */
-  totalPrice: UserOrderByToken_orderByToken_lines_totalPrice | null;
+  totalPrice: UserOrderByToken_orderByToken_lines_totalPrice;
 }
 
 export interface UserOrderByToken_orderByToken_subtotal_gross {
@@ -484,11 +484,11 @@ export interface UserOrderByToken_orderByToken {
   /**
    * Internal payment status.
    */
-  paymentStatus: PaymentChargeStatusEnum | null;
+  paymentStatus: PaymentChargeStatusEnum;
   /**
    * User-friendly payment status.
    */
-  paymentStatusDisplay: string | null;
+  paymentStatusDisplay: string;
   status: OrderStatus;
   /**
    * User-friendly order status.
@@ -511,15 +511,15 @@ export interface UserOrderByToken_orderByToken {
   /**
    * The sum of line prices not including shipping.
    */
-  subtotal: UserOrderByToken_orderByToken_subtotal | null;
+  subtotal: UserOrderByToken_orderByToken_subtotal;
   /**
    * Total amount of the order.
    */
-  total: UserOrderByToken_orderByToken_total | null;
+  total: UserOrderByToken_orderByToken_total;
   /**
    * Total price of shipping.
    */
-  shippingPrice: UserOrderByToken_orderByToken_shippingPrice | null;
+  shippingPrice: UserOrderByToken_orderByToken_shippingPrice;
   /**
    * List of order invoices.
    */

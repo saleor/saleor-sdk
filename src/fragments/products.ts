@@ -7,6 +7,8 @@ export const baseProductFragment = gql`
     name
     slug
     seoDescription
+    isAvailableForPurchase
+    availableForPurchase
     seoTitle
     thumbnail {
       url

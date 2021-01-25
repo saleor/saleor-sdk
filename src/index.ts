@@ -14,7 +14,7 @@ interface CreateAPIResult {
   apolloClient: ApolloClient<any>;
 }
 
-interface ConnectResult {
+export interface ConnectResult {
   /**
    * Saleor API.
    */

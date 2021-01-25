@@ -339,11 +339,11 @@ export interface OrderDetail_lines {
   /**
    * Price of the single item in the order line.
    */
-  unitPrice: OrderDetail_lines_unitPrice | null;
+  unitPrice: OrderDetail_lines_unitPrice;
   /**
    * Price of the order line.
    */
-  totalPrice: OrderDetail_lines_totalPrice | null;
+  totalPrice: OrderDetail_lines_totalPrice;
 }
 
 export interface OrderDetail_subtotal_gross {
@@ -463,11 +463,11 @@ export interface OrderDetail {
   /**
    * Internal payment status.
    */
-  paymentStatus: PaymentChargeStatusEnum | null;
+  paymentStatus: PaymentChargeStatusEnum;
   /**
    * User-friendly payment status.
    */
-  paymentStatusDisplay: string | null;
+  paymentStatusDisplay: string;
   status: OrderStatus;
   /**
    * User-friendly order status.
@@ -490,13 +490,13 @@ export interface OrderDetail {
   /**
    * The sum of line prices not including shipping.
    */
-  subtotal: OrderDetail_subtotal | null;
+  subtotal: OrderDetail_subtotal;
   /**
    * Total amount of the order.
    */
-  total: OrderDetail_total | null;
+  total: OrderDetail_total;
   /**
    * Total price of shipping.
    */
-  shippingPrice: OrderDetail_shippingPrice | null;
+  shippingPrice: OrderDetail_shippingPrice;
 }
