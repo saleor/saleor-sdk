@@ -19,6 +19,5 @@ export const collectionFragment = gql`
       url
     }
     description
-    descriptionJson
   }
 `;
