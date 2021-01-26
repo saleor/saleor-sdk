@@ -255,435 +255,12 @@ Object {
       "__typename": "SelectedAttribute",
       "attribute": Object {
         "__typename": "Attribute",
-        "id": "QXR0cmlidXRlOjIx",
-        "name": "ABV",
-        "slug": "abv",
+        "id": "QXR0cmlidXRlOjMx",
+        "name": "File",
+        "slug": "file-product",
       },
-      "values": Array [
-        Object {
-          "__typename": "AttributeValue",
-          "id": "QXR0cmlidXRlVmFsdWU6Njk=",
-          "name": "6.7%",
-        },
-      ],
+      "values": Array [],
     },
-  ],
-  "category": Object {
-    "__typename": "Category",
-    "id": "Q2F0ZWdvcnk6MTU=",
-    "name": "Alcohol",
-    "products": Object {
-      "__typename": "ProductCountableConnection",
-      "edges": Array [
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4MQ==",
-            "name": "Red Wine",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": true,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 3,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
-            "seoTitle": "",
-            "slug": "red-wine",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_PUKpP8P-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_PUKpP8P-thumbnail-510x510.png",
-            },
-          },
-        },
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4NA==",
-            "name": "Seaman Beer",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": false,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
-            "seoTitle": "",
-            "slug": "seaman-beer",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-510x510.png",
-            },
-          },
-        },
-        Object {
-          "__typename": "ProductCountableEdge",
-          "node": Object {
-            "__typename": "Product",
-            "category": Object {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnk6MTU=",
-              "name": "Alcohol",
-            },
-            "id": "UHJvZHVjdDo4Mw==",
-            "name": "Seaman Lager",
-            "pricing": Object {
-              "__typename": "ProductPricingInfo",
-              "onSale": true,
-              "priceRange": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 4.5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 4.5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 4.5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 4.5,
-                    "currency": "USD",
-                  },
-                },
-              },
-              "priceRangeUndiscounted": Object {
-                "__typename": "TaxedMoneyRange",
-                "start": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-                "stop": Object {
-                  "__typename": "TaxedMoney",
-                  "gross": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                  "net": Object {
-                    "__typename": "Money",
-                    "amount": 5,
-                    "currency": "USD",
-                  },
-                },
-              },
-            },
-            "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
-            "seoTitle": "",
-            "slug": "seaman-lager",
-            "thumbnail": Object {
-              "__typename": "Image",
-              "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_rvLdYHN-thumbnail-255x255.png",
-            },
-            "thumbnail2x": Object {
-              "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_rvLdYHN-thumbnail-510x510.png",
-            },
-          },
-        },
-      ],
-    },
-  },
-  "descriptionJson": "{\\"blocks\\": [{\\"data\\": {\\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\"}, \\"type\\": \\"paragraph\\"}]}",
-  "id": "UHJvZHVjdDo4NA==",
-  "images": Array [
-    Object {
-      "__typename": "ProductImage",
-      "id": "UHJvZHVjdEltYWdlOjE4Nw==",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
-    },
-    Object {
-      "__typename": "ProductImage",
-      "id": "UHJvZHVjdEltYWdlOjE4OA==",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_5cjSMVC.png",
-    },
-  ],
-  "isAvailable": true,
-  "name": "Seaman Beer",
-  "pricing": Object {
-    "__typename": "ProductPricingInfo",
-    "onSale": false,
-    "priceRange": Object {
-      "__typename": "TaxedMoneyRange",
-      "start": Object {
-        "__typename": "TaxedMoney",
-        "gross": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-        "net": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-      },
-      "stop": Object {
-        "__typename": "TaxedMoney",
-        "gross": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-        "net": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-      },
-    },
-    "priceRangeUndiscounted": Object {
-      "__typename": "TaxedMoneyRange",
-      "start": Object {
-        "__typename": "TaxedMoney",
-        "gross": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-        "net": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-      },
-      "stop": Object {
-        "__typename": "TaxedMoney",
-        "gross": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-        "net": Object {
-          "__typename": "Money",
-          "amount": 5,
-          "currency": "USD",
-        },
-      },
-    },
-  },
-  "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
-  "seoTitle": "",
-  "slug": "seaman-beer",
-  "thumbnail": Object {
-    "__typename": "Image",
-    "alt": "",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-255x255.png",
-  },
-  "thumbnail2x": Object {
-    "__typename": "Image",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-510x510.png",
-  },
-  "variants": Array [
-    Object {
-      "__typename": "ProductVariant",
-      "attributes": Array [],
-      "id": "UHJvZHVjdFZhcmlhbnQ6MTk2",
-      "images": Array [
-        Object {
-          "__typename": "ProductImage",
-          "alt": "",
-          "id": "UHJvZHVjdEltYWdlOjE4Nw==",
-          "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
-        },
-      ],
-      "name": "",
-      "pricing": Object {
-        "__typename": "VariantPricingInfo",
-        "onSale": false,
-        "price": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-        "priceUndiscounted": Object {
-          "__typename": "TaxedMoney",
-          "gross": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-          "net": Object {
-            "__typename": "Money",
-            "amount": 5,
-            "currency": "USD",
-          },
-        },
-      },
-      "quantityAvailable": 50,
-      "sku": "98616713",
-    },
-  ],
-}
-`;
-
-exports[`useProductList can fetch product by slug 1`] = `
-Object {
-  "__typename": "Product",
-  "attributes": Array [
     Object {
       "__typename": "SelectedAttribute",
       "attribute": Object {
@@ -721,6 +298,93 @@ Object {
             "name": "Red Wine",
             "pricing": Object {
               "__typename": "ProductPricingInfo",
+              "onSale": false,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
+            "seoTitle": "",
+            "slug": "red-wine",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_wine-red-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_wine-red-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4NA==",
+            "name": "Seaman Beer",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
               "onSale": true,
               "priceRange": Object {
                 "__typename": "TaxedMoneyRange",
@@ -781,17 +445,17 @@ Object {
                 },
               },
             },
-            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
+            "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
             "seoTitle": "",
-            "slug": "red-wine",
+            "slug": "seaman-beer",
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_PUKpP8P-thumbnail-255x255.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_wine-red_PUKpP8P-thumbnail-510x510.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-510x510.png",
             },
           },
         },
@@ -804,8 +468,277 @@ Object {
               "id": "Q2F0ZWdvcnk6MTU=",
               "name": "Alcohol",
             },
-            "id": "UHJvZHVjdDo4NA==",
-            "name": "Seaman Beer",
+            "id": "UHJvZHVjdDo4Mw==",
+            "name": "Seaman Lager",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
+            "seoDescription": "Find your sea legs and then lose the power to use them with extra strong seaman’s lager. Don’t drink and sail, me hearties!",
+            "seoTitle": "",
+            "slug": "seaman-lager",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-02_1-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-02_1-thumbnail-510x510.png",
+            },
+          },
+        },
+      ],
+    },
+  },
+  "description": "{\\"blocks\\": [{\\"data\\": {\\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\"}, \\"type\\": \\"paragraph\\"}]}",
+  "id": "UHJvZHVjdDo4NA==",
+  "images": Array [
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjE5",
+      "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_1.png",
+    },
+    Object {
+      "__typename": "ProductImage",
+      "id": "UHJvZHVjdEltYWdlOjIw",
+      "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_2.png",
+    },
+  ],
+  "isAvailable": true,
+  "name": "Seaman Beer",
+  "pricing": Object {
+    "__typename": "ProductPricingInfo",
+    "onSale": true,
+    "priceRange": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 3,
+          "currency": "USD",
+        },
+      },
+    },
+    "priceRangeUndiscounted": Object {
+      "__typename": "TaxedMoneyRange",
+      "start": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+      "stop": Object {
+        "__typename": "TaxedMoney",
+        "gross": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+        "net": Object {
+          "__typename": "Money",
+          "amount": 5,
+          "currency": "USD",
+        },
+      },
+    },
+  },
+  "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
+  "seoTitle": "",
+  "slug": "seaman-beer",
+  "thumbnail": Object {
+    "__typename": "Image",
+    "alt": "",
+    "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-255x255.png",
+  },
+  "thumbnail2x": Object {
+    "__typename": "Image",
+    "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-510x510.png",
+  },
+  "variants": Array [
+    Object {
+      "__typename": "ProductVariant",
+      "attributes": Array [],
+      "id": "UHJvZHVjdFZhcmlhbnQ6MTk2",
+      "images": Array [
+        Object {
+          "__typename": "ProductImage",
+          "alt": "",
+          "id": "UHJvZHVjdEltYWdlOjE5",
+          "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_1.png",
+        },
+      ],
+      "name": "",
+      "pricing": Object {
+        "__typename": "VariantPricingInfo",
+        "onSale": true,
+        "price": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 3,
+            "currency": "USD",
+          },
+        },
+        "priceUndiscounted": Object {
+          "__typename": "TaxedMoney",
+          "gross": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+          "net": Object {
+            "__typename": "Money",
+            "amount": 5,
+            "currency": "USD",
+          },
+        },
+      },
+      "quantityAvailable": 50,
+      "sku": "98616713",
+    },
+  ],
+}
+`;
+
+exports[`useProductList can fetch product by slug 1`] = `
+Object {
+  "__typename": "Product",
+  "attributes": Array [
+    Object {
+      "__typename": "SelectedAttribute",
+      "attribute": Object {
+        "__typename": "Attribute",
+        "id": "QXR0cmlidXRlOjMx",
+        "name": "File",
+        "slug": "file-product",
+      },
+      "values": Array [],
+    },
+    Object {
+      "__typename": "SelectedAttribute",
+      "attribute": Object {
+        "__typename": "Attribute",
+        "id": "QXR0cmlidXRlOjIx",
+        "name": "ABV",
+        "slug": "abv",
+      },
+      "values": Array [
+        Object {
+          "__typename": "AttributeValue",
+          "id": "QXR0cmlidXRlVmFsdWU6Njk=",
+          "name": "6.7%",
+        },
+      ],
+    },
+  ],
+  "category": Object {
+    "__typename": "Category",
+    "id": "Q2F0ZWdvcnk6MTU=",
+    "name": "Alcohol",
+    "products": Object {
+      "__typename": "ProductCountableConnection",
+      "edges": Array [
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4MQ==",
+            "name": "Red Wine",
             "pricing": Object {
               "__typename": "ProductPricingInfo",
               "onSale": false,
@@ -868,17 +801,104 @@ Object {
                 },
               },
             },
+            "seoDescription": "A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.",
+            "seoTitle": "",
+            "slug": "red-wine",
+            "thumbnail": Object {
+              "__typename": "Image",
+              "alt": "",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_wine-red-thumbnail-255x255.png",
+            },
+            "thumbnail2x": Object {
+              "__typename": "Image",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_wine-red-thumbnail-510x510.png",
+            },
+          },
+        },
+        Object {
+          "__typename": "ProductCountableEdge",
+          "node": Object {
+            "__typename": "Product",
+            "category": Object {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnk6MTU=",
+              "name": "Alcohol",
+            },
+            "id": "UHJvZHVjdDo4NA==",
+            "name": "Seaman Beer",
+            "pricing": Object {
+              "__typename": "ProductPricingInfo",
+              "onSale": true,
+              "priceRange": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 3,
+                    "currency": "USD",
+                  },
+                },
+              },
+              "priceRangeUndiscounted": Object {
+                "__typename": "TaxedMoneyRange",
+                "start": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+                "stop": Object {
+                  "__typename": "TaxedMoney",
+                  "gross": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                  "net": Object {
+                    "__typename": "Money",
+                    "amount": 5,
+                    "currency": "USD",
+                  },
+                },
+              },
+            },
             "seoDescription": "Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.",
             "seoTitle": "",
             "slug": "seaman-beer",
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-255x255.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-510x510.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-510x510.png",
             },
           },
         },
@@ -902,12 +922,12 @@ Object {
                   "__typename": "TaxedMoney",
                   "gross": Object {
                     "__typename": "Money",
-                    "amount": 4.5,
+                    "amount": 3,
                     "currency": "USD",
                   },
                   "net": Object {
                     "__typename": "Money",
-                    "amount": 4.5,
+                    "amount": 3,
                     "currency": "USD",
                   },
                 },
@@ -915,12 +935,12 @@ Object {
                   "__typename": "TaxedMoney",
                   "gross": Object {
                     "__typename": "Money",
-                    "amount": 4.5,
+                    "amount": 3,
                     "currency": "USD",
                   },
                   "net": Object {
                     "__typename": "Money",
-                    "amount": 4.5,
+                    "amount": 3,
                     "currency": "USD",
                   },
                 },
@@ -961,48 +981,48 @@ Object {
             "thumbnail": Object {
               "__typename": "Image",
               "alt": "",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_rvLdYHN-thumbnail-255x255.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-02_1-thumbnail-255x255.png",
             },
             "thumbnail2x": Object {
               "__typename": "Image",
-              "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-02_1_rvLdYHN-thumbnail-510x510.png",
+              "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-02_1-thumbnail-510x510.png",
             },
           },
         },
       ],
     },
   },
-  "descriptionJson": "{\\"blocks\\": [{\\"data\\": {\\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\"}, \\"type\\": \\"paragraph\\"}]}",
+  "description": "{\\"blocks\\": [{\\"data\\": {\\"text\\": \\"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\\"}, \\"type\\": \\"paragraph\\"}]}",
   "id": "UHJvZHVjdDo4NA==",
   "images": Array [
     Object {
       "__typename": "ProductImage",
-      "id": "UHJvZHVjdEltYWdlOjE4Nw==",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
+      "id": "UHJvZHVjdEltYWdlOjE5",
+      "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_1.png",
     },
     Object {
       "__typename": "ProductImage",
-      "id": "UHJvZHVjdEltYWdlOjE4OA==",
-      "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_2_5cjSMVC.png",
+      "id": "UHJvZHVjdEltYWdlOjIw",
+      "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_2.png",
     },
   ],
   "isAvailable": true,
   "name": "Seaman Beer",
   "pricing": Object {
     "__typename": "ProductPricingInfo",
-    "onSale": false,
+    "onSale": true,
     "priceRange": Object {
       "__typename": "TaxedMoneyRange",
       "start": Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 5,
+          "amount": 3,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 5,
+          "amount": 3,
           "currency": "USD",
         },
       },
@@ -1010,12 +1030,12 @@ Object {
         "__typename": "TaxedMoney",
         "gross": Object {
           "__typename": "Money",
-          "amount": 5,
+          "amount": 3,
           "currency": "USD",
         },
         "net": Object {
           "__typename": "Money",
-          "amount": 5,
+          "amount": 3,
           "currency": "USD",
         },
       },
@@ -1056,11 +1076,11 @@ Object {
   "thumbnail": Object {
     "__typename": "Image",
     "alt": "",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-255x255.png",
+    "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-255x255.png",
   },
   "thumbnail2x": Object {
     "__typename": "Image",
-    "url": "http://localhost:8000/media/__sized__/products/saleordemoproduct_beer-01_1_v0HTi2S-thumbnail-510x510.png",
+    "url": "https://master.staging.saleor.cloud/media/__sized__/products/saleordemoproduct_beer-01_1-thumbnail-510x510.png",
   },
   "variants": Array [
     Object {
@@ -1071,24 +1091,24 @@ Object {
         Object {
           "__typename": "ProductImage",
           "alt": "",
-          "id": "UHJvZHVjdEltYWdlOjE4Nw==",
-          "url": "http://localhost:8000/media/products/saleordemoproduct_beer-01_1_v0HTi2S.png",
+          "id": "UHJvZHVjdEltYWdlOjE5",
+          "url": "https://master.staging.saleor.cloud/media/products/saleordemoproduct_beer-01_1.png",
         },
       ],
       "name": "",
       "pricing": Object {
         "__typename": "VariantPricingInfo",
-        "onSale": false,
+        "onSale": true,
         "price": Object {
           "__typename": "TaxedMoney",
           "gross": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
           "net": Object {
             "__typename": "Money",
-            "amount": 5,
+            "amount": 3,
             "currency": "USD",
           },
         },
