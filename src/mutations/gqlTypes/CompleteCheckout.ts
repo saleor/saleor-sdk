@@ -356,11 +356,11 @@ export interface CompleteCheckout_checkoutComplete_order_lines {
   /**
    * Price of the single item in the order line.
    */
-  unitPrice: CompleteCheckout_checkoutComplete_order_lines_unitPrice | null;
+  unitPrice: CompleteCheckout_checkoutComplete_order_lines_unitPrice;
   /**
    * Price of the order line.
    */
-  totalPrice: CompleteCheckout_checkoutComplete_order_lines_totalPrice | null;
+  totalPrice: CompleteCheckout_checkoutComplete_order_lines_totalPrice;
 }
 
 export interface CompleteCheckout_checkoutComplete_order_subtotal_gross {
@@ -480,11 +480,11 @@ export interface CompleteCheckout_checkoutComplete_order {
   /**
    * Internal payment status.
    */
-  paymentStatus: PaymentChargeStatusEnum | null;
+  paymentStatus: PaymentChargeStatusEnum;
   /**
    * User-friendly payment status.
    */
-  paymentStatusDisplay: string | null;
+  paymentStatusDisplay: string;
   status: OrderStatus;
   /**
    * User-friendly order status.
@@ -507,15 +507,15 @@ export interface CompleteCheckout_checkoutComplete_order {
   /**
    * The sum of line prices not including shipping.
    */
-  subtotal: CompleteCheckout_checkoutComplete_order_subtotal | null;
+  subtotal: CompleteCheckout_checkoutComplete_order_subtotal;
   /**
    * Total amount of the order.
    */
-  total: CompleteCheckout_checkoutComplete_order_total | null;
+  total: CompleteCheckout_checkoutComplete_order_total;
   /**
    * Total price of shipping.
    */
-  shippingPrice: CompleteCheckout_checkoutComplete_order_shippingPrice | null;
+  shippingPrice: CompleteCheckout_checkoutComplete_order_shippingPrice;
 }
 
 export interface CompleteCheckout_checkoutComplete {

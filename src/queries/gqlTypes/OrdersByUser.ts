@@ -132,7 +132,7 @@ export interface OrdersByUser_me_orders_edges_node {
   /**
    * Total amount of the order.
    */
-  total: OrdersByUser_me_orders_edges_node_total | null;
+  total: OrdersByUser_me_orders_edges_node_total;
   /**
    * List of order lines.
    */
