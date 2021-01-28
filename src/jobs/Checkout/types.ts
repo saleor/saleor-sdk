@@ -58,7 +58,6 @@ export interface CreatePaymentJobInput {
   amount: number;
   gateway: string;
   token?: string;
-  billingAddress: ICheckoutAddress;
   creditCard?: ICreditCard;
   returnUrl?: string;
 }
