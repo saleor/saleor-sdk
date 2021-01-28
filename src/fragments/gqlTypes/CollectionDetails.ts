@@ -31,8 +31,4 @@ export interface CollectionDetails {
   seoTitle: string | null;
   backgroundImage: CollectionDetails_backgroundImage | null;
   description: any;
-  /**
-   * Description of the collection (JSON).
-   */
-  descriptionJson: any | null;
 }

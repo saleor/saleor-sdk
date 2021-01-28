@@ -103,7 +103,7 @@ export const productFragment = gql`
   fragment ProductDetails on Product {
     ...BaseProduct
     ...ProductPricingField
-    descriptionJson
+    description
     category {
       id
       name

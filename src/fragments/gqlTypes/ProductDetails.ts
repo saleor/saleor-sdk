@@ -736,10 +736,7 @@ export interface ProductDetails {
    * Lists the storefront product's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: ProductDetails_pricing | null;
-  /**
-   * Description of the product (JSON).
-   */
-  descriptionJson: any | null;
+  description: any;
   category: ProductDetails_category | null;
   /**
    * List of images for the product.
