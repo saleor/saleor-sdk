@@ -43,6 +43,10 @@ export interface CategoryAncestorsList_category_ancestors {
   __typename: "CategoryCountableConnection";
   edges: CategoryAncestorsList_category_ancestors_edges[];
   /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
+  /**
    * Pagination data for this connection.
    */
   pageInfo: CategoryAncestorsList_category_ancestors_pageInfo;

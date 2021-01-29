@@ -7,7 +7,8 @@ module.exports = {
     ],
     service: {
       name: "saleor",
-      url: "http://localhost:8000/graphql/",
+      // url: "http://localhost:8000/graphql/",
+      url: "https://master.staging.saleor.cloud/graphql/",
     },
   },
 };

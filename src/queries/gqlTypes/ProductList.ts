@@ -269,6 +269,10 @@ export interface ProductList_products {
   __typename: "ProductCountableConnection";
   edges: ProductList_products_edges[];
   /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
+  /**
    * Pagination data for this connection.
    */
   pageInfo: ProductList_products_pageInfo;
