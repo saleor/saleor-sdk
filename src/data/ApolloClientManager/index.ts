@@ -890,7 +890,6 @@ export class ApolloClientManager {
     amount,
     checkoutId,
     gateway,
-    billingAddress,
     token,
     returnUrl,
   }: CreatePaymentInput) => {
@@ -899,21 +898,6 @@ export class ApolloClientManager {
         checkoutId,
         paymentInput: {
           amount,
-          billingAddress: {
-            city: billingAddress.city,
-            companyName: billingAddress.companyName,
-            country:
-              CountryCode[
-                billingAddress?.country?.code as keyof typeof CountryCode
-              ],
-            countryArea: billingAddress.countryArea,
-            firstName: billingAddress.firstName,
-            lastName: billingAddress.lastName,
-            phone: billingAddress.phone,
-            postalCode: billingAddress.postalCode,
-            streetAddress1: billingAddress.streetAddress1,
-            streetAddress2: billingAddress.streetAddress2,
-          },
           gateway,
           returnUrl,
           token,
