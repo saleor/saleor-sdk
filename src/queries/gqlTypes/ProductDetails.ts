@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CountryCode } from "./../../gqlTypes/globalTypes";
+import { CountryCode, ProductMediaType } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ProductDetails
@@ -477,16 +477,17 @@ export interface ProductDetails_product_category {
   products: ProductDetails_product_category_products | null;
 }
 
-export interface ProductDetails_product_images {
-  __typename: "ProductImage";
+export interface ProductDetails_product_media {
+  __typename: "ProductMedia";
   /**
    * The ID of the object.
    */
   id: string;
   /**
-   * The URL of the image.
+   * The URL of the media.
    */
   url: string;
+  type: ProductMediaType;
 }
 
 export interface ProductDetails_product_attributes_attribute {
@@ -529,17 +530,18 @@ export interface ProductDetails_product_attributes {
   values: (ProductDetails_product_attributes_values | null)[];
 }
 
-export interface ProductDetails_product_variants_images {
-  __typename: "ProductImage";
+export interface ProductDetails_product_variants_media {
+  __typename: "ProductMedia";
   /**
    * The ID of the object.
    */
   id: string;
   /**
-   * The URL of the image.
+   * The URL of the media.
    */
   url: string;
   alt: string;
+  type: ProductMediaType;
 }
 
 export interface ProductDetails_product_variants_pricing_priceUndiscounted_gross {
@@ -687,9 +689,9 @@ export interface ProductDetails_product_variants {
    */
   quantityAvailable: number;
   /**
-   * List of images for the product variant.
+   * List of media for the product variant.
    */
-  images: (ProductDetails_product_variants_images | null)[] | null;
+  media: (ProductDetails_product_variants_media | null)[] | null;
   /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
@@ -725,9 +727,9 @@ export interface ProductDetails_product {
   description: any;
   category: ProductDetails_product_category | null;
   /**
-   * List of images for the product.
+   * List of media for the product.
    */
-  images: (ProductDetails_product_images | null)[] | null;
+  media: (ProductDetails_product_media | null)[] | null;
   /**
    * List of attributes assigned to this product.
    */

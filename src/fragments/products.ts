@@ -39,10 +39,11 @@ export const productVariantFragment = gql`
     sku
     name
     quantityAvailable(countryCode: $countryCode)
-    images {
+    media {
       id
       url
       alt
+      type
     }
     pricing {
       onSale
@@ -118,9 +119,10 @@ export const productFragment = gql`
         }
       }
     }
-    images {
+    media {
       id
       url
+      type
     }
     attributes {
       ...SelectedAttributeFields

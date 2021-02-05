@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ProductMediaType } from "./../../gqlTypes/globalTypes";
+
 // ====================================================
 // GraphQL fragment: ProductDetails
 // ====================================================
@@ -475,16 +477,17 @@ export interface ProductDetails_category {
   products: ProductDetails_category_products | null;
 }
 
-export interface ProductDetails_images {
-  __typename: "ProductImage";
+export interface ProductDetails_media {
+  __typename: "ProductMedia";
   /**
    * The ID of the object.
    */
   id: string;
   /**
-   * The URL of the image.
+   * The URL of the media.
    */
   url: string;
+  type: ProductMediaType;
 }
 
 export interface ProductDetails_attributes_attribute {
@@ -527,17 +530,18 @@ export interface ProductDetails_attributes {
   values: (ProductDetails_attributes_values | null)[];
 }
 
-export interface ProductDetails_variants_images {
-  __typename: "ProductImage";
+export interface ProductDetails_variants_media {
+  __typename: "ProductMedia";
   /**
    * The ID of the object.
    */
   id: string;
   /**
-   * The URL of the image.
+   * The URL of the media.
    */
   url: string;
   alt: string;
+  type: ProductMediaType;
 }
 
 export interface ProductDetails_variants_pricing_priceUndiscounted_gross {
@@ -685,9 +689,9 @@ export interface ProductDetails_variants {
    */
   quantityAvailable: number;
   /**
-   * List of images for the product variant.
+   * List of media for the product variant.
    */
-  images: (ProductDetails_variants_images | null)[] | null;
+  media: (ProductDetails_variants_media | null)[] | null;
   /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
@@ -723,9 +727,9 @@ export interface ProductDetails {
   description: any;
   category: ProductDetails_category | null;
   /**
-   * List of images for the product.
+   * List of media for the product.
    */
-  images: (ProductDetails_images | null)[] | null;
+  media: (ProductDetails_media | null)[] | null;
   /**
    * List of attributes assigned to this product.
    */

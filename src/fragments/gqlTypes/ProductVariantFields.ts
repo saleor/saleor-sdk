@@ -3,21 +3,24 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ProductMediaType } from "./../../gqlTypes/globalTypes";
+
 // ====================================================
 // GraphQL fragment: ProductVariantFields
 // ====================================================
 
-export interface ProductVariantFields_images {
-  __typename: "ProductImage";
+export interface ProductVariantFields_media {
+  __typename: "ProductMedia";
   /**
    * The ID of the object.
    */
   id: string;
   /**
-   * The URL of the image.
+   * The URL of the media.
    */
   url: string;
   alt: string;
+  type: ProductMediaType;
 }
 
 export interface ProductVariantFields_pricing_priceUndiscounted_gross {
@@ -165,9 +168,9 @@ export interface ProductVariantFields {
    */
   quantityAvailable: number;
   /**
-   * List of images for the product variant.
+   * List of media for the product variant.
    */
-  images: (ProductVariantFields_images | null)[] | null;
+  media: (ProductVariantFields_media | null)[] | null;
   /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */

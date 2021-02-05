@@ -408,6 +408,15 @@ export enum PaymentErrorCode {
   UNIQUE = "UNIQUE",
 }
 
+/**
+ * An enumeration.
+ */
+export enum ProductMediaType {
+  IMAGE = "IMAGE",
+  VIDEO_UNKNOWN = "VIDEO_UNKNOWN",
+  VIDEO_YOUTUBE = "VIDEO_YOUTUBE",
+}
+
 export enum ProductOrderField {
   COLLECTION = "COLLECTION",
   DATE = "DATE",
@@ -487,6 +496,7 @@ export interface PaymentInput {
   gateway: string;
   token?: string | null;
   amount?: any | null;
+  billingAddress?: AddressInput | null;
   returnUrl?: string | null;
 }
 
