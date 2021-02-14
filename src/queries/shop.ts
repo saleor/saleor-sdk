@@ -12,12 +12,6 @@ export const getShop = gql`
         country
         code
       }
-      geolocalization {
-        country {
-          code
-          country
-        }
-      }
     }
   }
 `;
