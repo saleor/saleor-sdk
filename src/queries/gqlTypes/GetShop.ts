@@ -31,26 +31,6 @@ export interface GetShop_shop_countries {
   code: string;
 }
 
-export interface GetShop_shop_geolocalization_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface GetShop_shop_geolocalization {
-  __typename: "Geolocalization";
-  /**
-   * Country of the user acquired by his IP address.
-   */
-  country: GetShop_shop_geolocalization_country | null;
-}
-
 export interface GetShop_shop {
   __typename: "Shop";
   /**
@@ -65,10 +45,6 @@ export interface GetShop_shop {
    * List of countries available in the shop.
    */
   countries: GetShop_shop_countries[];
-  /**
-   * Customer's geolocalization data.
-   */
-  geolocalization: GetShop_shop_geolocalization | null;
 }
 
 export interface GetShop {
