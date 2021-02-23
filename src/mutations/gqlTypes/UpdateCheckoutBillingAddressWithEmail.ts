@@ -466,6 +466,7 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutBillingAddressUpd
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */
@@ -1061,6 +1062,7 @@ export interface UpdateCheckoutBillingAddressWithEmail_checkoutEmailUpdate_check
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */

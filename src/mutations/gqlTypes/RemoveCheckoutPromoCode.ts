@@ -449,6 +449,7 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */

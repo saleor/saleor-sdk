@@ -449,6 +449,7 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */

@@ -424,6 +424,7 @@ export interface ProductDetails_product_category_products_edges_node_category {
    */
   id: string;
   name: string;
+  slug: string;
 }
 
 export interface ProductDetails_product_category_products_edges_node {
@@ -479,6 +480,7 @@ export interface ProductDetails_product_category {
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * List of products in the category.
    */
@@ -738,7 +740,7 @@ export interface ProductDetails_product {
    * Lists the storefront product's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: ProductDetails_product_pricing | null;
-  description: any;
+  description: any | null;
   category: ProductDetails_product_category | null;
   /**
    * List of images for the product.

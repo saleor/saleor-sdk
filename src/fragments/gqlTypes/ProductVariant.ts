@@ -171,6 +171,7 @@ export interface ProductVariant_product {
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */
