@@ -416,6 +416,7 @@ export enum ProductOrderField {
   PRICE = "PRICE",
   PUBLICATION_DATE = "PUBLICATION_DATE",
   PUBLISHED = "PUBLISHED",
+  RANK = "RANK",
   RATING = "RATING",
   TYPE = "TYPE",
 }
@@ -423,6 +424,12 @@ export enum ProductOrderField {
 export enum StockAvailability {
   IN_STOCK = "IN_STOCK",
   OUT_OF_STOCK = "OUT_OF_STOCK",
+}
+
+export enum VariantAttributeScope {
+  ALL = "ALL",
+  NOT_VARIANT_SELECTION = "NOT_VARIANT_SELECTION",
+  VARIANT_SELECTION = "VARIANT_SELECTION",
 }
 
 export interface AccountInput {

@@ -55,7 +55,7 @@ export const productVariantFragment = gql`
         ...Price
       }
     }
-    attributes {
+    attributes(variantSelection: $variantSelection) {
       attribute {
         id
         name

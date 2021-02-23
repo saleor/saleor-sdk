@@ -46,6 +46,7 @@ export const productDetails = gql`
     $slug: String
     $countryCode: CountryCode
     $channel: String
+    $variantSelection: VariantAttributeScope = ALL
   ) {
     product(id: $id, slug: $slug, channel: $channel) {
       ...ProductDetails

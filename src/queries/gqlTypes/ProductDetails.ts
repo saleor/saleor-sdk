@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CountryCode } from "./../../gqlTypes/globalTypes";
+import { CountryCode, VariantAttributeScope } from "./../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ProductDetails
@@ -772,4 +772,5 @@ export interface ProductDetailsVariables {
   slug?: string | null;
   countryCode?: CountryCode | null;
   channel?: string | null;
+  variantSelection?: VariantAttributeScope | null;
 }
