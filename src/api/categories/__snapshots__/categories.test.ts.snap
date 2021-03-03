@@ -128,14 +128,6 @@ Array [
     "seoTitle": "",
     "slug": "ebooks",
   },
-  Object {
-    "__typename": "Category",
-    "id": "Q2F0ZWdvcnk6MTIzNA==",
-    "name": "Cy-66129",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "Cy-66129",
-  },
 ]
 `;
 

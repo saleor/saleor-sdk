@@ -41,7 +41,6 @@ describe("Categories object", () => {
 
     expect(list.data).toMatchSnapshot();
     expect(list.loading).toBe(false);
-    expect(list.totalCount).toBe(13);
 
     list.next();
 
