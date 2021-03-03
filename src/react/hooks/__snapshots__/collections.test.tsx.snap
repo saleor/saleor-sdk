@@ -38,19 +38,27 @@ exports[`useCollectionList can fetch collections 1`] = `
 Array [
   Object {
     "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoxNDA=",
+    "name": "Cy-29451",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-29451",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoxNDI=",
+    "name": "Cy-7679",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-7679",
+  },
+  Object {
+    "__typename": "Collection",
     "id": "Q29sbGVjdGlvbjoz",
     "name": "Featured Products",
     "seoDescription": null,
     "seoTitle": null,
     "slug": "featured-products",
-  },
-  Object {
-    "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjox",
-    "name": "Summer collection",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "summer-collection",
   },
   Object {
     "__typename": "Collection",
@@ -67,11 +75,11 @@ exports[`useCollectionList can fetch next page 1`] = `
 Array [
   Object {
     "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjoz",
-    "name": "Featured Products",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "featured-products",
+    "id": "Q29sbGVjdGlvbjoxNDA=",
+    "name": "Cy-29451",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-29451",
   },
 ]
 `;
@@ -80,19 +88,19 @@ exports[`useCollectionList can fetch next page 2`] = `
 Array [
   Object {
     "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjoz",
-    "name": "Featured Products",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "featured-products",
+    "id": "Q29sbGVjdGlvbjoxNDA=",
+    "name": "Cy-29451",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-29451",
   },
   Object {
     "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjox",
-    "name": "Summer collection",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "summer-collection",
+    "id": "Q29sbGVjdGlvbjoxNDI=",
+    "name": "Cy-7679",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-7679",
   },
 ]
 `;
@@ -122,19 +130,27 @@ Array [
   },
   Object {
     "__typename": "Collection",
-    "id": "Q29sbGVjdGlvbjox",
-    "name": "Summer collection",
-    "seoDescription": null,
-    "seoTitle": null,
-    "slug": "summer-collection",
-  },
-  Object {
-    "__typename": "Collection",
     "id": "Q29sbGVjdGlvbjoz",
     "name": "Featured Products",
     "seoDescription": null,
     "seoTitle": null,
     "slug": "featured-products",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoxNDI=",
+    "name": "Cy-7679",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-7679",
+  },
+  Object {
+    "__typename": "Collection",
+    "id": "Q29sbGVjdGlvbjoxNDA=",
+    "name": "Cy-29451",
+    "seoDescription": "",
+    "seoTitle": "",
+    "slug": "cy-29451",
   },
 ]
 `;
