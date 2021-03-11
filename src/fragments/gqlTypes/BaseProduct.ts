@@ -36,6 +36,14 @@ export interface BaseProduct {
   name: string;
   slug: string;
   seoDescription: string | null;
+  /**
+   * Whether the product is available for purchase.
+   */
+  isAvailableForPurchase: boolean | null;
+  /**
+   * Date when product is available for purchase. 
+   */
+  availableForPurchase: any | null;
   seoTitle: string | null;
   /**
    * The main thumbnail for a product.

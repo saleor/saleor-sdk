@@ -7,6 +7,8 @@ export const baseProductFragment = gql`
     name
     slug
     seoDescription
+    isAvailableForPurchase
+    availableForPurchase
     seoTitle
     thumbnail {
       url
@@ -53,7 +55,7 @@ export const productVariantFragment = gql`
         ...Price
       }
     }
-    attributes {
+    attributes(variantSelection: $variantSelection) {
       attribute {
         id
         name
@@ -105,6 +107,7 @@ export const productFragment = gql`
     category {
       id
       name
+      slug
       products(first: 3, channel: $channel) {
         edges {
           node {
@@ -113,6 +116,7 @@ export const productFragment = gql`
             category {
               id
               name
+              slug
             }
           }
         }

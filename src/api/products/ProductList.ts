@@ -1,4 +1,8 @@
-import BaseList, { GetPageInfo, MapQueryData } from "../../helpers/BaseList";
+import BaseList, {
+  GetPageInfo,
+  GetTotalCount,
+  MapQueryData,
+} from "../../helpers/BaseList";
 import {
   ProductList as ProductListQuery,
   ProductListVariables,
@@ -13,6 +17,9 @@ export class ProductList extends BaseList<
 > {
   getPageInfo: GetPageInfo<ProductListQuery> = result =>
     result.data.products?.pageInfo!;
+
+  getTotalCount: GetTotalCount<ProductListQuery> = result =>
+    result.data.products?.totalCount!;
 
   mapQueryData: MapQueryData<
     ProductListQuery,

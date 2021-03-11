@@ -30,6 +30,7 @@ export const collections = gql`
       pageInfo {
         ...PageInfo
       }
+      totalCount
     }
   }
 `;

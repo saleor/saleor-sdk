@@ -214,6 +214,7 @@ export interface UserOrderByToken_orderByToken_lines_variant_product {
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */

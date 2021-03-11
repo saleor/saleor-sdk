@@ -1,4 +1,8 @@
-import BaseList, { GetPageInfo, MapQueryData } from "../../helpers/BaseList";
+import BaseList, {
+  GetPageInfo,
+  GetTotalCount,
+  MapQueryData,
+} from "../../helpers/BaseList";
 import {
   CollectionList as CollectionListQuery,
   CollectionListVariables,
@@ -13,6 +17,9 @@ export class CollectionList extends BaseList<
 > {
   getPageInfo: GetPageInfo<CollectionListQuery> = result =>
     result.data.collections?.pageInfo!;
+
+  getTotalCount: GetTotalCount<CollectionListQuery> = result =>
+    result.data.collections?.totalCount!;
 
   mapQueryData: MapQueryData<CollectionListQuery, BaseCollection> = data =>
     data.collections?.edges.map(({ node }) => node);

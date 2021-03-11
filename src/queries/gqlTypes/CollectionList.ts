@@ -48,6 +48,10 @@ export interface CollectionList_collections {
    * Pagination data for this connection.
    */
   pageInfo: CollectionList_collections_pageInfo;
+  /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
 }
 
 export interface CollectionList {

@@ -426,6 +426,12 @@ export enum StockAvailability {
   OUT_OF_STOCK = "OUT_OF_STOCK",
 }
 
+export enum VariantAttributeScope {
+  ALL = "ALL",
+  NOT_VARIANT_SELECTION = "NOT_VARIANT_SELECTION",
+  VARIANT_SELECTION = "VARIANT_SELECTION",
+}
+
 export interface AccountInput {
   firstName?: string | null;
   lastName?: string | null;

@@ -15,6 +15,7 @@ export const categoryList = gql`
           ...BaseCategory
         }
       }
+      totalCount
       pageInfo {
         ...PageInfo
       }
@@ -34,6 +35,7 @@ export const categoryChildrenList = gql`
             ...BaseCategory
           }
         }
+        totalCount
         pageInfo {
           ...PageInfo
         }
@@ -54,6 +56,7 @@ export const categoryAncestorsList = gql`
             ...BaseCategory
           }
         }
+        totalCount
         pageInfo {
           ...PageInfo
         }

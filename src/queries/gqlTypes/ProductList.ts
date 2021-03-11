@@ -222,6 +222,14 @@ export interface ProductList_products_edges_node {
   name: string;
   slug: string;
   seoDescription: string | null;
+  /**
+   * Whether the product is available for purchase.
+   */
+  isAvailableForPurchase: boolean | null;
+  /**
+   * Date when product is available for purchase. 
+   */
+  availableForPurchase: any | null;
   seoTitle: string | null;
   /**
    * The main thumbnail for a product.
@@ -260,6 +268,10 @@ export interface ProductList_products_pageInfo {
 export interface ProductList_products {
   __typename: "ProductCountableConnection";
   edges: ProductList_products_edges[];
+  /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
   /**
    * Pagination data for this connection.
    */

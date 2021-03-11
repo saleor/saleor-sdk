@@ -1,4 +1,8 @@
-import BaseList, { GetPageInfo, MapQueryData } from "../../helpers/BaseList";
+import BaseList, {
+  GetPageInfo,
+  GetTotalCount,
+  MapQueryData,
+} from "../../helpers/BaseList";
 import {
   CategoryChildrenList as CategoryChildrenListQuery,
   CategoryChildrenListVariables,
@@ -13,6 +17,9 @@ export class CategoryChildrenList extends BaseList<
 > {
   getPageInfo: GetPageInfo<CategoryChildrenListQuery> = result =>
     result.data.category?.children?.pageInfo!;
+
+  getTotalCount: GetTotalCount<CategoryChildrenListQuery> = result =>
+    result.data.category?.children?.totalCount!;
 
   mapQueryData: MapQueryData<CategoryChildrenListQuery, BaseCategory> = data =>
     data.category?.children?.edges.map(({ node }) => node);

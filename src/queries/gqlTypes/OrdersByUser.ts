@@ -62,6 +62,7 @@ export interface OrdersByUser_me_orders_edges_node_lines_variant_product {
    * The ID of the object.
    */
   id: string;
+  slug: string;
 }
 
 export interface OrdersByUser_me_orders_edges_node_lines_variant {

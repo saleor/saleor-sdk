@@ -30,5 +30,5 @@ export interface CategoryDetails {
   seoDescription: string | null;
   seoTitle: string | null;
   backgroundImage: CategoryDetails_backgroundImage | null;
-  description: any;
+  description: any | null;
 }

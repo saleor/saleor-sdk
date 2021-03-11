@@ -43,6 +43,10 @@ export interface CategoryList_categories {
   __typename: "CategoryCountableConnection";
   edges: CategoryList_categories_edges[];
   /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
+  /**
    * Pagination data for this connection.
    */
   pageInfo: CategoryList_categories_pageInfo;

@@ -1,7 +1,7 @@
 import {
   ApolloClient,
   ObservableQuery,
-  QueryOptions as ApolloQueryOptions,
+  WatchQueryOptions as ApolloQueryOptions,
 } from "apollo-client";
 
 import { RequireOnlyOne } from "../tsHelpers";

@@ -449,6 +449,7 @@ export interface UpdateCheckoutLine_checkoutLinesUpdate_checkout_lines_variant_p
    */
   id: string;
   name: string;
+  slug: string;
   /**
    * The main thumbnail for a product.
    */
