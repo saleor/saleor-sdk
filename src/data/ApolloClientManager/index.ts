@@ -90,6 +90,11 @@ import {
   RefreshSignInTokenInput,
 } from "./types";
 
+import {
+  OTPAuthentication,
+  OTPAuthenticationVariables,
+} from "../../mutations/gqlTypes/OTPAuthentication";
+
 export class ApolloClientManager {
   private client: ApolloClient<any>;
 
@@ -161,10 +166,7 @@ export class ApolloClientManager {
     };
   };
 
-  resetPasswordRequest = async (
-    email: string,
-    redirectUrl: string
-  ) => {
+  resetPasswordRequest = async (email: string, redirectUrl: string) => {
     const { data, errors } = await this.client.mutate<
       ResetPasswordRequest,
       ResetPasswordRequestVariables
@@ -218,6 +220,38 @@ export class ApolloClientManager {
         csrfToken: data?.tokenCreate?.csrfToken,
         token: data?.tokenCreate?.token,
         user: data?.tokenCreate?.user,
+      },
+    };
+  };
+
+  signInMobile = async (phone: string, otp: string) => {
+    const { data, errors } = await this.client.mutate<
+      OTPAuthentication,
+      OTPAuthenticationVariables
+    >({
+      fetchPolicy: "no-cache",
+      mutation: AuthMutations.createOTPTokeMutation,
+      variables: {
+        phone,
+        otp,
+      },
+    });
+
+    if (errors?.length) {
+      return {
+        error: errors,
+      };
+    }
+    if (data?.CreateTokenOTP?.otpErrors.length) {
+      return {
+        error: data.CreateTokenOTP.otpErrors,
+      };
+    }
+    return {
+      data: {
+        csrfToken: data?.CreateTokenOTP?.csrfToken,
+        token: data?.CreateTokenOTP?.token,
+        user: data?.CreateTokenOTP?.user,
       },
     };
   };

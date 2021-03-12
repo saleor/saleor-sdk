@@ -49,3 +49,37 @@ export const tokenRefreshMutation = gql`
     }
   }
 `;
+
+export const requestOTPMutation = gql`
+  mutation OTPRequest($phone: String!) {
+    RequestOTP: requestOtp(phone: $phone) {
+      message
+      otpErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const createOTPTokeMutation = gql`
+  mutation OTPAuthentication($phone: String!, $otp: String!) {
+    CreateTokenOTP: otpTokenCreate(otp: $otp, phone: $phone) {
+      token
+      refreshToken
+      csrfToken
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
+      otpErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;

@@ -157,7 +157,10 @@ export class AuthAPI extends ErrorListener {
     );
 
     if (dataError?.error) {
-      this.fireError(dataError.error, DataErrorAuthTypes.RESET_PASSWORD_REQUEST);
+      this.fireError(
+        dataError.error,
+        DataErrorAuthTypes.RESET_PASSWORD_REQUEST
+      );
     }
 
     if (dataError) {
@@ -196,6 +199,59 @@ export class AuthAPI extends ErrorListener {
           new window.PasswordCredential({
             id: email,
             password,
+          })
+        );
+      }
+    } catch (credentialsError) {
+      // eslint-disable-next-line no-console
+      console.warn(BROWSER_NO_CREDENTIAL_API_MESSAGE, credentialsError);
+    }
+
+    if (dataError) {
+      return {
+        data,
+        dataError,
+        pending: false,
+      };
+    }
+
+    const {
+      data: userData,
+      dataError: userDataError,
+    } = await this.jobsManager.run("auth", "provideUser", undefined);
+    if (this.config.loadOnStart.checkout) {
+      await this.jobsManager.run("checkout", "provideCheckout", {
+        isUserSignedIn: !!data?.user,
+      });
+    }
+
+    return {
+      data: userData,
+      dataError: userDataError,
+      pending: false,
+    };
+  };
+
+  signInMobile = async (
+    phone: string,
+    otp: string,
+    autoSignIn: boolean = false
+  ): PromiseRunResponse<DataErrorAuthTypes> => {
+    const { data, dataError } = await this.jobsManager.run(
+      "auth",
+      "signInMobile",
+      {
+        phone,
+        otp,
+      }
+    );
+
+    try {
+      if (autoSignIn && !dataError?.error && CREDENTIAL_API_EXISTS) {
+        await navigator.credentials.store(
+          new window.PasswordCredential({
+            id: phone,
+            otp,
           })
         );
       }

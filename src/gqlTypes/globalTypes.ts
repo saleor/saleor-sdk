@@ -86,6 +86,7 @@ export enum CollectionSortField {
   AVAILABILITY = "AVAILABILITY",
   NAME = "NAME",
   PRODUCT_COUNT = "PRODUCT_COUNT",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
 }
 
 /**
@@ -354,6 +355,14 @@ export enum JobStatusEnum {
   SUCCESS = "SUCCESS",
 }
 
+/**
+ * An enumeration.
+ */
+export enum OTPErrorCodeEnum {
+  INVALID_OTP = "INVALID_OTP",
+  INVALID_PHONE = "INVALID_PHONE",
+}
+
 export enum OrderDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -403,10 +412,12 @@ export enum PaymentErrorCode {
 }
 
 export enum ProductOrderField {
+  COLLECTION = "COLLECTION",
   DATE = "DATE",
   MINIMAL_PRICE = "MINIMAL_PRICE",
   NAME = "NAME",
   PRICE = "PRICE",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
   PUBLISHED = "PUBLISHED",
   TYPE = "TYPE",
 }
@@ -497,6 +508,7 @@ export interface ProductFilterInput {
   price?: PriceRangeInput | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
+  ids?: (string | null)[] | null;
 }
 
 export interface ProductOrder {
