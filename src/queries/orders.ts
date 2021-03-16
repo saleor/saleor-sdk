@@ -1,10 +1,9 @@
 import gql from "graphql-tag";
 
-import { orderDetailFragment, orderPriceFragment } from "../fragments/order";
+import { orderDetailFragment } from "../fragments/order";
 import { invoiceFragment } from "../fragments/invoice";
 
 export const ordersByUser = gql`
-  ${orderPriceFragment}
   query OrdersByUser($perPage: Int!, $after: String) {
     me {
       id
@@ -21,7 +20,14 @@ export const ordersByUser = gql`
             statusDisplay
             created
             total {
-              ...OrderPrice
+              gross {
+                amount
+                currency
+              }
+              net {
+                amount
+                currency
+              }
             }
             lines {
               id
@@ -30,18 +36,6 @@ export const ordersByUser = gql`
                 product {
                   name
                   id
-                }
-                quantityOrdered
-                pricing {
-                  discount {
-                    ...OrderPrice
-                  }
-                  price {
-                    ...OrderPrice
-                  }
-                  priceUndiscounted {
-                    ...OrderPrice
-                  }
                 }
               }
               thumbnail {
