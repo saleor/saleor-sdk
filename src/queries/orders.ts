@@ -37,6 +37,7 @@ export const ordersByUser = gql`
                   name
                   id
                 }
+                quantityOrdered
               }
               thumbnail {
                 alt

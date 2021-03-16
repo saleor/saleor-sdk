@@ -71,6 +71,10 @@ export interface OrdersByUser_me_orders_edges_node_lines_variant {
    */
   id: string;
   product: OrdersByUser_me_orders_edges_node_lines_variant_product;
+  /**
+   * Total quantity ordered.
+   */
+  quantityOrdered: number | null;
 }
 
 export interface OrdersByUser_me_orders_edges_node_lines_thumbnail {
