@@ -64,6 +64,130 @@ export interface OrdersByUser_me_orders_edges_node_lines_variant_product {
   id: string;
 }
 
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount {
+  __typename: "TaxedMoney";
+  /**
+   * Amount of money including taxes.
+   */
+  gross: OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount_net;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_price_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_price_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_price {
+  __typename: "TaxedMoney";
+  /**
+   * Amount of money including taxes.
+   */
+  gross: OrdersByUser_me_orders_edges_node_lines_variant_pricing_price_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: OrdersByUser_me_orders_edges_node_lines_variant_pricing_price_net;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted_gross {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted_net {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted {
+  __typename: "TaxedMoney";
+  /**
+   * Amount of money including taxes.
+   */
+  gross: OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted_gross;
+  /**
+   * Amount of money without taxes.
+   */
+  net: OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted_net;
+}
+
+export interface OrdersByUser_me_orders_edges_node_lines_variant_pricing {
+  __typename: "VariantPricingInfo";
+  /**
+   * The discount amount if in sale (null otherwise).
+   */
+  discount: OrdersByUser_me_orders_edges_node_lines_variant_pricing_discount | null;
+  /**
+   * The price, with any discount subtracted.
+   */
+  price: OrdersByUser_me_orders_edges_node_lines_variant_pricing_price | null;
+  /**
+   * The price without any discount.
+   */
+  priceUndiscounted: OrdersByUser_me_orders_edges_node_lines_variant_pricing_priceUndiscounted | null;
+}
+
 export interface OrdersByUser_me_orders_edges_node_lines_variant {
   __typename: "ProductVariant";
   /**
@@ -71,6 +195,14 @@ export interface OrdersByUser_me_orders_edges_node_lines_variant {
    */
   id: string;
   product: OrdersByUser_me_orders_edges_node_lines_variant_product;
+  /**
+   * Total quantity ordered.
+   */
+  quantityOrdered: number | null;
+  /**
+   * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
+   */
+  pricing: OrdersByUser_me_orders_edges_node_lines_variant_pricing | null;
 }
 
 export interface OrdersByUser_me_orders_edges_node_lines_thumbnail {
