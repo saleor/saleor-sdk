@@ -1,4 +1,4 @@
-import { round } from "lodash";
+import round from "lodash/round";
 
 import { ApolloClientManager } from "../data/ApolloClientManager";
 import { PaymentGateway } from "../fragments/gqlTypes/PaymentGateway";
