@@ -1,4 +1,18 @@
-// import gql from "@apollo/client";
+import { gql } from "@apollo/client";
+
+export const testQuery = gql`
+  query GetFiveProducts {
+    products(first: 5) {
+      edges {
+        node {
+          id
+          name
+          description
+        }
+      }
+    }
+  }
+`;
 
 // import { checkoutFragment, checkoutProductVariantFragment, userFragment } from "./fragments";
 
