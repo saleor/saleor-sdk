@@ -20,6 +20,7 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
+    "react": ">=16",
     "@apollo/client": "^3.3.19",
     "graphql": "^15.5.0"
   },
