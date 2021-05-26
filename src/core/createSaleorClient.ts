@@ -10,7 +10,7 @@ import { Config } from "./types";
  */
 export const createSaleorClient = (
   config: Config,
-  apolloConfig: ApolloClient<any>
+  apolloConfig: ApolloClient<any> | null
 ): ApolloClient<NormalizedCacheObject> => {
   if (apolloConfig) {
     return new ApolloClient(apolloConfig);
