@@ -1,28 +1,23 @@
 import React from "react";
-import { ApolloClient } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-import { createSaleorClient, SaleorSDK } from "../../core";
+import { SaleorSDK } from "../../core";
 
-const SaleorContext = React.createContext<{ api: any; config: any } | null>(
+const SaleorContext = React.createContext<{ api: any; client: any } | null>(
   null
 );
 
-export const SaleorProvider: React.FC<{ config: any; apolloConfig: any }> = ({
-  config,
-  apolloConfig,
+export const SaleorProvider: React.FC<{ client: any }> = ({
+  client,
   children,
 }) => {
-  const [client, setClient] = React.useState<ApolloClient<any> | null>(null);
   const [context, setContext] = React.useState<{
     api: any;
-    config: any;
+    client: any;
   } | null>(null);
 
   React.useEffect(() => {
-    const client = createSaleorClient(config, apolloConfig);
-    setClient(client);
     const api = SaleorSDK(client);
-    setContext({ api, config });
+    setContext({ api, client });
   }, []);
 
   if (client && context) {
