@@ -1,18 +1,19 @@
 import React from "react";
-import { ApolloProvider } from "@apollo/client/react";
-import { SaleorSDK } from "../../core";
+import { Core, SaleorSDK } from "../../core";
+import { ApolloClient } from "@apollo/client";
 
-const SaleorContext = React.createContext<{ api: any; client: any } | null>(
-  null
-);
+const SaleorContext = React.createContext<{
+  api: Core;
+  client: ApolloClient<any>;
+} | null>(null);
 
-export const SaleorProvider: React.FC<{ client: any }> = ({
+export const SaleorProvider: React.FC<{ client: ApolloClient<any> }> = ({
   client,
   children,
 }) => {
   const [context, setContext] = React.useState<{
-    api: any;
-    client: any;
+    api: Core;
+    client: ApolloClient<any>;
   } | null>(null);
 
   React.useEffect(() => {
@@ -20,10 +21,10 @@ export const SaleorProvider: React.FC<{ client: any }> = ({
     setContext({ api, client });
   }, []);
 
-  if (client && context) {
+  if (context) {
     return (
-      <SaleorContext.Provider value={null}>
-        <ApolloProvider client={client}>{children}</ApolloProvider>
+      <SaleorContext.Provider value={context}>
+        {children}
       </SaleorContext.Provider>
     );
   }
