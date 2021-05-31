@@ -1,23 +1,50 @@
-// import gql from "@apollo/client";
+import { gql } from "@apollo/client";
 
-// import { accountErrorFragment, checkoutErrorFragment, paymentErrorFragment, checkoutFragment, orderDetailFragment, paymentFragment, userFragment } from "./fragments";
+import {
+  accountErrorFragment,
+  // checkoutErrorFragment,
+  // paymentErrorFragment,
+  // checkoutFragment,
+  // orderDetailFragment,
+  // paymentFragment,
+  // userFragment,
+} from "./fragments";
 
-// export const tokenAuthMutation = gql`
-//   ${accountErrorFragment}
-//   mutation TokenAuth($email: String!, $password: String!) {
-//     tokenCreate(email: $email, password: $password) {
-//       csrfToken
-//       refreshToken
-//       token
-//       errors: accountErrors {
-//         ...AccountError
-//       }
-//       user {
-//         id
-//       }
-//     }
-//   }
-// `;
+export const LOGIN = gql`
+  ${accountErrorFragment}
+  mutation login($email: String!, $password: String!) {
+    tokenCreate(email: $email, password: $password) {
+      csrfToken
+      refreshToken
+      token
+      errors {
+        ...AccountError
+      }
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export const REGISTER = gql`
+  mutation register(
+    $email: String!
+    $password: String!
+    $redirectUrl: String!
+  ) {
+    accountRegister(
+      input: { email: $email, password: $password, redirectUrl: $redirectUrl }
+    ) {
+      accountErrors {
+        field
+        message
+        code
+      }
+      requiresConfirmation
+    }
+  }
+`;
 
 // export const tokenVeryficationMutation = gql`
 //   ${accountErrorFragment}
@@ -28,7 +55,7 @@
 //       user {
 //         id
 //       }
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //     }
@@ -43,7 +70,7 @@
 //       user {
 //         id
 //       }
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //     }
@@ -54,28 +81,9 @@
 //   ${accountErrorFragment}
 //   mutation PasswordChange($newPassword: String!, $oldPassword: String!) {
 //     passwordChange(newPassword: $newPassword, oldPassword: $oldPassword) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
-//     }
-//   }
-// `;
-
-// export const registerAccount = gql`
-//   mutation RegisterAccount(
-//     $email: String!
-//     $password: String!
-//     $redirectUrl: String!
-//   ) {
-//     accountRegister(
-//       input: { email: $email, password: $password, redirectUrl: $redirectUrl }
-//     ) {
-//       accountErrors {
-//         field
-//         message
-//         code
-//       }
-//       requiresConfirmation
 //     }
 //   }
 // `;
@@ -97,7 +105,7 @@
 //   ${accountErrorFragment}
 //   mutation AccountUpdate($input: AccountInput!) {
 //     accountUpdate(input: $input) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       user {
@@ -112,7 +120,7 @@
 //   ${accountErrorFragment}
 //   mutation SetPassword($token: String!, $email: String!, $password: String!) {
 //     setPassword(token: $token, email: $email, password: $password) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       token
@@ -136,7 +144,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //     }
@@ -148,7 +156,7 @@
 //   ${checkoutErrorFragment}
 //   mutation CreateCheckout($checkoutInput: CheckoutCreateInput!) {
 //     checkoutCreate(input: $checkoutInput) {
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //       checkout {
@@ -170,7 +178,7 @@
 //       checkoutId: $checkoutId
 //       billingAddress: $billingAddress
 //     ) {
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //       checkout {
@@ -181,7 +189,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         code
 //         field
 //         message
@@ -201,7 +209,7 @@
 //       checkoutId: $checkoutId
 //       billingAddress: $billingAddress
 //     ) {
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //       checkout {
@@ -223,7 +231,7 @@
 //       checkoutId: $checkoutId
 //       shippingAddress: $shippingAddress
 //     ) {
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //       checkout {
@@ -234,7 +242,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //     }
@@ -255,7 +263,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //     }
@@ -270,7 +278,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //     }
@@ -285,7 +293,7 @@
 //       checkout {
 //         ...Checkout
 //       }
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //     }
@@ -307,7 +315,7 @@
 //       payment {
 //         ...Payment
 //       }
-//       errors: paymentErrors {
+//       errors {
 //         ...PaymentError
 //       }
 //     }
@@ -329,7 +337,7 @@
 //       redirectUrl: $redirectUrl
 //       storeSource: $storeSource
 //     ) {
-//       errors: checkoutErrors {
+//       errors {
 //         ...CheckoutError
 //       }
 //       order {
@@ -346,7 +354,7 @@
 //   ${accountErrorFragment}
 //   mutation SetCustomerDefaultAddress($id: ID!, $type: AddressTypeEnum!) {
 //     accountSetDefaultAddress(id: $id, type: $type) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       user {
@@ -361,7 +369,7 @@
 //   ${accountErrorFragment}
 //   mutation DeleteUserAddress($addressId: ID!) {
 //     accountAddressDelete(id: $addressId) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       user {
@@ -376,7 +384,7 @@
 //   ${accountErrorFragment}
 //   mutation CreateUserAddress($input: AddressInput!) {
 //     accountAddressCreate(input: $input) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       user {
@@ -391,7 +399,7 @@
 //   ${accountErrorFragment}
 //   mutation UpdateUserAddress($input: AddressInput!, $id: ID!) {
 //     accountAddressUpdate(input: $input, id: $id) {
-//       errors: accountErrors {
+//       errors {
 //         ...AccountError
 //       }
 //       user {
