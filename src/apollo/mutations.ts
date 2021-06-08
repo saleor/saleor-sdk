@@ -18,7 +18,7 @@ export const LOGIN = gql`
       refreshToken
       token
       errors {
-        ...AccountError
+        ...AccountErrorFragment
       }
       user {
         id

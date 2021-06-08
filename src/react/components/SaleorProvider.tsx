@@ -1,11 +1,7 @@
 import React from "react";
 import { Core, SaleorSDK } from "../../core";
 import { ApolloClient } from "@apollo/client";
-
-const SaleorContext = React.createContext<{
-  api: Core;
-  client: ApolloClient<any>;
-} | null>(null);
+import { SaleorContext } from "../context";
 
 export const SaleorProvider: React.FC<{ client: ApolloClient<any> }> = ({
   client,
