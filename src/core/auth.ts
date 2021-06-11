@@ -28,7 +28,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @returns Promise resolved with CreateToken type data
    */
   const login = async (email: string, password: string) => {
-    const { data } = await client.mutate({
+    const result = await client.mutate({
       fetchPolicy: "no-cache",
       mutation: LOGIN,
       variables: {
@@ -37,11 +37,11 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
       },
     });
 
-    if (data) {
-      localStorage.setItem("token", data.tokenCreate.token);
+    if (result.data) {
+      localStorage.setItem("token", result.data.tokenCreate.token);
     }
 
-    return data;
+    return result;
   };
 
   /**

@@ -5,7 +5,7 @@ import {
   userFragment,
 } from "./fragments";
 
-export const getUserDetailsQuery = gql`
+export const USER = gql`
   ${userFragment}
   query UserDetails {
     me {
