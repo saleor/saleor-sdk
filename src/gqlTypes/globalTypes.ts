@@ -13,6 +13,7 @@
 export enum AccountErrorCode {
   ACTIVATE_OWN_ACCOUNT = "ACTIVATE_OWN_ACCOUNT",
   ACTIVATE_SUPERUSER_ACCOUNT = "ACTIVATE_SUPERUSER_ACCOUNT",
+  CHANNEL_INACTIVE = "CHANNEL_INACTIVE",
   DEACTIVATE_OWN_ACCOUNT = "DEACTIVATE_OWN_ACCOUNT",
   DEACTIVATE_SUPERUSER_ACCOUNT = "DEACTIVATE_SUPERUSER_ACCOUNT",
   DELETE_NON_STAFF_USER = "DELETE_NON_STAFF_USER",
@@ -31,6 +32,7 @@ export enum AccountErrorCode {
   JWT_MISSING_TOKEN = "JWT_MISSING_TOKEN",
   JWT_SIGNATURE_EXPIRED = "JWT_SIGNATURE_EXPIRED",
   LEFT_NOT_MANAGEABLE_PERMISSION = "LEFT_NOT_MANAGEABLE_PERMISSION",
+  MISSING_CHANNEL_SLUG = "MISSING_CHANNEL_SLUG",
   NOT_FOUND = "NOT_FOUND",
   OUT_OF_SCOPE_GROUP = "OUT_OF_SCOPE_GROUP",
   OUT_OF_SCOPE_PERMISSION = "OUT_OF_SCOPE_PERMISSION",
@@ -74,6 +76,7 @@ export enum CheckoutErrorCode {
   SHIPPING_METHOD_NOT_SET = "SHIPPING_METHOD_NOT_SET",
   SHIPPING_NOT_REQUIRED = "SHIPPING_NOT_REQUIRED",
   TAX_ERROR = "TAX_ERROR",
+  UNAVAILABLE_VARIANT_IN_CHANNEL = "UNAVAILABLE_VARIANT_IN_CHANNEL",
   UNIQUE = "UNIQUE",
   VOUCHER_NOT_APPLICABLE = "VOUCHER_NOT_APPLICABLE",
   ZERO_QUANTITY = "ZERO_QUANTITY",
@@ -357,6 +360,61 @@ export enum JobStatusEnum {
   SUCCESS = "SUCCESS",
 }
 
+/**
+ * An enumeration.
+ */
+export enum LanguageCodeEnum {
+  AR = "AR",
+  AZ = "AZ",
+  BG = "BG",
+  BN = "BN",
+  CA = "CA",
+  CS = "CS",
+  DA = "DA",
+  DE = "DE",
+  EL = "EL",
+  EN = "EN",
+  ES = "ES",
+  ES_CO = "ES_CO",
+  ET = "ET",
+  FA = "FA",
+  FI = "FI",
+  FR = "FR",
+  HI = "HI",
+  HU = "HU",
+  HY = "HY",
+  ID = "ID",
+  IS = "IS",
+  IT = "IT",
+  JA = "JA",
+  KA = "KA",
+  KM = "KM",
+  KO = "KO",
+  LT = "LT",
+  MN = "MN",
+  MY = "MY",
+  NB = "NB",
+  NL = "NL",
+  PL = "PL",
+  PT = "PT",
+  PT_BR = "PT_BR",
+  RO = "RO",
+  RU = "RU",
+  SK = "SK",
+  SL = "SL",
+  SQ = "SQ",
+  SR = "SR",
+  SV = "SV",
+  SW = "SW",
+  TA = "TA",
+  TH = "TH",
+  TR = "TR",
+  UK = "UK",
+  VI = "VI",
+  ZH_HANS = "ZH_HANS",
+  ZH_HANT = "ZH_HANT",
+}
+
 export enum OrderDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -395,6 +453,7 @@ export enum PaymentChargeStatusEnum {
  */
 export enum PaymentErrorCode {
   BILLING_ADDRESS_NOT_SET = "BILLING_ADDRESS_NOT_SET",
+  CHANNEL_INACTIVE = "CHANNEL_INACTIVE",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INVALID = "INVALID",
   INVALID_SHIPPING_METHOD = "INVALID_SHIPPING_METHOD",
@@ -437,6 +496,7 @@ export interface AccountInput {
   lastName?: string | null;
   defaultBillingAddress?: AddressInput | null;
   defaultShippingAddress?: AddressInput | null;
+  languageCode?: LanguageCodeEnum | null;
 }
 
 export interface AddressInput {
@@ -455,8 +515,8 @@ export interface AddressInput {
 
 export interface AttributeInput {
   slug: string;
-  value?: string | null;
   values?: (string | null)[] | null;
+  valuesRange?: IntRangeInput | null;
 }
 
 export interface CheckoutCreateInput {
@@ -465,6 +525,7 @@ export interface CheckoutCreateInput {
   email?: string | null;
   shippingAddress?: AddressInput | null;
   billingAddress?: AddressInput | null;
+  languageCode?: LanguageCodeEnum | null;
 }
 
 export interface CheckoutLineInput {
@@ -475,6 +536,7 @@ export interface CheckoutLineInput {
 export interface CollectionFilterInput {
   published?: CollectionPublished | null;
   search?: string | null;
+  metadata?: (MetadataInput | null)[] | null;
   ids?: (string | null)[] | null;
   channel?: string | null;
 }
@@ -488,6 +550,11 @@ export interface CollectionSortingInput {
 export interface IntRangeInput {
   gte?: number | null;
   lte?: number | null;
+}
+
+export interface MetadataInput {
+  key: string;
+  value: string;
 }
 
 export interface PaymentInput {
@@ -509,9 +576,9 @@ export interface ProductFilterInput {
   hasCategory?: boolean | null;
   attributes?: (AttributeInput | null)[] | null;
   stockAvailability?: StockAvailability | null;
-  productType?: string | null;
   stocks?: ProductStockFilterInput | null;
   search?: string | null;
+  metadata?: (MetadataInput | null)[] | null;
   price?: PriceRangeInput | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
