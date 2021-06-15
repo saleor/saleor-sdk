@@ -18,7 +18,7 @@ export const LOGIN = gql`
       refreshToken
       token
       errors {
-        ...AccountError
+        ...AccountErrorFragment
       }
       user {
         id
@@ -56,7 +56,7 @@ export const REGISTER = gql`
 //         id
 //       }
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //     }
 //   }
@@ -71,7 +71,7 @@ export const REGISTER = gql`
 //         id
 //       }
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //     }
 //   }
@@ -82,7 +82,7 @@ export const REGISTER = gql`
 //   mutation PasswordChange($newPassword: String!, $oldPassword: String!) {
 //     passwordChange(newPassword: $newPassword, oldPassword: $oldPassword) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //     }
 //   }
@@ -106,7 +106,7 @@ export const REGISTER = gql`
 //   mutation AccountUpdate($input: AccountInput!) {
 //     accountUpdate(input: $input) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       user {
 //         ...User
@@ -121,7 +121,7 @@ export const REGISTER = gql`
 //   mutation SetPassword($token: String!, $email: String!, $password: String!) {
 //     setPassword(token: $token, email: $email, password: $password) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       token
 //       user {
@@ -355,7 +355,7 @@ export const REGISTER = gql`
 //   mutation SetCustomerDefaultAddress($id: ID!, $type: AddressTypeEnum!) {
 //     accountSetDefaultAddress(id: $id, type: $type) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       user {
 //         ...User
@@ -370,7 +370,7 @@ export const REGISTER = gql`
 //   mutation DeleteUserAddress($addressId: ID!) {
 //     accountAddressDelete(id: $addressId) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       user {
 //         ...User
@@ -385,7 +385,7 @@ export const REGISTER = gql`
 //   mutation CreateUserAddress($input: AddressInput!) {
 //     accountAddressCreate(input: $input) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       user {
 //         ...User
@@ -400,7 +400,7 @@ export const REGISTER = gql`
 //   mutation UpdateUserAddress($input: AddressInput!, $id: ID!) {
 //     accountAddressUpdate(input: $input, id: $id) {
 //       errors {
-//         ...AccountError
+//         ...AccountErrorFragment
 //       }
 //       user {
 //         ...User
