@@ -1,6 +1,6 @@
 {
   "name": "@saleor/sdk",
-  "version": "0.3.0-8",
+  "version": "0.3.0-9",
   "description": "This package contains all queries and mutations that are used in our sample storefront. It can be used for semi-custom or fully-custom (with ability to extend existing queries) storefront solutions.",
   "homepage": "https://getsaleor.com/",
   "main": "./lib/index.js",
@@ -84,8 +84,8 @@
     "prettier": "^2.0.5",
     "react": "^16.9.9",
     "react-apollo": "^3.1.5",
-    "react-dom": "^16.12.0",
     "react-test-renderer": "^16.13.1",
+    "react-dom": "^16.12.0",
     "rimraf": "^3.0.2",
     "setup-polly-jest": "^0.8.0",
     "ts-jest": "^26.0.0",
@@ -110,8 +110,8 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.3",
     "react": "^16.9.9",
-    "react-apollo": "^3.1.5",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-apollo": "^3.1.5"
   },
   "type": "commonjs",
   "typings": "./lib/index.d.ts"
