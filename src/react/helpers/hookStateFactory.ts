@@ -11,16 +11,9 @@ const useSaleorStateHook = (query: DocumentNode): QueryResult => {
     );
   }
 
-  const token = localStorage?.getItem("token");
-
   return useQuery(query, {
     client: saleor.client,
     fetchPolicy: "cache-only",
-    context: {
-      headers: {
-        authorization: token ? `Bearer ${token}` : "",
-      },
-    },
   });
 };
 

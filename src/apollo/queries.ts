@@ -9,7 +9,7 @@ export const USER = gql`
   ${userFragment}
   query UserDetails {
     me {
-      ...User
+      ...UserFragment
     }
   }
 `;

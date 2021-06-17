@@ -8,8 +8,8 @@ export const accountErrorFragment = gql`
   }
 `;
 
-export const checkoutAddressFragment = gql`
-  fragment Address on Address {
+export const addressFragment = gql`
+  fragment AddressFragment on Address {
     id
     firstName
     lastName
@@ -30,21 +30,21 @@ export const checkoutAddressFragment = gql`
 `;
 
 export const userFragment = gql`
-  ${checkoutAddressFragment}
-  fragment User on User {
+  ${addressFragment}
+  fragment UserFragment on User {
     id
     email
     firstName
     lastName
     isStaff
     defaultShippingAddress {
-      ...Address
+      ...AddressFragment
     }
     defaultBillingAddress {
-      ...Address
+      ...AddressFragment
     }
     addresses {
-      ...Address
+      ...AddressFragment
     }
   }
 `;
