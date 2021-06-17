@@ -41,6 +41,8 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
       localStorage.setItem("saleorAuthToken", result.data.tokenCreate.token);
     }
 
+    // NOTE: manual writing result of LOGIN mutation to cache as UserDetails
+    // This can probably be done other way because Apollo should be able to handle this
     client.writeQuery({
       query: USER,
       data: {
