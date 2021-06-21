@@ -7,21 +7,22 @@ import {
   // checkoutFragment,
   // orderDetailFragment,
   // paymentFragment,
-  // userFragment,
+  userFragment,
 } from "./fragments";
 
 export const LOGIN = gql`
   ${accountErrorFragment}
+  ${userFragment}
   mutation login($email: String!, $password: String!) {
     tokenCreate(email: $email, password: $password) {
       csrfToken
       refreshToken
       token
       errors {
-        ...AccountError
+        ...AccountErrorFragment
       }
       user {
-        id
+        ...UserFragment
       }
     }
   }

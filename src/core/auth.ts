@@ -5,6 +5,7 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import { LOGIN, REGISTER } from "../apollo/mutations";
+import { USER } from "../apollo/queries";
 
 export interface AuthSDK {
   login: (
@@ -27,15 +28,32 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param password - User's password
    * @returns Promise resolved with CreateToken type data
    */
-  const login = async (email: string, password: string) =>
-    await client.mutate({
-      fetchPolicy: "no-cache",
+  const login = async (email: string, password: string) => {
+    const result = await client.mutate({
       mutation: LOGIN,
       variables: {
         email,
         password,
       },
     });
+
+    if (result.data) {
+      localStorage.setItem("saleorAuthToken", result.data.tokenCreate.token);
+    }
+
+    // NOTE: manual writing result of LOGIN mutation to cache as UserDetails
+    // This can probably be done other way because Apollo should be able to handle this
+    client.writeQuery({
+      query: USER,
+      data: {
+        me: {
+          ...result.data.tokenCreate.user,
+        },
+      },
+    });
+
+    return result;
+  };
 
   /**
    * Clears the localStorage and Apollo store.
@@ -58,7 +76,6 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
     redirectUrl: string
   ) =>
     await client.mutate({
-      fetchPolicy: "no-cache",
       mutation: REGISTER,
       variables: {
         email,

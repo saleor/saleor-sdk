@@ -1,29 +1,18 @@
 import { gql } from "@apollo/client";
+import {
+  // checkoutFragment,
+  // checkoutProductVariantFragment,
+  userFragment,
+} from "./fragments";
 
-export const testQuery = gql`
-  query GetFiveProducts {
-    products(first: 5) {
-      edges {
-        node {
-          id
-          name
-          description
-        }
-      }
+export const USER = gql`
+  ${userFragment}
+  query UserDetails {
+    me {
+      ...UserFragment
     }
   }
 `;
-
-// import { checkoutFragment, checkoutProductVariantFragment, userFragment } from "./fragments";
-
-// export const getUserDetailsQuery = gql`
-//   ${userFragment}
-//   query UserDetails {
-//     me {
-//       ...User
-//     }
-//   }
-// `;
 
 // export const checkoutDetails = gql`
 //   ${checkoutFragment}

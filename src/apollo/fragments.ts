@@ -8,26 +8,46 @@ export const accountErrorFragment = gql`
   }
 `;
 
-// export const checkoutAddressFragment = gql`
-//   fragment Address on Address {
-//     id
-//     firstName
-//     lastName
-//     companyName
-//     streetAddress1
-//     streetAddress2
-//     city
-//     postalCode
-//     country {
-//       code
-//       country
-//     }
-//     countryArea
-//     phone
-//     isDefaultBillingAddress
-//     isDefaultShippingAddress
-//   }
-// `;
+export const addressFragment = gql`
+  fragment AddressFragment on Address {
+    id
+    firstName
+    lastName
+    companyName
+    streetAddress1
+    streetAddress2
+    city
+    postalCode
+    country {
+      code
+      country
+    }
+    countryArea
+    phone
+    isDefaultBillingAddress
+    isDefaultShippingAddress
+  }
+`;
+
+export const userFragment = gql`
+  ${addressFragment}
+  fragment UserFragment on User {
+    id
+    email
+    firstName
+    lastName
+    isStaff
+    defaultShippingAddress {
+      ...AddressFragment
+    }
+    defaultBillingAddress {
+      ...AddressFragment
+    }
+    addresses {
+      ...AddressFragment
+    }
+  }
+`;
 
 // export const paymentGatewayFragment = gql`
 //   fragment PaymentGateway on PaymentGateway {
@@ -38,26 +58,6 @@ export const accountErrorFragment = gql`
 //       value
 //     }
 //     currencies
-//   }
-// `;
-
-// export const userFragment = gql`
-//   ${checkoutAddressFragment}
-//   fragment User on User {
-//     id
-//     email
-//     firstName
-//     lastName
-//     isStaff
-//     defaultShippingAddress {
-//       ...Address
-//     }
-//     defaultBillingAddress {
-//       ...Address
-//     }
-//     addresses {
-//       ...Address
-//     }
 //   }
 // `;
 
