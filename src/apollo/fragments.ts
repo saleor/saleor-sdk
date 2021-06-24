@@ -431,14 +431,6 @@ export const userFragment = gql`
 //   }
 // `;
 
-// export const accountErrorFragment = gql`
-//   fragment AccountError on AccountError {
-//     code
-//     field
-//     message
-//   }
-// `;
-
 // export const paymentFragment = gql`
 //   fragment Payment on Payment {
 //     id
