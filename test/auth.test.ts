@@ -26,8 +26,8 @@ describe("auth api", () => {
 
   it("can login", async () => {
     const { data } = await saleor.auth.login(
-      TEST_AUTH_EMAIL,
-      TEST_AUTH_PASSWORD
+      TEST_AUTH_EMAIL as string,
+      TEST_AUTH_PASSWORD as string
     );
     expect(data.tokenCreate.user.id).toBeDefined();
     expect(data.tokenCreate.token).toBeDefined();

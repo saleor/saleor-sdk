@@ -11,18 +11,19 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
+    "start": "npm run build-types && tsdx watch",
+    "build": "npm run build-types && tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "build-types": "set -a; source .env;set +a && graphql-codegen --config codegen.yml"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
     "@apollo/client": "^3.3.19",
-    "graphql": "^15.5.0"
+    "graphql": "^15.5.0",
+    "react": "^16.8.0 || ^17.0.0"
   },
   "husky": {
     "hooks": {
@@ -50,6 +51,10 @@
   ],
   "devDependencies": {
     "@apollo/client": "^3.3.19",
+    "@graphql-codegen/cli": "1.21.5",
+    "@graphql-codegen/typescript": "^1.22.3",
+    "@graphql-codegen/typescript-operations": "1.18.2",
+    "@graphql-codegen/typescript-react-apollo": "2.2.7",
     "@pollyjs/adapter-node-http": "^5.1.1",
     "@pollyjs/core": "^5.1.1",
     "@pollyjs/persister-fs": "^5.1.1",
@@ -61,7 +66,7 @@
     "@types/setup-polly-jest": "^0.5.1",
     "cross-fetch": "^3.1.4",
     "eslint-plugin-tsdoc": "^0.2.14",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "husky": "^6.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

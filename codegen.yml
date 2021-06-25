@@ -1,0 +1,10 @@
+overwrite: true
+schema: ${API_URI}
+generates:
+  src/apollo/types.ts:
+    plugins:
+      - "typescript"
+    config:
+      dedupeOperationSuffix: true
+      enumsAsTypes: true
+      skipTypename: true
