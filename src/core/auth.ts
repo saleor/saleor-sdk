@@ -16,7 +16,8 @@ export interface AuthSDK {
   register: (
     email: string,
     password: string,
-    redirectUrl: string
+    redirectUrl: string,
+    channel: string
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 }
 
@@ -68,12 +69,14 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param email - User's email
    * @param password - User's password
    * @param redirectUrl - URL to redirect after registration
+   * @param channel - User's channel
    * @returns Promise resolved with AccountRegister type data
    */
   const register = async (
     email: string,
     password: string,
-    redirectUrl: string
+    redirectUrl: string,
+    channel: string
   ) =>
     await client.mutate({
       mutation: REGISTER,
@@ -81,6 +84,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
         email,
         password,
         redirectUrl,
+        channel,
       },
     });
 

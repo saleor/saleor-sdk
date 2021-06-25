@@ -1,6 +1,7 @@
 import { setupRecording, setupAPI } from "../test/setup";
 import { SaleorSDK } from "../src/core";
-import { TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../config";
+import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../config";
+import { USER } from "../src/apollo/queries";
 
 describe("auth api", () => {
   const context = setupRecording();
@@ -34,15 +35,38 @@ describe("auth api", () => {
     expect(data.tokenCreate.errors).toHaveLength(0);
   });
 
-  it("will throw an error if credentials are invalid", async () => {
-    const { data } = await saleor.auth.login("sdk@example.com", "test");
+  it("login caches user data", async () => {
+    await saleor.auth.login(TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD);
+    const cache = client.readQuery({
+      query: USER,
+    });
+    expect(cache).not.toBeNull();
+    expect(cache).toBeDefined();
+  });
+
+  it("will throw an error if login credentials are invalid", async () => {
+    const { data } = await saleor.auth.login("wrong@example.com", "wrong");
     expect(data.tokenCreate.user).toBeFalsy();
     expect(data.tokenCreate.token).toBeFalsy();
     expect(data.tokenCreate.errors).not.toHaveLength(0);
   });
 
-  it("can logout", async () => {
+  it("can register", async () => {
+    const { data } = await saleor.auth.register(
+      "register@example.com",
+      "register",
+      API_URI,
+      "default-channel"
+    );
+    expect(data.accountRegister.accountErrors).toHaveLength(0);
+  });
+
+  it("logout clears user cache", async () => {
+    await saleor.auth.login(TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD);
     await saleor.auth.logout();
-    // TODO: write expect calls when ready
+    const cache = client.readQuery({
+      query: USER,
+    });
+    expect(cache).toBeNull();
   });
 });
