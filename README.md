@@ -52,7 +52,7 @@ npm run lint
 npm run download-schema
 ```
 
-Command will overwrite `schema.graphql` with up to date version from Saleor repository.
+Command will overwrite `introspection.json` with server schema, based on `API_URL` variable.
 
 ### Updating TS types
 

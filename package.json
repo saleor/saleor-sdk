@@ -19,7 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "build-types": "graphql-codegen --config codegen.yml",
-    "download-schema": "curl -O https://raw.githubusercontent.com/mirumee/saleor/master/saleor/graphql/schema.graphql"
+    "download-schema": "graphql-codegen --config codegen-introspection.yml"
   },
   "peerDependencies": {
     "@apollo/client": "^3.3.19",
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@apollo/client": "^3.3.19",
     "@graphql-codegen/cli": "1.21.5",
+    "@graphql-codegen/introspection": "^1.18.2",
     "@graphql-codegen/typescript": "^1.22.3",
     "@graphql-codegen/typescript-operations": "1.18.2",
     "@graphql-codegen/typescript-react-apollo": "2.2.7",

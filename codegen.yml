@@ -1,7 +1,8 @@
 overwrite: true
-schema: ${API_URI}
+schema: introspection.json
 generates:
   src/apollo/types.ts:
+    schema: introspection.json
     plugins:
       - "typescript"
     config:
