@@ -15,7 +15,7 @@
     "build": "npm run build-types && tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "tsdx build && husky install",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "build-types": "set -a; source .env;set +a && graphql-codegen --config codegen.yml"
