@@ -57,8 +57,12 @@ describe("auth api", () => {
   });
 
   it("can register", async () => {
+    // This test has custom Polly config (/test/setup.ts) to ignore
+    // changing user email in the request.
+    // Dynamic user email allows running test multiple times on the
+    // same database.
     const { data } = await saleor.auth.register(
-      "register@example.com",
+      `register+${Date.now().toString()}@example.com`,
       "register",
       API_URI,
       "default-channel"

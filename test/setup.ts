@@ -23,7 +23,7 @@ export const setupRecording = () =>
     adapters: ["node-http"],
     matchRequestsBy: {
       headers: {
-        exclude: ["authorization"],
+        exclude: ["authorization", "host"],
       },
       url: {
         hash: false,
@@ -34,6 +34,16 @@ export const setupRecording = () =>
         protocol: false,
         query: false,
         username: false,
+      },
+      body(body, req) {
+        if (req.recordingName === "auth api/can register") {
+          // Custom rule which prevents polly recording on every run due to
+          // changing email address.
+          const json = JSON.parse(body);
+          delete json.variables.email;
+          return JSON.stringify(json);
+        }
+        return body;
       },
     },
     persister: "fs",
