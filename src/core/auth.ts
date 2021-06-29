@@ -4,6 +4,7 @@ import {
   FetchResult,
   NormalizedCacheObject,
 } from "@apollo/client";
+import { saleorAuthToken } from "../apollo/constants";
 import { LOGIN, REGISTER } from "../apollo/mutations";
 import { USER } from "../apollo/queries";
 
@@ -61,8 +62,10 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    *
    * @returns Apollo's native resetStore method
    */
-  const logout = async () => await client.resetStore();
-
+  const logout = async () => {
+    localStorage.removeItem(saleorAuthToken);
+    return await client.resetStore();
+  };
   /**
    * Registers user with email and password.
    *

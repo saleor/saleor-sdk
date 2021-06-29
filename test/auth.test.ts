@@ -2,6 +2,7 @@ import { setupRecording, setupAPI } from "../test/setup";
 import { SaleorSDK } from "../src/core";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../config";
 import { USER } from "../src/apollo/queries";
+import { saleorAuthToken } from "../src/apollo/constants";
 
 describe("auth api", () => {
   const context = setupRecording();
@@ -33,15 +34,19 @@ describe("auth api", () => {
     expect(data.tokenCreate.user.id).toBeDefined();
     expect(data.tokenCreate.token).toBeDefined();
     expect(data.tokenCreate.errors).toHaveLength(0);
+    expect(localStorage.getItem(saleorAuthToken)).not.toBeNull();
   });
 
   it("login caches user data", async () => {
-    await saleor.auth.login(TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD);
+    await saleor.auth.login(
+      TEST_AUTH_EMAIL as string,
+      TEST_AUTH_PASSWORD as string
+    );
     const cache = client.readQuery({
       query: USER,
     });
-    expect(cache).not.toBeNull();
-    expect(cache).toBeDefined();
+    expect(cache.me).not.toBeNull();
+    expect(cache.me).toBeDefined();
   });
 
   it("will throw an error if login credentials are invalid", async () => {
@@ -62,11 +67,15 @@ describe("auth api", () => {
   });
 
   it("logout clears user cache", async () => {
-    await saleor.auth.login(TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD);
+    await saleor.auth.login(
+      TEST_AUTH_EMAIL as string,
+      TEST_AUTH_PASSWORD as string
+    );
     await saleor.auth.logout();
     const cache = client.readQuery({
       query: USER,
     });
     expect(cache).toBeNull();
+    expect(localStorage.getItem(saleorAuthToken)).toBeNull();
   });
 });
