@@ -18,7 +18,8 @@
     "prepare": "tsdx build && husky install",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "build-types": "set -a; source .env;set +a && graphql-codegen --config codegen.yml"
+    "build-types": "graphql-codegen --config codegen.yml",
+    "download-schema": "curl -O https://raw.githubusercontent.com/mirumee/saleor/master/saleor/graphql/schema.graphql"
   },
   "peerDependencies": {
     "@apollo/client": "^3.3.19",
