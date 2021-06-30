@@ -41,6 +41,7 @@ export const setupRecording = () =>
           // changing email address.
           const json = JSON.parse(body);
           delete json.variables.email;
+          delete json.variables.redirectURL;
           return JSON.stringify(json);
         }
         return body;
