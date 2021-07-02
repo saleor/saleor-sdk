@@ -27,10 +27,10 @@ describe("auth api", () => {
   });
 
   it("can login", async () => {
-    const { data } = await saleor.auth.login(
-      TEST_AUTH_EMAIL as string,
-      TEST_AUTH_PASSWORD as string
-    );
+    const { data } = await saleor.auth.login({
+      email: TEST_AUTH_EMAIL as string,
+      password: TEST_AUTH_PASSWORD as string,
+    });
     expect(data.tokenCreate.user.id).toBeDefined();
     expect(data.tokenCreate.token).toBeDefined();
     expect(data.tokenCreate.errors).toHaveLength(0);
@@ -38,10 +38,10 @@ describe("auth api", () => {
   });
 
   it("login caches user data", async () => {
-    await saleor.auth.login(
-      TEST_AUTH_EMAIL as string,
-      TEST_AUTH_PASSWORD as string
-    );
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL as string,
+      password: TEST_AUTH_PASSWORD as string,
+    });
     const cache = client.readQuery({
       query: USER,
     });
@@ -50,7 +50,10 @@ describe("auth api", () => {
   });
 
   it("will throw an error if login credentials are invalid", async () => {
-    const { data } = await saleor.auth.login("wrong@example.com", "wrong");
+    const { data } = await saleor.auth.login({
+      email: "wrong@example.com",
+      password: "wrong",
+    });
     expect(data.tokenCreate.user).toBeFalsy();
     expect(data.tokenCreate.token).toBeFalsy();
     expect(data.tokenCreate.errors).not.toHaveLength(0);
@@ -61,20 +64,20 @@ describe("auth api", () => {
     // changing user email in the request.
     // Dynamic user email allows running test multiple times on the
     // same database.
-    const { data } = await saleor.auth.register(
-      `register+${Date.now().toString()}@example.com`,
-      "register",
-      API_URI,
-      "default-channel"
-    );
+    const { data } = await saleor.auth.register({
+      email: `register+${Date.now().toString()}@example.com`,
+      password: "register",
+      redirectUrl: API_URI,
+      channel: "default-channel",
+    });
     expect(data.accountRegister.accountErrors).toHaveLength(0);
   });
 
   it("logout clears user cache", async () => {
-    await saleor.auth.login(
-      TEST_AUTH_EMAIL as string,
-      TEST_AUTH_PASSWORD as string
-    );
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL as string,
+      password: TEST_AUTH_PASSWORD as string,
+    });
     await saleor.auth.logout();
     const cache = client.readQuery({
       query: USER,

@@ -7,18 +7,15 @@ import {
 import { saleorAuthToken } from "../apollo/constants";
 import { LOGIN, REGISTER } from "../apollo/mutations";
 import { USER } from "../apollo/queries";
+import { loginOpts, registerOpts } from "./types";
 
 export interface AuthSDK {
   login: (
-    email: string,
-    password: string
+    opts: loginOpts
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
   logout: () => Promise<ApolloQueryResult<any>[] | null>;
   register: (
-    email: string,
-    password: string,
-    redirectUrl: string,
-    channel: string
+    opts: registerOpts
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 }
 
@@ -30,12 +27,11 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param password - User's password
    * @returns Promise resolved with CreateToken type data
    */
-  const login = async (email: string, password: string) => {
+  const login = async (opts: loginOpts) => {
     const result = await client.mutate({
       mutation: LOGIN,
       variables: {
-        email,
-        password,
+        ...opts,
       },
     });
 
@@ -75,19 +71,11 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param channel - User's channel
    * @returns Promise resolved with AccountRegister type data
    */
-  const register = async (
-    email: string,
-    password: string,
-    redirectUrl: string,
-    channel: string
-  ) =>
+  const register = async (opts: registerOpts) =>
     await client.mutate({
       mutation: REGISTER,
       variables: {
-        email,
-        password,
-        redirectUrl,
-        channel,
+        ...opts,
       },
     });
 
