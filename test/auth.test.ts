@@ -5,6 +5,9 @@ import { USER } from "../src/apollo/queries";
 import { saleorAuthToken } from "../src/apollo/constants";
 
 describe("auth api", () => {
+  // Auth tests have custom recording matcher setup in the ./setup.ts.
+  // Thanks to that, changing user email and password will not trigger
+  // test to fail.
   const context = setupRecording();
   const { client } = setupAPI();
   const saleor = SaleorSDK(client);
@@ -19,6 +22,7 @@ describe("auth api", () => {
 
       delete requestJson.variables?.email;
       delete requestJson.variables?.password;
+      delete requestJson.variables?.redirectUrl;
 
       recording.request.postData.text = JSON.stringify(requestJson);
       recording.response.cookies = [];
@@ -60,10 +64,6 @@ describe("auth api", () => {
   });
 
   it("can register", async () => {
-    // This test has custom Polly config (/test/setup.ts) to ignore
-    // changing user email in the request.
-    // Dynamic user email allows running test multiple times on the
-    // same database.
     const { data } = await saleor.auth.register({
       email: `register+${Date.now().toString()}@example.com`,
       password: "register",

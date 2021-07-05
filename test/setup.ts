@@ -23,7 +23,7 @@ export const setupRecording = () =>
     adapters: ["node-http"],
     matchRequestsBy: {
       headers: {
-        exclude: ["authorization", "host"],
+        exclude: ["authorization", "host", "content-length"],
       },
       url: {
         hash: false,
@@ -41,7 +41,14 @@ export const setupRecording = () =>
           // changing email address.
           const json = JSON.parse(body);
           delete json.variables.email;
-          delete json.variables.redirectURL;
+          delete json.variables.redirectUrl;
+          return JSON.stringify(json);
+        }
+        if (["auth api/can login", "auth api/login caches user data", "auth api/logout clears user cache"].includes(req.recordingName)) {
+          // Make auth tests recording to ignore changes in the user/password variables
+          const json = JSON.parse(body);
+          delete json.variables.email;
+          delete json.variables.password;
           return JSON.stringify(json);
         }
         return body;
