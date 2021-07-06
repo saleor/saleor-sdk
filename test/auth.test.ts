@@ -2,7 +2,7 @@ import { setupRecording, setupAPI } from "../test/setup";
 import { SaleorSDK } from "../src/core";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../config";
 import { USER } from "../src/apollo/queries";
-import { saleorAuthToken } from "../src/apollo/constants";
+import { saleorAuthToken } from "../src/core/constants";
 
 describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
