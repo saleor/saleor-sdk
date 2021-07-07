@@ -4,3 +4,4 @@ node_modules
 dist
 .env
 .envrc
+src/apollo/types.ts
