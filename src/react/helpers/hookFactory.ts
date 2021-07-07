@@ -2,7 +2,7 @@ import { Core } from "../../core";
 import { useContext } from "react";
 import { SaleorContext } from "../context";
 
-const useHook = <T extends keyof Core>(key: T): Core[T] => {
+const CreateSaleorHook = <T extends keyof Core>(key: T): Core[T] => {
   const saleor = useContext(SaleorContext);
 
   if (!saleor) {
@@ -19,4 +19,4 @@ const useHook = <T extends keyof Core>(key: T): Core[T] => {
 };
 
 export const hookFactory = <T extends keyof Core>(query: T) => (): Core[T] =>
-  useHook(query);
+  CreateSaleorHook(query);

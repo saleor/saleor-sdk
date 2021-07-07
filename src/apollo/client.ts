@@ -5,6 +5,7 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { TypedTypePolicies } from "./apollo-helpers";
 import { saleorAuthToken } from "../core/constants";
 
 const authLink = setContext((_, { headers }) => {
@@ -18,6 +19,22 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const typePolicies: TypedTypePolicies = {
+  UserDetails: {
+    fields: {
+      authenticated: {
+        read(_, { readField }): boolean {
+          return !!readField("id");
+        },
+      },
+    },
+  },
+};
+
+const cache = new InMemoryCache({
+  typePolicies,
+});
+
 export const createSaleorClient = (
   url: string
 ): ApolloClient<NormalizedCacheObject> => {
@@ -26,7 +43,7 @@ export const createSaleorClient = (
   });
 
   return new ApolloClient({
+    cache,
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
   });
 };

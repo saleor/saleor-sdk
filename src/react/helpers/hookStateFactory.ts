@@ -2,7 +2,9 @@ import { useContext } from "react";
 import { SaleorContext } from "../context";
 import { DocumentNode, QueryResult, useQuery } from "@apollo/client";
 
-const useSaleorStateHook = (query: DocumentNode): QueryResult => {
+const CreateSaleorStateHook = <TData, TVariables>(
+  query: DocumentNode
+): QueryResult<TData, TVariables> => {
   const saleor = useContext(SaleorContext);
 
   if (!saleor) {
@@ -11,11 +13,13 @@ const useSaleorStateHook = (query: DocumentNode): QueryResult => {
     );
   }
 
-  return useQuery(query, {
+  return useQuery<TData, TVariables>(query, {
     client: saleor.client,
     fetchPolicy: "cache-only",
   });
 };
 
-export const hookStateFactory = (query: DocumentNode) => (): QueryResult =>
-  useSaleorStateHook(query);
+export const hookStateFactory = <TData, TVariables>(
+  query: DocumentNode
+): QueryResult<TData, TVariables> =>
+  CreateSaleorStateHook<TData, TVariables>(query);
