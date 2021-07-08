@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { SaleorContext } from "../context";
 import { DocumentNode, QueryResult, useQuery } from "@apollo/client";
+import { SaleorContext } from "../components/SaleorProvider";
 
 const CreateSaleorStateHook = <TData, TVariables>(
   query: DocumentNode

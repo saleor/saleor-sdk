@@ -11312,7 +11312,7 @@ export type LoginMutation = { tokenCreate?: Maybe<(
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-  redirectUrl: Scalars['String'];
+  redirectUrl?: Maybe<Scalars['String']>;
   channel: Scalars['String'];
 }>;
 
@@ -11320,6 +11320,17 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { accountRegister?: Maybe<(
     Pick<AccountRegister, 'requiresConfirmation'>
     & { accountErrors: Array<Pick<AccountError, 'field' | 'message' | 'code'>> }
+  )> };
+
+export type RefreshTokenMutationVariables = Exact<{
+  csrfToken?: Maybe<Scalars['String']>;
+  refreshToken?: Maybe<Scalars['String']>;
+}>;
+
+
+export type RefreshTokenMutation = { tokenRefresh?: Maybe<(
+    Pick<RefreshToken, 'token'>
+    & { user?: Maybe<Pick<User, 'id'>>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -11419,7 +11430,7 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterDocument = gql`
-    mutation register($email: String!, $password: String!, $redirectUrl: String!, $channel: String!) {
+    mutation register($email: String!, $password: String!, $redirectUrl: String, $channel: String!) {
   accountRegister(
     input: {email: $email, password: $password, redirectUrl: $redirectUrl, channel: $channel}
   ) {
@@ -11461,6 +11472,46 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RefreshTokenDocument = gql`
+    mutation RefreshToken($csrfToken: String, $refreshToken: String) {
+  tokenRefresh(csrfToken: $csrfToken, refreshToken: $refreshToken) {
+    token
+    user {
+      id
+    }
+    errors {
+      ...AccountErrorFragment
+    }
+  }
+}
+    ${AccountErrorFragmentDoc}`;
+export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutation, RefreshTokenMutationVariables>;
+
+/**
+ * __useRefreshTokenMutation__
+ *
+ * To run a mutation, you first call `useRefreshTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRefreshTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
+ *   variables: {
+ *      csrfToken: // value for 'csrfToken'
+ *      refreshToken: // value for 'refreshToken'
+ *   },
+ * });
+ */
+export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions<RefreshTokenMutation, RefreshTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RefreshTokenMutation, RefreshTokenMutationVariables>(RefreshTokenDocument, options);
+      }
+export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
+export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
+export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const UserDetailsDocument = gql`
     query UserDetails {
   me {

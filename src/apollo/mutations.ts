@@ -32,7 +32,7 @@ export const REGISTER = gql`
   mutation register(
     $email: String!
     $password: String!
-    $redirectUrl: String!
+    $redirectUrl: String
     $channel: String!
   ) {
     accountRegister(
@@ -53,27 +53,27 @@ export const REGISTER = gql`
   }
 `;
 
+export const REFRESH_TOKEN = gql`
+  ${accountErrorFragment}
+  mutation RefreshToken($csrfToken: String, $refreshToken: String) {
+    tokenRefresh(csrfToken: $csrfToken, refreshToken: $refreshToken) {
+      token
+      user {
+        id
+      }
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
 // export const tokenVeryficationMutation = gql`
 //   ${accountErrorFragment}
 //   mutation VerifyToken($token: String!) {
 //     tokenVerify(token: $token) {
 //       isValid
 //       payload
-//       user {
-//         id
-//       }
-//       errors {
-//         ...AccountErrorFragment
-//       }
-//     }
-//   }
-// `;
-
-// export const tokenRefreshMutation = gql`
-//   ${accountErrorFragment}
-//   mutation RefreshToken($csrfToken: String, $refreshToken: String) {
-//     tokenRefresh(csrfToken: $csrfToken, refreshToken: $refreshToken) {
-//       token
 //       user {
 //         id
 //       }
