@@ -8,12 +8,12 @@ import { saleorAuthToken } from "./constants";
 import { LOGIN, REGISTER } from "../apollo/mutations";
 import { USER } from "../apollo/queries";
 import { loginOpts, registerOpts } from "./types";
-import { Mutation } from "../apollo/types";
+import { LoginMutation, RegisterMutation } from "../apollo/types";
 
 export interface AuthSDK {
-  login: (opts: loginOpts) => Promise<FetchResult<Mutation>>;
+  login: (opts: loginOpts) => Promise<FetchResult<LoginMutation>>;
   logout: () => Promise<ApolloQueryResult<null>[] | null>;
-  register: (opts: registerOpts) => Promise<FetchResult<Mutation>>;
+  register: (opts: registerOpts) => Promise<FetchResult<RegisterMutation>>;
 }
 
 export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
