@@ -17,7 +17,7 @@ describe("auth api", () => {
     server.any().on("beforePersist", (_, recording) => {
       const requestJson = JSON.parse(recording.request.postData.text);
       const responseHeaders = recording.response.headers.filter(
-        (el: any) => el.name !== "set-cookie"
+        (el: Record<string, string>) => el.name !== "set-cookie"
       );
 
       delete requestJson.variables?.email;
@@ -35,9 +35,9 @@ describe("auth api", () => {
       email: TEST_AUTH_EMAIL as string,
       password: TEST_AUTH_PASSWORD as string,
     });
-    expect(data.tokenCreate.user.id).toBeDefined();
-    expect(data.tokenCreate.token).toBeDefined();
-    expect(data.tokenCreate.errors).toHaveLength(0);
+    expect(data?.tokenCreate?.user?.id).toBeDefined();
+    expect(data?.tokenCreate?.token).toBeDefined();
+    expect(data?.tokenCreate?.errors).toHaveLength(0);
     expect(localStorage.getItem(saleorAuthToken)).not.toBeNull();
   });
 
@@ -58,9 +58,9 @@ describe("auth api", () => {
       email: "wrong@example.com",
       password: "wrong",
     });
-    expect(data.tokenCreate.user).toBeFalsy();
-    expect(data.tokenCreate.token).toBeFalsy();
-    expect(data.tokenCreate.errors).not.toHaveLength(0);
+    expect(data?.tokenCreate?.user).toBeFalsy();
+    expect(data?.tokenCreate?.token).toBeFalsy();
+    expect(data?.tokenCreate?.errors).not.toHaveLength(0);
   });
 
   it("can register", async () => {
@@ -70,7 +70,7 @@ describe("auth api", () => {
       redirectUrl: API_URI,
       channel: "default-channel",
     });
-    expect(data.accountRegister.accountErrors).toHaveLength(0);
+    expect(data?.accountRegister?.accountErrors).toHaveLength(0);
   });
 
   it("logout clears user cache", async () => {

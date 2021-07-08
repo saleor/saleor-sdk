@@ -1,4 +1,4 @@
-import { AccountRegisterInput } from "../apollo/types";
+import { AccountRegisterInput, MutationTokenCreateArgs } from "../apollo/types";
 
 export interface Config {
   /** Api url used in client */
@@ -6,4 +6,4 @@ export interface Config {
 }
 
 export type registerOpts = AccountRegisterInput;
-export type loginOpts = { email: string; password: string };
+export type loginOpts = MutationTokenCreateArgs;
