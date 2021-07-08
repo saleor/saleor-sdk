@@ -17,5 +17,5 @@ const useSaleorStateHook = (query: DocumentNode): QueryResult => {
   });
 };
 
-export const hookStateFactory = (query: DocumentNode) => () =>
+export const hookStateFactory = (query: DocumentNode) => (): QueryResult =>
   useSaleorStateHook(query);

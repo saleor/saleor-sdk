@@ -1,19 +1,25 @@
-import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  from,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { setupPolly } from "setup-polly-jest";
+import { Context, setupPolly } from "setup-polly-jest";
 import { Polly } from "@pollyjs/core";
 import fetch from "cross-fetch";
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
 import FSPersister from "@pollyjs/persister-fs";
 import path from "path";
 
-import { SaleorSDK } from "../src/core";
+import { Core, SaleorSDK } from "../src/core";
 import { API_URI } from "../config";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
-export const setupRecording = () =>
+export const setupRecording = (): Context =>
   setupPolly({
     adapterOptions: {
       fetch: {
@@ -35,7 +41,7 @@ export const setupRecording = () =>
         query: false,
         username: false,
       },
-      body(body, req) {
+      body(body, req): string {
         if (req.recordingName === "auth api/can register") {
           // Custom rule which prevents polly recording on every run due to
           // changing email address.
@@ -44,7 +50,13 @@ export const setupRecording = () =>
           delete json.variables.redirectUrl;
           return JSON.stringify(json);
         }
-        if (["auth api/can login", "auth api/login caches user data", "auth api/logout clears user cache"].includes(req.recordingName)) {
+        if (
+          [
+            "auth api/can login",
+            "auth api/login caches user data",
+            "auth api/logout clears user cache",
+          ].includes(req.recordingName)
+        ) {
           // Make auth tests recording to ignore changes in the user/password variables
           const json = JSON.parse(body);
           delete json.variables.email;
@@ -63,7 +75,11 @@ export const setupRecording = () =>
     recordIfMissing: true,
   });
 
-export const setupAPI = () => {
+export const setupAPI = (): {
+  apiUrl: string;
+  client: ApolloClient<NormalizedCacheObject>;
+  saleor: Core;
+} => {
   const httpLink = new HttpLink({
     fetch,
     uri: API_URI,

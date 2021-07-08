@@ -18,5 +18,5 @@ const useHook = <T extends keyof Core>(key: T): Core[T] => {
   return getHookData();
 };
 
-export const hookFactory = <T extends keyof Core>(query: T) => () =>
+export const hookFactory = <T extends keyof Core>(query: T) => (): Core[T] =>
   useHook(query);
