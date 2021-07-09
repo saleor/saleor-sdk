@@ -20,8 +20,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
   /**
    * Authenticates user with email and password.
    *
-   * @param email - User's email
-   * @param password - User's password
+   * @param opts - Object with user's email and password
    * @returns Promise resolved with CreateToken type data
    */
   const login: AuthSDK["login"] = async opts => {
@@ -44,6 +43,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
         me: {
           ...result.data.tokenCreate.user,
         },
+        authenticated: !!result?.data?.tokenCreate?.user?.id,
       },
     });
 
@@ -59,13 +59,11 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
     localStorage.removeItem(saleorAuthToken);
     return client.resetStore();
   };
+
   /**
    * Registers user with email and password.
    *
-   * @param email - User's email
-   * @param password - User's password
-   * @param redirectUrl - URL to redirect after registration
-   * @param channel - User's channel
+   * @param opts - Object with user's data. Email, password, redirectUrl and channel are required fields.
    * @returns Promise resolved with AccountRegister type data
    */
   const register: AuthSDK["register"] = async opts =>

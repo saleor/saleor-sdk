@@ -1,13 +1,20 @@
 overwrite: true
-schema: introspection.json
-documents: "src/apollo/*.ts"
+schema:
+  - introspection.json
+  - local-schema.graphql
+documents: src/apollo/*.ts
 generates:
   src/apollo/types.ts:
     schema: introspection.json
     plugins:
-      - "typescript"
-      - "typescript-operations"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
     config:
       dedupeOperationSuffix: true
       enumsAsTypes: true
       skipTypename: true
+      maybeValue: T
+  src/apollo/apollo-helpers.ts:
+    plugins:
+      - typescript-apollo-client-helpers

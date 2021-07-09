@@ -11,6 +11,7 @@ export const USER = gql`
     me {
       ...UserFragment
     }
+    authenticated @client
   }
 `;
 

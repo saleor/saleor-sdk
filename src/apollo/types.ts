@@ -1,7 +1,10 @@
-export type Maybe<T> = T | null;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+export type Maybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -8492,47 +8495,103 @@ export type PublishableChannelListingInput = {
 };
 
 export type Query = {
-  /** Look up a webhook by ID. */
-  webhook?: Maybe<Webhook>;
-  /** List of all available webhook events. */
-  webhookEvents?: Maybe<Array<Maybe<WebhookEvent>>>;
-  /** Retrieve a sample payload for a given webhook event based on real data. It can be useful for some integrations where sample payload is required. */
-  webhookSamplePayload?: Maybe<Scalars['JSONString']>;
-  /** Look up a warehouse by ID. */
-  warehouse?: Maybe<Warehouse>;
-  /** List of warehouses. */
-  warehouses?: Maybe<WarehouseCountableConnection>;
-  /** Returns a list of all translatable items of a given kind. */
-  translations?: Maybe<TranslatableItemConnection>;
-  translation?: Maybe<TranslatableItem>;
-  /** Look up a stock by ID */
-  stock?: Maybe<Stock>;
-  /** List of stocks. */
-  stocks?: Maybe<StockCountableConnection>;
-  /** Return information about the shop. */
-  shop: Shop;
-  /** Order related settings from site settings. */
-  orderSettings?: Maybe<OrderSettings>;
-  /** Look up a shipping zone by ID. */
-  shippingZone?: Maybe<ShippingZone>;
-  /** List of the shop's shipping zones. */
-  shippingZones?: Maybe<ShippingZoneCountableConnection>;
-  /** Look up digital content by ID. */
-  digitalContent?: Maybe<DigitalContent>;
-  /** List of digital content. */
-  digitalContents?: Maybe<DigitalContentCountableConnection>;
+  _entities?: Maybe<Array<Maybe<_Entity>>>;
+  _service?: Maybe<_Service>;
+  /** Look up an address by ID. */
+  address?: Maybe<Address>;
+  /** Returns address validation rules. */
+  addressValidationRules?: Maybe<AddressValidationData>;
+  /** Look up an app by ID. If ID is not provided, return the currently authenticated app. */
+  app?: Maybe<App>;
+  /** List of the apps. */
+  apps?: Maybe<AppCountableConnection>;
+  /** List of all apps installations */
+  appsInstallations: Array<AppInstallation>;
+  /** Look up an attribute by ID. */
+  attribute?: Maybe<Attribute>;
+  /** List of the shop's attributes. */
+  attributes?: Maybe<AttributeCountableConnection>;
+  authenticated: Scalars['Boolean'];
   /** List of the shop's categories. */
   categories?: Maybe<CategoryCountableConnection>;
   /** Look up a category by ID or slug. */
   category?: Maybe<Category>;
+  /** Look up a channel by ID. */
+  channel?: Maybe<Channel>;
+  /** List of all channels. */
+  channels?: Maybe<Array<Channel>>;
+  /** Look up a checkout by token and slug of channel. */
+  checkout?: Maybe<Checkout>;
+  /** Look up a checkout line by ID. */
+  checkoutLine?: Maybe<CheckoutLine>;
+  /** List of checkout lines. */
+  checkoutLines?: Maybe<CheckoutLineCountableConnection>;
+  /** List of checkouts. */
+  checkouts?: Maybe<CheckoutCountableConnection>;
   /** Look up a collection by ID. */
   collection?: Maybe<Collection>;
   /** List of the shop's collections. */
   collections?: Maybe<CollectionCountableConnection>;
+  /** List of the shop's customers. */
+  customers?: Maybe<UserCountableConnection>;
+  /** Look up digital content by ID. */
+  digitalContent?: Maybe<DigitalContent>;
+  /** List of digital content. */
+  digitalContents?: Maybe<DigitalContentCountableConnection>;
+  /** List of draft orders. */
+  draftOrders?: Maybe<OrderCountableConnection>;
+  /** Look up a export file by ID. */
+  exportFile?: Maybe<ExportFile>;
+  /** List of export files. */
+  exportFiles?: Maybe<ExportFileCountableConnection>;
+  /** Look up a gift card by ID. */
+  giftCard?: Maybe<GiftCard>;
+  /** List of gift cards. */
+  giftCards?: Maybe<GiftCardCountableConnection>;
+  /** List of activity events to display on homepage (at the moment it only contains order-events). */
+  homepageEvents?: Maybe<OrderEventCountableConnection>;
+  /** Return the currently authenticated user. */
+  me?: Maybe<User>;
+  /** Look up a navigation menu by ID or name. */
+  menu?: Maybe<Menu>;
+  /** Look up a menu item by ID. */
+  menuItem?: Maybe<MenuItem>;
+  /** List of the storefronts's menu items. */
+  menuItems?: Maybe<MenuItemCountableConnection>;
+  /** List of the storefront's menus. */
+  menus?: Maybe<MenuCountableConnection>;
+  /** Look up an order by ID. */
+  order?: Maybe<Order>;
+  /** Look up an order by token. */
+  orderByToken?: Maybe<Order>;
+  /** Order related settings from site settings. */
+  orderSettings?: Maybe<OrderSettings>;
+  /** List of orders. */
+  orders?: Maybe<OrderCountableConnection>;
+  /** Return the total sales amount from a specific period. */
+  ordersTotal?: Maybe<TaxedMoney>;
+  /** Look up a page by ID or slug. */
+  page?: Maybe<Page>;
+  /** Look up a page type by ID. */
+  pageType?: Maybe<PageType>;
+  /** List of the page types. */
+  pageTypes?: Maybe<PageTypeCountableConnection>;
+  /** List of the shop's pages. */
+  pages?: Maybe<PageCountableConnection>;
+  /** Look up a payment by ID. */
+  payment?: Maybe<Payment>;
+  /** List of payments. */
+  payments?: Maybe<PaymentCountableConnection>;
+  /** Look up permission group by ID. */
+  permissionGroup?: Maybe<Group>;
+  /** List of permission groups. */
+  permissionGroups?: Maybe<GroupCountableConnection>;
+  /** Look up a plugin by ID. */
+  plugin?: Maybe<Plugin>;
+  /** List of plugins. */
+  plugins?: Maybe<PluginCountableConnection>;
   /** Look up a product by ID. */
   product?: Maybe<Product>;
-  /** List of the shop's products. */
-  products?: Maybe<ProductCountableConnection>;
   /** Look up a product type by ID. */
   productType?: Maybe<ProductType>;
   /** List of the shop's product types. */
@@ -8541,123 +8600,76 @@ export type Query = {
   productVariant?: Maybe<ProductVariant>;
   /** List of product variants. */
   productVariants?: Maybe<ProductVariantCountableConnection>;
+  /** List of the shop's products. */
+  products?: Maybe<ProductCountableConnection>;
   /** List of top selling products. */
   reportProductSales?: Maybe<ProductVariantCountableConnection>;
-  /** Look up a payment by ID. */
-  payment?: Maybe<Payment>;
-  /** List of payments. */
-  payments?: Maybe<PaymentCountableConnection>;
-  /** Look up a page by ID or slug. */
-  page?: Maybe<Page>;
-  /** List of the shop's pages. */
-  pages?: Maybe<PageCountableConnection>;
-  /** Look up a page type by ID. */
-  pageType?: Maybe<PageType>;
-  /** List of the page types. */
-  pageTypes?: Maybe<PageTypeCountableConnection>;
-  /** List of activity events to display on homepage (at the moment it only contains order-events). */
-  homepageEvents?: Maybe<OrderEventCountableConnection>;
-  /** Look up an order by ID. */
-  order?: Maybe<Order>;
-  /** List of orders. */
-  orders?: Maybe<OrderCountableConnection>;
-  /** List of draft orders. */
-  draftOrders?: Maybe<OrderCountableConnection>;
-  /** Return the total sales amount from a specific period. */
-  ordersTotal?: Maybe<TaxedMoney>;
-  /** Look up an order by token. */
-  orderByToken?: Maybe<Order>;
-  /** Look up a navigation menu by ID or name. */
-  menu?: Maybe<Menu>;
-  /** List of the storefront's menus. */
-  menus?: Maybe<MenuCountableConnection>;
-  /** Look up a menu item by ID. */
-  menuItem?: Maybe<MenuItem>;
-  /** List of the storefronts's menu items. */
-  menuItems?: Maybe<MenuItemCountableConnection>;
-  /** Look up a gift card by ID. */
-  giftCard?: Maybe<GiftCard>;
-  /** List of gift cards. */
-  giftCards?: Maybe<GiftCardCountableConnection>;
-  /** Look up a plugin by ID. */
-  plugin?: Maybe<Plugin>;
-  /** List of plugins. */
-  plugins?: Maybe<PluginCountableConnection>;
   /** Look up a sale by ID. */
   sale?: Maybe<Sale>;
   /** List of the shop's sales. */
   sales?: Maybe<SaleCountableConnection>;
+  /** Look up a shipping zone by ID. */
+  shippingZone?: Maybe<ShippingZone>;
+  /** List of the shop's shipping zones. */
+  shippingZones?: Maybe<ShippingZoneCountableConnection>;
+  /** Return information about the shop. */
+  shop: Shop;
+  /** List of the shop's staff users. */
+  staffUsers?: Maybe<UserCountableConnection>;
+  /** Look up a stock by ID */
+  stock?: Maybe<Stock>;
+  /** List of stocks. */
+  stocks?: Maybe<StockCountableConnection>;
+  /** List of all tax rates available from tax gateway. */
+  taxTypes?: Maybe<Array<Maybe<TaxType>>>;
+  translation?: Maybe<TranslatableItem>;
+  /** Returns a list of all translatable items of a given kind. */
+  translations?: Maybe<TranslatableItemConnection>;
+  /** Look up a user by ID or email address. */
+  user?: Maybe<User>;
   /** Look up a voucher by ID. */
   voucher?: Maybe<Voucher>;
   /** List of the shop's vouchers. */
   vouchers?: Maybe<VoucherCountableConnection>;
-  /** Look up a export file by ID. */
-  exportFile?: Maybe<ExportFile>;
-  /** List of export files. */
-  exportFiles?: Maybe<ExportFileCountableConnection>;
-  /** List of all tax rates available from tax gateway. */
-  taxTypes?: Maybe<Array<Maybe<TaxType>>>;
-  /** Look up a checkout by token and slug of channel. */
-  checkout?: Maybe<Checkout>;
-  /** List of checkouts. */
-  checkouts?: Maybe<CheckoutCountableConnection>;
-  /** Look up a checkout line by ID. */
-  checkoutLine?: Maybe<CheckoutLine>;
-  /** List of checkout lines. */
-  checkoutLines?: Maybe<CheckoutLineCountableConnection>;
-  /** Look up a channel by ID. */
-  channel?: Maybe<Channel>;
-  /** List of all channels. */
-  channels?: Maybe<Array<Channel>>;
-  /** List of the shop's attributes. */
-  attributes?: Maybe<AttributeCountableConnection>;
-  /** Look up an attribute by ID. */
-  attribute?: Maybe<Attribute>;
-  /** List of all apps installations */
-  appsInstallations: Array<AppInstallation>;
-  /** List of the apps. */
-  apps?: Maybe<AppCountableConnection>;
-  /** Look up an app by ID. If ID is not provided, return the currently authenticated app. */
-  app?: Maybe<App>;
-  /** Returns address validation rules. */
-  addressValidationRules?: Maybe<AddressValidationData>;
-  /** Look up an address by ID. */
-  address?: Maybe<Address>;
-  /** List of the shop's customers. */
-  customers?: Maybe<UserCountableConnection>;
-  /** List of permission groups. */
-  permissionGroups?: Maybe<GroupCountableConnection>;
-  /** Look up permission group by ID. */
-  permissionGroup?: Maybe<Group>;
-  /** Return the currently authenticated user. */
-  me?: Maybe<User>;
-  /** List of the shop's staff users. */
-  staffUsers?: Maybe<UserCountableConnection>;
-  /** Look up a user by ID or email address. */
-  user?: Maybe<User>;
-  _entities?: Maybe<Array<Maybe<_Entity>>>;
-  _service?: Maybe<_Service>;
+  /** Look up a warehouse by ID. */
+  warehouse?: Maybe<Warehouse>;
+  /** List of warehouses. */
+  warehouses?: Maybe<WarehouseCountableConnection>;
+  /** Look up a webhook by ID. */
+  webhook?: Maybe<Webhook>;
+  /** List of all available webhook events. */
+  webhookEvents?: Maybe<Array<Maybe<WebhookEvent>>>;
+  /** Retrieve a sample payload for a given webhook event based on real data. It can be useful for some integrations where sample payload is required. */
+  webhookSamplePayload?: Maybe<Scalars['JSONString']>;
 };
 
 
-export type QueryWebhookArgs = {
+export type Query_EntitiesArgs = {
+  representations?: Maybe<Array<Maybe<Scalars['_Any']>>>;
+};
+
+
+export type QueryAddressArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryWebhookSamplePayloadArgs = {
-  eventType: WebhookSampleEventTypeEnum;
+export type QueryAddressValidationRulesArgs = {
+  countryCode: CountryCode;
+  countryArea?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  cityArea?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryWarehouseArgs = {
-  id: Scalars['ID'];
+export type QueryAppArgs = {
+  id?: Maybe<Scalars['ID']>;
 };
 
 
-export type QueryWarehousesArgs = {
-  filter?: Maybe<WarehouseFilterInput>;
-  sortBy?: Maybe<WarehouseSortingInput>;
+export type QueryAppsArgs = {
+  filter?: Maybe<AppFilterInput>;
+  sortBy?: Maybe<AppSortingInput>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -8665,57 +8677,16 @@ export type QueryWarehousesArgs = {
 };
 
 
-export type QueryTranslationsArgs = {
-  kind: TranslatableKinds;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+export type QueryAttributeArgs = {
+  id?: Maybe<Scalars['ID']>;
+  slug?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryTranslationArgs = {
-  id: Scalars['ID'];
-  kind: TranslatableKinds;
-};
-
-
-export type QueryStockArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryStocksArgs = {
-  filter?: Maybe<StockFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryShippingZoneArgs = {
-  id: Scalars['ID'];
+export type QueryAttributesArgs = {
+  filter?: Maybe<AttributeFilterInput>;
+  sortBy?: Maybe<AttributeSortingInput>;
   channel?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryShippingZonesArgs = {
-  filter?: Maybe<ShippingZoneFilterInput>;
-  channel?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryDigitalContentArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryDigitalContentsArgs = {
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -8740,6 +8711,38 @@ export type QueryCategoryArgs = {
 };
 
 
+export type QueryChannelArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCheckoutArgs = {
+  token?: Maybe<Scalars['UUID']>;
+};
+
+
+export type QueryCheckoutLineArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCheckoutLinesArgs = {
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryCheckoutsArgs = {
+  channel?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryCollectionArgs = {
   id?: Maybe<Scalars['ID']>;
   slug?: Maybe<Scalars['String']>;
@@ -8758,21 +8761,217 @@ export type QueryCollectionsArgs = {
 };
 
 
-export type QueryProductArgs = {
+export type QueryCustomersArgs = {
+  filter?: Maybe<CustomerFilterInput>;
+  sortBy?: Maybe<UserSortingInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryDigitalContentArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryDigitalContentsArgs = {
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryDraftOrdersArgs = {
+  sortBy?: Maybe<OrderSortingInput>;
+  filter?: Maybe<OrderDraftFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryExportFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryExportFilesArgs = {
+  filter?: Maybe<ExportFileFilterInput>;
+  sortBy?: Maybe<ExportFileSortingInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryGiftCardArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGiftCardsArgs = {
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryHomepageEventsArgs = {
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryMenuArgs = {
+  channel?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryMenuItemArgs = {
+  id: Scalars['ID'];
   channel?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryProductsArgs = {
-  filter?: Maybe<ProductFilterInput>;
-  sortBy?: Maybe<ProductOrder>;
+export type QueryMenuItemsArgs = {
+  channel?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<MenuItemSortingInput>;
+  filter?: Maybe<MenuItemFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryMenusArgs = {
+  channel?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<MenuSortingInput>;
+  filter?: Maybe<MenuFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryOrderArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryOrderByTokenArgs = {
+  token: Scalars['UUID'];
+};
+
+
+export type QueryOrdersArgs = {
+  sortBy?: Maybe<OrderSortingInput>;
+  filter?: Maybe<OrderFilterInput>;
   channel?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryOrdersTotalArgs = {
+  period?: Maybe<ReportingPeriod>;
+  channel?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryPageArgs = {
+  id?: Maybe<Scalars['ID']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryPageTypeArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPageTypesArgs = {
+  sortBy?: Maybe<PageTypeSortingInput>;
+  filter?: Maybe<PageTypeFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPagesArgs = {
+  sortBy?: Maybe<PageSortingInput>;
+  filter?: Maybe<PageFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPaymentArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPaymentsArgs = {
+  filter?: Maybe<PaymentFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPermissionGroupArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPermissionGroupsArgs = {
+  filter?: Maybe<PermissionGroupFilterInput>;
+  sortBy?: Maybe<PermissionGroupSortingInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPluginArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPluginsArgs = {
+  filter?: Maybe<PluginFilterInput>;
+  sortBy?: Maybe<PluginSortingInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryProductArgs = {
+  id?: Maybe<Scalars['ID']>;
+  slug?: Maybe<Scalars['String']>;
+  channel?: Maybe<Scalars['String']>;
 };
 
 
@@ -8809,163 +9008,20 @@ export type QueryProductVariantsArgs = {
 };
 
 
+export type QueryProductsArgs = {
+  filter?: Maybe<ProductFilterInput>;
+  sortBy?: Maybe<ProductOrder>;
+  channel?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryReportProductSalesArgs = {
   period: ReportingPeriod;
   channel: Scalars['String'];
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPaymentArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryPaymentsArgs = {
-  filter?: Maybe<PaymentFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPageArgs = {
-  id?: Maybe<Scalars['ID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryPagesArgs = {
-  sortBy?: Maybe<PageSortingInput>;
-  filter?: Maybe<PageFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPageTypeArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryPageTypesArgs = {
-  sortBy?: Maybe<PageTypeSortingInput>;
-  filter?: Maybe<PageTypeFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryHomepageEventsArgs = {
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryOrderArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryOrdersArgs = {
-  sortBy?: Maybe<OrderSortingInput>;
-  filter?: Maybe<OrderFilterInput>;
-  channel?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryDraftOrdersArgs = {
-  sortBy?: Maybe<OrderSortingInput>;
-  filter?: Maybe<OrderDraftFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryOrdersTotalArgs = {
-  period?: Maybe<ReportingPeriod>;
-  channel?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryOrderByTokenArgs = {
-  token: Scalars['UUID'];
-};
-
-
-export type QueryMenuArgs = {
-  channel?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryMenusArgs = {
-  channel?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<MenuSortingInput>;
-  filter?: Maybe<MenuFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryMenuItemArgs = {
-  id: Scalars['ID'];
-  channel?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryMenuItemsArgs = {
-  channel?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<MenuItemSortingInput>;
-  filter?: Maybe<MenuItemFilterInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryGiftCardArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryGiftCardsArgs = {
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPluginArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryPluginsArgs = {
-  filter?: Maybe<PluginFilterInput>;
-  sortBy?: Maybe<PluginSortingInput>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -8991,6 +9047,67 @@ export type QuerySalesArgs = {
 };
 
 
+export type QueryShippingZoneArgs = {
+  id: Scalars['ID'];
+  channel?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryShippingZonesArgs = {
+  filter?: Maybe<ShippingZoneFilterInput>;
+  channel?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryStaffUsersArgs = {
+  filter?: Maybe<StaffUserInput>;
+  sortBy?: Maybe<UserSortingInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryStockArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryStocksArgs = {
+  filter?: Maybe<StockFilterInput>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryTranslationArgs = {
+  id: Scalars['ID'];
+  kind: TranslatableKinds;
+};
+
+
+export type QueryTranslationsArgs = {
+  kind: TranslatableKinds;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserArgs = {
+  id?: Maybe<Scalars['ID']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+
 export type QueryVoucherArgs = {
   id: Scalars['ID'];
   channel?: Maybe<Scalars['String']>;
@@ -9009,14 +9126,14 @@ export type QueryVouchersArgs = {
 };
 
 
-export type QueryExportFileArgs = {
+export type QueryWarehouseArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryExportFilesArgs = {
-  filter?: Maybe<ExportFileFilterInput>;
-  sortBy?: Maybe<ExportFileSortingInput>;
+export type QueryWarehousesArgs = {
+  filter?: Maybe<WarehouseFilterInput>;
+  sortBy?: Maybe<WarehouseSortingInput>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -9024,126 +9141,13 @@ export type QueryExportFilesArgs = {
 };
 
 
-export type QueryCheckoutArgs = {
-  token?: Maybe<Scalars['UUID']>;
-};
-
-
-export type QueryCheckoutsArgs = {
-  channel?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryCheckoutLineArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryCheckoutLinesArgs = {
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryChannelArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryAttributesArgs = {
-  filter?: Maybe<AttributeFilterInput>;
-  sortBy?: Maybe<AttributeSortingInput>;
-  channel?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryAttributeArgs = {
-  id?: Maybe<Scalars['ID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryAppsArgs = {
-  filter?: Maybe<AppFilterInput>;
-  sortBy?: Maybe<AppSortingInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryAppArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryAddressValidationRulesArgs = {
-  countryCode: CountryCode;
-  countryArea?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  cityArea?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryAddressArgs = {
+export type QueryWebhookArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryCustomersArgs = {
-  filter?: Maybe<CustomerFilterInput>;
-  sortBy?: Maybe<UserSortingInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPermissionGroupsArgs = {
-  filter?: Maybe<PermissionGroupFilterInput>;
-  sortBy?: Maybe<PermissionGroupSortingInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPermissionGroupArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryStaffUsersArgs = {
-  filter?: Maybe<StaffUserInput>;
-  sortBy?: Maybe<UserSortingInput>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryUserArgs = {
-  id?: Maybe<Scalars['ID']>;
-  email?: Maybe<Scalars['String']>;
-};
-
-
-export type Query_EntitiesArgs = {
-  representations?: Maybe<Array<Maybe<Scalars['_Any']>>>;
+export type QueryWebhookSamplePayloadArgs = {
+  eventType: WebhookSampleEventTypeEnum;
 };
 
 /** Represents a reduced VAT rate for a particular type of goods. */
@@ -11321,4 +11325,174 @@ export type RegisterMutation = { accountRegister?: Maybe<(
 export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserDetailsQuery = { me?: Maybe<UserFragment> };
+export type UserDetailsQuery = (
+  Pick<Query, 'authenticated'>
+  & { me?: Maybe<UserFragment> }
+);
+
+export const AccountErrorFragmentDoc = gql`
+    fragment AccountErrorFragment on AccountError {
+  code
+  field
+  message
+}
+    `;
+export const AddressFragmentDoc = gql`
+    fragment AddressFragment on Address {
+  id
+  firstName
+  lastName
+  companyName
+  streetAddress1
+  streetAddress2
+  city
+  postalCode
+  country {
+    code
+    country
+  }
+  countryArea
+  phone
+  isDefaultBillingAddress
+  isDefaultShippingAddress
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  email
+  firstName
+  lastName
+  isStaff
+  defaultShippingAddress {
+    ...AddressFragment
+  }
+  defaultBillingAddress {
+    ...AddressFragment
+  }
+  addresses {
+    ...AddressFragment
+  }
+}
+    ${AddressFragmentDoc}`;
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  tokenCreate(email: $email, password: $password) {
+    csrfToken
+    refreshToken
+    token
+    errors {
+      ...AccountErrorFragment
+    }
+    user {
+      ...UserFragment
+    }
+  }
+}
+    ${AccountErrorFragmentDoc}
+${UserFragmentDoc}`;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String!, $redirectUrl: String!, $channel: String!) {
+  accountRegister(
+    input: {email: $email, password: $password, redirectUrl: $redirectUrl, channel: $channel}
+  ) {
+    accountErrors {
+      field
+      message
+      code
+    }
+    requiresConfirmation
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      redirectUrl: // value for 'redirectUrl'
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UserDetailsDocument = gql`
+    query UserDetails {
+  me {
+    ...UserFragment
+  }
+  authenticated @client
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useUserDetailsQuery__
+ *
+ * To run a query within a React component, call `useUserDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserDetailsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserDetailsQuery(baseOptions?: Apollo.QueryHookOptions<UserDetailsQuery, UserDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserDetailsQuery, UserDetailsQueryVariables>(UserDetailsDocument, options);
+      }
+export function useUserDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserDetailsQuery, UserDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserDetailsQuery, UserDetailsQueryVariables>(UserDetailsDocument, options);
+        }
+export type UserDetailsQueryHookResult = ReturnType<typeof useUserDetailsQuery>;
+export type UserDetailsLazyQueryHookResult = ReturnType<typeof useUserDetailsLazyQuery>;
+export type UserDetailsQueryResult = Apollo.QueryResult<UserDetailsQuery, UserDetailsQueryVariables>;
