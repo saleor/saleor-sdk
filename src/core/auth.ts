@@ -8,15 +8,12 @@ import { saleorAuthToken } from "./constants";
 import { LOGIN, REGISTER } from "../apollo/mutations";
 import { USER } from "../apollo/queries";
 import { loginOpts, registerOpts } from "./types";
+import { LoginMutation, RegisterMutation } from "../apollo/types";
 
 export interface AuthSDK {
-  login: (
-    opts: loginOpts
-  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
-  logout: () => Promise<ApolloQueryResult<any>[] | null>;
-  register: (
-    opts: registerOpts
-  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+  login: (opts: loginOpts) => Promise<FetchResult<LoginMutation>>;
+  logout: () => Promise<ApolloQueryResult<null>[] | null>;
+  register: (opts: registerOpts) => Promise<FetchResult<RegisterMutation>>;
 }
 
 export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
@@ -27,7 +24,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param password - User's password
    * @returns Promise resolved with CreateToken type data
    */
-  const login = async (opts: loginOpts) => {
+  const login: AuthSDK["login"] = async opts => {
     const result = await client.mutate({
       mutation: LOGIN,
       variables: {
@@ -58,7 +55,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    *
    * @returns Apollo's native resetStore method
    */
-  const logout = () => {
+  const logout: AuthSDK["logout"] = () => {
     localStorage.removeItem(saleorAuthToken);
     return client.resetStore();
   };
@@ -71,7 +68,7 @@ export const auth = (client: ApolloClient<NormalizedCacheObject>): AuthSDK => {
    * @param channel - User's channel
    * @returns Promise resolved with AccountRegister type data
    */
-  const register = async (opts: registerOpts) =>
+  const register: AuthSDK["register"] = async opts =>
     await client.mutate({
       mutation: REGISTER,
       variables: {

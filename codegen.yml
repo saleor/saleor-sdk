@@ -1,10 +1,12 @@
 overwrite: true
 schema: introspection.json
+documents: "src/apollo/*.ts"
 generates:
   src/apollo/types.ts:
     schema: introspection.json
     plugins:
       - "typescript"
+      - "typescript-operations"
     config:
       dedupeOperationSuffix: true
       enumsAsTypes: true

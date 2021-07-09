@@ -11281,3 +11281,44 @@ export type _Entity = Address | User | Group | App | ProductVariant | Product | 
 export type _Service = {
   sdl?: Maybe<Scalars['String']>;
 };
+
+export type AccountErrorFragment = Pick<AccountError, 'code' | 'field' | 'message'>;
+
+export type AddressFragment = (
+  Pick<Address, 'id' | 'firstName' | 'lastName' | 'companyName' | 'streetAddress1' | 'streetAddress2' | 'city' | 'postalCode' | 'countryArea' | 'phone' | 'isDefaultBillingAddress' | 'isDefaultShippingAddress'>
+  & { country: Pick<CountryDisplay, 'code' | 'country'> }
+);
+
+export type UserFragment = (
+  Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>
+  & { defaultShippingAddress?: Maybe<AddressFragment>, defaultBillingAddress?: Maybe<AddressFragment>, addresses?: Maybe<Array<Maybe<AddressFragment>>> }
+);
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { tokenCreate?: Maybe<(
+    Pick<CreateToken, 'csrfToken' | 'refreshToken' | 'token'>
+    & { errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }
+  )> };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+  redirectUrl: Scalars['String'];
+  channel: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = { accountRegister?: Maybe<(
+    Pick<AccountRegister, 'requiresConfirmation'>
+    & { accountErrors: Array<Pick<AccountError, 'field' | 'message' | 'code'>> }
+  )> };
+
+export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserDetailsQuery = { me?: Maybe<UserFragment> };
