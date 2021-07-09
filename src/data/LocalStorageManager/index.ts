@@ -59,7 +59,7 @@ export class LocalStorageManager {
     const alteredLines = lines.filter(
       variant => variant.variant.id !== variantId
     );
-    if (variantInCheckout) {
+    if (variantInCheckout && this.saleorState.checkout) {
       variantInCheckout.quantity = 0;
       alteredLines.push(variantInCheckout);
     }
