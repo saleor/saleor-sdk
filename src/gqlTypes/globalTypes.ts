@@ -517,6 +517,7 @@ export interface AttributeInput {
   slug: string;
   values?: (string | null)[] | null;
   valuesRange?: IntRangeInput | null;
+  boolean?: boolean | null;
 }
 
 export interface CheckoutCreateInput {
@@ -536,14 +537,12 @@ export interface CheckoutLineInput {
 export interface CollectionFilterInput {
   published?: CollectionPublished | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   ids?: (string | null)[] | null;
-  channel?: string | null;
 }
 
 export interface CollectionSortingInput {
   direction: OrderDirection;
-  channel?: string | null;
   field: CollectionSortField;
 }
 
@@ -552,9 +551,9 @@ export interface IntRangeInput {
   lte?: number | null;
 }
 
-export interface MetadataInput {
+export interface MetadataFilter {
   key: string;
-  value: string;
+  value?: string | null;
 }
 
 export interface PaymentInput {
@@ -578,17 +577,15 @@ export interface ProductFilterInput {
   stockAvailability?: StockAvailability | null;
   stocks?: ProductStockFilterInput | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   price?: PriceRangeInput | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
   ids?: (string | null)[] | null;
-  channel?: string | null;
 }
 
 export interface ProductOrder {
   direction: OrderDirection;
-  channel?: string | null;
   attributeId?: string | null;
   field?: ProductOrderField | null;
 }
