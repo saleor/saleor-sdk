@@ -73,9 +73,10 @@ class CheckoutJobs extends JobsHandler<{}> {
     billingAddress,
     selectedBillingAddressId,
   }: CreateCheckoutJobInput): PromiseCheckoutJobRunResponse => {
+    const cleanedLines = lines.filter(line => line.quantity !== 0);
     const { data, error } = await this.apolloClientManager.createCheckout(
       email,
-      lines,
+      cleanedLines,
       channel,
       shippingAddress,
       billingAddress

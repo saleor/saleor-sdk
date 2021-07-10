@@ -14,3 +14,4 @@
 !.storybook
 lib
 node_modules
+schema.graphql

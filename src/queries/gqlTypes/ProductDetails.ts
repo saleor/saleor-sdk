@@ -490,7 +490,7 @@ export interface ProductDetails_product_category {
 export interface ProductDetails_product_images {
   __typename: "ProductImage";
   /**
-   * The ID of the object.
+   * The ID of the image.
    */
   id: string;
   /**
@@ -542,14 +542,17 @@ export interface ProductDetails_product_attributes {
 export interface ProductDetails_product_variants_images {
   __typename: "ProductImage";
   /**
-   * The ID of the object.
+   * The ID of the image.
    */
   id: string;
   /**
    * The URL of the image.
    */
   url: string;
-  alt: string;
+  /**
+   * The alt text of the image.
+   */
+  alt: string | null;
 }
 
 export interface ProductDetails_product_variants_pricing_priceUndiscounted_gross {
