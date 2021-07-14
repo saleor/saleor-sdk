@@ -94,6 +94,9 @@ const typePolicies: TypedTypePolicies = {
           return !!readField("id");
         },
       },
+      addresses: {
+        merge: false,
+      },
     },
   },
 };

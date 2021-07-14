@@ -1,8 +1,7 @@
-import { setupRecording, setupAPI } from "../test/setup";
+import { setupRecording, setupAPI, setupPollyMiddleware } from "../test/setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { USER } from "../src/apollo/queries";
 import { saleorAuthToken } from "../src/core/constants";
-import { removeBlacklistedVariables } from "./utils";
 
 describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
@@ -13,23 +12,7 @@ describe("auth api", () => {
 
   beforeEach(() => {
     const { server } = context.polly;
-    server.any().on("beforePersist", (_, recording) => {
-      const requestJson = JSON.parse(recording.request.postData.text);
-      const responseHeaders = recording.response.headers.filter(
-        (el: Record<string, string>) =>
-          !["authorization", "set-cookie"].includes(el.name)
-      );
-      const requestHeaders = recording.request.headers.filter(
-        (el: Record<string, string>) =>
-          !["authorization", "set-cookie"].includes(el.name)
-      );
-      const filteredRequestJson = removeBlacklistedVariables(requestJson);
-
-      recording.request.postData.text = JSON.stringify(filteredRequestJson);
-      recording.request.headers = requestHeaders;
-      recording.response.cookies = [];
-      recording.response.headers = responseHeaders;
-    });
+    setupPollyMiddleware(server);
   });
 
   it("can login", async () => {
@@ -74,13 +57,10 @@ describe("auth api", () => {
       query: USER,
     });
     const previousToken = localStorage.getItem(saleorAuthToken);
-
     expect(cache.authenticated).toBe(true);
 
     const { data } = await saleor.auth.refreshToken();
-
     const newToken = localStorage.getItem(saleorAuthToken);
-
     expect(cache.authenticated).toBe(true);
     expect(data?.tokenRefresh?.token === newToken);
     expect(newToken !== previousToken);
@@ -106,5 +86,36 @@ describe("auth api", () => {
     });
     expect(cache).toBeNull();
     expect(localStorage.getItem(saleorAuthToken)).toBeNull();
+  });
+
+  it("verifies if token is valid", async () => {
+    const { data } = await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
+
+    if (data?.tokenCreate?.token) {
+      const { data: result } = await saleor.auth.verifyToken(
+        data.tokenCreate.token
+      );
+      expect(result?.tokenVerify?.isValid).toBe(true);
+    }
+  });
+
+  it("sends request to reset password", async () => {
+    const { data } = await saleor.auth.requestPasswordReset({
+      channel: saleor.config.channel,
+      email: TEST_AUTH_EMAIL,
+      redirectUrl: API_URI,
+    });
+    expect(data?.requestPasswordReset?.errors).toHaveLength(0);
+  });
+
+  it("changes user's password", async () => {
+    const { data } = await saleor.auth.changePassword({
+      oldPassword: TEST_AUTH_PASSWORD,
+      newPassword: TEST_AUTH_PASSWORD,
+    });
+    expect(data?.passwordChange?.errors).toHaveLength(0);
   });
 });
