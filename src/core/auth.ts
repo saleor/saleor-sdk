@@ -89,7 +89,7 @@ export const auth = ({
    * Refresh JWT token. If it fails it will try to take refreshToken
    * from the http-only cookie refreshToken.
    *
-   * @param opts - Optional object with csrfToken and refreshToken. It is required when refreshToken is provided as a cookie.
+   * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
    */
   const refreshToken: AuthSDK["refreshToken"] = async opts => {
     const result = await client.mutate<

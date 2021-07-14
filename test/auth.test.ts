@@ -15,7 +15,12 @@ describe("auth api", () => {
     server.any().on("beforePersist", (_, recording) => {
       const requestJson = JSON.parse(recording.request.postData.text);
       const responseHeaders = recording.response.headers.filter(
-        (el: Record<string, string>) => el.name !== "set-cookie"
+        (el: Record<string, string>) =>
+          !["authorization", "set-cookie"].includes(el.name)
+      );
+      const requestHeaders = recording.request.headers.filter(
+        (el: Record<string, string>) =>
+          !["authorization", "set-cookie"].includes(el.name)
       );
 
       delete requestJson.variables?.email;
@@ -23,9 +28,7 @@ describe("auth api", () => {
       delete requestJson.variables?.redirectUrl;
 
       recording.request.postData.text = JSON.stringify(requestJson);
-      recording.request.headers = recording.response.headers.filter(
-        (el: Record<string, string>) => el.name !== "authorization"
-      );
+      recording.request.headers = requestHeaders;
       recording.response.cookies = [];
       recording.response.headers = responseHeaders;
     });

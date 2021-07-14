@@ -46,6 +46,7 @@ export const setupRecording = (): Context =>
           [
             "auth api/can login",
             "auth api/login caches user data",
+            "auth api/refreshes the auth token",
             "auth api/logout clears user cache",
           ].includes(req.recordingName)
         ) {
