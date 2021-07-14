@@ -1,6 +1,6 @@
 import { Core } from "../../core";
 import { useContext } from "react";
-import { SaleorContext } from "../context";
+import { SaleorContext } from "../components/SaleorProvider";
 
 const CreateSaleorHook = <T extends keyof Core>(key: T): Core[T] => {
   const saleor = useContext(SaleorContext);

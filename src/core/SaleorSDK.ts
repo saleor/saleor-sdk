@@ -1,14 +1,21 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { auth, AuthSDK } from "./auth";
+import { auth } from "./auth";
+import { createSaleorClient } from "../apollo";
+import { Core, SaleorSDKConfig } from "./types";
 
-export interface Core {
-  auth: AuthSDK;
-}
+export const SaleorSDK = ({ apiUrl, channel }: SaleorSDKConfig): Core => {
+  let _channel = channel;
+  const setChannel = (channel: string): string => {
+    _channel = channel;
+    return _channel;
+  };
 
-export const SaleorSDK = (
-  client: ApolloClient<NormalizedCacheObject>
-): Core => {
-  const authSDK = auth(client);
+  const apolloClient = createSaleorClient(apiUrl);
+  const coreInternals = { apolloClient, channel: _channel };
+  const authSDK = auth(coreInternals);
 
-  return { auth: authSDK };
+  return {
+    auth: authSDK,
+    config: { channel: _channel, setChannel },
+    _internal: { apolloClient },
+  };
 };

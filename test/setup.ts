@@ -1,20 +1,12 @@
-import {
-  ApolloClient,
-  from,
-  HttpLink,
-  InMemoryCache,
-  NormalizedCacheObject,
-} from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { Context, setupPolly } from "setup-polly-jest";
 import { Polly } from "@pollyjs/core";
-import fetch from "cross-fetch";
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
 import FSPersister from "@pollyjs/persister-fs";
 import path from "path";
 
+import { API_URI } from "../src/config";
 import { Core, SaleorSDK } from "../src/core";
-import { API_URI } from "../config";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
@@ -54,6 +46,7 @@ export const setupRecording = (): Context =>
           [
             "auth api/can login",
             "auth api/login caches user data",
+            "auth api/refreshes the auth token",
             "auth api/logout clears user cache",
           ].includes(req.recordingName)
         ) {
@@ -80,27 +73,11 @@ export const setupAPI = (): {
   client: ApolloClient<NormalizedCacheObject>;
   saleor: Core;
 } => {
-  const httpLink = new HttpLink({
-    fetch,
-    uri: API_URI,
-  });
+  const saleor = SaleorSDK({ apiUrl: API_URI, channel: "default-channel" });
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      );
-
-    if (networkError) console.log(`[Network error]: ${networkError}`);
-  });
-
-  const client = new ApolloClient({
-    link: from([errorLink, httpLink]),
-    cache: new InMemoryCache(),
-  });
-  const saleor = SaleorSDK(client);
-
-  return { apiUrl: API_URI, client, saleor };
+  return {
+    apiUrl: API_URI,
+    client: saleor._internal.apolloClient,
+    saleor,
+  };
 };
