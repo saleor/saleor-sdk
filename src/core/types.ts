@@ -1,6 +1,8 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import {
   AccountRegisterInput,
+  AddCheckoutLinesMutationVariables,
+  CheckoutCreateInput,
   MutationTokenCreateArgs,
   MutationTokenRefreshArgs,
 } from "../apollo/types";
@@ -31,3 +33,6 @@ export interface SaleorClientOpts {
 export type registerOpts = AccountRegisterInput;
 export type loginOpts = MutationTokenCreateArgs;
 export type refreshTokenOpts = MutationTokenRefreshArgs;
+
+export type createCheckoutOpts = CheckoutCreateInput;
+export type addLinesCheckoutOpts = AddCheckoutLinesMutationVariables;
