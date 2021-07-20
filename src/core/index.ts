@@ -1,2 +1,2 @@
-export * from "./SaleorSDK";
+export * from "./createSaleorClient";
 export * from "./types";

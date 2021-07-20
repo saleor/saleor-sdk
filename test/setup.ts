@@ -6,7 +6,7 @@ import FSPersister from "@pollyjs/persister-fs";
 import path from "path";
 
 import { API_URI } from "../src/config";
-import { Core, SaleorSDK } from "../src/core";
+import { Core, createSaleorClient } from "../src/core";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
@@ -73,11 +73,10 @@ export const setupAPI = (): {
   client: ApolloClient<NormalizedCacheObject>;
   saleor: Core;
 } => {
-  const saleor = SaleorSDK({ apiUrl: API_URI, channel: "default-channel" });
-
-  return {
+  const saleor = createSaleorClient({
     apiUrl: API_URI,
-    client: saleor._internal.apolloClient,
-    saleor,
-  };
+    channel: "default-channel",
+  });
+
+  return { apiUrl: API_URI, client: saleor._internal.apolloClient, saleor };
 };

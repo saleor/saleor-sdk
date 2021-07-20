@@ -1,15 +1,19 @@
 import { auth } from "./auth";
-import { createSaleorClient } from "../apollo";
+import { createApolloClient } from "../apollo";
 import { Core, SaleorSDKConfig } from "./types";
 
-export const SaleorSDK = ({ apiUrl, channel }: SaleorSDKConfig): Core => {
+export const createSaleorClient = ({
+  apiUrl,
+  channel,
+}: SaleorSDKConfig): Core => {
   let _channel = channel;
+
   const setChannel = (channel: string): string => {
     _channel = channel;
     return _channel;
   };
 
-  const apolloClient = createSaleorClient(apiUrl);
+  const apolloClient = createApolloClient(apiUrl);
   const coreInternals = { apolloClient, channel: _channel };
   const authSDK = auth(coreInternals);
 

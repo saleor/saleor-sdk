@@ -1,34 +1,23 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Core, SaleorSDK, SaleorSDKConfig } from "../../core";
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import React from "react";
+import { Core } from "../../core";
 
 export type SaleorContextType = {
-  api: Core;
-  client: ApolloClient<NormalizedCacheObject>;
-  channel: string;
-  setChannel: Dispatch<SetStateAction<string>>;
+  saleorClient: Core;
 };
 
 export const SaleorContext = React.createContext<SaleorContextType | null>(
   null
 );
 
-export const SaleorProvider: React.FC<{ config: SaleorSDKConfig }> = ({
-  config: { apiUrl, channel: initChannel },
+export const SaleorProvider: React.FC<{ saleorClient: Core }> = ({
+  saleorClient,
   children,
 }) => {
   const [context, setContext] = React.useState<SaleorContextType | null>(null);
-  const [channel, setChannel] = React.useState(initChannel);
 
   React.useEffect(() => {
-    const saleor = SaleorSDK({ apiUrl, channel });
-    setContext({
-      api: saleor,
-      client: saleor._internal.apolloClient,
-      channel,
-      setChannel,
-    });
-  }, [apiUrl, channel]);
+    setContext({ saleorClient });
+  }, [saleorClient]);
 
   if (context) {
     return (

@@ -5,10 +5,6 @@ import {
   MutationTokenRefreshArgs,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
-export interface Config {
-  /** Api url used in client */
-  apiUrl: string;
-}
 
 export interface CoreInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
