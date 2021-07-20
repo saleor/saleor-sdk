@@ -23,7 +23,7 @@ export interface SaleorClient {
   _internal: CoreInternals;
 }
 
-export interface SaleorSDKConfig {
+export interface SaleorClientOpts {
   apiUrl: string;
   channel: string;
 }
