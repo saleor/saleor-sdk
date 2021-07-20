@@ -5,16 +5,16 @@ import { SaleorContext } from "../components/SaleorProvider";
 const CreateSaleorStateHook = <TData, TVariables>(
   query: DocumentNode
 ): QueryResult<TData, TVariables> => {
-  const saleorContext = useContext(SaleorContext);
+  const saleorClient = useContext(SaleorContext);
 
-  if (!saleorContext) {
+  if (!saleorClient) {
     throw new Error(
       "Could not find saleor's apollo client in the context. Did you forget to wrap the root component in a <SaleorProvider>?"
     );
   }
 
   return useQuery<TData, TVariables>(query, {
-    client: saleorContext.saleorClient._internal.apolloClient,
+    client: saleorClient._internal.apolloClient,
     fetchPolicy: "cache-only",
   });
 };

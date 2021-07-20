@@ -5,16 +5,16 @@ import { SaleorContext } from "../components/SaleorProvider";
 const CreateSaleorHook = <T extends keyof SaleorClient>(
   key: T
 ): SaleorClient[T] => {
-  const saleorContext = useContext(SaleorContext);
+  const saleorClient = useContext(SaleorContext);
 
-  if (!saleorContext) {
+  if (!saleorClient) {
     throw new Error(
       "Could not find saleor's apollo client in the context. Did you forget to wrap the root component in a <SaleorProvider>?"
     );
   }
 
   const getHookData = (): SaleorClient[T] => {
-    return saleorContext[key];
+    return saleorClient[key];
   };
 
   return getHookData();
