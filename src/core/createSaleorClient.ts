@@ -1,11 +1,11 @@
 import { auth } from "./auth";
 import { createApolloClient } from "../apollo";
-import { Core, SaleorSDKConfig } from "./types";
+import { SaleorClient, SaleorSDKConfig } from "./types";
 
 export const createSaleorClient = ({
   apiUrl,
   channel,
-}: SaleorSDKConfig): Core => {
+}: SaleorSDKConfig): SaleorClient => {
   let _channel = channel;
 
   const setChannel = (channel: string): string => {

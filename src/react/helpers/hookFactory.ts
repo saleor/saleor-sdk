@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { Core } from "../../core/types";
+import { SaleorClient } from "../../core/types";
 import { SaleorContext } from "../components/SaleorProvider";
 
-const CreateSaleorHook = <T extends keyof Core>(key: T): Core[T] => {
+const CreateSaleorHook = <T extends keyof SaleorClient>(
+  key: T
+): SaleorClient[T] => {
   const saleorContext = useContext(SaleorContext);
 
   if (!saleorContext) {
@@ -11,12 +13,13 @@ const CreateSaleorHook = <T extends keyof Core>(key: T): Core[T] => {
     );
   }
 
-  const getHookData = (): Core[T] => {
-    return saleorContext.saleorClient[key];
+  const getHookData = (): SaleorClient[T] => {
+    return saleorContext[key];
   };
 
   return getHookData();
 };
 
-export const hookFactory = <T extends keyof Core>(query: T) => (): Core[T] =>
-  CreateSaleorHook(query);
+export const hookFactory = <T extends keyof SaleorClient>(
+  query: T
+) => (): SaleorClient[T] => CreateSaleorHook(query);

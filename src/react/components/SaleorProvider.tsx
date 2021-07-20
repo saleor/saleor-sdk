@@ -1,23 +1,21 @@
 import React from "react";
-import { Core } from "../../core";
+import { SaleorClient } from "../../core";
 
 export type SaleorContextType = {
-  saleorClient: Core;
+  client: SaleorClient;
 };
 
-export const SaleorContext = React.createContext<SaleorContextType | null>(
-  null
-);
+export const SaleorContext = React.createContext<SaleorClient | null>(null);
 
-export const SaleorProvider: React.FC<{ saleorClient: Core }> = ({
-  saleorClient,
+export const SaleorProvider: React.FC<{ client: SaleorClient }> = ({
+  client,
   children,
 }) => {
-  const [context, setContext] = React.useState<SaleorContextType | null>(null);
+  const [context, setContext] = React.useState<SaleorClient>(client);
 
   React.useEffect(() => {
-    setContext({ saleorClient });
-  }, [saleorClient]);
+    setContext(client);
+  }, [client]);
 
   if (context) {
     return (

@@ -17,7 +17,7 @@ export interface CoreConfig {
 export type CoreMethodsProps = Pick<CoreInternals, "apolloClient"> &
   Pick<CoreConfig, "channel">;
 
-export interface Core {
+export interface SaleorClient {
   auth: AuthSDK;
   config: CoreConfig;
   _internal: CoreInternals;
