@@ -7,6 +7,7 @@ import {
   MutationTokenRefreshArgs,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
+import { CheckoutSDK } from "./checkout";
 
 export interface CoreInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -21,6 +22,7 @@ export type CoreMethodsProps = Pick<CoreInternals, "apolloClient"> &
 
 export interface SaleorClient {
   auth: AuthSDK;
+  checkout: CheckoutSDK;
   config: CoreConfig;
   _internal: CoreInternals;
 }

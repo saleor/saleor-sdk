@@ -22,10 +22,7 @@ export interface AuthSDK {
   ) => Promise<FetchResult<RefreshTokenMutation>>;
 }
 
-export const auth = ({
-  apolloClient: client,
-  channel,
-}: CoreMethodsProps): AuthSDK => {
+export const auth = ({ apolloClient, channel }: CoreMethodsProps): AuthSDK => {
   /**
    * Authenticates user with email and password.
    *
@@ -33,7 +30,10 @@ export const auth = ({
    * @returns Promise resolved with CreateToken type data
    */
   const login: AuthSDK["login"] = async opts => {
-    const result = await client.mutate<LoginMutation, LoginMutationVariables>({
+    const result = await apolloClient.mutate<
+      LoginMutation,
+      LoginMutationVariables
+    >({
       mutation: LOGIN,
       variables: {
         ...opts,
@@ -46,7 +46,7 @@ export const auth = ({
 
     // NOTE: manual writing result of LOGIN mutation to cache as UserDetails
     // This can probably be done other way because Apollo should be able to handle this
-    client.writeQuery({
+    apolloClient.writeQuery({
       query: USER,
       data: {
         me: {
@@ -66,7 +66,7 @@ export const auth = ({
    */
   const logout: AuthSDK["logout"] = () => {
     localStorage.removeItem(saleorAuthToken);
-    return client.resetStore();
+    return apolloClient.resetStore();
   };
 
   /**
@@ -77,7 +77,7 @@ export const auth = ({
    * @returns Promise resolved with AccountRegister type data
    */
   const register: AuthSDK["register"] = async opts =>
-    await client.mutate<RegisterMutation, RegisterMutationVariables>({
+    await apolloClient.mutate<RegisterMutation, RegisterMutationVariables>({
       mutation: REGISTER,
       variables: {
         ...opts,
@@ -92,7 +92,7 @@ export const auth = ({
    * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
    */
   const refreshToken: AuthSDK["refreshToken"] = async opts => {
-    const result = await client.mutate<
+    const result = await apolloClient.mutate<
       RefreshTokenMutation,
       RefreshTokenMutationVariables
     >({
@@ -103,8 +103,8 @@ export const auth = ({
     if (result.data?.tokenRefresh?.token) {
       localStorage.setItem("saleorAuthToken", result.data.tokenRefresh.token);
     } else {
-      if (client) {
-        client.resetStore();
+      if (apolloClient) {
+        apolloClient.resetStore();
       }
     }
 

@@ -1,8 +1,4 @@
-import {
-  ApolloClient,
-  FetchResult,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { FetchResult } from "@apollo/client";
 import { ADD_LINES, CREATE_CHECKOUT } from "../apollo/mutations";
 import { CHECKOUT } from "../apollo/queries";
 import {
@@ -10,7 +6,11 @@ import {
   CreateCheckoutMutation,
 } from "../apollo/types";
 
-import { addLinesCheckoutOpts, createCheckoutOpts } from "./types";
+import {
+  addLinesCheckoutOpts,
+  CoreMethodsProps,
+  createCheckoutOpts,
+} from "./types";
 
 export interface CheckoutSDK {
   create: (
@@ -21,9 +21,10 @@ export interface CheckoutSDK {
   ) => Promise<FetchResult<AddCheckoutLinesMutation>>;
 }
 
-export const checkout = (
-  client: ApolloClient<NormalizedCacheObject>
-): CheckoutSDK => {
+export const checkout = ({
+  apolloClient,
+  channel,
+}: CoreMethodsProps): CheckoutSDK => {
   /**
    * Creates checkout.
    *
@@ -31,16 +32,17 @@ export const checkout = (
    * @returns Promise resolved with CheckoutFragment type data
    */
   const create: CheckoutSDK["create"] = async opts => {
-    const result = await client.mutate({
+    const result = await apolloClient.mutate({
       mutation: CREATE_CHECKOUT,
       variables: {
         checkoutInput: {
           ...opts,
+          channel,
         },
       },
     });
 
-    client.writeQuery({
+    apolloClient.writeQuery({
       query: CHECKOUT,
       data: {
         checkout: {
@@ -59,7 +61,7 @@ export const checkout = (
    * @returns Promise resolved with CheckoutFragment type data
    */
   const addLines: CheckoutSDK["addLines"] = async opts => {
-    const result = await client.mutate({
+    const result = await apolloClient.mutate({
       mutation: ADD_LINES,
       variables: {
         ...opts,
