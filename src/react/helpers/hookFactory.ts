@@ -1,22 +1,25 @@
-import { Core } from "../../core";
 import { useContext } from "react";
+import { SaleorClient } from "../../core/types";
 import { SaleorContext } from "../components/SaleorProvider";
 
-const CreateSaleorHook = <T extends keyof Core>(key: T): Core[T] => {
-  const saleor = useContext(SaleorContext);
+const CreateSaleorHook = <T extends keyof SaleorClient>(
+  key: T
+): SaleorClient[T] => {
+  const saleorClient = useContext(SaleorContext);
 
-  if (!saleor) {
+  if (!saleorClient) {
     throw new Error(
       "Could not find saleor's apollo client in the context. Did you forget to wrap the root component in a <SaleorProvider>?"
     );
   }
 
-  const getHookData = (): Core[T] => {
-    return saleor.api[key];
+  const getHookData = (): SaleorClient[T] => {
+    return saleorClient[key];
   };
 
   return getHookData();
 };
 
-export const hookFactory = <T extends keyof Core>(query: T) => (): Core[T] =>
-  CreateSaleorHook(query);
+export const hookFactory = <T extends keyof SaleorClient>(
+  query: T
+) => (): SaleorClient[T] => CreateSaleorHook(query);

@@ -102,7 +102,7 @@ export const cache = new InMemoryCache({
   typePolicies,
 });
 
-export const createSaleorClient = (
+export const createApolloClient = (
   apiUrl: string
 ): ApolloClient<NormalizedCacheObject> => {
   client = new ApolloClient({

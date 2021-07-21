@@ -5,10 +5,6 @@ import {
   MutationTokenRefreshArgs,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
-export interface Config {
-  /** Api url used in client */
-  apiUrl: string;
-}
 
 export interface CoreInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -21,13 +17,13 @@ export interface CoreConfig {
 export type CoreMethodsProps = Pick<CoreInternals, "apolloClient"> &
   Pick<CoreConfig, "channel">;
 
-export interface Core {
+export interface SaleorClient {
   auth: AuthSDK;
   config: CoreConfig;
   _internal: CoreInternals;
 }
 
-export interface SaleorSDKConfig {
+export interface SaleorClientOpts {
   apiUrl: string;
   channel: string;
 }
