@@ -1679,7 +1679,7 @@ export type CheckoutLineInput = {
   variantId: Scalars['ID'];
 };
 
-/** Adds a checkout line to the existing checkout. */
+/** Adds a checkout line to the existing checkout.If line was already in checkout, its quantity will be increased. */
 export type CheckoutLinesAdd = {
   /** An updated checkout. */
   checkout?: Maybe<Checkout>;
@@ -2418,6 +2418,8 @@ export type CustomerEvent = Node & {
   type?: Maybe<CustomerEventsEnum>;
   /** User who performed the action. */
   user?: Maybe<User>;
+  /** App that performed the action. */
+  app?: Maybe<App>;
   /** Content of the event. */
   message?: Maybe<Scalars['String']>;
   /** Number of objects concerned by the event. */
@@ -4225,7 +4227,7 @@ export type Mutation = {
   checkoutEmailUpdate?: Maybe<CheckoutEmailUpdate>;
   /** Deletes a CheckoutLine. */
   checkoutLineDelete?: Maybe<CheckoutLineDelete>;
-  /** Adds a checkout line to the existing checkout. */
+  /** Adds a checkout line to the existing checkout.If line was already in checkout, its quantity will be increased. */
   checkoutLinesAdd?: Maybe<CheckoutLinesAdd>;
   /** Updates checkout line in the existing checkout. */
   checkoutLinesUpdate?: Maybe<CheckoutLinesUpdate>;
@@ -6156,6 +6158,8 @@ export type OrderEvent = Node & {
   type?: Maybe<OrderEventsEnum>;
   /** User who performed the action. */
   user?: Maybe<User>;
+  /** App that performed the action. */
+  app?: Maybe<App>;
   /** Content of the event. */
   message?: Maybe<Scalars['String']>;
   /** Email of the customer. */
@@ -7195,6 +7199,8 @@ export type PaymentRefund = {
 export type PaymentSource = {
   /** Payment gateway name. */
   gateway: Scalars['String'];
+  /** ID of stored payment method. */
+  paymentMethodId?: Maybe<Scalars['String']>;
   /** Stored credit card details if available. */
   creditCardInfo?: Maybe<CreditCard>;
 };
@@ -8522,8 +8528,6 @@ export type Query = {
   channels?: Maybe<Array<Channel>>;
   /** Look up a checkout by token and slug of channel. */
   checkout?: Maybe<Checkout>;
-  /** Look up a checkout line by ID. */
-  checkoutLine?: Maybe<CheckoutLine>;
   /** List of checkout lines. */
   checkoutLines?: Maybe<CheckoutLineCountableConnection>;
   /** List of checkouts. */
@@ -8718,11 +8722,6 @@ export type QueryChannelArgs = {
 
 export type QueryCheckoutArgs = {
   token?: Maybe<Scalars['UUID']>;
-};
-
-
-export type QueryCheckoutLineArgs = {
-  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -11280,7 +11279,7 @@ export type WeightUnitsEnum =
   | 'TONNE';
 
 
-export type _Entity = Address | User | Group | App | ProductVariant | Product | ProductType | Collection | Category | ProductMedia | ProductImage | PageType;
+export type _Entity = App | Address | User | Group | ProductVariant | Product | ProductType | Collection | Category | ProductMedia | ProductImage | PageType;
 
 export type _Service = {
   sdl?: Maybe<Scalars['String']>;
@@ -11310,16 +11309,13 @@ export type LoginMutation = { tokenCreate?: Maybe<(
   )> };
 
 export type RegisterMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
-  redirectUrl?: Maybe<Scalars['String']>;
-  channel: Scalars['String'];
+  input: AccountRegisterInput;
 }>;
 
 
 export type RegisterMutation = { accountRegister?: Maybe<(
     Pick<AccountRegister, 'requiresConfirmation'>
-    & { accountErrors: Array<Pick<AccountError, 'field' | 'message' | 'code'>> }
+    & { errors: Array<Pick<AccountError, 'field' | 'message' | 'code'>> }
   )> };
 
 export type RefreshTokenMutationVariables = Exact<{
@@ -11430,11 +11426,9 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterDocument = gql`
-    mutation register($email: String!, $password: String!, $redirectUrl: String, $channel: String!) {
-  accountRegister(
-    input: {email: $email, password: $password, redirectUrl: $redirectUrl, channel: $channel}
-  ) {
-    accountErrors {
+    mutation register($input: AccountRegisterInput!) {
+  accountRegister(input: $input) {
+    errors {
       field
       message
       code
@@ -11458,10 +11452,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * @example
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
- *      redirectUrl: // value for 'redirectUrl'
- *      channel: // value for 'channel'
+ *      input: // value for 'input'
  *   },
  * });
  */

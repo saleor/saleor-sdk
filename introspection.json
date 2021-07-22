@@ -11604,7 +11604,7 @@
       {
         "kind": "OBJECT",
         "name": "CheckoutLinesAdd",
-        "description": "Adds a checkout line to the existing checkout.",
+        "description": "Adds a checkout line to the existing checkout.If line was already in checkout, its quantity will be increased.",
         "fields": [
           {
             "name": "checkout",
@@ -16478,6 +16478,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "app",
+            "description": "App that performed the action.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "App",
               "ofType": null
             },
             "isDeprecated": false,
@@ -33953,7 +33965,7 @@
           },
           {
             "name": "checkoutLinesAdd",
-            "description": "Adds a checkout line to the existing checkout.",
+            "description": "Adds a checkout line to the existing checkout.If line was already in checkout, its quantity will be increased.",
             "args": [
               {
                 "name": "checkoutId",
@@ -39775,6 +39787,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "app",
+            "description": "App that performed the action.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "App",
               "ofType": null
             },
             "isDeprecated": false,
@@ -46921,6 +46945,18 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentMethodId",
+            "description": "ID of stored payment method.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -58892,31 +58928,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "CheckoutCountableConnection",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "checkoutLine",
-            "description": "Look up a checkout line by ID.",
-            "args": [
-              {
-                "name": "id",
-                "description": "ID of the checkout line.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "CheckoutLine",
               "ofType": null
             },
             "isDeprecated": false,
@@ -74182,6 +74193,11 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
+            "name": "App",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "Address",
             "ofType": null
           },
@@ -74193,11 +74209,6 @@
           {
             "kind": "OBJECT",
             "name": "Group",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "App",
             "ofType": null
           },
           {

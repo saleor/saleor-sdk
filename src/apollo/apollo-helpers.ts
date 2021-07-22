@@ -922,12 +922,13 @@ export type CustomerDeleteFieldPolicy = {
 	errors?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CustomerEventKeySpecifier = ('id' | 'date' | 'type' | 'user' | 'message' | 'count' | 'order' | 'orderLine' | CustomerEventKeySpecifier)[];
+export type CustomerEventKeySpecifier = ('id' | 'date' | 'type' | 'user' | 'app' | 'message' | 'count' | 'order' | 'orderLine' | CustomerEventKeySpecifier)[];
 export type CustomerEventFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	date?: FieldPolicy<any> | FieldReadFunction<any>,
 	type?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
+	app?: FieldPolicy<any> | FieldReadFunction<any>,
 	message?: FieldPolicy<any> | FieldReadFunction<any>,
 	count?: FieldPolicy<any> | FieldReadFunction<any>,
 	order?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -1947,12 +1948,13 @@ export type OrderErrorFieldPolicy = {
 	variants?: FieldPolicy<any> | FieldReadFunction<any>,
 	addressType?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type OrderEventKeySpecifier = ('id' | 'date' | 'type' | 'user' | 'message' | 'email' | 'emailType' | 'amount' | 'paymentId' | 'paymentGateway' | 'quantity' | 'composedId' | 'orderNumber' | 'invoiceNumber' | 'oversoldItems' | 'lines' | 'fulfilledItems' | 'warehouse' | 'transactionReference' | 'shippingCostsIncluded' | 'relatedOrder' | 'discount' | OrderEventKeySpecifier)[];
+export type OrderEventKeySpecifier = ('id' | 'date' | 'type' | 'user' | 'app' | 'message' | 'email' | 'emailType' | 'amount' | 'paymentId' | 'paymentGateway' | 'quantity' | 'composedId' | 'orderNumber' | 'invoiceNumber' | 'oversoldItems' | 'lines' | 'fulfilledItems' | 'warehouse' | 'transactionReference' | 'shippingCostsIncluded' | 'relatedOrder' | 'discount' | OrderEventKeySpecifier)[];
 export type OrderEventFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	date?: FieldPolicy<any> | FieldReadFunction<any>,
 	type?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
+	app?: FieldPolicy<any> | FieldReadFunction<any>,
 	message?: FieldPolicy<any> | FieldReadFunction<any>,
 	email?: FieldPolicy<any> | FieldReadFunction<any>,
 	emailType?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -2358,9 +2360,10 @@ export type PaymentRefundFieldPolicy = {
 	paymentErrors?: FieldPolicy<any> | FieldReadFunction<any>,
 	errors?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type PaymentSourceKeySpecifier = ('gateway' | 'creditCardInfo' | PaymentSourceKeySpecifier)[];
+export type PaymentSourceKeySpecifier = ('gateway' | 'paymentMethodId' | 'creditCardInfo' | PaymentSourceKeySpecifier)[];
 export type PaymentSourceFieldPolicy = {
 	gateway?: FieldPolicy<any> | FieldReadFunction<any>,
+	paymentMethodId?: FieldPolicy<any> | FieldReadFunction<any>,
 	creditCardInfo?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type PaymentVoidKeySpecifier = ('payment' | 'paymentErrors' | 'errors' | PaymentVoidKeySpecifier)[];
@@ -2840,7 +2843,7 @@ export type ProductVariantUpdateFieldPolicy = {
 	errors?: FieldPolicy<any> | FieldReadFunction<any>,
 	productVariant?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('_entities' | '_service' | 'address' | 'addressValidationRules' | 'app' | 'apps' | 'appsInstallations' | 'attribute' | 'attributes' | 'authenticated' | 'categories' | 'category' | 'channel' | 'channels' | 'checkout' | 'checkoutLine' | 'checkoutLines' | 'checkouts' | 'collection' | 'collections' | 'customers' | 'digitalContent' | 'digitalContents' | 'draftOrders' | 'exportFile' | 'exportFiles' | 'giftCard' | 'giftCards' | 'homepageEvents' | 'me' | 'menu' | 'menuItem' | 'menuItems' | 'menus' | 'order' | 'orderByToken' | 'orderSettings' | 'orders' | 'ordersTotal' | 'page' | 'pageType' | 'pageTypes' | 'pages' | 'payment' | 'payments' | 'permissionGroup' | 'permissionGroups' | 'plugin' | 'plugins' | 'product' | 'productType' | 'productTypes' | 'productVariant' | 'productVariants' | 'products' | 'reportProductSales' | 'sale' | 'sales' | 'shippingZone' | 'shippingZones' | 'shop' | 'staffUsers' | 'stock' | 'stocks' | 'taxTypes' | 'translation' | 'translations' | 'user' | 'voucher' | 'vouchers' | 'warehouse' | 'warehouses' | 'webhook' | 'webhookEvents' | 'webhookSamplePayload' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('_entities' | '_service' | 'address' | 'addressValidationRules' | 'app' | 'apps' | 'appsInstallations' | 'attribute' | 'attributes' | 'authenticated' | 'categories' | 'category' | 'channel' | 'channels' | 'checkout' | 'checkoutLines' | 'checkouts' | 'collection' | 'collections' | 'customers' | 'digitalContent' | 'digitalContents' | 'draftOrders' | 'exportFile' | 'exportFiles' | 'giftCard' | 'giftCards' | 'homepageEvents' | 'me' | 'menu' | 'menuItem' | 'menuItems' | 'menus' | 'order' | 'orderByToken' | 'orderSettings' | 'orders' | 'ordersTotal' | 'page' | 'pageType' | 'pageTypes' | 'pages' | 'payment' | 'payments' | 'permissionGroup' | 'permissionGroups' | 'plugin' | 'plugins' | 'product' | 'productType' | 'productTypes' | 'productVariant' | 'productVariants' | 'products' | 'reportProductSales' | 'sale' | 'sales' | 'shippingZone' | 'shippingZones' | 'shop' | 'staffUsers' | 'stock' | 'stocks' | 'taxTypes' | 'translation' | 'translations' | 'user' | 'voucher' | 'vouchers' | 'warehouse' | 'warehouses' | 'webhook' | 'webhookEvents' | 'webhookSamplePayload' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	_entities?: FieldPolicy<any> | FieldReadFunction<any>,
 	_service?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -2857,7 +2860,6 @@ export type QueryFieldPolicy = {
 	channel?: FieldPolicy<any> | FieldReadFunction<any>,
 	channels?: FieldPolicy<any> | FieldReadFunction<any>,
 	checkout?: FieldPolicy<any> | FieldReadFunction<any>,
-	checkoutLine?: FieldPolicy<any> | FieldReadFunction<any>,
 	checkoutLines?: FieldPolicy<any> | FieldReadFunction<any>,
 	checkouts?: FieldPolicy<any> | FieldReadFunction<any>,
 	collection?: FieldPolicy<any> | FieldReadFunction<any>,
