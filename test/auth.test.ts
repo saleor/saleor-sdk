@@ -2,6 +2,7 @@ import { setupRecording, setupAPI } from "../test/setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { USER } from "../src/apollo/queries";
 import { saleorAuthToken } from "../src/core/constants";
+import { removeBlacklistedVariables } from "./utils";
 
 describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
@@ -22,12 +23,9 @@ describe("auth api", () => {
         (el: Record<string, string>) =>
           !["authorization", "set-cookie"].includes(el.name)
       );
+      const filteredRequestJson = removeBlacklistedVariables(requestJson);
 
-      delete requestJson.variables?.email;
-      delete requestJson.variables?.password;
-      delete requestJson.variables?.redirectUrl;
-
-      recording.request.postData.text = JSON.stringify(requestJson);
+      recording.request.postData.text = JSON.stringify(filteredRequestJson);
       recording.request.headers = requestHeaders;
       recording.response.cookies = [];
       recording.response.headers = responseHeaders;
@@ -94,7 +92,7 @@ describe("auth api", () => {
       password: "register",
       redirectUrl: API_URI,
     });
-    expect(data?.accountRegister?.accountErrors).toHaveLength(0);
+    expect(data?.accountRegister?.errors).toHaveLength(0);
   });
 
   it("logout clears user cache", async () => {

@@ -7,6 +7,7 @@ import path from "path";
 
 import { API_URI } from "../src/config";
 import { SaleorClient, createSaleorClient } from "../src/core";
+import { removeBlacklistedVariables } from "./utils";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
@@ -33,30 +34,11 @@ export const setupRecording = (): Context =>
         query: false,
         username: false,
       },
-      body(body, req): string {
-        if (req.recordingName === "auth api/can register") {
-          // Custom rule which prevents polly recording on every run due to
-          // changing email address.
-          const json = JSON.parse(body);
-          delete json.variables.email;
-          delete json.variables.redirectUrl;
-          return JSON.stringify(json);
-        }
-        if (
-          [
-            "auth api/can login",
-            "auth api/login caches user data",
-            "auth api/refreshes the auth token",
-            "auth api/logout clears user cache",
-          ].includes(req.recordingName)
-        ) {
-          // Make auth tests recording to ignore changes in the user/password variables
-          const json = JSON.parse(body);
-          delete json.variables.email;
-          delete json.variables.password;
-          return JSON.stringify(json);
-        }
-        return body;
+      body(body): string {
+        const json = JSON.parse(body);
+        const filteredJson = removeBlacklistedVariables(json);
+
+        return JSON.stringify(filteredJson);
       },
     },
     persister: "fs",

@@ -80,8 +80,10 @@ export const auth = ({
     await client.mutate<RegisterMutation, RegisterMutationVariables>({
       mutation: REGISTER,
       variables: {
-        ...opts,
-        channel,
+        input: {
+          ...opts,
+          channel,
+        },
       },
     });
 
