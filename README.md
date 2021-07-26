@@ -117,12 +117,13 @@ if (data.tokenCreate.errors.length > 0) {
 
 ## Features
 
-We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `createSaleorClient()` or use React hooks, depending on [which setup do you select](#setup).
+We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `createSaleorClient()` or use React hooks:
 
-| API object | React hook                    | Description                                                                     |
-| :--------- | :---------------------------- | :------------------------------------------------------------------------------ |
-| `auth`     | `useAuth()`, `useAuthState()` | Handles user authentication and stores data about the currently signed in user. |
-| `user`     | `useUser()`                   | Handles user account methods.                                                   |
+| API object | React hook                    | Description                                                                      |
+| :--------- | :---------------------------- | :------------------------------------------------------------------------------- |
+| `getState()`| `useAuthState()`             | Returns current SDK state: `user`, `authenticated` and `token`.                  |
+| `auth`      | `useAuth()`                  | Handles user authentication methods.                                             |
+| `user`      | `useUser()`                  | Handles user account methods.                                                    |
 
 ## Local development
 
