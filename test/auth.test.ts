@@ -1,7 +1,7 @@
 import { setupRecording, setupAPI, setupPollyMiddleware } from "../test/setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
-import { USER } from "../src/apollo/queries";
 import { saleorAuthToken } from "../src/core/constants";
+import { readUserCache } from "./utils";
 
 describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
@@ -31,11 +31,10 @@ describe("auth api", () => {
       email: TEST_AUTH_EMAIL,
       password: TEST_AUTH_PASSWORD,
     });
-    const cache = client.readQuery({
-      query: USER,
-    });
-    expect(cache.me).not.toBeNull();
-    expect(cache.me).toBeDefined();
+    const cache = readUserCache(client);
+    expect(cache.user).toBeDefined();
+    expect(cache.token).toBeDefined();
+    expect(cache.authenticated).toBe(true);
   });
 
   it("will throw an error if login credentials are invalid", async () => {
@@ -53,14 +52,12 @@ describe("auth api", () => {
       email: TEST_AUTH_EMAIL,
       password: TEST_AUTH_PASSWORD,
     });
-    const cache = client.readQuery({
-      query: USER,
-    });
-    const previousToken = localStorage.getItem(saleorAuthToken);
+    const cache = readUserCache(client);
+    const previousToken = cache.token;
     expect(cache.authenticated).toBe(true);
 
     const { data } = await saleor.auth.refreshToken();
-    const newToken = localStorage.getItem(saleorAuthToken);
+    const newToken = readUserCache(client).token;
     expect(cache.authenticated).toBe(true);
     expect(data?.tokenRefresh?.token === newToken);
     expect(newToken !== previousToken);
@@ -81,10 +78,10 @@ describe("auth api", () => {
       password: TEST_AUTH_PASSWORD,
     });
     await saleor.auth.logout();
-    const cache = client.readQuery({
-      query: USER,
-    });
-    expect(cache).toBeNull();
+    const cache = readUserCache(client);
+    expect(cache.user).toBeFalsy();
+    expect(cache.authenticated).toBe(false);
+    expect(cache.token).toBeNull();
     expect(localStorage.getItem(saleorAuthToken)).toBeNull();
   });
 

@@ -8,7 +8,6 @@ import {
   SET_PASSWORD,
   VERIFY_TOKEN,
 } from "../apollo/mutations";
-import { USER } from "../apollo/queries";
 import {
   LoginMutation,
   LoginMutationVariables,
@@ -76,18 +75,6 @@ export const auth = ({
     if (result.data?.tokenCreate?.token) {
       localStorage.setItem("saleorAuthToken", result.data.tokenCreate.token);
     }
-
-    // NOTE: manual writing result of LOGIN mutation to cache as UserDetails
-    // This can probably be done other way because Apollo should be able to handle this
-    client.writeQuery({
-      query: USER,
-      data: {
-        me: {
-          ...result?.data?.tokenCreate?.user,
-        },
-        authenticated: !!result?.data?.tokenCreate?.user?.id,
-      },
-    });
 
     return result;
   };

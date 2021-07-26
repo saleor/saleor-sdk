@@ -1,17 +1,10 @@
 import { USER } from "../../apollo/queries";
 import {
-  Maybe,
-  UserFragment,
   UserDetailsQuery,
   UserDetailsQueryVariables,
 } from "../../apollo/types";
 import { hookFactory } from "../helpers/hookFactory";
 import { hookStateFactory } from "../helpers/hookStateFactory";
-
-type AuthState = {
-  user: Maybe<UserFragment> | undefined;
-  authenticated: boolean | undefined;
-};
 
 /**
  * React hook to get authorization methods
@@ -25,11 +18,17 @@ export const useAuth = hookFactory("auth");
  *
  * @returns Object with user's data
  */
-export const useAuthState = (): AuthState => {
+export const useAuthState = (): UserDetailsQuery => {
   const { data } = hookStateFactory<
     UserDetailsQuery,
     UserDetailsQueryVariables
   >(USER);
 
-  return { user: data?.me, authenticated: !!data?.authenticated };
+  if (!data) {
+    throw new Error(
+      "Cache query result is undefined. Invalid cache configuration."
+    );
+  }
+
+  return data;
 };

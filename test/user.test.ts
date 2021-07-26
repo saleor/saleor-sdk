@@ -1,8 +1,7 @@
 import { setupRecording, setupAPI, setupPollyMiddleware } from "./setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
-import { USER } from "../src/apollo/queries";
 import { CountryCode } from "../src/apollo/types";
-import { saleorAuthToken } from "../src/core/constants";
+import { readUserCache } from "./utils";
 
 describe("user api", () => {
   const context = setupRecording();
@@ -99,14 +98,12 @@ describe("user api", () => {
           firstName: newTestName,
         },
       });
-      const updatedCachedUser = client.readQuery({
-        query: USER,
-      });
+      const updatedCachedUser = readUserCache(client);
       if (data?.accountAddressUpdate?.user?.addresses?.length) {
         expect(
           data?.accountAddressUpdate?.user?.addresses[index]?.firstName
         ).toBe(newTestName);
-        expect(updatedCachedUser?.me?.addresses[index]?.firstName).toBe(
+        expect(updatedCachedUser?.user?.addresses?.[index]?.firstName).toBe(
           newTestName
         );
       }
@@ -160,27 +157,10 @@ describe("user api", () => {
       const addressId =
         newAddress?.accountAddressCreate?.user?.addresses[index].id;
       const { data } = await saleor.user.deleteAccountAddress(addressId);
-      const updatedCachedUser = client.readQuery({
-        query: USER,
-      });
+      const updatedCachedUser = readUserCache(client);
       expect(data?.accountAddressDelete?.user?.addresses).toHaveLength(index);
-      expect(updatedCachedUser?.me?.addresses).toHaveLength(index);
+      expect(updatedCachedUser?.user?.addresses).toHaveLength(index);
       expect(data?.accountAddressDelete?.errors).toHaveLength(0);
-    }
-  });
-
-  it("deletes user account", async () => {
-    const cache = client.readQuery({
-      query: USER,
-    });
-    if (cache.me.tokenCreate?.token) {
-      const { data } = await saleor.user.accountDelete(
-        cache.me.tokenCreate.token
-      );
-      expect(data?.accountDelete?.user).toBeNull();
-      expect(data?.accountDelete?.errors).toHaveLength(0);
-      expect(cache).toBeNull();
-      expect(localStorage.getItem(saleorAuthToken)).toBeNull();
     }
   });
 });
