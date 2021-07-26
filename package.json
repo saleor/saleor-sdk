@@ -1,6 +1,21 @@
 {
   "version": "0.1.0",
   "license": "MIT",
+  "homepage": "https://saleor.io/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mirumee/saleor-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mirumee/saleor-sdk/issues"
+  },
+  "keywords": [
+    "saleor",
+    "sdk",
+    "@saleor/sdk",
+    "react",
+    "typescript"
+  ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -15,11 +30,12 @@
     "build": "npm run build-types && tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint src test",
-    "prepare": "tsdx build && husky install",
+    "prepare": "npm run build && husky install",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "build-types": "graphql-codegen --config codegen.yml",
-    "download-schema": "graphql-codegen --config codegen-introspection.yml"
+    "download-schema": "graphql-codegen --config codegen-introspection.yml",
+    "release": "np"
   },
   "peerDependencies": {
     "@apollo/client": "^3.3.19",
@@ -37,9 +53,17 @@
     "singleQuote": false,
     "trailingComma": "es5"
   },
+  "np": {
+    "yarn": false
+  },
   "name": "@saleor/sdk",
-  "author": "Saleor",
+  "author": "Saleor Commerce",
+  "description": "Saleor TS SDK",
   "module": "dist/sdk.esm.js",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "size-limit": [
     {
       "path": "dist/sdk.cjs.production.min.js",
@@ -73,6 +97,7 @@
     "graphql": "^15.5.1",
     "husky": "^6.0.0",
     "jest": "^27.0.5",
+    "np": "^7.5.0",
     "omit-deep-lodash": "^1.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
