@@ -1,5 +1,6 @@
 import { auth } from "./auth";
 import { user } from "./user";
+import { getState } from "./state";
 import { createApolloClient } from "../apollo";
 import { SaleorClient, SaleorClientOpts } from "./types";
 
@@ -24,5 +25,6 @@ export const createSaleorClient = ({
     user: userSDK,
     config: { channel: _channel, setChannel },
     _internal: { apolloClient },
+    getState: () => getState(apolloClient),
   };
 };

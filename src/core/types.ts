@@ -14,6 +14,7 @@ import {
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
 import { UserSDK } from "./user";
+import { State } from "./state";
 
 export interface CoreInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -27,6 +28,7 @@ export interface SaleorClient {
   user: UserSDK;
   config: CoreConfig;
   _internal: CoreInternals;
+  getState(): State;
 }
 
 export interface SaleorClientOpts {
