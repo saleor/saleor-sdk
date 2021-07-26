@@ -18,7 +18,9 @@ export const removeBlacklistedVariables = (obj: {}): {} => {
   return omitDeep(obj, ...variablesBlacklist);
 };
 
-export const readUserCache = (client: ApolloClient<any>) =>
+export const readUserCache = (
+  client: ApolloClient<any>
+): UserDetailsQuery | null =>
   client.readQuery<UserDetailsQuery>({
     query: USER,
   });

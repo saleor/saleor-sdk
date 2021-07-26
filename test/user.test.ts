@@ -1,5 +1,5 @@
 import { setupRecording, setupAPI, setupPollyMiddleware } from "./setup";
-import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
+import { API_URI, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
 import { readUserCache } from "./utils";
 
@@ -14,30 +14,17 @@ describe("user api", () => {
     postalCode: "12-345",
     country: "PL" as CountryCode,
   };
-  let testUserToken: string;
 
-  beforeAll(async () => {
-    const email = `register+${Date.now().toString()}@example.com`;
-    const password = "register";
+  // beforeAll(async () => {
+  //   const email = `register+${Date.now().toString()}@example.com`;
+  //   const password = "register";
 
-    await saleor.auth.register({
-      email,
-      password,
-      redirectUrl: API_URI,
-    });
-    const { data } = await saleor.auth.login({
-      email: TEST_AUTH_EMAIL,
-      password: TEST_AUTH_PASSWORD,
-    });
-    if (data?.tokenCreate?.token) {
-      testUserToken = data?.tokenCreate?.token;
-    }
-  });
-
-  afterAll(async () => {
-    // Delete test user account if still exists
-    await saleor.user.accountDelete(testUserToken);
-  });
+  //   await saleor.auth.register({
+  //     email,
+  //     password,
+  //     redirectUrl: API_URI,
+  //   });
+  // });
 
   beforeEach(async () => {
     const { server } = context.polly;
