@@ -1,5 +1,8 @@
-import { setupRecording, setupAPI, setupPollyMiddleware } from "./setup";
-import { readUserCache } from "./utils";
+import {
+  setupRecording,
+  setupSaleorClient,
+  setupPollyMiddleware,
+} from "./setup";
 import { saleorAuthToken } from "../src/core/constants";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 
@@ -8,7 +11,7 @@ describe("auth api", () => {
   // Thanks to that, changing user email and password will not trigger
   // test to fail.
   const context = setupRecording();
-  const { client, saleor } = setupAPI();
+  const saleor = setupSaleorClient();
 
   beforeEach(() => {
     const { server } = context.polly;
@@ -31,10 +34,10 @@ describe("auth api", () => {
       email: TEST_AUTH_EMAIL,
       password: TEST_AUTH_PASSWORD,
     });
-    const cache = readUserCache(client);
-    expect(cache?.user).toBeDefined();
-    expect(cache?.token).toBeDefined();
-    expect(cache?.authenticated).toBe(true);
+    const state = saleor.getState();
+    expect(state?.user).toBeDefined();
+    expect(state?.token).toBeDefined();
+    expect(state?.authenticated).toBe(true);
   });
 
   it("will throw an error if login credentials are invalid", async () => {
@@ -52,13 +55,13 @@ describe("auth api", () => {
       email: TEST_AUTH_EMAIL,
       password: TEST_AUTH_PASSWORD,
     });
-    const cache = readUserCache(client);
-    const previousToken = cache?.token;
-    expect(cache?.authenticated).toBe(true);
+    const state = saleor.getState();
+    const previousToken = state?.token;
+    expect(state?.authenticated).toBe(true);
 
     const { data } = await saleor.auth.refreshToken();
-    const newToken = readUserCache(client)?.token;
-    expect(cache?.authenticated).toBe(true);
+    const newToken = saleor.getState()?.token;
+    expect(state?.authenticated).toBe(true);
     expect(data?.tokenRefresh?.token === newToken);
     expect(newToken !== previousToken);
   });
@@ -78,10 +81,10 @@ describe("auth api", () => {
       password: TEST_AUTH_PASSWORD,
     });
     await saleor.auth.logout();
-    const cache = readUserCache(client);
-    expect(cache?.user).toBeFalsy();
-    expect(cache?.authenticated).toBe(false);
-    expect(cache?.token).toBeNull();
+    const state = saleor.getState();
+    expect(state?.user).toBeFalsy();
+    expect(state?.authenticated).toBe(false);
+    expect(state?.token).toBeNull();
     expect(localStorage.getItem(saleorAuthToken)).toBeNull();
   });
 

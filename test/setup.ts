@@ -1,4 +1,3 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { Context, setupPolly } from "setup-polly-jest";
 import { Polly, PollyServer } from "@pollyjs/core";
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
@@ -61,15 +60,11 @@ export const setupRecording = (): Context =>
     recordIfMissing: true,
   });
 
-export const setupAPI = (): {
-  apiUrl: string;
-  client: ApolloClient<NormalizedCacheObject>;
-  saleor: SaleorClient;
-} => {
+export const setupSaleorClient = (): SaleorClient => {
   const saleor = createSaleorClient({
     apiUrl: API_URI,
     channel: "default-channel",
   });
 
-  return { apiUrl: API_URI, client: saleor._internal.apolloClient, saleor };
+  return saleor;
 };

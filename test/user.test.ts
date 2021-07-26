@@ -1,11 +1,14 @@
-import { setupRecording, setupAPI, setupPollyMiddleware } from "./setup";
+import {
+  setupRecording,
+  setupSaleorClient,
+  setupPollyMiddleware,
+} from "./setup";
 import { API_URI, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
-import { readUserCache } from "./utils";
 
 describe("user api", () => {
   const context = setupRecording();
-  const { client, saleor } = setupAPI();
+  const saleor = setupSaleorClient();
   const testAddress = {
     firstName: "Test name",
     lastName: "Test lastname",
@@ -85,14 +88,12 @@ describe("user api", () => {
           firstName: newTestName,
         },
       });
-      const updatedCachedUser = readUserCache(client);
+      const state = saleor.getState();
       if (data?.accountAddressUpdate?.user?.addresses?.length) {
         expect(
           data?.accountAddressUpdate?.user?.addresses[index]?.firstName
         ).toBe(newTestName);
-        expect(updatedCachedUser?.user?.addresses?.[index]?.firstName).toBe(
-          newTestName
-        );
+        expect(state?.user?.addresses?.[index]?.firstName).toBe(newTestName);
       }
       expect(data?.accountAddressUpdate?.errors).toHaveLength(0);
     }
@@ -144,9 +145,9 @@ describe("user api", () => {
       const addressId =
         newAddress?.accountAddressCreate?.user?.addresses[index].id;
       const { data } = await saleor.user.deleteAccountAddress(addressId);
-      const updatedCachedUser = readUserCache(client);
+      const state = saleor.getState();
       expect(data?.accountAddressDelete?.user?.addresses).toHaveLength(index);
-      expect(updatedCachedUser?.user?.addresses).toHaveLength(index);
+      expect(state?.user?.addresses).toHaveLength(index);
       expect(data?.accountAddressDelete?.errors).toHaveLength(0);
     }
   });
