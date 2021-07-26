@@ -8,9 +8,10 @@ import {
 export const USER = gql`
   ${userFragment}
   query UserDetails {
-    me {
+    user: me {
       ...UserFragment
     }
+    token @client
     authenticated @client
   }
 `;

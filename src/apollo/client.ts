@@ -5,6 +5,7 @@ import {
   fromPromise,
   ApolloLink,
   NormalizedCacheObject,
+  Reference,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
@@ -87,12 +88,45 @@ const createLink = (uri: string): ApolloLink => {
 };
 
 const typePolicies: TypedTypePolicies = {
-  UserDetails: {
+  Query: {
     fields: {
       authenticated: {
-        read(_, { readField }): boolean {
-          return !!readField("id");
+        read(_, { readField, toReference }): boolean {
+          return !!readField(
+            "id",
+            toReference({
+              __typename: "User",
+            })
+          );
         },
+      },
+      me: {
+        read(_, { toReference, canRead }): Reference | undefined | null {
+          const ref = toReference({
+            __typename: "User",
+          });
+
+          return canRead(ref) ? ref : null;
+        },
+      },
+      token: {
+        read(): string | null {
+          return localStorage.getItem(saleorAuthToken);
+        },
+      },
+    },
+  },
+  User: {
+    /**
+     * IMPORTANT
+     * This works as long as we have 1 User cache object which is the current logged in User.
+     * If the client should ever fetch additional Users, this should be removed
+     * and the login methods (token create or verify) should be responsible for writing USER query cache manually.
+     */
+    keyFields: [],
+    fields: {
+      addresses: {
+        merge: false,
       },
     },
   },
