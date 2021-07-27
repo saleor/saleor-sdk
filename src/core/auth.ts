@@ -24,8 +24,8 @@ import {
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
 } from "../apollo/types";
-import { CoreMethodsProps } from "./types";
-import { saleorAuthToken } from "./constants";
+import { SaleorClientMethodsProps } from "./types";
+import { SALEOR_AUTH_TOKEN } from "./constants";
 import {
   ChangeUserPasswordOpts,
   LoginOpts,
@@ -57,7 +57,7 @@ export interface AuthSDK {
 export const auth = ({
   apolloClient: client,
   channel,
-}: CoreMethodsProps): AuthSDK => {
+}: SaleorClientMethodsProps): AuthSDK => {
   /**
    * Authenticates user with email and password.
    *
@@ -73,7 +73,7 @@ export const auth = ({
     });
 
     if (result.data?.tokenCreate?.token) {
-      localStorage.setItem("saleorAuthToken", result.data.tokenCreate.token);
+      localStorage.setItem(SALEOR_AUTH_TOKEN, result.data.tokenCreate.token);
     }
 
     return result;
@@ -85,7 +85,7 @@ export const auth = ({
    * @returns Apollo's native resetStore method.
    */
   const logout: AuthSDK["logout"] = () => {
-    localStorage.removeItem(saleorAuthToken);
+    localStorage.removeItem(SALEOR_AUTH_TOKEN);
     return client.resetStore();
   };
 
@@ -124,7 +124,7 @@ export const auth = ({
     });
 
     if (result.data?.tokenRefresh?.token) {
-      localStorage.setItem("saleorAuthToken", result.data.tokenRefresh.token);
+      localStorage.setItem(SALEOR_AUTH_TOKEN, result.data.tokenRefresh.token);
     } else {
       if (client) {
         client.resetStore();

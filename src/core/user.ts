@@ -31,7 +31,7 @@ import {
   UpdateAccountAddressMutationVariables,
 } from "../apollo/types";
 import { auth } from "./auth";
-import { CoreMethodsProps } from "./types";
+import { SaleorClientMethodsProps } from "./types";
 import {
   CreateAccountAddressOpts,
   RequestEmailChangeOpts,
@@ -71,7 +71,7 @@ export interface UserSDK {
 export const user = ({
   apolloClient: client,
   channel,
-}: CoreMethodsProps): UserSDK => {
+}: SaleorClientMethodsProps): UserSDK => {
   const _auth = auth({ apolloClient: client, channel });
 
   /**

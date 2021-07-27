@@ -49,12 +49,13 @@ export const REFRESH_TOKEN = gql`
 
 export const VERIFY_TOKEN = gql`
   ${accountErrorFragment}
+  ${userFragment}
   mutation verifyToken($token: String!) {
     tokenVerify(token: $token) {
       isValid
       payload
       user {
-        id
+        ...UserFragment
       }
       errors {
         ...AccountErrorFragment

@@ -1,12 +1,14 @@
 import { auth } from "./auth";
 import { user } from "./user";
-import { getState } from "./state";
+import { getState, State } from "./state";
 import { createApolloClient } from "../apollo";
 import { SaleorClient, SaleorClientOpts } from "./types";
+import { SALEOR_AUTH_TOKEN } from "./constants";
 
 export const createSaleorClient = ({
   apiUrl,
   channel,
+  autologin = true,
 }: SaleorClientOpts): SaleorClient => {
   let _channel = channel;
 
@@ -20,11 +22,19 @@ export const createSaleorClient = ({
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);
 
+  if (autologin) {
+    const token = localStorage.getItem(SALEOR_AUTH_TOKEN);
+
+    if (token) {
+      authSDK.verifyToken(token);
+    }
+  }
+
   return {
     auth: authSDK,
     user: userSDK,
     config: { channel: _channel, setChannel },
     _internal: { apolloClient },
-    getState: () => getState(apolloClient),
+    getState: (): State => getState(apolloClient),
   };
 };

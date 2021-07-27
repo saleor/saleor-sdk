@@ -16,28 +16,32 @@ import { AuthSDK } from "./auth";
 import { UserSDK } from "./user";
 import { State } from "./state";
 
-export interface CoreInternals {
+export interface SaleorClientInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
 }
-export interface CoreConfig {
+export interface SaleorClientConfig {
   channel: string;
   setChannel(channel: string): string;
 }
 export interface SaleorClient {
   auth: AuthSDK;
   user: UserSDK;
-  config: CoreConfig;
-  _internal: CoreInternals;
+  config: SaleorClientConfig;
+  _internal: SaleorClientInternals;
   getState(): State;
 }
 
 export interface SaleorClientOpts {
   apiUrl: string;
   channel: string;
+  autologin?: boolean;
 }
 
-export type CoreMethodsProps = Pick<CoreInternals, "apolloClient"> &
-  Pick<CoreConfig, "channel">;
+export type SaleorClientMethodsProps = Pick<
+  SaleorClientInternals,
+  "apolloClient"
+> &
+  Pick<SaleorClientConfig, "channel">;
 
 export type CreateAccountAddressOpts = MutationAccountAddressCreateArgs;
 export type ChangeUserPasswordOpts = MutationPasswordChangeArgs;
