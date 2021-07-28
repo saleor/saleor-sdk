@@ -4,6 +4,7 @@ import { getState, State } from "./state";
 import { createApolloClient } from "../apollo";
 import { SaleorClient, SaleorClientOpts } from "./types";
 import { SALEOR_AUTH_TOKEN } from "./constants";
+import { LOCAL_STORAGE_EXISTS } from "../constants";
 
 export const createSaleorClient = ({
   apiUrl,
@@ -22,7 +23,7 @@ export const createSaleorClient = ({
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);
 
-  if (autologin) {
+  if (autologin && LOCAL_STORAGE_EXISTS) {
     const token = localStorage.getItem(SALEOR_AUTH_TOKEN);
 
     if (token) {
