@@ -71,10 +71,8 @@ export interface UserSDK {
 export const user = ({
   apolloClient: client,
   channel,
-  setToken,
-  getToken,
 }: SaleorClientMethodsProps): UserSDK => {
-  const _auth = auth({ apolloClient: client, channel, setToken, getToken });
+  const _auth = auth({ apolloClient: client, channel });
 
   /**
    * Remove user account.

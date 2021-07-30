@@ -33,6 +33,7 @@ import {
   RequestPasswordResetOpts,
   SetPasswordOpts,
 } from "./types";
+import { storage } from "./storage";
 
 export interface AuthSDK {
   changePassword: (
@@ -56,7 +57,6 @@ export interface AuthSDK {
 export const auth = ({
   apolloClient: client,
   channel,
-  setToken,
 }: SaleorClientMethodsProps): AuthSDK => {
   /**
    * Authenticates user with email and password.
@@ -73,7 +73,7 @@ export const auth = ({
     });
 
     if (result.data?.tokenCreate?.token) {
-      setToken(result.data.tokenCreate.token);
+      storage.setToken(result.data.tokenCreate.token);
     }
 
     return result;
@@ -85,7 +85,7 @@ export const auth = ({
    * @returns Apollo's native resetStore method.
    */
   const logout: AuthSDK["logout"] = () => {
-    setToken(null);
+    storage.setToken(null);
     return client.resetStore();
   };
 
@@ -124,7 +124,7 @@ export const auth = ({
     });
 
     if (result.data?.tokenRefresh?.token) {
-      setToken(result.data.tokenRefresh.token);
+      storage.setToken(result.data.tokenRefresh.token);
     } else {
       if (client) {
         client.resetStore();
