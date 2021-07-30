@@ -10,15 +10,15 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import fetch from "cross-fetch";
-import { SALEOR_AUTH_TOKEN } from "../core/constants";
 import { TypedTypePolicies } from "./apollo-helpers";
 import { REFRESH_TOKEN } from "./mutations";
 import { RefreshTokenMutation, RefreshTokenMutationVariables } from "./types";
+import { storage } from "../core/storage";
 
 let client: ApolloClient<NormalizedCacheObject> | undefined;
 
 export const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(SALEOR_AUTH_TOKEN);
+  const token = storage.getToken();
 
   return {
     headers: {
@@ -43,10 +43,7 @@ export const errorLink = onError(
             })
             .then(({ data }) => {
               if (data?.tokenRefresh?.token) {
-                localStorage.setItem(
-                  SALEOR_AUTH_TOKEN,
-                  data.tokenRefresh.token
-                );
+                storage.setToken(data.tokenRefresh.token);
                 const oldHeaders = operation.getContext().headers;
                 operation.setContext({
                   headers: {
@@ -111,7 +108,7 @@ const typePolicies: TypedTypePolicies = {
       },
       token: {
         read(): string | null {
-          return localStorage.getItem(SALEOR_AUTH_TOKEN);
+          return storage.getToken();
         },
       },
     },

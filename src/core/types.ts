@@ -18,8 +18,6 @@ import { State } from "./state";
 
 export interface SaleorClientInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
-  setToken(token: string | null): void;
-  getToken(): string | null;
 }
 export interface SaleorClientConfig {
   channel: string;

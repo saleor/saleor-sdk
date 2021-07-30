@@ -3,11 +3,12 @@ import { SALEOR_AUTH_TOKEN } from "./constants";
 
 export let storage: {
   setToken: (token: string | null) => void;
-  getToken: () => void;
+  getToken: () => string | null;
+  token: string | null;
 };
 
-export const createStorage = (autologinEnabled: boolean) => {
-  let _token: string | null;
+export const createStorage = (autologinEnabled: boolean): void => {
+  let _token: string | null = null;
 
   const setToken = (token: string | null): void => {
     if (autologinEnabled && LOCAL_STORAGE_EXISTS) {
@@ -28,7 +29,7 @@ export const createStorage = (autologinEnabled: boolean) => {
     return _token;
   };
 
-  storage = { setToken, getToken };
+  storage = { setToken, getToken, token: _token };
 
   // TODO: Uncomment when we are able to pass storage to createSaleorClient
   // return { setToken, getToken };

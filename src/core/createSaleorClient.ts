@@ -4,7 +4,7 @@ import { getState, State } from "./state";
 import { createApolloClient } from "../apollo";
 import { SaleorClient, SaleorClientOpts } from "./types";
 
-import { createStorage } from "./storage";
+import { createStorage, storage } from "./storage";
 
 export const createSaleorClient = ({
   apiUrl,
@@ -18,13 +18,18 @@ export const createSaleorClient = ({
     return _channel;
   };
 
+  createStorage(autologin);
   const apolloClient = createApolloClient(apiUrl);
   const coreInternals = { apolloClient, channel: _channel };
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);
 
   if (autologin) {
-    createStorage(autologin);
+    const token = storage.getToken();
+
+    if (token) {
+      authSDK.verifyToken(token);
+    }
   }
 
   return {
