@@ -11337,7 +11337,7 @@ export type VerifyTokenMutationVariables = Exact<{
 
 export type VerifyTokenMutation = { tokenVerify?: Maybe<(
     Pick<VerifyToken, 'isValid' | 'payload'>
-    & { user?: Maybe<Pick<User, 'id'>>, errors: Array<AccountErrorFragment> }
+    & { user?: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type PasswordChangeMutationVariables = Exact<{
@@ -11616,14 +11616,15 @@ export const VerifyTokenDocument = gql`
     isValid
     payload
     user {
-      id
+      ...UserFragment
     }
     errors {
       ...AccountErrorFragment
     }
   }
 }
-    ${AccountErrorFragmentDoc}`;
+    ${UserFragmentDoc}
+${AccountErrorFragmentDoc}`;
 export type VerifyTokenMutationFn = Apollo.MutationFunction<VerifyTokenMutation, VerifyTokenMutationVariables>;
 
 /**

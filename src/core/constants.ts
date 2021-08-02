@@ -1,1 +1,1 @@
-export const saleorAuthToken = "saleorAuthToken";
+export const SALEOR_AUTH_TOKEN = "saleorAuthToken";

@@ -3,8 +3,8 @@ import {
   setupSaleorClient,
   setupPollyMiddleware,
 } from "./setup";
-import { saleorAuthToken } from "../src/core/constants";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
+import { storage } from "../src/core/storage";
 
 describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
@@ -26,7 +26,7 @@ describe("auth api", () => {
     expect(data?.tokenCreate?.user?.id).toBeDefined();
     expect(data?.tokenCreate?.token).toBeDefined();
     expect(data?.tokenCreate?.errors).toHaveLength(0);
-    expect(localStorage.getItem(saleorAuthToken)).not.toBeNull();
+    expect(storage.getToken()).not.toBeNull();
   });
 
   it("login caches user data", async () => {
@@ -85,7 +85,7 @@ describe("auth api", () => {
     expect(state?.user).toBeFalsy();
     expect(state?.authenticated).toBe(false);
     expect(state?.token).toBeNull();
-    expect(localStorage.getItem(saleorAuthToken)).toBeNull();
+    expect(storage.getToken()).toBeNull();
   });
 
   it("verifies if token is valid", async () => {
