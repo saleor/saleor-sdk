@@ -2,8 +2,8 @@ import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CHANGE_USER_PASSWORD,
   LOGIN,
-  REFRESH_TOKEN,
   REQUEST_PASSWORD_RESET,
+  REFRESH_TOKEN,
   REGISTER,
   SET_PASSWORD,
   VERIFY_TOKEN,
@@ -108,8 +108,8 @@ export const auth = ({
     });
 
   /**
-   * Refresh JWT token. If it fails it will try to take refreshToken
-   * from the http-only cookie refreshToken.
+   * Refresh JWT token. Mutation will try to take refreshToken from the function's arguments.
+   * If it fails, it will try to use refreshToken from the http-only cookie called refreshToken.
    *
    * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
    * @returns Authorization token.
@@ -120,15 +120,16 @@ export const auth = ({
       RefreshTokenMutationVariables
     >({
       mutation: REFRESH_TOKEN,
-      variables: { ...opts },
+      variables: {
+        csrfToken: opts?.csrfToken,
+        refreshToken: opts?.refreshToken,
+      },
     });
-
     if (result.data?.tokenRefresh?.token) {
       storage.setToken(result.data.tokenRefresh.token);
     } else {
-      if (client) {
-        client.resetStore();
-      }
+      storage.setToken(null);
+      client.resetStore();
     }
 
     return result;
@@ -148,6 +149,10 @@ export const auth = ({
       mutation: VERIFY_TOKEN,
       variables: { token },
     });
+
+    if (!result.data?.tokenVerify?.isValid) {
+      storage.setToken(null);
+    }
 
     return result;
   };
