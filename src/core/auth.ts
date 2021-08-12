@@ -84,6 +84,7 @@ export const auth = ({
         },
       });
     }
+    loadingState[key] = true;
 
     const result = await mutation;
 
