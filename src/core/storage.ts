@@ -5,10 +5,12 @@ export let storage: {
   setToken: (token: string | null) => void;
   getToken: () => string | null;
   token: string | null;
+  loading: boolean | null;
 };
 
 export const createStorage = (autologinEnabled: boolean): void => {
   let _token: string | null = null;
+  const loading = null;
 
   const setToken = (token: string | null): void => {
     if (autologinEnabled && LOCAL_STORAGE_EXISTS) {
@@ -29,7 +31,7 @@ export const createStorage = (autologinEnabled: boolean): void => {
     return _token;
   };
 
-  storage = { setToken, getToken, token: _token };
+  storage = { setToken, getToken, token: _token, loading };
 
   // TODO: Uncomment when we are able to pass storage to createSaleorClient
   // return { setToken, getToken };
