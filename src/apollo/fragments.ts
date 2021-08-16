@@ -17,6 +17,7 @@ export const addressFragment = gql`
     streetAddress1
     streetAddress2
     city
+    cityArea
     postalCode
     country {
       code
@@ -37,6 +38,10 @@ export const userFragment = gql`
     firstName
     lastName
     isStaff
+    metadata {
+      key
+      value
+    }
     defaultShippingAddress {
       ...AddressFragment
     }
