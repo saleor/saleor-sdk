@@ -11289,13 +11289,13 @@ export type _Service = {
 export type AccountErrorFragment = Pick<AccountError, 'code' | 'field' | 'message'>;
 
 export type AddressFragment = (
-  Pick<Address, 'id' | 'firstName' | 'lastName' | 'companyName' | 'streetAddress1' | 'streetAddress2' | 'city' | 'postalCode' | 'countryArea' | 'phone' | 'isDefaultBillingAddress' | 'isDefaultShippingAddress'>
+  Pick<Address, 'id' | 'firstName' | 'lastName' | 'companyName' | 'streetAddress1' | 'streetAddress2' | 'city' | 'cityArea' | 'postalCode' | 'countryArea' | 'phone' | 'isDefaultBillingAddress' | 'isDefaultShippingAddress'>
   & { country: Pick<CountryDisplay, 'code' | 'country'> }
 );
 
 export type UserFragment = (
   Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>
-  & { defaultShippingAddress?: Maybe<AddressFragment>, defaultBillingAddress?: Maybe<AddressFragment>, addresses?: Maybe<Array<Maybe<AddressFragment>>> }
+  & { metadata: Array<Maybe<Pick<MetadataItem, 'key' | 'value'>>>, defaultShippingAddress?: Maybe<AddressFragment>, defaultBillingAddress?: Maybe<AddressFragment>, addresses?: Maybe<Array<Maybe<AddressFragment>>> }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -11428,7 +11428,7 @@ export type CreateAccountAddressMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountAddressMutation = { accountAddressCreate?: Maybe<{ errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }> };
+export type CreateAccountAddressMutation = { accountAddressCreate?: Maybe<{ address?: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }> };
 
 export type UpdateAccountAddressMutationVariables = Exact<{
   input: AddressInput;
@@ -11436,7 +11436,7 @@ export type UpdateAccountAddressMutationVariables = Exact<{
 }>;
 
 
-export type UpdateAccountAddressMutation = { accountAddressUpdate?: Maybe<{ errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }> };
+export type UpdateAccountAddressMutation = { accountAddressUpdate?: Maybe<{ address?: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }> };
 
 export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -11462,6 +11462,7 @@ export const AddressFragmentDoc = gql`
   streetAddress1
   streetAddress2
   city
+  cityArea
   postalCode
   country {
     code
@@ -11480,6 +11481,10 @@ export const UserFragmentDoc = gql`
   firstName
   lastName
   isStaff
+  metadata {
+    key
+    value
+  }
   defaultShippingAddress {
     ...AddressFragment
   }
@@ -12048,6 +12053,9 @@ export type DeleteAccountAddressMutationOptions = Apollo.BaseMutationOptions<Del
 export const CreateAccountAddressDocument = gql`
     mutation createAccountAddress($input: AddressInput!) {
   accountAddressCreate(input: $input) {
+    address {
+      ...AddressFragment
+    }
     errors {
       ...AccountErrorFragment
     }
@@ -12056,7 +12064,8 @@ export const CreateAccountAddressDocument = gql`
     }
   }
 }
-    ${AccountErrorFragmentDoc}
+    ${AddressFragmentDoc}
+${AccountErrorFragmentDoc}
 ${UserFragmentDoc}`;
 export type CreateAccountAddressMutationFn = Apollo.MutationFunction<CreateAccountAddressMutation, CreateAccountAddressMutationVariables>;
 
@@ -12087,6 +12096,9 @@ export type CreateAccountAddressMutationOptions = Apollo.BaseMutationOptions<Cre
 export const UpdateAccountAddressDocument = gql`
     mutation updateAccountAddress($input: AddressInput!, $id: ID!) {
   accountAddressUpdate(input: $input, id: $id) {
+    address {
+      ...AddressFragment
+    }
     errors {
       ...AccountErrorFragment
     }
@@ -12095,7 +12107,8 @@ export const UpdateAccountAddressDocument = gql`
     }
   }
 }
-    ${AccountErrorFragmentDoc}
+    ${AddressFragmentDoc}
+${AccountErrorFragmentDoc}
 ${UserFragmentDoc}`;
 export type UpdateAccountAddressMutationFn = Apollo.MutationFunction<UpdateAccountAddressMutation, UpdateAccountAddressMutationVariables>;
 

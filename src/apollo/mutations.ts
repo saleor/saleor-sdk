@@ -1,6 +1,10 @@
 import { gql } from "@apollo/client";
 
-import { accountErrorFragment, userFragment } from "./fragments";
+import {
+  accountErrorFragment,
+  addressFragment,
+  userFragment,
+} from "./fragments";
 
 export const LOGIN = gql`
   ${accountErrorFragment}
@@ -214,10 +218,14 @@ export const DELETE_ACCOUNT_ADDRESS = gql`
 `;
 
 export const CREATE_ACCOUNT_ADDRESS = gql`
+  ${addressFragment}
   ${userFragment}
   ${accountErrorFragment}
   mutation createAccountAddress($input: AddressInput!) {
     accountAddressCreate(input: $input) {
+      address {
+        ...AddressFragment
+      }
       errors {
         ...AccountErrorFragment
       }
@@ -229,10 +237,14 @@ export const CREATE_ACCOUNT_ADDRESS = gql`
 `;
 
 export const UPDATE_ACCOUNT_ADDRESS = gql`
+  ${addressFragment}
   ${userFragment}
   ${accountErrorFragment}
   mutation updateAccountAddress($input: AddressInput!, $id: ID!) {
     accountAddressUpdate(input: $input, id: $id) {
+      address {
+        ...AddressFragment
+      }
       errors {
         ...AccountErrorFragment
       }
