@@ -10,14 +10,49 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import fetch from "cross-fetch";
+import jwtDecode from "jwt-decode";
 import { TypedTypePolicies } from "./apollo-helpers";
-import { REFRESH_TOKEN } from "./mutations";
-import { RefreshTokenMutation, RefreshTokenMutationVariables } from "./types";
+import { JWTToken } from "../core";
+import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
 
-let client: ApolloClient<NormalizedCacheObject> | undefined;
+let client: ApolloClient<NormalizedCacheObject>;
+let refreshToken: AuthSDK["refreshToken"];
 
-export const authLink = setContext((_, { headers }) => {
+export const autoRefreshFetch = async (
+  input: RequestInfo,
+  init: RequestInit
+): Promise<Response> => {
+  if (!client) {
+    throw new Error(
+      "Could not find Saleor's client instance. Did you forget to call createSaleorClient()?"
+    );
+  }
+
+  const token = storage.getToken();
+
+  if (JSON.parse(`${init.body}`).operationName === "refreshToken") {
+    return fetch(input, init);
+  }
+
+  if (token) {
+    // auto refresh token before 60 sec until it expires
+    const expirationTime = jwtDecode<JWTToken>(token).exp * 1000 - 60000;
+    if (Date.now() >= expirationTime) {
+      const { data } = await refreshToken();
+      if (data?.tokenRefresh?.token) {
+        init.headers = {
+          ...init.headers,
+          authorization: `JWT ${data?.tokenRefresh?.token}`,
+        };
+      }
+    }
+  }
+
+  return fetch(input, init);
+};
+
+const authLink = setContext((_, { headers }) => {
   const token = storage.getToken();
 
   return {
@@ -28,33 +63,26 @@ export const authLink = setContext((_, { headers }) => {
   };
 });
 
-export const errorLink = onError(
+const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
       const isUnAuthenticated = graphQLErrors.some(
         error => error.extensions && error.extensions.code === "UNAUTHENTICATED"
       );
 
-      if (client && isUnAuthenticated) {
+      if (isUnAuthenticated) {
         return fromPromise(
-          client
-            .mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
-              mutation: REFRESH_TOKEN,
-            })
-            .then(({ data }) => {
-              if (data?.tokenRefresh?.token) {
-                storage.setToken(data.tokenRefresh.token);
-                const oldHeaders = operation.getContext().headers;
-                operation.setContext({
-                  headers: {
-                    ...oldHeaders,
-                    authorization: `JWT ${data.tokenRefresh.token}`,
-                  },
-                });
-              } else if (client) {
-                client.resetStore();
-              }
-            })
+          refreshToken().then(({ data }) => {
+            if (data?.tokenRefresh?.token) {
+              const oldHeaders = operation.getContext().headers;
+              operation.setContext({
+                headers: {
+                  ...oldHeaders,
+                  authorization: `JWT ${data?.tokenRefresh?.token}`,
+                },
+              });
+            }
+          })
         )
           .filter(Boolean)
           .flatMap(() => forward(operation));
@@ -77,8 +105,9 @@ export const errorLink = onError(
 
 const createLink = (uri: string): ApolloLink => {
   const httpLink = createHttpLink({
-    fetch,
+    fetch: autoRefreshFetch,
     uri,
+    credentials: "include",
   });
 
   return ApolloLink.from([errorLink, authLink, httpLink]);
@@ -140,6 +169,13 @@ export const createApolloClient = (
     cache,
     link: createLink(apiUrl),
   });
+
+  /**
+   * Refreshing token code should stay under core/auth.ts To get this method available,
+   * we need to call "auth()" here. refreshToken mutation doesn't require channel, so it
+   * doesn't have to be populated with value.
+   */
+  refreshToken = auth({ apolloClient: client, channel: "" }).refreshToken;
 
   return client;
 };

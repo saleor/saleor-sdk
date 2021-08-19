@@ -29,7 +29,11 @@ export const createStorage = (autologinEnabled: boolean): void => {
     return _token;
   };
 
-  storage = { setToken, getToken, token: _token };
+  storage = {
+    setToken,
+    getToken,
+    token: _token,
+  };
 
   // TODO: Uncomment when we are able to pass storage to createSaleorClient
   // return { setToken, getToken };

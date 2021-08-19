@@ -51,3 +51,15 @@ export type SetAccountDefaultAddressOpts = MutationAccountSetDefaultAddressArgs;
 export type SetPasswordOpts = MutationSetPasswordArgs;
 export type UpdateAccountOpts = MutationAccountUpdateArgs;
 export type UpdateAccountAddressOpts = MutationAccountAddressUpdateArgs;
+
+export type JWTToken = {
+  iat: number;
+  iss: string;
+  owner: string;
+  exp: number;
+  token: string;
+  email: string;
+  type: string;
+  user_id: string;
+  is_staff: boolean;
+};
