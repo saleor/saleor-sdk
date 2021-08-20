@@ -6,7 +6,7 @@ import {
 import { API_URI, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
 
-describe("user api", () => {
+describe.skip("user api", () => {
   const context = setupRecording();
   const saleor = setupSaleorClient();
   const testAddress = {
