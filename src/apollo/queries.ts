@@ -13,7 +13,7 @@ export const USER = gql`
     }
     token @client
     authenticated @client
-    loading @client
+    authenticating @client
   }
 `;
 

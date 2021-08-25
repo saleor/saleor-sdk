@@ -61,41 +61,37 @@ export const auth = ({
   apolloClient: client,
   channel,
 }: SaleorClientMethodsProps): AuthSDK => {
-  const loadingState: Record<string, boolean> = {
+  const authenticatingMutationStatus: Record<string, boolean> = {
     login: false,
-    register: false,
     refreshToken: false,
     verifyToken: false,
-    changePassword: false,
-    requestPasswordReset: false,
-    setPassword: false,
   };
 
-  const withLoading = async (
+  const withLoadingAuthentication = async (
     key: AuthKey,
     mutation: Promise<FetchResult>
   ): Promise<FetchResult> => {
-    if (!storage.loading) {
-      storage.loading = true;
-      client.writeQuery({
-        query: USER,
-        data: {
-          loading: true,
-        },
-      });
-    }
-    loadingState[key] = true;
+    authenticatingMutationStatus[key] = true;
+
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: true,
+      },
+    });
 
     const result = await mutation;
+    authenticatingMutationStatus[key] = false;
 
-    storage.loading = false;
-    loadingState[key] = false;
-
-    if (Object.keys(loadingState).every(k => !loadingState[k])) {
+    if (
+      Object.keys(authenticatingMutationStatus).every(
+        k => !authenticatingMutationStatus[k]
+      )
+    ) {
       client.writeQuery({
         query: USER,
         data: {
-          loading: false,
+          authenticating: false,
         },
       });
     }
@@ -110,7 +106,7 @@ export const auth = ({
    * @returns Promise resolved with CreateToken type data.
    */
   const login: AuthSDK["login"] = async opts => {
-    const result = await withLoading(
+    const result = await withLoadingAuthentication(
       "login",
       client.mutate<LoginMutation, LoginMutationVariables>({
         mutation: LOGIN,
@@ -145,18 +141,15 @@ export const auth = ({
    * @returns Promise resolved with AccountRegister type data.
    */
   const register: AuthSDK["register"] = async opts =>
-    await withLoading(
-      "register",
-      client.mutate<RegisterMutation, RegisterMutationVariables>({
-        mutation: REGISTER,
-        variables: {
-          input: {
-            ...opts,
-            channel,
-          },
+    await client.mutate<RegisterMutation, RegisterMutationVariables>({
+      mutation: REGISTER,
+      variables: {
+        input: {
+          ...opts,
+          channel,
         },
-      })
-    );
+      },
+    });
 
   /**
    * Refresh JWT token. If it fails it will try to take refreshToken
@@ -166,7 +159,7 @@ export const auth = ({
    * @returns Authorization token.
    */
   const refreshToken: AuthSDK["refreshToken"] = async opts => {
-    const result = await withLoading(
+    const result = await withLoadingAuthentication(
       "refreshToken",
       client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
         mutation: REFRESH_TOKEN,
@@ -192,7 +185,7 @@ export const auth = ({
    * @returns User assigned to token and the information if the token is valid or not.
    */
   const verifyToken: AuthSDK["verifyToken"] = async token => {
-    const result = await withLoading(
+    const result = await withLoadingAuthentication(
       "verifyToken",
       client.mutate<VerifyTokenMutation, VerifyTokenMutationVariables>({
         mutation: VERIFY_TOKEN,
@@ -210,13 +203,13 @@ export const auth = ({
    * @returns Errors if the passoword change has failed.
    */
   const changePassword: AuthSDK["changePassword"] = async opts => {
-    const result = await withLoading(
-      "changePassword",
-      client.mutate<PasswordChangeMutation, PasswordChangeMutationVariables>({
-        mutation: CHANGE_USER_PASSWORD,
-        variables: { ...opts },
-      })
-    );
+    const result = await client.mutate<
+      PasswordChangeMutation,
+      PasswordChangeMutationVariables
+    >({
+      mutation: CHANGE_USER_PASSWORD,
+      variables: { ...opts },
+    });
 
     return result;
   };
@@ -231,16 +224,13 @@ export const auth = ({
    * @returns Errors if there were some.
    */
   const requestPasswordReset: AuthSDK["requestPasswordReset"] = async opts => {
-    const result = await withLoading(
-      "requestPasswordReset",
-      client.mutate<
-        RequestPasswordResetMutation,
-        RequestPasswordResetMutationVariables
-      >({
-        mutation: REQUEST_PASSWORD_RESET,
-        variables: { ...opts },
-      })
-    );
+    const result = await client.mutate<
+      RequestPasswordResetMutation,
+      RequestPasswordResetMutationVariables
+    >({
+      mutation: REQUEST_PASSWORD_RESET,
+      variables: { ...opts },
+    });
 
     return result;
   };
@@ -252,13 +242,13 @@ export const auth = ({
    * @returns User instance, JWT token, JWT refresh token and CSRF token.
    */
   const setPassword: AuthSDK["setPassword"] = async opts => {
-    const result = await withLoading(
-      "setPassword",
-      client.mutate<SetPasswordMutation, SetPasswordMutationVariables>({
-        mutation: SET_PASSWORD,
-        variables: { ...opts },
-      })
-    );
+    const result = await client.mutate<
+      SetPasswordMutation,
+      SetPasswordMutationVariables
+    >({
+      mutation: SET_PASSWORD,
+      variables: { ...opts },
+    });
 
     return result;
   };

@@ -111,9 +111,9 @@ const typePolicies: TypedTypePolicies = {
           return storage.getToken();
         },
       },
-      loading: {
-        read(): boolean | null {
-          return storage.loading;
+      authenticating: {
+        read(value = false): boolean {
+          return value;
         },
       },
     },

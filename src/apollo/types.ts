@@ -8518,6 +8518,7 @@ export type Query = {
   /** List of the shop's attributes. */
   attributes?: Maybe<AttributeCountableConnection>;
   authenticated: Scalars['Boolean'];
+  authenticating?: Maybe<Scalars['Boolean']>;
   /** List of the shop's categories. */
   categories?: Maybe<CategoryCountableConnection>;
   /** Look up a category by ID or slug. */
@@ -8554,7 +8555,6 @@ export type Query = {
   giftCards?: Maybe<GiftCardCountableConnection>;
   /** List of activity events to display on homepage (at the moment it only contains order-events). */
   homepageEvents?: Maybe<OrderEventCountableConnection>;
-  loading?: Maybe<Scalars['Boolean']>;
   /** Return the currently authenticated user. */
   me?: Maybe<User>;
   /** Look up a navigation menu by ID or name. */
@@ -11443,7 +11443,7 @@ export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserDetailsQuery = (
-  Pick<Query, 'token' | 'authenticated' | 'loading'>
+  Pick<Query, 'token' | 'authenticated' | 'authenticating'>
   & { user?: Maybe<UserFragment> }
 );
 
@@ -12132,7 +12132,7 @@ export const UserDetailsDocument = gql`
   }
   token @client
   authenticated @client
-  loading @client
+  authenticating @client
 }
     ${UserFragmentDoc}`;
 
