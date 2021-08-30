@@ -63,7 +63,6 @@ export const auth = ({
 }: SaleorClientMethodsProps): AuthSDK => {
   const authenticatingMutationStatus: Record<string, boolean> = {
     login: false,
-    refreshToken: false,
     verifyToken: false,
   };
 
@@ -159,13 +158,13 @@ export const auth = ({
    * @returns Authorization token.
    */
   const refreshToken: AuthSDK["refreshToken"] = async opts => {
-    const result = await withLoadingAuthentication(
-      "refreshToken",
-      client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
-        mutation: REFRESH_TOKEN,
-        variables: { ...opts },
-      })
-    );
+    const result = await client.mutate<
+      RefreshTokenMutation,
+      RefreshTokenMutationVariables
+    >({
+      mutation: REFRESH_TOKEN,
+      variables: { ...opts },
+    });
 
     if (result.data?.tokenRefresh?.token) {
       storage.setToken(result.data.tokenRefresh.token);
