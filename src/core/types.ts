@@ -5,6 +5,7 @@ import {
   MutationAccountAddressUpdateArgs,
   MutationAccountSetDefaultAddressArgs,
   MutationAccountUpdateArgs,
+  MutationExternalAuthenticationUrlArgs,
   MutationPasswordChangeArgs,
   MutationTokenCreateArgs,
   MutationTokenRefreshArgs,
@@ -51,6 +52,7 @@ export type SetAccountDefaultAddressOpts = MutationAccountSetDefaultAddressArgs;
 export type SetPasswordOpts = MutationSetPasswordArgs;
 export type UpdateAccountOpts = MutationAccountUpdateArgs;
 export type UpdateAccountAddressOpts = MutationAccountAddressUpdateArgs;
+export type ExternalAuthOpts = MutationExternalAuthenticationUrlArgs;
 
 export type JWTToken = {
   iat: number;
