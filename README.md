@@ -2,7 +2,7 @@
   <h1>Saleor SDK</h1>
 </div>
 
-This package contains methods providing Saleor business logic for a storefront and apps. It handles Saleor GraphQL queries and mutations, manages Apollo cache, and provides an internal state to manage popular storefront use cases, like user authentication or checkout.
+This package contains methods providing Saleor business logic for a storefront and apps. It handles Saleor GraphQL queries and mutations, manages Apollo cache, and provides an internal state to manage popular storefront use cases, like user authentication.
 
 > :warning: **Note: Saleor SDK is still under heavy development, and its API may change.**
 
