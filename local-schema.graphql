@@ -1,4 +1,5 @@
 type Query {
   authenticated: Boolean!
   token: String
+  authenticating: Boolean
 }

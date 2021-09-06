@@ -34,6 +34,7 @@ import {
   SetPasswordOpts,
 } from "./types";
 import { storage } from "./storage";
+import { USER } from "../apollo/queries";
 
 export interface AuthSDK {
   changePassword: (
@@ -54,10 +55,49 @@ export interface AuthSDK {
   verifyToken: (token: string) => Promise<FetchResult<VerifyTokenMutation>>;
 }
 
+type AuthKey = keyof AuthSDK;
+
 export const auth = ({
   apolloClient: client,
   channel,
 }: SaleorClientMethodsProps): AuthSDK => {
+  const authenticatingMutationStatus: Record<string, boolean> = {
+    login: false,
+    verifyToken: false,
+  };
+
+  const withLoadingAuthentication = async (
+    key: AuthKey,
+    mutation: Promise<FetchResult>
+  ): Promise<FetchResult> => {
+    authenticatingMutationStatus[key] = true;
+
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: true,
+      },
+    });
+
+    const result = await mutation;
+    authenticatingMutationStatus[key] = false;
+
+    if (
+      Object.keys(authenticatingMutationStatus).every(
+        k => !authenticatingMutationStatus[k]
+      )
+    ) {
+      client.writeQuery({
+        query: USER,
+        data: {
+          authenticating: false,
+        },
+      });
+    }
+
+    return result;
+  };
+
   /**
    * Authenticates user with email and password.
    *
@@ -65,12 +105,15 @@ export const auth = ({
    * @returns Promise resolved with CreateToken type data.
    */
   const login: AuthSDK["login"] = async opts => {
-    const result = await client.mutate<LoginMutation, LoginMutationVariables>({
-      mutation: LOGIN,
-      variables: {
-        ...opts,
-      },
-    });
+    const result = await withLoadingAuthentication(
+      "login",
+      client.mutate<LoginMutation, LoginMutationVariables>({
+        mutation: LOGIN,
+        variables: {
+          ...opts,
+        },
+      })
+    );
 
     if (result.data?.tokenCreate?.token) {
       storage.setToken(result.data.tokenCreate.token);
@@ -142,13 +185,13 @@ export const auth = ({
    * @returns User assigned to token and the information if the token is valid or not.
    */
   const verifyToken: AuthSDK["verifyToken"] = async token => {
-    const result = await client.mutate<
-      VerifyTokenMutation,
-      VerifyTokenMutationVariables
-    >({
-      mutation: VERIFY_TOKEN,
-      variables: { token },
-    });
+    const result = await withLoadingAuthentication(
+      "verifyToken",
+      client.mutate<VerifyTokenMutation, VerifyTokenMutationVariables>({
+        mutation: VERIFY_TOKEN,
+        variables: { token },
+      })
+    );
 
     if (!result.data?.tokenVerify?.isValid) {
       storage.setToken(null);

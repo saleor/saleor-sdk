@@ -140,6 +140,11 @@ const typePolicies: TypedTypePolicies = {
           return storage.getToken();
         },
       },
+      authenticating: {
+        read(value = false): boolean {
+          return value;
+        },
+      },
     },
   },
   User: {
