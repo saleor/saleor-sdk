@@ -1,7 +1,12 @@
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CHANGE_USER_PASSWORD,
+  EXTERNAL_AUTHENTICATION_URL,
+  EXTERNAL_LOGOUT,
+  EXTERNAL_REFRESH,
+  EXTERNAL_VERIFY_TOKEN,
   LOGIN,
+  OBTAIN_EXTERNAL_ACCESS_TOKEN,
   REQUEST_PASSWORD_RESET,
   REFRESH_TOKEN,
   REGISTER,
@@ -9,6 +14,16 @@ import {
   VERIFY_TOKEN,
 } from "../apollo/mutations";
 import {
+  ExternalAuthenticationUrlMutation,
+  ExternalAuthenticationUrlMutationVariables,
+  ExternalLogoutMutation,
+  ExternalLogoutMutationVariables,
+  ExternalObtainAccessTokensMutation,
+  ExternalObtainAccessTokensMutationVariables,
+  ExternalRefreshMutation,
+  ExternalRefreshMutationVariables,
+  ExternalVerifyMutation,
+  ExternalVerifyMutationVariables,
   LoginMutation,
   LoginMutationVariables,
   PasswordChangeMutation,
@@ -27,6 +42,7 @@ import {
 import { SaleorClientMethodsProps } from "./types";
 import {
   ChangeUserPasswordOpts,
+  ExternalAuthOpts,
   LoginOpts,
   RefreshTokenOpts,
   RegisterOpts,
@@ -53,6 +69,21 @@ export interface AuthSDK {
     opts: SetPasswordOpts
   ) => Promise<FetchResult<SetPasswordMutation>>;
   verifyToken: (token: string) => Promise<FetchResult<VerifyTokenMutation>>;
+  getExternalAuthUrl: (
+    opts: ExternalAuthOpts
+  ) => Promise<FetchResult<ExternalAuthenticationUrlMutation>>;
+  getExternalAccessToken: (
+    opts: ExternalAuthOpts
+  ) => Promise<FetchResult<ExternalObtainAccessTokensMutation>>;
+  logoutExternal: (
+    opts: ExternalAuthOpts
+  ) => Promise<FetchResult<ExternalLogoutMutation>>;
+  refreshExternalToken: (
+    opts: ExternalAuthOpts
+  ) => Promise<FetchResult<ExternalRefreshMutation>>;
+  verifyExternalToken: (
+    opts: ExternalAuthOpts
+  ) => Promise<FetchResult<ExternalVerifyMutation>>;
 }
 
 type AuthKey = keyof AuthSDK;
@@ -168,11 +199,11 @@ export const auth = ({
         refreshToken: opts?.refreshToken,
       },
     });
+
     if (result.data?.tokenRefresh?.token) {
       storage.setToken(result.data.tokenRefresh.token);
     } else {
-      storage.setToken(null);
-      client.resetStore();
+      logout();
     }
 
     return result;
@@ -257,14 +288,136 @@ export const auth = ({
     return result;
   };
 
+  /**
+   * Executing externalAuthenticationUrl mutation will prepare special URL which will redirect user to requested
+   * page after successfull authentication. After redirection state and code fields will be added to the URL.
+   *
+   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
+   * JSON with redirectUrl - the URL where the user should be redirected after successful authentication.
+   * @returns Authentication data and errors
+   */
+  const getExternalAuthUrl: AuthSDK["getExternalAuthUrl"] = async opts => {
+    const result = await client.mutate<
+      ExternalAuthenticationUrlMutation,
+      ExternalAuthenticationUrlMutationVariables
+    >({
+      mutation: EXTERNAL_AUTHENTICATION_URL,
+      variables: { ...opts },
+    });
+
+    return result;
+  };
+
+  /**
+   * The externalObtainAccessTokens mutation will generate requested access tokens.
+   *
+   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
+   * JSON with code - the authorization code received from the OAuth provider and state - the state value received
+   * from the OAuth provider
+   * @returns Login authentication data and errors
+   */
+  const getExternalAccessToken: AuthSDK["getExternalAccessToken"] = async opts => {
+    const result = await client.mutate<
+      ExternalObtainAccessTokensMutation,
+      ExternalObtainAccessTokensMutationVariables
+    >({
+      mutation: OBTAIN_EXTERNAL_ACCESS_TOKEN,
+      variables: { ...opts },
+    });
+
+    if (result.data?.externalObtainAccessTokens?.token) {
+      storage.setToken(result.data.externalObtainAccessTokens.token);
+    }
+
+    return result;
+  };
+
+  /**
+   * The mutation will prepare the logout URL. All values passed in field input will be added as GET parameters to the logout request.
+   *
+   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
+   * JSON with returnTo - the URL where a user should be redirected
+   * @returns Logout data and errors
+   */
+  const logoutExternal: AuthSDK["logoutExternal"] = async opts => {
+    logout();
+
+    const result = await client.mutate<
+      ExternalLogoutMutation,
+      ExternalLogoutMutationVariables
+    >({
+      mutation: EXTERNAL_LOGOUT,
+      variables: { ...opts },
+    });
+
+    return result;
+  };
+
+  /**
+   * The externalRefresh mutation will generate new access tokens when provided with a valid refresh token.
+   * If the refresh token is not provided as an argument, the plugin will try to read it from a cookie
+   * set by the tokenCreate mutation. In that case, a matching CSRF token is required.
+   *
+   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
+   * JSON with refreshToken - the refresh token which should be used to refresh the access token and
+   * csrfToken - required when refreshToken is not provided as an input
+   * @returns Token refresh data and errors
+   */
+  const refreshExternalToken: AuthSDK["refreshExternalToken"] = async opts => {
+    const result = await client.mutate<
+      ExternalRefreshMutation,
+      ExternalRefreshMutationVariables
+    >({
+      mutation: EXTERNAL_REFRESH,
+      variables: { ...opts },
+    });
+
+    if (result.data?.externalRefresh?.token) {
+      storage.setToken(result.data.externalRefresh.token);
+    } else {
+      logout();
+    }
+
+    return result;
+  };
+
+  /**
+   * The mutation will verify the authentication token.
+   *
+   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
+   * JSON with refreshToken - the refresh token which should be used to refresh the access token and
+   * csrfToken - required when refreshToken is not provided as an input
+   * @returns Token verification data and errors
+   */
+  const verifyExternalToken: AuthSDK["verifyExternalToken"] = async opts => {
+    const result = await client.mutate<
+      ExternalVerifyMutation,
+      ExternalVerifyMutationVariables
+    >({
+      mutation: EXTERNAL_VERIFY_TOKEN,
+      variables: { ...opts },
+    });
+
+    if (!result.data?.externalVerify?.isValid) {
+      storage.setToken(null);
+    }
+
+    return result;
+  };
+
   return {
     changePassword,
+    getExternalAccessToken,
+    getExternalAuthUrl,
     login,
     logout,
+    logoutExternal,
+    refreshExternalToken,
     refreshToken,
     register,
     requestPasswordReset,
     setPassword,
+    verifyExternalToken,
     verifyToken,
   };
 };

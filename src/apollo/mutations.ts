@@ -68,6 +68,98 @@ export const VERIFY_TOKEN = gql`
   }
 `;
 
+export const EXTERNAL_AUTHENTICATION_URL = gql`
+  ${accountErrorFragment}
+  mutation externalAuthenticationUrl(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalAuthenticationUrl(pluginId: $pluginId, input: $input) {
+      authenticationData
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
+export const OBTAIN_EXTERNAL_ACCESS_TOKEN = gql`
+  ${accountErrorFragment}
+  ${userFragment}
+  mutation externalObtainAccessTokens(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalObtainAccessTokens(pluginId: $pluginId, input: $input) {
+      token
+      refreshToken
+      csrfToken
+      user {
+        ...UserFragment
+      }
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
+export const EXTERNAL_REFRESH = gql`
+  ${accountErrorFragment}
+  mutation externalRefresh(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalRefresh(pluginId: $pluginId, input: $input) {
+      token
+      refreshToken
+      csrfToken
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
+export const EXTERNAL_VERIFY_TOKEN = gql`
+  ${accountErrorFragment}
+  ${userFragment}
+  mutation externalVerify(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalVerify(pluginId: $pluginId, input: $input) {
+      isValid
+      verifyData
+      user {
+        ...UserFragment
+        userPermissions {
+          code
+          name
+        }
+      }
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
+export const EXTERNAL_LOGOUT = gql`
+  ${accountErrorFragment}
+  mutation externalLogout(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalLogout(pluginId: $pluginId, input: $input) {
+      logoutData
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
 export const CHANGE_USER_PASSWORD = gql`
   ${accountErrorFragment}
   mutation passwordChange($newPassword: String!, $oldPassword: String!) {
