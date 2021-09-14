@@ -125,6 +125,8 @@ We provide an API with methods and fields, performing one, scoped type of work. 
 | `auth`      | `useAuth()`                  | Handles user authentication methods.                                             |
 | `user`      | `useUser()`                  | Handles user account methods.                                                    |
 
+SDK supports OpenId Connect methods provided by Saleor API. They are under `auth` object and `useAuth` hook. For more usage details, please check https://docs.saleor.io/docs/3.0/developer/available-plugins/openid-connect.
+
 ## Local development
 
 Our aim it to build SDK, highly configurable, as a separate package, which you will not require modifications. Although if you want to alter the project, especially if you want to contribute, it is possible to develop storefront and SDK simultaneously. To do this, you need
