@@ -3,12 +3,13 @@ import {
   setupSaleorClient,
   setupPollyMiddleware,
 } from "./setup";
-import { API_URI, TEST_AUTH_PASSWORD } from "../src/config";
+import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
 
-describe.skip("user api", () => {
+describe("user api", () => {
   const context = setupRecording();
   const saleor = setupSaleorClient();
+
   const testAddress = {
     firstName: "Test name",
     lastName: "Test lastname",
@@ -32,6 +33,11 @@ describe.skip("user api", () => {
   beforeEach(async () => {
     const { server } = context.polly;
     setupPollyMiddleware(server);
+
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
   });
 
   it("sends a request to delete user account", async () => {
