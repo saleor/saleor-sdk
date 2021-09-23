@@ -104,7 +104,6 @@ describe("auth api", () => {
 
   it("sends request to reset password", async () => {
     const { data } = await saleor.auth.requestPasswordReset({
-      channel: saleor.config.channel,
       email: TEST_AUTH_EMAIL,
       redirectUrl: API_URI,
     });

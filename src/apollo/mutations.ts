@@ -173,8 +173,16 @@ export const CHANGE_USER_PASSWORD = gql`
 
 export const REQUEST_PASSWORD_RESET = gql`
   ${accountErrorFragment}
-  mutation requestPasswordReset($email: String!, $redirectUrl: String!) {
-    requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
+  mutation requestPasswordReset(
+    $email: String!
+    $redirectUrl: String!
+    $channel: String!
+  ) {
+    requestPasswordReset(
+      email: $email
+      redirectUrl: $redirectUrl
+      channel: $channel
+    ) {
       errors {
         ...AccountErrorFragment
       }

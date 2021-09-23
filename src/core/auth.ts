@@ -264,7 +264,7 @@ export const auth = ({
       RequestPasswordResetMutationVariables
     >({
       mutation: REQUEST_PASSWORD_RESET,
-      variables: { ...opts },
+      variables: { ...opts, channel },
     });
 
     return result;

@@ -11410,6 +11410,7 @@ export type PasswordChangeMutation = { passwordChange?: Maybe<{ errors: Array<Ac
 export type RequestPasswordResetMutationVariables = Exact<{
   email: Scalars['String'];
   redirectUrl: Scalars['String'];
+  channel: Scalars['String'];
 }>;
 
 
@@ -11954,8 +11955,12 @@ export type PasswordChangeMutationHookResult = ReturnType<typeof usePasswordChan
 export type PasswordChangeMutationResult = Apollo.MutationResult<PasswordChangeMutation>;
 export type PasswordChangeMutationOptions = Apollo.BaseMutationOptions<PasswordChangeMutation, PasswordChangeMutationVariables>;
 export const RequestPasswordResetDocument = gql`
-    mutation requestPasswordReset($email: String!, $redirectUrl: String!) {
-  requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
+    mutation requestPasswordReset($email: String!, $redirectUrl: String!, $channel: String!) {
+  requestPasswordReset(
+    email: $email
+    redirectUrl: $redirectUrl
+    channel: $channel
+  ) {
     errors {
       ...AccountErrorFragment
     }
@@ -11979,6 +11984,7 @@ export type RequestPasswordResetMutationFn = Apollo.MutationFunction<RequestPass
  *   variables: {
  *      email: // value for 'email'
  *      redirectUrl: // value for 'redirectUrl'
+ *      channel: // value for 'channel'
  *   },
  * });
  */
