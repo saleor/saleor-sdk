@@ -1,5 +1,6 @@
 import { FetchResult } from "@apollo/client";
 import {
+  CONFIRM_ACCOUNT,
   CONFIRM_EMAIL_CHANGE,
   CREATE_ACCOUNT_ADDRESS,
   DELETE_ACCOUNT,
@@ -11,6 +12,8 @@ import {
   UPDATE_ACCOUNT_ADDRESS,
 } from "../apollo/mutations";
 import {
+  AccountConfirmMutation,
+  AccountConfirmMutationVariables,
   AccountDeleteMutation,
   AccountDeleteMutationVariables,
   AccountRequestDeletionMutation,
@@ -31,7 +34,7 @@ import {
   UpdateAccountAddressMutationVariables,
 } from "../apollo/types";
 import { auth } from "./auth";
-import { SaleorClientMethodsProps } from "./types";
+import { ConfirmAccountOpts, SaleorClientMethodsProps } from "./types";
 import {
   CreateAccountAddressOpts,
   RequestEmailChangeOpts,
@@ -66,6 +69,9 @@ export interface UserSDK {
   updateAccountAddress: (
     opts: UpdateAccountAddressOpts
   ) => Promise<FetchResult<UpdateAccountAddressMutation>>;
+  confirmAccount: (
+    opts: ConfirmAccountOpts
+  ) => Promise<FetchResult<AccountConfirmMutation>>;
 }
 
 export const user = ({
@@ -239,6 +245,24 @@ export const user = ({
     return result;
   };
 
+  /**
+   * Confirms user account with token sent by email during registration.
+   *
+   * @param opts - Object with email of the user and one-time token required to confirm the account.
+   * @returns Confirmed user account.
+   */
+  const confirmAccount: UserSDK["confirmAccount"] = async opts => {
+    const result = await client.mutate<
+      AccountConfirmMutation,
+      AccountConfirmMutationVariables
+    >({
+      mutation: CONFIRM_ACCOUNT,
+      variables: { ...opts },
+    });
+
+    return result;
+  };
+
   return {
     accountDelete,
     accountRequestDeletion,
@@ -249,5 +273,6 @@ export const user = ({
     updateAccount,
     updateAccountAddress,
     setAccountDefaultAddress,
+    confirmAccount,
   };
 };

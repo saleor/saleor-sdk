@@ -354,3 +354,18 @@ export const UPDATE_ACCOUNT_ADDRESS = gql`
     }
   }
 `;
+
+export const CONFIRM_ACCOUNT = gql`
+  ${userFragment}
+  ${accountErrorFragment}
+  mutation accountConfirm($email: String!, $token: String!) {
+    confirmAccount(email: $email, token: $token) {
+      user {
+        ...UserFragment
+      }
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
