@@ -9,6 +9,8 @@ export const removeBlacklistedVariables = (obj: {}): {} => {
     "oldPassword",
     "newEmail",
     "token",
+    "refreshToken",
+    "csrfToken",
   ];
 
   return omitDeep(obj, ...variablesBlacklist);

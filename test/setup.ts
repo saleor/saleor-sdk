@@ -25,9 +25,13 @@ export const setupPollyMiddleware = (server: PollyServer): void => {
 
     const filteredRequestJson = removeBlacklistedVariables(requestJson);
 
+    const responseJson = JSON.parse(recording.response.content.text);
+    const filteredResponseJson = removeBlacklistedVariables(responseJson);
+
     recording.request.postData.text = JSON.stringify(filteredRequestJson);
     recording.request.headers = requestHeaders;
     recording.response.cookies = [];
+    recording.response.content.text = JSON.stringify(filteredResponseJson);
     recording.response.headers = responseHeaders;
   });
 };
