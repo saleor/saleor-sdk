@@ -18,10 +18,10 @@ There are two ways to use SDK - making custom implementation or using React comp
 
 ### Using React
 
-First install SDK as dependency to your project
+First install following dependencies to your project
 
 ```bash
-npm install @saleor/sdk
+npm install @saleor/sdk @apollo/client graphql
 ```
 
 Use `SaleorProvider` with passed Saleor's client created by `createSaleorClient` in a prop. Then use React hooks in any component passed as child to `SaleorProvider`.
@@ -79,7 +79,7 @@ const App = () => {
 ### Using with NodeJS and other frameworks
 
 ```bash
-npm install @saleor/sdk
+npm install @saleor/sdk @apollo/client graphql
 ```
 
 Then use `createSaleorClient` to get Saleor api methods and internal config variables like channel and Apollo client.
