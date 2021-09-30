@@ -2,7 +2,6 @@ import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
-  ApolloLink,
   NormalizedCacheObject,
   Reference,
   FetchResult,
@@ -16,7 +15,8 @@ import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
 
 let client: ApolloClient<NormalizedCacheObject>;
-let refreshToken: AuthSDK["refreshToken"];
+let authClient: AuthSDK;
+let refreshPromise: Promise<unknown> | null = null;
 
 type FetchConfig = Partial<{
   /**
@@ -34,8 +34,6 @@ type FetchConfig = Partial<{
    */
   refreshOnUnauthorized: boolean;
 }>;
-
-let refreshPromise: Promise<unknown> | null = null;
 
 export const createFetch = ({
   autoTokenRefresh = true,
@@ -60,7 +58,7 @@ export const createFetch = ({
   }
 
   if (autoTokenRefresh && token) {
-    console.log("checking if token is expired...");
+    console.log("autoTokenRefresh: checking if token is expired...");
     // auto refresh token before provided time skew (in seconds) until it expires
     const expirationTime =
       jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew;
@@ -70,7 +68,7 @@ export const createFetch = ({
     } else if (Date.now() >= expirationTime) {
       // refreshToken automatically updates token in storage
       console.log("token is expired: refreshToken()");
-      refreshPromise = refreshToken();
+      refreshPromise = authClient.refreshToken();
 
       await refreshPromise;
       refreshPromise = null;
@@ -85,8 +83,8 @@ export const createFetch = ({
     };
   }
 
-  if (refreshOnUnauthorized) {
-    console.log("checking if token is expired...");
+  if (refreshOnUnauthorized && token) {
+    console.log("refreshOnUnauthorized: checking if token is expired...");
     const response = await fetch(input, init);
     const data: FetchResult = await response.clone().json();
     const isUnauthenticated = data?.errors?.some(
@@ -98,7 +96,7 @@ export const createFetch = ({
         await refreshPromise;
       } else {
         console.log("401: refreshToken()");
-        refreshPromise = refreshToken();
+        refreshPromise = authClient.refreshToken();
 
         await refreshPromise;
         refreshPromise = null;
@@ -113,6 +111,9 @@ export const createFetch = ({
 
         return fetch(input, init);
       }
+      // after Saleor returns UNAUTHORIZED status and token refresh fails
+      // we log out the user and return the failed response
+      authClient.logout();
     }
 
     return response;
@@ -175,22 +176,18 @@ export const cache = new InMemoryCache({
   typePolicies,
 });
 
-const createLink = (uri: string): ApolloLink => {
-  const httpLink = createHttpLink({
-    fetch: createFetch(),
-    uri,
-    credentials: "include",
-  });
-
-  return httpLink;
-};
-
 export const createApolloClient = (
   apiUrl: string
 ): ApolloClient<NormalizedCacheObject> => {
+  const httpLink = createHttpLink({
+    fetch: createFetch(),
+    uri: apiUrl,
+    credentials: "include",
+  });
+
   client = new ApolloClient({
     cache,
-    link: createLink(apiUrl),
+    link: httpLink,
   });
 
   /**
@@ -198,7 +195,7 @@ export const createApolloClient = (
    * we need to call "auth()" here. refreshToken mutation doesn't require channel, so it
    * doesn't have to be populated with value.
    */
-  refreshToken = auth({ apolloClient: client, channel: "" }).refreshToken;
+  authClient = auth({ apolloClient: client, channel: "" });
 
   return client;
 };

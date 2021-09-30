@@ -23,6 +23,7 @@ export interface SaleorClientInternals {
 }
 export interface SaleorClientConfig {
   channel: string;
+  autologin: boolean;
   setChannel(channel: string): string;
 }
 export interface SaleorClient {
