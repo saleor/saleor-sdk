@@ -136,7 +136,6 @@ export const auth = ({
    * @returns Promise resolved with CreateToken type data.
    */
   const login: AuthSDK["login"] = async opts => {
-    console.log("LOGIN STARTED");
     const result = await withLoadingAuthentication(
       "login",
       client.mutate<LoginMutation, LoginMutationVariables>({
@@ -147,10 +146,7 @@ export const auth = ({
       })
     );
 
-    console.log("LOGIN ENDED", result);
-
     if (result.data?.tokenCreate?.token) {
-      console.log("setting token", result);
       storage.setToken(result.data.tokenCreate.token);
     }
 
@@ -163,7 +159,6 @@ export const auth = ({
    * @returns Apollo's native resetStore method.
    */
   const logout: AuthSDK["logout"] = () => {
-    console.log("logout();");
     storage.setToken(null);
     return client.resetStore();
   };
@@ -206,7 +201,6 @@ export const auth = ({
     });
 
     if (result.data?.tokenRefresh?.token) {
-      console.log("refreshToken setToken");
       storage.setToken(result.data.tokenRefresh.token);
     }
 
@@ -229,7 +223,6 @@ export const auth = ({
     );
 
     if (!result.data?.tokenVerify?.isValid) {
-      console.log("tokenVerify invalid. Removing token");
       storage.setToken(null);
     }
 
@@ -402,7 +395,6 @@ export const auth = ({
     });
 
     if (!result.data?.externalVerify?.isValid) {
-      console.log("tokenVerify invalid. Removing token");
       storage.setToken(null);
     }
 

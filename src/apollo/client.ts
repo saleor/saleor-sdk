@@ -13,10 +13,11 @@ import { TypedTypePolicies } from "./apollo-helpers";
 import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
+import { RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
 let authClient: AuthSDK;
-let refreshPromise: Promise<unknown> | null = null;
+let refreshPromise: ReturnType<AuthSDK["refreshToken"]> | null = null;
 
 type FetchConfig = Partial<{
   /**
@@ -58,16 +59,14 @@ export const createFetch = ({
   }
 
   if (autoTokenRefresh && token) {
-    console.log("autoTokenRefresh: checking if token is expired...");
     // auto refresh token before provided time skew (in seconds) until it expires
     const expirationTime =
-      jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew;
+      (jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew) * 1000;
 
     if (refreshPromise) {
       await refreshPromise;
     } else if (Date.now() >= expirationTime) {
       // refreshToken automatically updates token in storage
-      console.log("token is expired: refreshToken()");
       refreshPromise = authClient.refreshToken();
 
       await refreshPromise;
@@ -84,33 +83,35 @@ export const createFetch = ({
   }
 
   if (refreshOnUnauthorized && token) {
-    console.log("refreshOnUnauthorized: checking if token is expired...");
     const response = await fetch(input, init);
     const data: FetchResult = await response.clone().json();
     const isUnauthenticated = data?.errors?.some(
       error => error.extensions?.code === "UNAUTHENTICATED"
     );
+    let refreshTokenResponse: FetchResult<
+      RefreshTokenMutation,
+      Record<string, any>,
+      Record<string, any>
+    >;
 
     if (isUnauthenticated) {
       if (refreshPromise) {
-        await refreshPromise;
+        refreshTokenResponse = await refreshPromise;
       } else {
-        console.log("401: refreshToken()");
         refreshPromise = authClient.refreshToken();
 
-        await refreshPromise;
+        refreshTokenResponse = await refreshPromise;
         refreshPromise = null;
       }
-      token = storage.getToken();
 
-      if (token) {
-        init.headers = {
-          ...init.headers,
-          "authorization-bearer": token,
-        };
-
-        return fetch(input, init);
+      if (refreshTokenResponse.data?.tokenRefresh?.token) {
+        // check if mutation returns a valid token after refresh and retry the request
+        return createFetch({
+          autoTokenRefresh: false,
+          refreshOnUnauthorized: false,
+        })(input, init);
       }
+
       // after Saleor returns UNAUTHORIZED status and token refresh fails
       // we log out the user and return the failed response
       authClient.logout();
