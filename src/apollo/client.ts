@@ -2,24 +2,45 @@ import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
-  fromPromise,
-  ApolloLink,
   NormalizedCacheObject,
   Reference,
+  FetchResult,
 } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
-import { setContext } from "@apollo/client/link/context";
 import fetch from "cross-fetch";
 import jwtDecode from "jwt-decode";
+
 import { TypedTypePolicies } from "./apollo-helpers";
 import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
+import { RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
-let refreshToken: AuthSDK["refreshToken"];
+let authClient: AuthSDK;
+let refreshPromise: ReturnType<AuthSDK["refreshToken"]> | null = null;
 
-export const autoRefreshFetch = async (
+type FetchConfig = Partial<{
+  /**
+   * Enable auto token refreshing. Default to `true`.
+   */
+  autoTokenRefresh: boolean;
+  /**
+   * Set a value for skew between local time and token expiration date in
+   * seconds (only together with `autoTokenRefresh`). Defaults to `60`.
+   */
+  tokenRefreshTimeSkew: number;
+  /**
+   * Refresh token and retry the request when Saleor responds with `Unauthorized` error.
+   * Defaults to `true`.
+   */
+  refreshOnUnauthorized: boolean;
+}>;
+
+export const createFetch = ({
+  autoTokenRefresh = true,
+  tokenRefreshTimeSkew = 120,
+  refreshOnUnauthorized = true,
+}: FetchConfig = {}) => async (
   input: RequestInfo,
   init: RequestInit
 ): Promise<Response> => {
@@ -29,88 +50,77 @@ export const autoRefreshFetch = async (
     );
   }
 
-  const token = storage.getToken();
+  let token = storage.getToken();
 
-  if (JSON.parse(`${init.body}`).operationName === "refreshToken") {
+  if (
+    JSON.parse(init.body?.toString() || "")?.operationName === "refreshToken"
+  ) {
     return fetch(input, init);
   }
 
-  if (token) {
-    // auto refresh token before 60 sec until it expires
-    const expirationTime = jwtDecode<JWTToken>(token).exp * 1000 - 60000;
-    if (Date.now() >= expirationTime) {
-      const { data } = await refreshToken();
-      if (data?.tokenRefresh?.token) {
-        init.headers = {
-          ...init.headers,
-          authorization: `JWT ${data?.tokenRefresh?.token}`,
-        };
-      }
+  if (autoTokenRefresh && token) {
+    // auto refresh token before provided time skew (in seconds) until it expires
+    const expirationTime =
+      (jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew) * 1000;
+
+    if (refreshPromise) {
+      await refreshPromise;
+    } else if (Date.now() >= expirationTime) {
+      // refreshToken automatically updates token in storage
+      refreshPromise = authClient.refreshToken();
+
+      await refreshPromise;
+      refreshPromise = null;
     }
+    token = storage.getToken();
+  }
+
+  if (token) {
+    init.headers = {
+      ...init.headers,
+      "authorization-bearer": token,
+    };
+  }
+
+  if (refreshOnUnauthorized && token) {
+    const response = await fetch(input, init);
+    const data: FetchResult = await response.clone().json();
+    const isUnauthenticated = data?.errors?.some(
+      error => error.extensions?.code === "UNAUTHENTICATED"
+    );
+    let refreshTokenResponse: FetchResult<
+      RefreshTokenMutation,
+      Record<string, any>,
+      Record<string, any>
+    >;
+
+    if (isUnauthenticated) {
+      if (refreshPromise) {
+        refreshTokenResponse = await refreshPromise;
+      } else {
+        refreshPromise = authClient.refreshToken();
+
+        refreshTokenResponse = await refreshPromise;
+        refreshPromise = null;
+      }
+
+      if (refreshTokenResponse.data?.tokenRefresh?.token) {
+        // check if mutation returns a valid token after refresh and retry the request
+        return createFetch({
+          autoTokenRefresh: false,
+          refreshOnUnauthorized: false,
+        })(input, init);
+      }
+
+      // after Saleor returns UNAUTHORIZED status and token refresh fails
+      // we log out the user and return the failed response
+      authClient.logout();
+    }
+
+    return response;
   }
 
   return fetch(input, init);
-};
-
-const authLink = setContext((_, { headers }) => {
-  const token = storage.getToken();
-
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `JWT ${token}` : "",
-    },
-  };
-});
-
-const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, forward }) => {
-    if (graphQLErrors) {
-      const isUnAuthenticated = graphQLErrors.some(
-        error => error.extensions && error.extensions.code === "UNAUTHENTICATED"
-      );
-
-      if (isUnAuthenticated) {
-        return fromPromise(
-          refreshToken().then(({ data }) => {
-            if (data?.tokenRefresh?.token) {
-              const oldHeaders = operation.getContext().headers;
-              operation.setContext({
-                headers: {
-                  ...oldHeaders,
-                  authorization: `JWT ${data?.tokenRefresh?.token}`,
-                },
-              });
-            }
-          })
-        )
-          .filter(Boolean)
-          .flatMap(() => forward(operation));
-      }
-
-      graphQLErrors.forEach(({ message, locations, path }) => {
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        );
-      });
-    }
-
-    if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
-    }
-
-    return;
-  }
-);
-
-const createLink = (uri: string): ApolloLink => {
-  const httpLink = createHttpLink({
-    fetch: autoRefreshFetch,
-    uri,
-    credentials: "include",
-  });
-
-  return ApolloLink.from([errorLink, authLink, httpLink]);
 };
 
 const typePolicies: TypedTypePolicies = {
@@ -170,9 +180,15 @@ export const cache = new InMemoryCache({
 export const createApolloClient = (
   apiUrl: string
 ): ApolloClient<NormalizedCacheObject> => {
+  const httpLink = createHttpLink({
+    fetch: createFetch(),
+    uri: apiUrl,
+    credentials: "include",
+  });
+
   client = new ApolloClient({
     cache,
-    link: createLink(apiUrl),
+    link: httpLink,
   });
 
   /**
@@ -180,7 +196,7 @@ export const createApolloClient = (
    * we need to call "auth()" here. refreshToken mutation doesn't require channel, so it
    * doesn't have to be populated with value.
    */
-  refreshToken = auth({ apolloClient: client, channel: "" }).refreshToken;
+  authClient = auth({ apolloClient: client, channel: "" });
 
   return client;
 };

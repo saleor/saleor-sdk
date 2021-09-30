@@ -5,6 +5,7 @@ import {
 } from "./setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
+// import { storage } from "../src/core/storage";
 
 describe("user api", () => {
   const context = setupRecording();
@@ -79,7 +80,7 @@ describe("user api", () => {
     expect(data?.accountAddressCreate?.errors).toHaveLength(0);
   });
 
-  it("updates the user account address", async () => {
+  it.skip("updates the user account address", async () => {
     const { data: newAddress } = await saleor.user.createAccountAddress({
       input: testAddress,
     });
@@ -141,7 +142,7 @@ describe("user api", () => {
     }
   });
 
-  it("deletes user address", async () => {
+  it.skip("deletes user address", async () => {
     const { data: newAddress } = await saleor.user.createAccountAddress({
       input: testAddress,
     });

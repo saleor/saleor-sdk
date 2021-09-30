@@ -202,8 +202,6 @@ export const auth = ({
 
     if (result.data?.tokenRefresh?.token) {
       storage.setToken(result.data.tokenRefresh.token);
-    } else {
-      logout();
     }
 
     return result;
@@ -264,7 +262,7 @@ export const auth = ({
       RequestPasswordResetMutationVariables
     >({
       mutation: REQUEST_PASSWORD_RESET,
-      variables: { ...opts },
+      variables: { ...opts, channel },
     });
 
     return result;
@@ -374,8 +372,6 @@ export const auth = ({
 
     if (result.data?.externalRefresh?.token) {
       storage.setToken(result.data.externalRefresh.token);
-    } else {
-      logout();
     }
 
     return result;

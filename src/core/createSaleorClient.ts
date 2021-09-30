@@ -5,6 +5,7 @@ import { createApolloClient } from "../apollo";
 import { SaleorClient, SaleorClientOpts } from "./types";
 
 import { createStorage, storage } from "./storage";
+import { DEVELOPMENT_MODE, WINDOW_EXISTS } from "../constants";
 
 export const createSaleorClient = ({
   apiUrl,
@@ -32,11 +33,17 @@ export const createSaleorClient = ({
     }
   }
 
-  return {
+  const client = {
     auth: authSDK,
     user: userSDK,
-    config: { channel: _channel, setChannel },
+    config: { channel: _channel, setChannel, autologin },
     _internal: { apolloClient },
     getState: (): State => getState(apolloClient),
   };
+
+  if (DEVELOPMENT_MODE && WINDOW_EXISTS) {
+    (window as any).__SALEOR_CLIENT__ = client;
+  }
+
+  return client;
 };
