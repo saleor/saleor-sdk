@@ -63,13 +63,17 @@ export const createFetch = ({
     const expirationTime =
       (jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew) * 1000;
 
-    if (refreshPromise) {
-      await refreshPromise;
-    } else if (Date.now() >= expirationTime) {
-      // refreshToken automatically updates token in storage
-      refreshPromise = authClient.refreshToken();
+    try {
+      if (refreshPromise) {
+        await refreshPromise;
+      } else if (Date.now() >= expirationTime) {
+        // refreshToken automatically updates token in storage
+        refreshPromise = authClient.refreshToken();
 
-      await refreshPromise;
+        await refreshPromise;
+      }
+    } catch (e) {
+    } finally {
       refreshPromise = null;
     }
     token = storage.getToken();
@@ -95,26 +99,30 @@ export const createFetch = ({
     >;
 
     if (isUnauthenticated) {
-      if (refreshPromise) {
-        refreshTokenResponse = await refreshPromise;
-      } else {
-        refreshPromise = authClient.refreshToken();
+      try {
+        if (refreshPromise) {
+          refreshTokenResponse = await refreshPromise;
+        } else {
+          refreshPromise = authClient.refreshToken();
 
-        refreshTokenResponse = await refreshPromise;
+          refreshTokenResponse = await refreshPromise;
+        }
+
+        if (refreshTokenResponse.data?.tokenRefresh?.token) {
+          // check if mutation returns a valid token after refresh and retry the request
+          return createFetch({
+            autoTokenRefresh: false,
+            refreshOnUnauthorized: false,
+          })(input, init);
+        }
+      } catch (e) {
+      } finally {
         refreshPromise = null;
-      }
 
-      if (refreshTokenResponse.data?.tokenRefresh?.token) {
-        // check if mutation returns a valid token after refresh and retry the request
-        return createFetch({
-          autoTokenRefresh: false,
-          refreshOnUnauthorized: false,
-        })(input, init);
+        // after Saleor returns UNAUTHORIZED status and token refresh fails
+        // we log out the user and return the failed response
+        authClient.logout();
       }
-
-      // after Saleor returns UNAUTHORIZED status and token refresh fails
-      // we log out the user and return the failed response
-      authClient.logout();
     }
 
     return response;
