@@ -60,6 +60,7 @@ export const createFetch = ({
   }
 
   if (autoTokenRefresh && token) {
+    console.log("checking if token is expired...");
     // auto refresh token before provided time skew (in seconds) until it expires
     const expirationTime =
       jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew;
@@ -68,6 +69,7 @@ export const createFetch = ({
       await refreshPromise;
     } else if (Date.now() >= expirationTime) {
       // refreshToken automatically updates token in storage
+      console.log("token is expired: refreshToken()");
       refreshPromise = refreshToken();
 
       await refreshPromise;
@@ -84,6 +86,7 @@ export const createFetch = ({
   }
 
   if (refreshOnUnauthorized) {
+    console.log("checking if token is expired...");
     const response = await fetch(input, init);
     const data: FetchResult = await response.clone().json();
     const isUnauthenticated = data?.errors?.some(
@@ -94,6 +97,7 @@ export const createFetch = ({
       if (refreshPromise) {
         await refreshPromise;
       } else {
+        console.log("401: refreshToken()");
         refreshPromise = refreshToken();
 
         await refreshPromise;
