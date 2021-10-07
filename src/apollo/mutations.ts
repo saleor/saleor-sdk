@@ -12,7 +12,6 @@ export const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
     tokenCreate(email: $email, password: $password) {
       csrfToken
-      refreshToken
       token
       errors {
         ...AccountErrorFragment
@@ -38,11 +37,26 @@ export const REGISTER = gql`
 
 export const REFRESH_TOKEN = gql`
   ${accountErrorFragment}
-  mutation refreshToken($csrfToken: String, $refreshToken: String) {
-    tokenRefresh(csrfToken: $csrfToken, refreshToken: $refreshToken) {
+  mutation refreshToken($csrfToken: String!) {
+    tokenRefresh(csrfToken: $csrfToken) {
+      token
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
+// separate mutation so the request payload is minimal when user is not needed
+// used for initial authentication
+export const REFRESH_TOKEN_WITH_USER = gql`
+  ${accountErrorFragment}
+  ${userFragment}
+  mutation refreshTokenWithUser($csrfToken: String!) {
+    tokenRefresh(csrfToken: $csrfToken) {
       token
       user {
-        id
+        ...UserFragment
       }
       errors {
         ...AccountErrorFragment
@@ -92,7 +106,6 @@ export const OBTAIN_EXTERNAL_ACCESS_TOKEN = gql`
   ) {
     externalObtainAccessTokens(pluginId: $pluginId, input: $input) {
       token
-      refreshToken
       csrfToken
       user {
         ...UserFragment
@@ -112,7 +125,6 @@ export const EXTERNAL_REFRESH = gql`
   ) {
     externalRefresh(pluginId: $pluginId, input: $input) {
       token
-      refreshToken
       csrfToken
       errors {
         ...AccountErrorFragment
@@ -199,6 +211,7 @@ export const SET_PASSWORD = gql`
         ...AccountErrorFragment
       }
       token
+      csrfToken
       user {
         ...UserFragment
       }

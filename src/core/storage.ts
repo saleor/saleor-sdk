@@ -1,36 +1,65 @@
-import { makeVar } from "@apollo/client";
-
 import { LOCAL_STORAGE_EXISTS } from "../constants";
-import { SALEOR_AUTH_TOKEN } from "./constants";
+import { SALEOR_CSRF_TOKEN } from "./constants";
 
 export let storage: {
-  setToken: (token: string | null) => void;
-  getToken: () => string | null;
+  setAccessToken: (token: string | null) => void;
+  getAccessToken: () => string | null;
+  setCSRFToken: (token: string | null) => void;
+  getCSRFToken: () => string | null;
+  setTokens: (tokens: {
+    accessToken: string | null;
+    csrfToken: string | null;
+  }) => void;
+  clear: () => void;
 };
 
 export const createStorage = (autologinEnabled: boolean): void => {
-  const reactiveToken = makeVar<string | null>(
+  let accessToken: string | null = null;
+  let csrfToken: string | null =
     autologinEnabled && LOCAL_STORAGE_EXISTS
-      ? localStorage.getItem(SALEOR_AUTH_TOKEN)
-      : null
-  );
+      ? localStorage.getItem(SALEOR_CSRF_TOKEN)
+      : null;
 
-  const setToken = (token: string | null): void => {
+  const setCSRFToken = (token: string | null): void => {
     if (autologinEnabled && LOCAL_STORAGE_EXISTS) {
       if (token) {
-        localStorage.setItem(SALEOR_AUTH_TOKEN, token);
+        localStorage.setItem(SALEOR_CSRF_TOKEN, token);
       } else {
-        localStorage.removeItem(SALEOR_AUTH_TOKEN);
+        localStorage.removeItem(SALEOR_CSRF_TOKEN);
       }
     }
 
-    reactiveToken(token);
+    csrfToken = token;
+  };
+  const setAccessToken = (token: string | null): void => {
+    accessToken = token;
   };
 
-  const getToken = (): string | null => reactiveToken();
+  const getAccessToken = (): string | null => accessToken;
+  const getCSRFToken = (): string | null => csrfToken;
+
+  const setTokens = ({
+    accessToken,
+    csrfToken,
+  }: {
+    accessToken: string | null;
+    csrfToken: string | null;
+  }): void => {
+    setAccessToken(accessToken);
+    setCSRFToken(csrfToken);
+  };
+
+  const clear = (): void => {
+    accessToken = null;
+    csrfToken = null;
+  };
 
   storage = {
-    setToken,
-    getToken,
+    setAccessToken,
+    setCSRFToken,
+    getAccessToken,
+    getCSRFToken,
+    setTokens,
+    clear,
   };
 };

@@ -5,7 +5,6 @@ import {
 } from "./setup";
 import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { CountryCode } from "../src/apollo/types";
-// import { storage } from "../src/core/storage";
 
 describe("user api", () => {
   const context = setupRecording();

@@ -16,11 +16,11 @@ export const setupPollyMiddleware = (server: PollyServer): void => {
     const requestJson = JSON.parse(recording.request.postData.text);
     const responseHeaders = recording.response.headers.filter(
       (el: Record<string, string>) =>
-        !["authorization", "set-cookie"].includes(el.name)
+        !["authorization-bearer", "set-cookie"].includes(el.name)
     );
     const requestHeaders = recording.request.headers.filter(
       (el: Record<string, string>) =>
-        !["authorization", "set-cookie"].includes(el.name)
+        !["authorization-bearer", "set-cookie"].includes(el.name)
     );
 
     const filteredRequestJson = removeBlacklistedVariables(requestJson);
@@ -45,7 +45,7 @@ export const setupRecording = (): Context =>
     adapters: ["node-http"],
     matchRequestsBy: {
       headers: {
-        exclude: ["authorization", "host", "content-length"],
+        exclude: ["authorization-bearer", "host", "content-length"],
       },
       url: false,
       body(body): string {
