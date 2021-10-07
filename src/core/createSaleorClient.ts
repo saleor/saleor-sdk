@@ -26,10 +26,10 @@ export const createSaleorClient = ({
   const userSDK = user(coreInternals);
 
   if (autologin) {
-    const token = storage.getToken();
+    const csrfToken = storage.getCSRFToken();
 
-    if (token) {
-      authSDK.verifyToken(token);
+    if (csrfToken) {
+      authSDK.refreshToken(true);
     }
   }
 

@@ -11306,7 +11306,7 @@ export type LoginMutationVariables = Exact<{
 
 
 export type LoginMutation = { tokenCreate?: Maybe<(
-    Pick<CreateToken, 'csrfToken' | 'refreshToken' | 'token'>
+    Pick<CreateToken, 'csrfToken' | 'token'>
     & { errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }
   )> };
 
@@ -11321,14 +11321,23 @@ export type RegisterMutation = { accountRegister?: Maybe<(
   )> };
 
 export type RefreshTokenMutationVariables = Exact<{
-  csrfToken?: Maybe<Scalars['String']>;
-  refreshToken?: Maybe<Scalars['String']>;
+  csrfToken: Scalars['String'];
 }>;
 
 
 export type RefreshTokenMutation = { tokenRefresh?: Maybe<(
     Pick<RefreshToken, 'token'>
-    & { user?: Maybe<Pick<User, 'id'>>, errors: Array<AccountErrorFragment> }
+    & { errors: Array<AccountErrorFragment> }
+  )> };
+
+export type RefreshTokenWithUserMutationVariables = Exact<{
+  csrfToken: Scalars['String'];
+}>;
+
+
+export type RefreshTokenWithUserMutation = { tokenRefresh?: Maybe<(
+    Pick<RefreshToken, 'token'>
+    & { user?: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type VerifyTokenMutationVariables = Exact<{
@@ -11359,7 +11368,7 @@ export type ExternalObtainAccessTokensMutationVariables = Exact<{
 
 
 export type ExternalObtainAccessTokensMutation = { externalObtainAccessTokens?: Maybe<(
-    Pick<ExternalObtainAccessTokens, 'token' | 'refreshToken' | 'csrfToken'>
+    Pick<ExternalObtainAccessTokens, 'token' | 'csrfToken'>
     & { user?: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11370,7 +11379,7 @@ export type ExternalRefreshMutationVariables = Exact<{
 
 
 export type ExternalRefreshMutation = { externalRefresh?: Maybe<(
-    Pick<ExternalRefresh, 'token' | 'refreshToken' | 'csrfToken'>
+    Pick<ExternalRefresh, 'token' | 'csrfToken'>
     & { errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11424,7 +11433,7 @@ export type SetPasswordMutationVariables = Exact<{
 
 
 export type SetPasswordMutation = { setPassword?: Maybe<(
-    Pick<SetPassword, 'token'>
+    Pick<SetPassword, 'token' | 'csrfToken'>
     & { errors: Array<AccountErrorFragment>, user?: Maybe<UserFragment> }
   )> };
 
@@ -11510,7 +11519,7 @@ export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserDetailsQuery = (
-  Pick<Query, 'token' | 'authenticated' | 'authenticating'>
+  Pick<Query, 'authenticated' | 'authenticating'>
   & { user?: Maybe<UserFragment> }
 );
 
@@ -11568,7 +11577,6 @@ export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   tokenCreate(email: $email, password: $password) {
     csrfToken
-    refreshToken
     token
     errors {
       ...AccountErrorFragment
@@ -11644,12 +11652,9 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const RefreshTokenDocument = gql`
-    mutation refreshToken($csrfToken: String, $refreshToken: String) {
-  tokenRefresh(csrfToken: $csrfToken, refreshToken: $refreshToken) {
+    mutation refreshToken($csrfToken: String!) {
+  tokenRefresh(csrfToken: $csrfToken) {
     token
-    user {
-      id
-    }
     errors {
       ...AccountErrorFragment
     }
@@ -11672,7 +11677,6 @@ export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutatio
  * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
  *   variables: {
  *      csrfToken: // value for 'csrfToken'
- *      refreshToken: // value for 'refreshToken'
  *   },
  * });
  */
@@ -11683,6 +11687,46 @@ export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions
 export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
 export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
 export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
+export const RefreshTokenWithUserDocument = gql`
+    mutation refreshTokenWithUser($csrfToken: String!) {
+  tokenRefresh(csrfToken: $csrfToken) {
+    token
+    user {
+      ...UserFragment
+    }
+    errors {
+      ...AccountErrorFragment
+    }
+  }
+}
+    ${UserFragmentDoc}
+${AccountErrorFragmentDoc}`;
+export type RefreshTokenWithUserMutationFn = Apollo.MutationFunction<RefreshTokenWithUserMutation, RefreshTokenWithUserMutationVariables>;
+
+/**
+ * __useRefreshTokenWithUserMutation__
+ *
+ * To run a mutation, you first call `useRefreshTokenWithUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRefreshTokenWithUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [refreshTokenWithUserMutation, { data, loading, error }] = useRefreshTokenWithUserMutation({
+ *   variables: {
+ *      csrfToken: // value for 'csrfToken'
+ *   },
+ * });
+ */
+export function useRefreshTokenWithUserMutation(baseOptions?: Apollo.MutationHookOptions<RefreshTokenWithUserMutation, RefreshTokenWithUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RefreshTokenWithUserMutation, RefreshTokenWithUserMutationVariables>(RefreshTokenWithUserDocument, options);
+      }
+export type RefreshTokenWithUserMutationHookResult = ReturnType<typeof useRefreshTokenWithUserMutation>;
+export type RefreshTokenWithUserMutationResult = Apollo.MutationResult<RefreshTokenWithUserMutation>;
+export type RefreshTokenWithUserMutationOptions = Apollo.BaseMutationOptions<RefreshTokenWithUserMutation, RefreshTokenWithUserMutationVariables>;
 export const VerifyTokenDocument = gql`
     mutation verifyToken($token: String!) {
   tokenVerify(token: $token) {
@@ -11765,7 +11809,6 @@ export const ExternalObtainAccessTokensDocument = gql`
     mutation externalObtainAccessTokens($pluginId: String = "mirumee.authentication.openidconnect", $input: JSONString!) {
   externalObtainAccessTokens(pluginId: $pluginId, input: $input) {
     token
-    refreshToken
     csrfToken
     user {
       ...UserFragment
@@ -11808,7 +11851,6 @@ export const ExternalRefreshDocument = gql`
     mutation externalRefresh($pluginId: String = "mirumee.authentication.openidconnect", $input: JSONString!) {
   externalRefresh(pluginId: $pluginId, input: $input) {
     token
-    refreshToken
     csrfToken
     errors {
       ...AccountErrorFragment
@@ -12010,6 +12052,7 @@ export const SetPasswordDocument = gql`
       ...AccountErrorFragment
     }
     token
+    csrfToken
     user {
       ...UserFragment
     }
@@ -12457,7 +12500,6 @@ export const UserDetailsDocument = gql`
   user: me {
     ...UserFragment
   }
-  token @client
   authenticated @client
   authenticating @client
 }

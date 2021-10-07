@@ -12,6 +12,7 @@ import {
   REGISTER,
   SET_PASSWORD,
   VERIFY_TOKEN,
+  REFRESH_TOKEN_WITH_USER,
 } from "../apollo/mutations";
 import {
   ExternalAuthenticationUrlMutation,
@@ -30,6 +31,8 @@ import {
   PasswordChangeMutationVariables,
   RefreshTokenMutation,
   RefreshTokenMutationVariables,
+  RefreshTokenWithUserMutation,
+  RefreshTokenWithUserMutationVariables,
   RegisterMutation,
   RegisterMutationVariables,
   RequestPasswordResetMutation,
@@ -44,7 +47,6 @@ import {
   ChangeUserPasswordOpts,
   ExternalAuthOpts,
   LoginOpts,
-  RefreshTokenOpts,
   RegisterOpts,
   RequestPasswordResetOpts,
   SetPasswordOpts,
@@ -59,7 +61,7 @@ export interface AuthSDK {
   login: (opts: LoginOpts) => Promise<FetchResult<LoginMutation>>;
   logout: () => Promise<ApolloQueryResult<null>[] | null>;
   refreshToken: (
-    opts?: RefreshTokenOpts
+    includeUser?: boolean
   ) => Promise<FetchResult<RefreshTokenMutation>>;
   register: (opts: RegisterOpts) => Promise<FetchResult<RegisterMutation>>;
   requestPasswordReset: (
@@ -68,7 +70,7 @@ export interface AuthSDK {
   setPassword: (
     opts: SetPasswordOpts
   ) => Promise<FetchResult<SetPasswordMutation>>;
-  verifyToken: (token: string) => Promise<FetchResult<VerifyTokenMutation>>;
+  verifyToken: () => Promise<FetchResult<VerifyTokenMutation>>;
   getExternalAuthUrl: (
     opts: ExternalAuthOpts
   ) => Promise<FetchResult<ExternalAuthenticationUrlMutation>>;
@@ -146,8 +148,11 @@ export const auth = ({
       })
     );
 
-    if (result.data?.tokenCreate?.token) {
-      storage.setToken(result.data.tokenCreate.token);
+    if (result.data?.tokenCreate) {
+      storage.setTokens({
+        accessToken: result.data.tokenCreate.token,
+        csrfToken: result.data.tokenCreate.csrfToken,
+      });
     }
 
     return result;
@@ -159,7 +164,9 @@ export const auth = ({
    * @returns Apollo's native resetStore method.
    */
   const logout: AuthSDK["logout"] = () => {
-    storage.setToken(null);
+    storage.setAccessToken(null);
+    storage.setCSRFToken(null);
+
     return client.resetStore();
   };
 
@@ -188,20 +195,41 @@ export const auth = ({
    * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
    * @returns Authorization token.
    */
-  const refreshToken: AuthSDK["refreshToken"] = async opts => {
-    const result = await client.mutate<
-      RefreshTokenMutation,
-      RefreshTokenMutationVariables
-    >({
-      mutation: REFRESH_TOKEN,
-      variables: {
-        csrfToken: opts?.csrfToken,
-        refreshToken: opts?.refreshToken,
-      },
-    });
+  const refreshToken: AuthSDK["refreshToken"] = async (includeUser = false) => {
+    const csrfToken = storage.getCSRFToken();
+
+    if (!csrfToken) {
+      throw Error("csrfToken not present");
+    }
+
+    let result;
+
+    if (includeUser) {
+      result = await client.mutate<
+        RefreshTokenWithUserMutation,
+        RefreshTokenWithUserMutationVariables
+      >({
+        mutation: REFRESH_TOKEN_WITH_USER,
+        variables: {
+          csrfToken,
+        },
+      });
+    } else {
+      result = await client.mutate<
+        RefreshTokenMutation,
+        RefreshTokenMutationVariables
+      >({
+        mutation: REFRESH_TOKEN,
+        variables: {
+          csrfToken,
+        },
+      });
+    }
 
     if (result.data?.tokenRefresh?.token) {
-      storage.setToken(result.data.tokenRefresh.token);
+      storage.setAccessToken(result.data.tokenRefresh.token);
+    } else if (result.data?.tokenRefresh?.errors) {
+      logout();
     }
 
     return result;
@@ -213,7 +241,13 @@ export const auth = ({
    * @param token - Token value.
    * @returns User assigned to token and the information if the token is valid or not.
    */
-  const verifyToken: AuthSDK["verifyToken"] = async token => {
+  const verifyToken: AuthSDK["verifyToken"] = async () => {
+    const token = storage.getAccessToken();
+
+    if (!token) {
+      throw Error("Token not present");
+    }
+
     const result = await withLoadingAuthentication(
       "verifyToken",
       client.mutate<VerifyTokenMutation, VerifyTokenMutationVariables>({
@@ -223,7 +257,7 @@ export const auth = ({
     );
 
     if (!result.data?.tokenVerify?.isValid) {
-      storage.setToken(null);
+      logout();
     }
 
     return result;
@@ -283,6 +317,13 @@ export const auth = ({
       variables: { ...opts },
     });
 
+    if (result.data?.setPassword?.token) {
+      storage.setTokens({
+        accessToken: result.data.setPassword.token,
+        csrfToken: result.data.setPassword.csrfToken || null,
+      });
+    }
+
     return result;
   };
 
@@ -324,7 +365,10 @@ export const auth = ({
     });
 
     if (result.data?.externalObtainAccessTokens?.token) {
-      storage.setToken(result.data.externalObtainAccessTokens.token);
+      storage.setTokens({
+        accessToken: result.data.externalObtainAccessTokens.token,
+        csrfToken: result.data.externalObtainAccessTokens.csrfToken || null,
+      });
     }
 
     return result;
@@ -371,7 +415,7 @@ export const auth = ({
     });
 
     if (result.data?.externalRefresh?.token) {
-      storage.setToken(result.data.externalRefresh.token);
+      storage.setAccessToken(result.data.externalRefresh.token);
     }
 
     return result;
@@ -395,7 +439,7 @@ export const auth = ({
     });
 
     if (!result.data?.externalVerify?.isValid) {
-      storage.setToken(null);
+      storage.clear();
     }
 
     return result;

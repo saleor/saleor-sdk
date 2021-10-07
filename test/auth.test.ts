@@ -26,7 +26,8 @@ describe("auth api", () => {
     expect(data?.tokenCreate?.user?.id).toBeDefined();
     expect(data?.tokenCreate?.token).toBeDefined();
     expect(data?.tokenCreate?.errors).toHaveLength(0);
-    expect(storage.getToken()).not.toBeNull();
+    expect(storage.getAccessToken()).not.toBeNull();
+    expect(storage.getCSRFToken()).not.toBeNull();
   });
 
   it("login caches user data", async () => {
@@ -36,7 +37,6 @@ describe("auth api", () => {
     });
     const state = saleor.getState();
     expect(state?.user).toBeDefined();
-    expect(state?.token).toBeDefined();
     expect(state?.authenticated).toBe(true);
   });
 
@@ -56,11 +56,11 @@ describe("auth api", () => {
       password: TEST_AUTH_PASSWORD,
     });
     const state = saleor.getState();
-    const previousToken = state?.token;
+    const previousToken = storage.getAccessToken();
     expect(state?.authenticated).toBe(true);
 
     const { data } = await saleor.auth.refreshToken();
-    const newToken = saleor.getState()?.token;
+    const newToken = storage.getAccessToken();
     expect(state?.authenticated).toBe(true);
     expect(data?.tokenRefresh?.token === newToken);
     expect(newToken !== previousToken);
@@ -84,8 +84,8 @@ describe("auth api", () => {
     const state = saleor.getState();
     expect(state?.user).toBeFalsy();
     expect(state?.authenticated).toBe(false);
-    expect(state?.token).toBeNull();
-    expect(storage.getToken()).toBeNull();
+    expect(storage.getAccessToken()).toBeNull();
+    expect(storage.getCSRFToken()).toBeNull();
   });
 
   it("verifies if token is valid", async () => {
@@ -95,9 +95,7 @@ describe("auth api", () => {
     });
 
     if (data?.tokenCreate?.token) {
-      const { data: result } = await saleor.auth.verifyToken(
-        data.tokenCreate.token
-      );
+      const { data: result } = await saleor.auth.verifyToken();
       expect(result?.tokenVerify?.isValid).toBe(true);
     }
   });

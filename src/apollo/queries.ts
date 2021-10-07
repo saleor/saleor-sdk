@@ -7,7 +7,6 @@ export const USER = gql`
     user: me {
       ...UserFragment
     }
-    token @client
     authenticated @client
     authenticating @client
   }

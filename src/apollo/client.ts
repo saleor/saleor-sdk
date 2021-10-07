@@ -50,7 +50,7 @@ export const createFetch = ({
     );
   }
 
-  let token = storage.getToken();
+  let token = storage.getAccessToken();
 
   if (
     JSON.parse(init.body?.toString() || "")?.operationName === "refreshToken"
@@ -76,7 +76,7 @@ export const createFetch = ({
     } finally {
       refreshPromise = null;
     }
-    token = storage.getToken();
+    token = storage.getAccessToken();
   }
 
   if (token) {
@@ -90,7 +90,7 @@ export const createFetch = ({
     const response = await fetch(input, init);
     const data: FetchResult = await response.clone().json();
     const isUnauthenticated = data?.errors?.some(
-      error => error.extensions?.code === "UNAUTHENTICATED"
+      error => error.extensions?.exception.code === "ExpiredSignatureError"
     );
     let refreshTokenResponse: FetchResult<
       RefreshTokenMutation,
@@ -114,14 +114,14 @@ export const createFetch = ({
             autoTokenRefresh: false,
             refreshOnUnauthorized: false,
           })(input, init);
+        } else {
+          // after Saleor returns ExpiredSignatureError status and token refresh fails
+          // we log out the user and return the failed response
+          authClient.logout();
         }
       } catch (e) {
       } finally {
         refreshPromise = null;
-
-        // after Saleor returns UNAUTHORIZED status and token refresh fails
-        // we log out the user and return the failed response
-        authClient.logout();
       }
     }
 
@@ -151,11 +151,6 @@ const typePolicies: TypedTypePolicies = {
           });
 
           return canRead(ref) ? ref : null;
-        },
-      },
-      token: {
-        read(): string | null {
-          return storage.getToken();
         },
       },
       authenticating: {
