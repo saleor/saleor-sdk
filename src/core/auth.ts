@@ -88,49 +88,10 @@ export interface AuthSDK {
   ) => Promise<FetchResult<ExternalVerifyMutation>>;
 }
 
-type AuthKey = keyof AuthSDK;
-
 export const auth = ({
   apolloClient: client,
   channel,
 }: SaleorClientMethodsProps): AuthSDK => {
-  const authenticatingMutationStatus: Record<string, boolean> = {
-    login: false,
-    verifyToken: false,
-  };
-
-  const withLoadingAuthentication = async (
-    key: AuthKey,
-    mutation: Promise<FetchResult>
-  ): Promise<FetchResult> => {
-    authenticatingMutationStatus[key] = true;
-
-    client.writeQuery({
-      query: USER,
-      data: {
-        authenticating: true,
-      },
-    });
-
-    const result = await mutation;
-    authenticatingMutationStatus[key] = false;
-
-    if (
-      Object.keys(authenticatingMutationStatus).every(
-        k => !authenticatingMutationStatus[k]
-      )
-    ) {
-      client.writeQuery({
-        query: USER,
-        data: {
-          authenticating: false,
-        },
-      });
-    }
-
-    return result;
-  };
-
   /**
    * Authenticates user with email and password.
    *
@@ -138,20 +99,24 @@ export const auth = ({
    * @returns Promise resolved with CreateToken type data.
    */
   const login: AuthSDK["login"] = async opts => {
-    const result = await withLoadingAuthentication(
-      "login",
-      client.mutate<LoginMutation, LoginMutationVariables>({
-        mutation: LOGIN,
-        variables: {
-          ...opts,
-        },
-      })
-    );
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: true,
+      },
+    });
 
-    if (result.data?.tokenCreate) {
+    const result = await client.mutate<LoginMutation, LoginMutationVariables>({
+      mutation: LOGIN,
+      variables: {
+        ...opts,
+      },
+    });
+
+    if (result.data?.tokenCreate?.token) {
       storage.setTokens({
         accessToken: result.data.tokenCreate.token,
-        csrfToken: result.data.tokenCreate.csrfToken,
+        csrfToken: result.data.tokenCreate.csrfToken!,
       });
     }
 
@@ -166,6 +131,13 @@ export const auth = ({
   const logout: AuthSDK["logout"] = () => {
     storage.setAccessToken(null);
     storage.setCSRFToken(null);
+
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: false,
+      },
+    });
 
     return client.resetStore();
   };
@@ -228,7 +200,7 @@ export const auth = ({
 
     if (result.data?.tokenRefresh?.token) {
       storage.setAccessToken(result.data.tokenRefresh.token);
-    } else if (result.data?.tokenRefresh?.errors) {
+    } else {
       logout();
     }
 
@@ -248,13 +220,13 @@ export const auth = ({
       throw Error("Token not present");
     }
 
-    const result = await withLoadingAuthentication(
-      "verifyToken",
-      client.mutate<VerifyTokenMutation, VerifyTokenMutationVariables>({
-        mutation: VERIFY_TOKEN,
-        variables: { token },
-      })
-    );
+    const result = await client.mutate<
+      VerifyTokenMutation,
+      VerifyTokenMutationVariables
+    >({
+      mutation: VERIFY_TOKEN,
+      variables: { token },
+    });
 
     if (!result.data?.tokenVerify?.isValid) {
       logout();
