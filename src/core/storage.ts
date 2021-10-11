@@ -50,8 +50,8 @@ export const createStorage = (autologinEnabled: boolean): void => {
   };
 
   const clear = (): void => {
-    accessToken = null;
-    csrfToken = null;
+    setAccessToken(null);
+    setCSRFToken(null);
   };
 
   storage = {
