@@ -20,7 +20,7 @@ export const createSaleorClient = ({
   };
 
   createStorage(autologin);
-  const apolloClient = createApolloClient(apiUrl);
+  const apolloClient = createApolloClient(apiUrl, autologin);
   const coreInternals = { apolloClient, channel: _channel };
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);

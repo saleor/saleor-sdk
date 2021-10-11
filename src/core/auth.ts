@@ -88,23 +88,17 @@ export interface AuthSDK {
   ) => Promise<FetchResult<ExternalVerifyMutation>>;
 }
 
-type AuthKey = keyof AuthSDK;
-
 export const auth = ({
   apolloClient: client,
   channel,
 }: SaleorClientMethodsProps): AuthSDK => {
-  const authenticatingMutationStatus: Record<string, boolean> = {
-    login: false,
-    verifyToken: false,
-  };
-
-  const withLoadingAuthentication = async (
-    key: AuthKey,
-    mutation: Promise<FetchResult>
-  ): Promise<FetchResult> => {
-    authenticatingMutationStatus[key] = true;
-
+  /**
+   * Authenticates user with email and password.
+   *
+   * @param opts - Object with user's email and password.
+   * @returns Promise resolved with CreateToken type data.
+   */
+  const login: AuthSDK["login"] = opts => {
     client.writeQuery({
       query: USER,
       data: {
@@ -112,50 +106,20 @@ export const auth = ({
       },
     });
 
-    const result = await mutation;
-    authenticatingMutationStatus[key] = false;
-
-    if (
-      Object.keys(authenticatingMutationStatus).every(
-        k => !authenticatingMutationStatus[k]
-      )
-    ) {
-      client.writeQuery({
-        query: USER,
-        data: {
-          authenticating: false,
-        },
-      });
-    }
-
-    return result;
-  };
-
-  /**
-   * Authenticates user with email and password.
-   *
-   * @param opts - Object with user's email and password.
-   * @returns Promise resolved with CreateToken type data.
-   */
-  const login: AuthSDK["login"] = async opts => {
-    const result = await withLoadingAuthentication(
-      "login",
-      client.mutate<LoginMutation, LoginMutationVariables>({
-        mutation: LOGIN,
-        variables: {
-          ...opts,
-        },
-      })
-    );
-
-    if (result.data?.tokenCreate) {
-      storage.setTokens({
-        accessToken: result.data.tokenCreate.token,
-        csrfToken: result.data.tokenCreate.csrfToken,
-      });
-    }
-
-    return result;
+    return client.mutate<LoginMutation, LoginMutationVariables>({
+      mutation: LOGIN,
+      variables: {
+        ...opts,
+      },
+      update: (_, { data }) => {
+        if (data?.tokenCreate?.token) {
+          storage.setTokens({
+            accessToken: data.tokenCreate.token,
+            csrfToken: data.tokenCreate.csrfToken!,
+          });
+        }
+      },
+    });
   };
 
   /**
@@ -164,8 +128,14 @@ export const auth = ({
    * @returns Apollo's native resetStore method.
    */
   const logout: AuthSDK["logout"] = () => {
-    storage.setAccessToken(null);
-    storage.setCSRFToken(null);
+    storage.clear();
+
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: false,
+      },
+    });
 
     return client.resetStore();
   };
@@ -195,17 +165,15 @@ export const auth = ({
    * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
    * @returns Authorization token.
    */
-  const refreshToken: AuthSDK["refreshToken"] = async (includeUser = false) => {
+  const refreshToken: AuthSDK["refreshToken"] = (includeUser = false) => {
     const csrfToken = storage.getCSRFToken();
 
     if (!csrfToken) {
       throw Error("csrfToken not present");
     }
 
-    let result;
-
     if (includeUser) {
-      result = await client.mutate<
+      return client.mutate<
         RefreshTokenWithUserMutation,
         RefreshTokenWithUserMutationVariables
       >({
@@ -213,26 +181,31 @@ export const auth = ({
         variables: {
           csrfToken,
         },
-      });
-    } else {
-      result = await client.mutate<
-        RefreshTokenMutation,
-        RefreshTokenMutationVariables
-      >({
-        mutation: REFRESH_TOKEN,
-        variables: {
-          csrfToken,
+        update: (_, { data }) => {
+          if (data?.tokenRefresh?.token) {
+            storage.setAccessToken(data.tokenRefresh.token);
+          } else {
+            logout();
+          }
         },
       });
+    } else {
+      return client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>(
+        {
+          mutation: REFRESH_TOKEN,
+          variables: {
+            csrfToken,
+          },
+          update: (_, { data }) => {
+            if (data?.tokenRefresh?.token) {
+              storage.setAccessToken(data.tokenRefresh.token);
+            } else {
+              logout();
+            }
+          },
+        }
+      );
     }
-
-    if (result.data?.tokenRefresh?.token) {
-      storage.setAccessToken(result.data.tokenRefresh.token);
-    } else if (result.data?.tokenRefresh?.errors) {
-      logout();
-    }
-
-    return result;
   };
 
   /**
@@ -248,13 +221,13 @@ export const auth = ({
       throw Error("Token not present");
     }
 
-    const result = await withLoadingAuthentication(
-      "verifyToken",
-      client.mutate<VerifyTokenMutation, VerifyTokenMutationVariables>({
-        mutation: VERIFY_TOKEN,
-        variables: { token },
-      })
-    );
+    const result = await client.mutate<
+      VerifyTokenMutation,
+      VerifyTokenMutationVariables
+    >({
+      mutation: VERIFY_TOKEN,
+      variables: { token },
+    });
 
     if (!result.data?.tokenVerify?.isValid) {
       logout();
@@ -308,23 +281,19 @@ export const auth = ({
    * @param opts - Object with user's email, password and one-time token required to set the password.
    * @returns User instance, JWT token, JWT refresh token and CSRF token.
    */
-  const setPassword: AuthSDK["setPassword"] = async opts => {
-    const result = await client.mutate<
-      SetPasswordMutation,
-      SetPasswordMutationVariables
-    >({
+  const setPassword: AuthSDK["setPassword"] = opts => {
+    return client.mutate<SetPasswordMutation, SetPasswordMutationVariables>({
       mutation: SET_PASSWORD,
       variables: { ...opts },
+      update: (_, { data }) => {
+        if (data?.setPassword?.token) {
+          storage.setTokens({
+            accessToken: data.setPassword.token,
+            csrfToken: data.setPassword.csrfToken || null,
+          });
+        }
+      },
     });
-
-    if (result.data?.setPassword?.token) {
-      storage.setTokens({
-        accessToken: result.data.setPassword.token,
-        csrfToken: result.data.setPassword.csrfToken || null,
-      });
-    }
-
-    return result;
   };
 
   /**
@@ -355,23 +324,22 @@ export const auth = ({
    * from the OAuth provider
    * @returns Login authentication data and errors
    */
-  const getExternalAccessToken: AuthSDK["getExternalAccessToken"] = async opts => {
-    const result = await client.mutate<
+  const getExternalAccessToken: AuthSDK["getExternalAccessToken"] = opts => {
+    return client.mutate<
       ExternalObtainAccessTokensMutation,
       ExternalObtainAccessTokensMutationVariables
     >({
       mutation: OBTAIN_EXTERNAL_ACCESS_TOKEN,
       variables: { ...opts },
+      update: (_, { data }) => {
+        if (data?.externalObtainAccessTokens?.token) {
+          storage.setTokens({
+            accessToken: data.externalObtainAccessTokens.token,
+            csrfToken: data.externalObtainAccessTokens.csrfToken || null,
+          });
+        }
+      },
     });
-
-    if (result.data?.externalObtainAccessTokens?.token) {
-      storage.setTokens({
-        accessToken: result.data.externalObtainAccessTokens.token,
-        csrfToken: result.data.externalObtainAccessTokens.csrfToken || null,
-      });
-    }
-
-    return result;
   };
 
   /**
@@ -405,20 +373,19 @@ export const auth = ({
    * csrfToken - required when refreshToken is not provided as an input
    * @returns Token refresh data and errors
    */
-  const refreshExternalToken: AuthSDK["refreshExternalToken"] = async opts => {
-    const result = await client.mutate<
+  const refreshExternalToken: AuthSDK["refreshExternalToken"] = opts => {
+    return client.mutate<
       ExternalRefreshMutation,
       ExternalRefreshMutationVariables
     >({
       mutation: EXTERNAL_REFRESH,
       variables: { ...opts },
+      update: (_, { data }) => {
+        if (data?.externalRefresh?.token) {
+          storage.setAccessToken(data.externalRefresh.token);
+        }
+      },
     });
-
-    if (result.data?.externalRefresh?.token) {
-      storage.setAccessToken(result.data.externalRefresh.token);
-    }
-
-    return result;
   };
 
   /**

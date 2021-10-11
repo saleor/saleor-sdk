@@ -8518,7 +8518,7 @@ export type Query = {
   /** List of the shop's attributes. */
   attributes?: Maybe<AttributeCountableConnection>;
   authenticated: Scalars['Boolean'];
-  authenticating?: Maybe<Scalars['Boolean']>;
+  authenticating: Scalars['Boolean'];
   /** List of the shop's categories. */
   categories?: Maybe<CategoryCountableConnection>;
   /** Look up a category by ID or slug. */
@@ -8627,7 +8627,6 @@ export type Query = {
   stocks?: Maybe<StockCountableConnection>;
   /** List of all tax rates available from tax gateway. */
   taxTypes?: Maybe<Array<Maybe<TaxType>>>;
-  token?: Maybe<Scalars['String']>;
   translation?: Maybe<TranslatableItem>;
   /** Returns a list of all translatable items of a given kind. */
   translations?: Maybe<TranslatableItemConnection>;

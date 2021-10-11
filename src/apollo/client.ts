@@ -131,7 +131,7 @@ export const createFetch = ({
   return fetch(input, init);
 };
 
-const typePolicies: TypedTypePolicies = {
+const getTypePolicies = (autologin: boolean): TypedTypePolicies => ({
   Query: {
     fields: {
       authenticated: {
@@ -154,8 +154,15 @@ const typePolicies: TypedTypePolicies = {
         },
       },
       authenticating: {
-        read(value = false): boolean {
-          return value;
+        read(
+          read = autologin && !!storage.getCSRFToken(),
+          { readField }
+        ): boolean {
+          if (readField("authenticated")) {
+            return false;
+          }
+
+          return read;
         },
       },
     },
@@ -174,19 +181,20 @@ const typePolicies: TypedTypePolicies = {
       },
     },
   },
-};
-
-export const cache = new InMemoryCache({
-  typePolicies,
 });
 
 export const createApolloClient = (
-  apiUrl: string
+  apiUrl: string,
+  autologin: boolean
 ): ApolloClient<NormalizedCacheObject> => {
   const httpLink = createHttpLink({
     fetch: createFetch(),
     uri: apiUrl,
     credentials: "include",
+  });
+
+  const cache = new InMemoryCache({
+    typePolicies: getTypePolicies(autologin),
   });
 
   client = new ApolloClient({
