@@ -42,7 +42,7 @@ export const createFetch = ({
   refreshOnUnauthorized = true,
 }: FetchConfig = {}) => async (
   input: RequestInfo,
-  init: RequestInit
+  init: RequestInit = {}
 ): Promise<Response> => {
   if (!client) {
     throw new Error(

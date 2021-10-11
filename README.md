@@ -115,15 +115,40 @@ if (data.tokenCreate.errors.length > 0) {
 }
 ```
 
+### Custom HTTP communication with SDK authorization
+
+SDK provides fetch method with all the necessary authorization headers assigned to HTTP requests and handled authorization token creation, verification and refresh inside, which you may use instead of built-in browser fetch. Using SDK `auth` login or logout methods will appropriately alter fetch behavior automatically, like including Authorization Bearer header in HTTP request.
+
+```tsx
+import { createFetch } from "@saleor/sdk";
+
+const authorizedFetch = createFetch();
+
+const result = await authorizedFetch("https://example.com");
+```
+
+If you use GraphQL you may pass SDK fetch to the Apollo client:
+
+```tsx
+const authorizationLink = new HttpLink({
+  fetch: authorizedFetch,
+});
+const apolloClient = new ApolloClient({
+  link: authorizationLink,
+});
+```
+
+SDK fetch method uses [cross-fetch](https://github.com/lquixada/cross-fetch) under the hood.
+
 ## Features
 
 We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `createSaleorClient()` or use React hooks:
 
-| API object | React hook                    | Description                                                                      |
-| :--------- | :---------------------------- | :------------------------------------------------------------------------------- |
-| `getState()`| `useAuthState()`             | Returns current SDK state: `user`, `authenticated` and `token`.                  |
-| `auth`      | `useAuth()`                  | Handles user authentication methods.                                             |
-| `user`      | `useUser()`                  | Handles user account methods.                                                    |
+| API object   | React hook       | Description                                                              |
+| :----------- | :--------------- | :----------------------------------------------------------------------- |
+| `getState()` | `useAuthState()` | Returns current SDK state: `user`, `authenticated` and `authenticating`. |
+| `auth`       | `useAuth()`      | Handles user authentication methods.                                     |
+| `user`       | `useUser()`      | Handles user account methods.                                            |
 
 SDK supports OpenId Connect methods provided by Saleor API. They are under `auth` object and `useAuth` hook. For more usage details, please check https://docs.saleor.io/docs/3.0/developer/available-plugins/openid-connect.
 
