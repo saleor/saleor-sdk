@@ -13,11 +13,14 @@ import { TypedTypePolicies } from "./apollo-helpers";
 import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
-import { RefreshTokenMutation } from "./types";
+import { ExternalRefreshMutation, RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
 let authClient: AuthSDK;
 let refreshPromise: ReturnType<AuthSDK["refreshToken"]> | null = null;
+let refreshExternalPromise: ReturnType<
+  AuthSDK["refreshExternalToken"]
+> | null = null;
 
 type FetchConfig = Partial<{
   /**
@@ -51,9 +54,17 @@ export const createFetch = ({
   }
 
   let token = storage.getAccessToken();
+  const csrfToken = storage.getCSRFToken();
+  const authPluginId = storage.getAuthPluginId();
+
+  if (authPluginId && !csrfToken) {
+    throw Error("csrfToken not present");
+  }
 
   if (
-    JSON.parse(init.body?.toString() || "")?.operationName === "refreshToken"
+    ["refreshToken", "externalRefresh"].includes(
+      JSON.parse(init.body?.toString() || "")?.operationName
+    )
   ) {
     return fetch(input, init);
   }
@@ -68,12 +79,22 @@ export const createFetch = ({
         await refreshPromise;
       } else if (Date.now() >= expirationTime) {
         // refreshToken automatically updates token in storage
-        refreshPromise = authClient.refreshToken();
-
-        await refreshPromise;
+        if (authPluginId) {
+          refreshExternalPromise = authClient.refreshExternalToken({
+            pluginId: authPluginId,
+            input: JSON.stringify({
+              csrfToken,
+            }),
+          });
+          await refreshExternalPromise;
+        } else {
+          refreshPromise = authClient.refreshToken();
+          await refreshPromise;
+        }
       }
     } catch (e) {
     } finally {
+      refreshExternalPromise = null;
       refreshPromise = null;
     }
     token = storage.getAccessToken();
@@ -96,19 +117,38 @@ export const createFetch = ({
       RefreshTokenMutation,
       Record<string, any>,
       Record<string, any>
-    >;
+    > | null = null;
+    let refreshExternalTokenResponse: FetchResult<
+      ExternalRefreshMutation,
+      Record<string, any>,
+      Record<string, any>
+    > | null = null;
 
     if (isUnauthenticated) {
       try {
         if (refreshPromise) {
           refreshTokenResponse = await refreshPromise;
+        } else if (refreshExternalPromise) {
+          refreshExternalTokenResponse = await refreshExternalPromise;
         } else {
-          refreshPromise = authClient.refreshToken();
-
-          refreshTokenResponse = await refreshPromise;
+          if (authPluginId) {
+            refreshExternalPromise = authClient.refreshExternalToken({
+              pluginId: authPluginId,
+              input: JSON.stringify({
+                csrfToken,
+              }),
+            });
+            refreshExternalTokenResponse = await refreshExternalPromise;
+          } else {
+            refreshPromise = authClient.refreshToken();
+            refreshTokenResponse = await refreshPromise;
+          }
         }
 
-        if (refreshTokenResponse.data?.tokenRefresh?.token) {
+        if (
+          refreshExternalTokenResponse?.data?.externalRefresh?.token ||
+          refreshTokenResponse?.data?.tokenRefresh?.token
+        ) {
           // check if mutation returns a valid token after refresh and retry the request
           return createFetch({
             autoTokenRefresh: false,

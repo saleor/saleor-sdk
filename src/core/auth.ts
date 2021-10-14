@@ -333,6 +333,7 @@ export const auth = ({
       variables: { ...opts },
       update: (_, { data }) => {
         if (data?.externalObtainAccessTokens?.token) {
+          storage.setAuthPluginId(opts.pluginId);
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
             csrfToken: data.externalObtainAccessTokens.csrfToken || null,
@@ -383,6 +384,8 @@ export const auth = ({
       update: (_, { data }) => {
         if (data?.externalRefresh?.token) {
           storage.setAccessToken(data.externalRefresh.token);
+        } else {
+          logout();
         }
       },
     });

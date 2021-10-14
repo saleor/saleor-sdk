@@ -27,8 +27,16 @@ export const createSaleorClient = ({
 
   if (autologin) {
     const csrfToken = storage.getCSRFToken();
+    const authPluginId = storage.getAuthPluginId();
 
-    if (csrfToken) {
+    if (csrfToken && authPluginId) {
+      authSDK.refreshExternalToken({
+        pluginId: authPluginId,
+        input: JSON.stringify({
+          csrfToken,
+        }),
+      });
+    } else if (csrfToken) {
       authSDK.refreshToken(true);
     }
   }
