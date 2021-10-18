@@ -8,6 +8,8 @@ import {
   TEST_AUTH_EMAIL,
   TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   TEST_AUTH_PASSWORD,
 } from "../src/config";
 import { storage } from "../src/core/storage";
@@ -16,6 +18,7 @@ import {
   ExternalObtainAccessTokensMutation,
   LoginMutation,
 } from "../src/apollo/types";
+import { server } from "./mocks/server";
 
 const login = async (
   saleor: SaleorClient
@@ -40,14 +43,14 @@ const loginWithExternalPlugin = async (
   expect(authUrl?.externalAuthenticationUrl?.errors).toHaveLength(0);
   // Assume redirection to external plugin and redirection back to callback address
   const callbackQueryParams = {
-    code: "Mx1h3u3YFfDVNv5iJL8lzzeHpU_lyCti",
-    state:
-      "4/0AX4XfWgK2COkwLueNWzvgkGFfOp_o5FJB4KsRYG3or4lPE0o_3SIvGykNRV7CjU3-7B9sg",
+    code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+    state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   };
   const { data: accessToken } = await saleor.auth.getExternalAccessToken({
     pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
     input: JSON.stringify(callbackQueryParams),
   });
+  console.log("accessToken...: ", accessToken);
 
   return accessToken;
 };
@@ -59,10 +62,16 @@ describe("auth api", () => {
   const context = setupRecording();
   const saleor = setupSaleorClient();
 
+  beforeAll(() => server.listen());
+
   beforeEach(() => {
     const { server } = context.polly;
     setupPollyMiddleware(server);
   });
+
+  afterEach(() => server.resetHandlers());
+
+  afterAll(() => server.close());
 
   it("can login", async () => {
     const data = await login(saleor);
