@@ -7,6 +7,8 @@ import path from "path";
 import { API_URI } from "../src/config";
 import { SaleorClient, createSaleorClient } from "../src/core";
 import { removeBlacklistedVariables } from "./utils";
+import { setupServer } from "msw/node";
+import { mockHandlers } from "./mockHandlers";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
@@ -63,6 +65,8 @@ export const setupRecording = (): Context =>
     },
     recordIfMissing: true,
   });
+
+export const setupMockServer = () => setupServer(...mockHandlers);
 
 export const setupSaleorClient = (): SaleorClient => {
   const saleor = createSaleorClient({

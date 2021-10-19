@@ -1,8 +1,4 @@
-import {
-  setupRecording,
-  setupSaleorClient,
-  setupPollyMiddleware,
-} from "./setup";
+import { setupMockServer, setupSaleorClient } from "./setup";
 import {
   API_URI,
   TEST_AUTH_EMAIL,
@@ -18,7 +14,11 @@ import {
   ExternalObtainAccessTokensMutation,
   LoginMutation,
 } from "../src/apollo/types";
-import { server } from "./mocks/server";
+
+interface CallbackQueryParams {
+  code: string;
+  state: string;
+}
 
 const login = async (
   saleor: SaleorClient
@@ -32,7 +32,8 @@ const login = async (
 };
 
 const loginWithExternalPlugin = async (
-  saleor: SaleorClient
+  saleor: SaleorClient,
+  callbackQueryParams?: CallbackQueryParams
 ): Promise<ExternalObtainAccessTokensMutation | null | undefined> => {
   const { data: authUrl } = await saleor.auth.getExternalAuthUrl({
     pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
@@ -42,15 +43,14 @@ const loginWithExternalPlugin = async (
   });
   expect(authUrl?.externalAuthenticationUrl?.errors).toHaveLength(0);
   // Assume redirection to external plugin and redirection back to callback address
-  const callbackQueryParams = {
+  const callbackParams: CallbackQueryParams = callbackQueryParams || {
     code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
     state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   };
   const { data: accessToken } = await saleor.auth.getExternalAccessToken({
     pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-    input: JSON.stringify(callbackQueryParams),
+    input: JSON.stringify(callbackParams),
   });
-  console.log("accessToken...: ", accessToken);
 
   return accessToken;
 };
@@ -59,19 +59,24 @@ describe("auth api", () => {
   // Auth tests have custom recording matcher setup in the ./setup.ts.
   // Thanks to that, changing user email and password will not trigger
   // test to fail.
-  const context = setupRecording();
+  // const context = setupRecording();
   const saleor = setupSaleorClient();
+  const mockServer = setupMockServer();
 
-  beforeAll(() => server.listen());
+  beforeAll(() => mockServer.listen());
 
-  beforeEach(() => {
-    const { server } = context.polly;
-    setupPollyMiddleware(server);
+  // beforeEach(() => {
+  //   const { server } = context.polly;
+  //   setupPollyMiddleware(server);
+  // });
+
+  afterEach(() => {
+    mockServer.resetHandlers();
+    saleor._internal.apolloClient.stop();
+    saleor._internal.apolloClient.clearStore();
   });
 
-  afterEach(() => server.resetHandlers());
-
-  afterAll(() => server.close());
+  afterAll(() => mockServer.close());
 
   it("can login", async () => {
     const data = await login(saleor);
@@ -165,14 +170,22 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).not.toBeNull();
   });
 
-  it("login with external plugin caches user data", async () => {
-    await loginWithExternalPlugin(saleor);
-    const state = saleor.getState();
-    expect(state?.user).toBeDefined();
-    expect(state?.authenticated).toBe(true);
-  });
+  // it("login with external plugin caches user data", async () => {
+  //   await loginWithExternalPlugin(saleor);
+  //   const state = saleor.getState();
+  //   expect(state?.user).toBeDefined();
+  //   expect(state?.authenticated).toBe(true);
+  // });
 
-  it("fail to login with external plugin", async () => {});
+  it("fail to login with external plugin", async () => {
+    const accessToken = await loginWithExternalPlugin(saleor, {
+      code: "wrong",
+      state: "wrong",
+    });
+    expect(accessToken?.externalObtainAccessTokens?.user).toBeFalsy();
+    expect(accessToken?.externalObtainAccessTokens?.token).toBeFalsy();
+    expect(accessToken?.externalObtainAccessTokens?.errors).not.toHaveLength(0);
+  });
 
   it("can logout with external plugin", async () => {
     await loginWithExternalPlugin(saleor);
@@ -184,11 +197,37 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeNull();
   });
 
-  it("sets authentication state correctly with external plugin", async () => {});
+  // it("sets authentication state correctly with external plugin", async () => {});
 
-  it("manually refresh external access token", async () => {});
+  it("manually refresh external access token", async () => {
+    await loginWithExternalPlugin(saleor);
+    // const state = saleor.getState();
+    const previousToken = storage.getAccessToken();
+    const csrfToken = storage.getCSRFToken();
+    // expect(state?.authenticated).toBe(true);
 
-  it("automatically refresh external access token", async () => {});
+    const { data } = await saleor.auth.refreshExternalToken({
+      pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+      input: JSON.stringify({ csrfToken }),
+    });
+    const newToken = storage.getAccessToken();
+    // expect(state?.authenticated).toBe(true);
+    expect(data?.externalRefresh?.token === newToken);
+    expect(newToken !== previousToken);
+  });
 
-  it("verifies if external token is valid", async () => {});
+  // it("automatically refresh external access token", async () => {});
+
+  it("verifies if external token is valid", async () => {
+    const data = await loginWithExternalPlugin(saleor);
+    const csrfToken = storage.getCSRFToken();
+
+    if (data?.externalObtainAccessTokens?.token) {
+      const { data: result } = await saleor.auth.verifyExternalToken({
+        pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+        input: JSON.stringify({ csrfToken }),
+      });
+      expect(result?.externalVerify?.isValid).toBe(true);
+    }
+  });
 });

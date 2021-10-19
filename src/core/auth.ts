@@ -325,12 +325,21 @@ export const auth = ({
    * @returns Login authentication data and errors
    */
   const getExternalAccessToken: AuthSDK["getExternalAccessToken"] = opts => {
+    client.writeQuery({
+      query: USER,
+      data: {
+        authenticating: true,
+      },
+    });
+
     return client.mutate<
       ExternalObtainAccessTokensMutation,
       ExternalObtainAccessTokensMutationVariables
     >({
       mutation: OBTAIN_EXTERNAL_ACCESS_TOKEN,
-      variables: { ...opts },
+      variables: {
+        ...opts,
+      },
       update: (_, { data }) => {
         if (data?.externalObtainAccessTokens?.token) {
           storage.setAuthPluginId(opts.pluginId);
