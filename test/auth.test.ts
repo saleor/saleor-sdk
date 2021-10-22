@@ -72,7 +72,7 @@ describe("auth api", () => {
 
   afterEach(() => {
     mockServer.resetHandlers();
-    saleor._internal.apolloClient.stop();
+    saleor._internal.apolloClient.stop(); // https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
     saleor._internal.apolloClient.clearStore();
   });
 
@@ -170,12 +170,12 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).not.toBeNull();
   });
 
-  // it("login with external plugin caches user data", async () => {
-  //   await loginWithExternalPlugin(saleor);
-  //   const state = saleor.getState();
-  //   expect(state?.user).toBeDefined();
-  //   expect(state?.authenticated).toBe(true);
-  // });
+  it("login with external plugin caches user data", async () => {
+    await loginWithExternalPlugin(saleor);
+    const state = saleor.getState();
+    expect(state?.user).toBeDefined();
+    expect(state?.authenticated).toBe(true);
+  });
 
   it("fail to login with external plugin", async () => {
     const accessToken = await loginWithExternalPlugin(saleor, {
@@ -197,21 +197,19 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeNull();
   });
 
-  // it("sets authentication state correctly with external plugin", async () => {});
-
   it("manually refresh external access token", async () => {
     await loginWithExternalPlugin(saleor);
-    // const state = saleor.getState();
+    const state = saleor.getState();
     const previousToken = storage.getAccessToken();
     const csrfToken = storage.getCSRFToken();
-    // expect(state?.authenticated).toBe(true);
+    expect(state?.authenticated).toBe(true);
 
     const { data } = await saleor.auth.refreshExternalToken({
       pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
       input: JSON.stringify({ csrfToken }),
     });
     const newToken = storage.getAccessToken();
-    // expect(state?.authenticated).toBe(true);
+    expect(state?.authenticated).toBe(true);
     expect(data?.externalRefresh?.token === newToken);
     expect(newToken !== previousToken);
   });

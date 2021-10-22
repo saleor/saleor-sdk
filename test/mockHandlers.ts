@@ -1,9 +1,11 @@
 import { graphql } from "msw";
 import {
+  TEST_AUTH_EMAIL,
   TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  TEST_AUTH_PASSWORD,
 } from "../src/config";
 import {
   mockExternalAuthenticationUrl,
@@ -21,6 +23,7 @@ import {
   mockExternalVerify,
   mockExternalVerifyError,
 } from "./mocks/externalVerify";
+import { mockLogin, mockLoginError } from "./mocks/login";
 import { verifyToken } from "./utils";
 
 export const mockHandlers = [
@@ -83,5 +86,15 @@ export const mockHandlers = [
     }
 
     return res(ctx.data(mockExternalVerifyError()));
+  }),
+
+  graphql.mutation("login", (req, res, ctx) => {
+    const { email, password } = req.variables;
+
+    if (email === TEST_AUTH_EMAIL && password === TEST_AUTH_PASSWORD) {
+      return res(ctx.data(mockLogin()));
+    }
+
+    return res(ctx.data(mockLoginError()));
   }),
 ];
