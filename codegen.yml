@@ -14,7 +14,11 @@ generates:
       dedupeOperationSuffix: true
       enumsAsTypes: true
       skipTypename: true
-      maybeValue: T
+      avoidOptionals:
+        field: true
+        inputValue: false
+        object: false
+        defaultValue: false
   src/apollo/apollo-helpers.ts:
     plugins:
       - typescript-apollo-client-helpers

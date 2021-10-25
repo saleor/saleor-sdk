@@ -8,7 +8,7 @@ import { API_URI } from "../src/config";
 import { SaleorClient, createSaleorClient } from "../src/core";
 import { removeBlacklistedVariables } from "./utils";
 import { setupServer } from "msw/node";
-import { mockHandlers } from "./mockHandlers";
+import { mockHandlers } from "./mocks";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);

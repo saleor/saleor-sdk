@@ -148,7 +148,7 @@ export const user = ({
       RequestEmailChangeMutationVariables
     >({
       mutation: REQUEST_EMAIL_CHANGE,
-      variables: { channel, ...opts },
+      variables: { ...opts, channel: opts.channel || channel },
     });
 
     return result;

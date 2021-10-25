@@ -73,7 +73,7 @@ describe("user api", () => {
       expect(
         data?.accountAddressCreate?.user?.addresses[
           data?.accountAddressCreate?.user?.addresses?.length - 1
-        ].firstName === testAddress.firstName
+        ]?.firstName === testAddress.firstName
       );
     }
     expect(data?.accountAddressCreate?.errors).toHaveLength(0);
@@ -83,12 +83,13 @@ describe("user api", () => {
     const { data: newAddress } = await saleor.user.createAccountAddress({
       input: testAddress,
     });
-    if (newAddress?.accountAddressCreate?.user?.addresses?.length) {
-      const index =
-        newAddress?.accountAddressCreate?.user?.addresses.length - 1;
+    const newAddresses = newAddress?.accountAddressCreate?.user?.addresses;
+    const index = newAddresses?.length ? newAddresses.length - 1 : 0;
+    const addressId = newAddresses?.length ? newAddresses[index]?.id : null;
+    if (addressId) {
       const newTestName = "New test name";
       const { data } = await saleor.user.updateAccountAddress({
-        id: newAddress?.accountAddressCreate?.user?.addresses[index].id,
+        id: addressId,
         input: {
           ...testAddress,
           firstName: newTestName,
@@ -109,12 +110,13 @@ describe("user api", () => {
     const { data: newAddress } = await saleor.user.createAccountAddress({
       input: testAddress,
     });
-    if (newAddress?.accountAddressCreate?.user?.addresses?.length) {
-      const index = newAddress.accountAddressCreate.user.addresses.length - 1;
-      const addressId =
-        newAddress.accountAddressCreate.user.addresses[index].id;
+    const newAddresses = newAddress?.accountAddressCreate?.user?.addresses;
+    const index = newAddresses?.length ? newAddresses.length - 1 : 0;
+    const addressId = newAddresses?.length ? newAddresses[index]?.id : null;
+    expect(addressId).toBeTruthy();
+    if (addressId) {
       const oldAddress =
-        newAddress.accountAddressCreate.user.defaultBillingAddress;
+        newAddress?.accountAddressCreate?.user?.defaultBillingAddress;
       const { data } = await saleor.user.setAccountDefaultAddress({
         id: addressId,
         type: "BILLING",
@@ -145,11 +147,11 @@ describe("user api", () => {
     const { data: newAddress } = await saleor.user.createAccountAddress({
       input: testAddress,
     });
-    if (newAddress?.accountAddressCreate?.user?.addresses?.length) {
-      const index =
-        newAddress?.accountAddressCreate?.user?.addresses.length - 1;
-      const addressId =
-        newAddress?.accountAddressCreate?.user?.addresses[index].id;
+    const newAddresses = newAddress?.accountAddressCreate?.user?.addresses;
+    const index = newAddresses?.length ? newAddresses.length - 1 : 0;
+    const addressId = newAddresses?.length ? newAddresses[index]?.id : null;
+    expect(addressId).toBeTruthy();
+    if (addressId) {
       const { data } = await saleor.user.deleteAccountAddress(addressId);
       const state = saleor.getState();
       expect(data?.accountAddressDelete?.user?.addresses).toHaveLength(index);

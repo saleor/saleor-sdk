@@ -72,7 +72,11 @@ describe("auth api", () => {
 
   afterEach(() => {
     mockServer.resetHandlers();
-    saleor._internal.apolloClient.stop(); // https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
+    /*
+      Clear cache to avoid legacy state persistance between tests:
+      https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
+    */
+    saleor._internal.apolloClient.stop();
     saleor._internal.apolloClient.clearStore();
   });
 
@@ -82,6 +86,7 @@ describe("auth api", () => {
     const data = await login(saleor);
     expect(data?.tokenCreate?.errors).toHaveLength(0);
     expect(data?.tokenCreate?.user?.id).toBeDefined();
+    expect(data?.tokenCreate?.user?.email).toBe(TEST_AUTH_EMAIL);
     expect(data?.tokenCreate?.token).toBeDefined();
     expect(storage.getAccessToken()).not.toBeNull();
     expect(storage.getCSRFToken()).not.toBeNull();
@@ -90,7 +95,8 @@ describe("auth api", () => {
   it("login caches user data", async () => {
     await login(saleor);
     const state = saleor.getState();
-    expect(state?.user).toBeDefined();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
     expect(state?.authenticated).toBe(true);
   });
 
@@ -165,6 +171,9 @@ describe("auth api", () => {
     const accessToken = await loginWithExternalPlugin(saleor);
     expect(accessToken?.externalObtainAccessTokens?.errors).toHaveLength(0);
     expect(accessToken?.externalObtainAccessTokens?.user?.id).toBeDefined();
+    expect(accessToken?.externalObtainAccessTokens?.user?.email).toBe(
+      TEST_AUTH_EMAIL
+    );
     expect(accessToken?.externalObtainAccessTokens?.token).toBeDefined();
     expect(storage.getAccessToken()).not.toBeNull();
     expect(storage.getCSRFToken()).not.toBeNull();
@@ -173,7 +182,8 @@ describe("auth api", () => {
   it("login with external plugin caches user data", async () => {
     await loginWithExternalPlugin(saleor);
     const state = saleor.getState();
-    expect(state?.user).toBeDefined();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
     expect(state?.authenticated).toBe(true);
   });
 
@@ -214,7 +224,7 @@ describe("auth api", () => {
     expect(newToken !== previousToken);
   });
 
-  // it("automatically refresh external access token", async () => {});
+  // // it("automatically refresh external access token", async () => {});
 
   it("verifies if external token is valid", async () => {
     const data = await loginWithExternalPlugin(saleor);

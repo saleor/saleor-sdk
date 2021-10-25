@@ -17,11 +17,11 @@ export const removeBlacklistedVariables = (obj: {}): {} => {
   return omitDeep(obj, ...variablesBlacklist);
 };
 
-const tokenExpirationPeriodInSeconds = 240;
+const tokenExpirationPeriodInSeconds = 3600;
 export const testTokenSecret = "secret";
 export const testCsrfToken =
   "sSrkI91Yyho52LTNWLuh6WkPwC5NAP49n1TdB4Oh4Hrw7NuQ1oj7ga3j5aE82b2O";
-export const createToken = (
+export const createTestToken = (
   expirationPeriodInSeconds: number = tokenExpirationPeriodInSeconds
 ): string =>
   jwt.sign(
@@ -30,7 +30,7 @@ export const createToken = (
     },
     testTokenSecret
   );
-export const verifyToken = (token: string): boolean => {
+export const verifyTestToken = (token: string): boolean => {
   try {
     jwt.verify(token, testTokenSecret);
   } catch (err) {
