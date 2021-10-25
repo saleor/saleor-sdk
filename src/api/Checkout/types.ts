@@ -1,4 +1,4 @@
-import { Checkout_availableShippingMethods } from "../../fragments/gqlTypes/Checkout";
+import { Checkout_shippingMethods } from "../../fragments/gqlTypes/Checkout";
 import { Payment_total } from "../../fragments/gqlTypes/Payment";
 import {
   ICheckoutModelPrice,
@@ -26,11 +26,13 @@ export interface IAddress {
   };
 }
 
-export type IAvailableShippingMethods = Checkout_availableShippingMethods[];
+export type IShippingMethods = Checkout_shippingMethods[];
 
 export interface IShippingMethod {
   id: string;
   name: string;
+  active: boolean;
+  message?: string | null;
   price?: IPriceValue | null;
 }
 

@@ -34,10 +34,10 @@ export class CartQueuedJobs extends QueuedJobsHandler<ErrorCartTypes> {
         this.localStorageHandler.setCheckout({
           ...checkout,
           availablePaymentGateways: data.availablePaymentGateways,
-          availableShippingMethods: data.availableShippingMethods,
           lines: data.lines,
           promoCodeDiscount: data.promoCodeDiscount,
           shippingMethod: data.shippingMethod,
+          shippingMethods: data.shippingMethods,
         });
       }
     }

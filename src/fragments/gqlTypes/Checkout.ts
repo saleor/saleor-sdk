@@ -161,7 +161,7 @@ export interface Checkout_shippingAddress {
   isDefaultShippingAddress: boolean | null;
 }
 
-export interface Checkout_availableShippingMethods_price {
+export interface Checkout_shippingMethods_price {
   __typename: "Money";
   /**
    * Currency code.
@@ -173,17 +173,28 @@ export interface Checkout_availableShippingMethods_price {
   amount: number;
 }
 
-export interface Checkout_availableShippingMethods {
+export interface Checkout_shippingMethods {
   __typename: "ShippingMethod";
   /**
-   * The ID of the object.
+   * Unique ID of ShippingMethod available for Order.
    */
   id: string;
+  /**
+   * Shipping method name.
+   */
   name: string;
   /**
-   * The price of the cheapest variant (including discounts).
+   * Describes if this shipping method is active and can be selected.
    */
-  price: Checkout_availableShippingMethods_price | null;
+  active: boolean;
+  /**
+   * Message connected to this shipping method.
+   */
+  message: string | null;
+  /**
+   * The price of selected shipping method.
+   */
+  price: Checkout_shippingMethods_price;
 }
 
 export interface Checkout_shippingMethod_price {
@@ -201,14 +212,25 @@ export interface Checkout_shippingMethod_price {
 export interface Checkout_shippingMethod {
   __typename: "ShippingMethod";
   /**
-   * The ID of the object.
+   * Unique ID of ShippingMethod available for Order.
    */
   id: string;
+  /**
+   * Shipping method name.
+   */
   name: string;
   /**
-   * The price of the cheapest variant (including discounts).
+   * Describes if this shipping method is active and can be selected.
    */
-  price: Checkout_shippingMethod_price | null;
+  active: boolean;
+  /**
+   * Message connected to this shipping method.
+   */
+  message: string | null;
+  /**
+   * The price of selected shipping method.
+   */
+  price: Checkout_shippingMethod_price;
 }
 
 export interface Checkout_shippingPrice_gross {
@@ -565,9 +587,9 @@ export interface Checkout {
    */
   email: string;
   /**
-   * Shipping methods that can be used with this order.
+   * Shipping methods that can be used with this checkout.
    */
-  availableShippingMethods: (Checkout_availableShippingMethods | null)[];
+  shippingMethods: (Checkout_shippingMethods | null)[];
   /**
    * The shipping method related with checkout.
    */

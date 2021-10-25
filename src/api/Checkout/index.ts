@@ -14,7 +14,7 @@ import {
   DataErrorCheckoutTypes,
   FunctionErrorCheckoutTypes,
   IAddress,
-  IAvailableShippingMethods,
+  IShippingMethods,
   ICheckout,
   IPayment,
   IPromoCodeDiscount,
@@ -40,7 +40,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
 
   selectedBillingAddressId?: string;
 
-  availableShippingMethods?: IAvailableShippingMethods;
+  shippingMethods?: IShippingMethods;
 
   availablePaymentGateways?: PaymentGateway[];
 
@@ -78,7 +78,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
           selectedBillingAddressId,
           billingAsShipping,
           availablePaymentGateways,
-          availableShippingMethods,
+          shippingMethods,
           shippingMethod,
           promoCodeDiscount,
         } = checkout || {};
@@ -93,7 +93,7 @@ export class SaleorCheckoutAPI extends ErrorListener {
         this.selectedShippingAddressId = selectedShippingAddressId;
         this.selectedBillingAddressId = selectedBillingAddressId;
         this.availablePaymentGateways = availablePaymentGateways;
-        this.availableShippingMethods = availableShippingMethods;
+        this.shippingMethods = shippingMethods;
         this.billingAsShipping = billingAsShipping;
         this.promoCodeDiscount = {
           discountName: promoCodeDiscount?.discountName,

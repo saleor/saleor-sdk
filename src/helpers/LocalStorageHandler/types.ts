@@ -1,5 +1,5 @@
 import {
-  Checkout_availableShippingMethods,
+  Checkout_shippingMethods,
   Checkout_lines_variant_attributes,
   Checkout_lines_variant_pricing,
   Checkout_lines_variant_product,
@@ -70,6 +70,8 @@ export interface ICheckoutAddress {
 
 export interface ICheckoutModelShippingMethod {
   id: string;
+  active: boolean;
+  message: string | null;
   name: string;
   price: ICheckoutModelPriceValue | null;
 }
@@ -114,7 +116,7 @@ export interface ICheckoutModel {
   billingAsShipping?: boolean;
   promoCodeDiscount?: ICheckoutModelPromoCodeDiscount;
   lines?: ICheckoutModelLine[] | null;
-  availableShippingMethods?: Checkout_availableShippingMethods[];
+  shippingMethods?: Checkout_shippingMethods[];
   availablePaymentGateways?: Checkout_availablePaymentGateways[];
   shippingMethod?: ICheckoutModelShippingMethod | null;
 }

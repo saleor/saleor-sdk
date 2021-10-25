@@ -163,7 +163,7 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
   isDefaultShippingAddress: boolean | null;
 }
 
-export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_availableShippingMethods_price {
+export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethods_price {
   __typename: "Money";
   /**
    * Currency code.
@@ -175,17 +175,28 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
   amount: number;
 }
 
-export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_availableShippingMethods {
+export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethods {
   __typename: "ShippingMethod";
   /**
-   * The ID of the object.
+   * Unique ID of ShippingMethod available for Order.
    */
   id: string;
+  /**
+   * Shipping method name.
+   */
   name: string;
   /**
-   * The price of the cheapest variant (including discounts).
+   * Describes if this shipping method is active and can be selected.
    */
-  price: UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_availableShippingMethods_price | null;
+  active: boolean;
+  /**
+   * Message connected to this shipping method.
+   */
+  message: string | null;
+  /**
+   * The price of selected shipping method.
+   */
+  price: UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethods_price;
 }
 
 export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethod_price {
@@ -203,14 +214,25 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
 export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethod {
   __typename: "ShippingMethod";
   /**
-   * The ID of the object.
+   * Unique ID of ShippingMethod available for Order.
    */
   id: string;
+  /**
+   * Shipping method name.
+   */
   name: string;
   /**
-   * The price of the cheapest variant (including discounts).
+   * Describes if this shipping method is active and can be selected.
    */
-  price: UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethod_price | null;
+  active: boolean;
+  /**
+   * Message connected to this shipping method.
+   */
+  message: string | null;
+  /**
+   * The price of selected shipping method.
+   */
+  price: UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethod_price;
 }
 
 export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingPrice_gross {
@@ -567,9 +589,9 @@ export interface UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_check
    */
   email: string;
   /**
-   * Shipping methods that can be used with this order.
+   * Shipping methods that can be used with this checkout.
    */
-  availableShippingMethods: (UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_availableShippingMethods | null)[];
+  shippingMethods: (UpdateCheckoutShippingMethod_checkoutShippingMethodUpdate_checkout_shippingMethods | null)[];
   /**
    * The shipping method related with checkout.
    */

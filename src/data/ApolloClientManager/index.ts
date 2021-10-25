@@ -990,13 +990,10 @@ export class ApolloClientManager {
     voucherCode,
     lines,
     availablePaymentGateways,
-    availableShippingMethods,
+    shippingMethods,
     shippingMethod,
   }: Checkout): ICheckoutModel => ({
     availablePaymentGateways,
-    availableShippingMethods: availableShippingMethods
-      ? availableShippingMethods.filter(filterNotEmptyArrayItems)
-      : [],
     billingAddress,
     email,
     id,
@@ -1027,6 +1024,9 @@ export class ApolloClientManager {
     },
     shippingAddress,
     shippingMethod,
+    shippingMethods: shippingMethods
+      ? shippingMethods.filter(filterNotEmptyArrayItems)
+      : [],
     token,
   });
 

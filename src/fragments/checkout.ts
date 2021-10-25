@@ -85,6 +85,8 @@ export const checkoutShippingMethodFragment = gql`
   fragment ShippingMethod on ShippingMethod {
     id
     name
+    active
+    message
     price {
       currency
       amount
@@ -129,7 +131,7 @@ export const checkoutFragment = gql`
       ...Address
     }
     email
-    availableShippingMethods {
+    shippingMethods {
       ...ShippingMethod
     }
     shippingMethod {

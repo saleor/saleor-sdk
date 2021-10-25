@@ -132,11 +132,11 @@ class CheckoutJobs extends JobsHandler<{}> {
 
     this.localStorageHandler.setCheckout({
       ...checkout,
-      availableShippingMethods: data?.availableShippingMethods,
       billingAsShipping: false,
       email: data?.email,
       selectedShippingAddressId,
       shippingAddress: data?.shippingAddress,
+      shippingMethods: data?.shippingMethods,
     });
     return { data };
   };
