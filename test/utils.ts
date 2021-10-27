@@ -1,6 +1,19 @@
 import omitDeep from "omit-deep-lodash";
 import { GraphQLRequest } from "msw";
 import jwt from "jsonwebtoken";
+import { SaleorClient } from "../src/core";
+import {
+  ExternalObtainAccessTokensMutation,
+  LoginMutation,
+} from "../src/apollo/types";
+import {
+  TEST_AUTH_EMAIL,
+  TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  TEST_AUTH_PASSWORD,
+} from "../src/config";
 
 export const removeBlacklistedVariables = (obj: {}): {} => {
   const variablesBlacklist = [
@@ -45,4 +58,44 @@ export const verifyAuthorization = (request: GraphQLRequest<any>) => {
   const isTokenValid = verifyTestToken(token);
 
   return isTokenValid;
+};
+
+interface CallbackQueryParams {
+  code: string;
+  state: string;
+}
+
+export const login = async (
+  saleor: SaleorClient
+): Promise<LoginMutation | null | undefined> => {
+  const { data } = await saleor.auth.login({
+    email: TEST_AUTH_EMAIL,
+    password: TEST_AUTH_PASSWORD,
+  });
+
+  return data;
+};
+
+export const loginWithExternalPlugin = async (
+  saleor: SaleorClient,
+  callbackQueryParams?: CallbackQueryParams
+): Promise<ExternalObtainAccessTokensMutation | null | undefined> => {
+  const { data: authUrl } = await saleor.auth.getExternalAuthUrl({
+    pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+    input: JSON.stringify({
+      redirectUri: TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
+    }),
+  });
+  expect(authUrl?.externalAuthenticationUrl?.errors).toHaveLength(0);
+  // Assume client redirects to external plugin and redirects back to callback address with following params
+  const callbackParams: CallbackQueryParams = callbackQueryParams || {
+    code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+    state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  };
+  const { data: accessToken } = await saleor.auth.getExternalAccessToken({
+    pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
+    input: JSON.stringify(callbackParams),
+  });
+
+  return accessToken;
 };

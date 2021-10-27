@@ -2,152 +2,11 @@ import { setupMockServer, setupSaleorClient } from "./setup";
 import {
   API_URI,
   TEST_AUTH_EMAIL,
-  TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
-  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   TEST_AUTH_PASSWORD,
 } from "../src/config";
 import { storage } from "../src/core/storage";
-import { SaleorClient } from "../src/core/types";
-import {
-  ExternalObtainAccessTokensMutation,
-  LoginMutation,
-} from "../src/apollo/types";
-
-interface CallbackQueryParams {
-  code: string;
-  state: string;
-}
-
-const login = async (
-  saleor: SaleorClient
-): Promise<LoginMutation | null | undefined> => {
-  const { data } = await saleor.auth.login({
-    email: TEST_AUTH_EMAIL,
-    password: TEST_AUTH_PASSWORD,
-  });
-
-  return data;
-};
-
-const loginWithExternalPlugin = async (
-  saleor: SaleorClient,
-  callbackQueryParams?: CallbackQueryParams
-): Promise<ExternalObtainAccessTokensMutation | null | undefined> => {
-  const { data: authUrl } = await saleor.auth.getExternalAuthUrl({
-    pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-    input: JSON.stringify({
-      redirectUri: TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
-    }),
-  });
-  expect(authUrl?.externalAuthenticationUrl?.errors).toHaveLength(0);
-  // Assume client redirects to external plugin and redirects back to callback address with following params
-  const callbackParams: CallbackQueryParams = callbackQueryParams || {
-    code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
-    state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
-  };
-  const { data: accessToken } = await saleor.auth.getExternalAccessToken({
-    pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-    input: JSON.stringify(callbackParams),
-  });
-
-  return accessToken;
-};
-
-jest.setTimeout(15000);
-
-describe("auth api auto token refresh", () => {
-  const tokenRefreshTime = 5;
-  const tokenRefreshTimeSkew = tokenRefreshTime - 2;
-  const tokenRefreshTimeCheckWait = tokenRefreshTime + 1;
-  const saleor = setupSaleorClient({
-    tokenRefreshTimeSkew,
-  });
-  const mockServer = setupMockServer({
-    tokenRefreshTime,
-  });
-
-  beforeAll(() => mockServer.listen());
-
-  afterEach(() => {
-    mockServer.resetHandlers();
-    /*
-      Clear cache to avoid legacy state persistance between tests:
-      https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
-    */
-    saleor._internal.apolloClient.stop();
-    saleor._internal.apolloClient.clearStore();
-  });
-
-  afterAll(() => mockServer.close());
-
-  it("automatically refreshes auth token before another request when expiration time skew reached", async () => {
-    // Login to obtain token
-    await login(saleor);
-    const state = saleor.getState();
-    const previousToken = storage.getAccessToken();
-    expect(state?.user?.id).toBeDefined();
-    expect(state?.authenticated).toBe(true);
-
-    // Wait until token expires
-    await new Promise(r => setTimeout(r, tokenRefreshTimeCheckWait * 1000));
-
-    // Check that token was not refreshed before making another request
-    const unchangedPreviousToken = storage.getAccessToken();
-    expect(previousToken).toEqual(unchangedPreviousToken);
-
-    // Make another request
-    const { data } = await saleor.user.updateAccount({
-      input: {
-        firstName: state?.user?.firstName,
-        lastName: state?.user?.lastName,
-      },
-    });
-
-    // Check that token was refreshed with another request which did not return errors
-    expect(data?.accountUpdate?.errors).toHaveLength(0);
-    const newToken = storage.getAccessToken();
-    expect(state?.user?.id).toBeDefined();
-    expect(state?.authenticated).toBe(true);
-    expect(newToken).toBeTruthy();
-    expect(previousToken).not.toEqual(newToken);
-  });
-
-  it("automatically refresh external access token before another request when expiration time skew reached", async () => {
-    // Login to obtain token
-    await loginWithExternalPlugin(saleor);
-    const state = saleor.getState();
-    const previousToken = storage.getAccessToken();
-    expect(state?.user?.id).toBeDefined();
-    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
-    expect(state?.authenticated).toBe(true);
-
-    // Wait until token expires
-    await new Promise(r => setTimeout(r, tokenRefreshTimeCheckWait * 1000));
-
-    // Check that token was not refreshed before making another request
-    const unchangedPreviousToken = storage.getAccessToken();
-    expect(previousToken).toEqual(unchangedPreviousToken);
-
-    // Make another request
-    const { data } = await saleor.user.updateAccount({
-      input: {
-        firstName: state?.user?.firstName,
-        lastName: state?.user?.lastName,
-      },
-    });
-
-    // Check that token was refreshed with another request which did not return errors
-    expect(data?.accountUpdate?.errors).toHaveLength(0);
-    const newToken = storage.getAccessToken();
-    expect(state?.user?.id).toBeDefined();
-    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
-    expect(state?.authenticated).toBe(true);
-    expect(newToken).toBeTruthy();
-    expect(previousToken).not.toEqual(newToken);
-  });
-});
+import { login, loginWithExternalPlugin } from "./utils";
 
 describe("auth api", () => {
   const saleor = setupSaleorClient();
@@ -157,6 +16,7 @@ describe("auth api", () => {
 
   afterEach(() => {
     mockServer.resetHandlers();
+    storage.clear();
     /*
       Clear cache to avoid legacy state persistance between tests:
       https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
@@ -248,6 +108,7 @@ describe("auth api", () => {
   });
 
   it("changes user's password", async () => {
+    await login(saleor);
     const { data } = await saleor.auth.changePassword({
       oldPassword: TEST_AUTH_PASSWORD,
       newPassword: TEST_AUTH_PASSWORD,
@@ -265,6 +126,7 @@ describe("auth api", () => {
     expect(accessToken?.externalObtainAccessTokens?.token).toBeDefined();
     expect(storage.getAccessToken()).not.toBeNull();
     expect(storage.getCSRFToken()).not.toBeNull();
+    expect(storage.getAuthPluginId()).not.toBeNull();
   });
 
   it("login with external plugin caches user data", async () => {
@@ -325,5 +187,67 @@ describe("auth api", () => {
       });
       expect(result?.externalVerify?.isValid).toBe(true);
     }
+  });
+
+  it("caches user data correctly in steps sequence: login, logout, login with external plugin", async () => {
+    let state;
+
+    await login(saleor);
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await saleor.auth.logout();
+    state = saleor.getState();
+    expect(state?.user?.id).toBeFalsy();
+    expect(state?.user?.email).toBeFalsy();
+    expect(state?.authenticated).toBe(false);
+    expect(storage.getAccessToken()).toBeNull();
+    expect(storage.getCSRFToken()).toBeNull();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await loginWithExternalPlugin(saleor);
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeTruthy();
+  });
+
+  it("caches user data correctly in steps sequence: login with external plugin, logout, login", async () => {
+    let state;
+
+    await loginWithExternalPlugin(saleor);
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeTruthy();
+
+    await saleor.auth.logout();
+    state = saleor.getState();
+    expect(state?.user?.id).toBeFalsy();
+    expect(state?.user?.email).toBeFalsy();
+    expect(state?.authenticated).toBe(false);
+    expect(storage.getAccessToken()).toBeNull();
+    expect(storage.getCSRFToken()).toBeNull();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await login(saleor);
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeNull();
   });
 });
