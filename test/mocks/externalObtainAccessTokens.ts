@@ -51,20 +51,25 @@ const externalObtainAccessTokensError = () =>
     },
   } as ExternalObtainAccessTokensMutation);
 
-export const externalObtainAccessTokensHandler = graphql.mutation<
-  ExternalObtainAccessTokensMutation,
-  ExternalObtainAccessTokensMutationVariables
->("externalObtainAccessTokens", (req, res, ctx) => {
-  const { pluginId, input } = req.variables;
-  const parsedInput = JSON.parse(input);
+export const externalObtainAccessTokensHandler = (
+  tokenExpirationPeriodInSeconds?: number
+) =>
+  graphql.mutation<
+    ExternalObtainAccessTokensMutation,
+    ExternalObtainAccessTokensMutationVariables
+  >("externalObtainAccessTokens", (req, res, ctx) => {
+    const { pluginId, input } = req.variables;
+    const parsedInput = JSON.parse(input);
 
-  if (
-    pluginId === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID &&
-    parsedInput.code === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE &&
-    parsedInput.state === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE
-  ) {
-    return res(ctx.data(externalObtainAccessTokens()));
-  }
+    if (
+      pluginId === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID &&
+      parsedInput.code === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE &&
+      parsedInput.state === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE
+    ) {
+      return res(
+        ctx.data(externalObtainAccessTokens(tokenExpirationPeriodInSeconds))
+      );
+    }
 
-  return res(ctx.data(externalObtainAccessTokensError()));
-});
+    return res(ctx.data(externalObtainAccessTokensError()));
+  });

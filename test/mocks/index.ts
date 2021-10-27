@@ -1,3 +1,4 @@
+import { accountUpdateHandler } from "./accountUpdate";
 import { externalAuthenticationUrlHandler } from "./externalAuthenticationUrl";
 import { externalObtainAccessTokensHandler } from "./externalObtainAccessTokens";
 import { externalRefreshHandler } from "./externalRefresh";
@@ -9,18 +10,25 @@ import { registerHandler } from "./register";
 import { requestPasswordResetHandler } from "./requestPasswordReset";
 import { verifyTokenHandler } from "./verifyToken";
 
-export const mockHandlers = [
-  // Internal login
-  loginHandler,
-  refreshTokenHandler,
+export interface MockHandlersOpts {
+  tokenRefreshTime?: number;
+}
+
+export const mockHandlers = ({ tokenRefreshTime }: MockHandlersOpts = {}) => [
+  // Auth - Internal login
+  loginHandler(tokenRefreshTime),
+  refreshTokenHandler(tokenRefreshTime),
   verifyTokenHandler,
   requestPasswordResetHandler,
   passwordChangeHandler,
   registerHandler,
 
-  // External login
+  // Auth - External login
   externalAuthenticationUrlHandler,
-  externalObtainAccessTokensHandler,
-  externalRefreshHandler,
+  externalObtainAccessTokensHandler(tokenRefreshTime),
+  externalRefreshHandler(tokenRefreshTime),
   externalVerifyHandler,
+
+  // User
+  accountUpdateHandler,
 ];

@@ -5,11 +5,11 @@ import {
 } from "../../src/apollo/types";
 import { createTestToken } from "../utils";
 
-const refreshToken = () =>
+const refreshToken = (tokenExpirationPeriodInSeconds?: number) =>
   ({
     tokenRefresh: {
       __typename: "RefreshToken",
-      token: createTestToken(),
+      token: createTestToken(tokenExpirationPeriodInSeconds),
       errors: [],
     },
   } as RefreshTokenMutation);
@@ -29,15 +29,16 @@ const refreshTokenError = () =>
     },
   } as RefreshTokenMutation);
 
-export const refreshTokenHandler = graphql.mutation<
-  RefreshTokenMutation,
-  RefreshTokenMutationVariables
->("refreshToken", (req, res, ctx) => {
-  const { csrfToken } = req.variables;
+export const refreshTokenHandler = (tokenExpirationPeriodInSeconds?: number) =>
+  graphql.mutation<RefreshTokenMutation, RefreshTokenMutationVariables>(
+    "refreshToken",
+    (req, res, ctx) => {
+      const { csrfToken } = req.variables;
 
-  if (!!csrfToken) {
-    return res(ctx.data(refreshToken()));
-  }
+      if (!!csrfToken) {
+        return res(ctx.data(refreshToken(tokenExpirationPeriodInSeconds)));
+      }
 
-  return res(ctx.data(refreshTokenError()));
-});
+      return res(ctx.data(refreshTokenError()));
+    }
+  );

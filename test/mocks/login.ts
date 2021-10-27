@@ -3,11 +3,11 @@ import { LoginMutation, LoginMutationVariables } from "../../src/apollo/types";
 import { TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../../src/config";
 import { createTestToken, testCsrfToken } from "../utils";
 
-const login = () =>
+const login = (tokenExpirationPeriodInSeconds?: number) =>
   ({
     tokenCreate: {
       __typename: "CreateToken",
-      token: createTestToken(),
+      token: createTestToken(tokenExpirationPeriodInSeconds),
       csrfToken: testCsrfToken,
       user: {
         id: "VXNlcjoxMDMz",
@@ -42,15 +42,16 @@ const loginError = () =>
     },
   } as LoginMutation);
 
-export const loginHandler = graphql.mutation<
-  LoginMutation,
-  LoginMutationVariables
->("login", (req, res, ctx) => {
-  const { email, password } = req.variables;
+export const loginHandler = (tokenExpirationPeriodInSeconds?: number) =>
+  graphql.mutation<LoginMutation, LoginMutationVariables>(
+    "login",
+    (req, res, ctx) => {
+      const { email, password } = req.variables;
 
-  if (email === TEST_AUTH_EMAIL && password === TEST_AUTH_PASSWORD) {
-    return res(ctx.data(login()));
-  }
+      if (email === TEST_AUTH_EMAIL && password === TEST_AUTH_PASSWORD) {
+        return res(ctx.data(login(tokenExpirationPeriodInSeconds)));
+      }
 
-  return res(ctx.data(loginError()));
-});
+      return res(ctx.data(loginError()));
+    }
+  );

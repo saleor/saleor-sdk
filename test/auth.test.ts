@@ -42,7 +42,7 @@ const loginWithExternalPlugin = async (
     }),
   });
   expect(authUrl?.externalAuthenticationUrl?.errors).toHaveLength(0);
-  // Assume redirection to external plugin and redirection back to callback address
+  // Assume client redirects to external plugin and redirects back to callback address with following params
   const callbackParams: CallbackQueryParams = callbackQueryParams || {
     code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
     state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
@@ -55,20 +55,105 @@ const loginWithExternalPlugin = async (
   return accessToken;
 };
 
+jest.setTimeout(15000);
+
+describe("auth api auto token refresh", () => {
+  const tokenRefreshTime = 5;
+  const tokenRefreshTimeSkew = tokenRefreshTime - 2;
+  const tokenRefreshTimeCheckWait = tokenRefreshTime + 1;
+  const saleor = setupSaleorClient({
+    tokenRefreshTimeSkew,
+  });
+  const mockServer = setupMockServer({
+    tokenRefreshTime,
+  });
+
+  beforeAll(() => mockServer.listen());
+
+  afterEach(() => {
+    mockServer.resetHandlers();
+    /*
+      Clear cache to avoid legacy state persistance between tests:
+      https://github.com/apollographql/apollo-client/issues/3766#issuecomment-578075556
+    */
+    saleor._internal.apolloClient.stop();
+    saleor._internal.apolloClient.clearStore();
+  });
+
+  afterAll(() => mockServer.close());
+
+  it("automatically refreshes auth token before another request when expiration time skew reached", async () => {
+    // Login to obtain token
+    await login(saleor);
+    const state = saleor.getState();
+    const previousToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.authenticated).toBe(true);
+
+    // Wait until token expires
+    await new Promise(r => setTimeout(r, tokenRefreshTimeCheckWait * 1000));
+
+    // Check that token was not refreshed before making another request
+    const unchangedPreviousToken = storage.getAccessToken();
+    expect(previousToken).toEqual(unchangedPreviousToken);
+
+    // Make another request
+    const { data } = await saleor.user.updateAccount({
+      input: {
+        firstName: state?.user?.firstName,
+        lastName: state?.user?.lastName,
+      },
+    });
+
+    // Check that token was refreshed with another request which did not return errors
+    expect(data?.accountUpdate?.errors).toHaveLength(0);
+    const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.authenticated).toBe(true);
+    expect(newToken).toBeTruthy();
+    expect(previousToken).not.toEqual(newToken);
+  });
+
+  it("automatically refresh external access token before another request when expiration time skew reached", async () => {
+    // Login to obtain token
+    await loginWithExternalPlugin(saleor);
+    const state = saleor.getState();
+    const previousToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+
+    // Wait until token expires
+    await new Promise(r => setTimeout(r, tokenRefreshTimeCheckWait * 1000));
+
+    // Check that token was not refreshed before making another request
+    const unchangedPreviousToken = storage.getAccessToken();
+    expect(previousToken).toEqual(unchangedPreviousToken);
+
+    // Make another request
+    const { data } = await saleor.user.updateAccount({
+      input: {
+        firstName: state?.user?.firstName,
+        lastName: state?.user?.lastName,
+      },
+    });
+
+    // Check that token was refreshed with another request which did not return errors
+    expect(data?.accountUpdate?.errors).toHaveLength(0);
+    const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(newToken).toBeTruthy();
+    expect(previousToken).not.toEqual(newToken);
+  });
+});
+
 describe("auth api", () => {
-  // Auth tests have custom recording matcher setup in the ./setup.ts.
-  // Thanks to that, changing user email and password will not trigger
-  // test to fail.
-  // const context = setupRecording();
   const saleor = setupSaleorClient();
   const mockServer = setupMockServer();
 
   beforeAll(() => mockServer.listen());
-
-  // beforeEach(() => {
-  //   const { server } = context.polly;
-  //   setupPollyMiddleware(server);
-  // });
 
   afterEach(() => {
     mockServer.resetHandlers();
@@ -110,7 +195,7 @@ describe("auth api", () => {
     expect(data?.tokenCreate?.errors).not.toHaveLength(0);
   });
 
-  it("refreshes the auth token", async () => {
+  it("manually refreshes auth token", async () => {
     await login(saleor);
     const state = saleor.getState();
     const previousToken = storage.getAccessToken();
@@ -118,9 +203,12 @@ describe("auth api", () => {
 
     const { data } = await saleor.auth.refreshToken();
     const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
     expect(state?.authenticated).toBe(true);
-    expect(data?.tokenRefresh?.token === newToken);
-    expect(newToken !== previousToken);
+    expect(newToken).toBeTruthy();
+    expect(data?.tokenRefresh?.token).toEqual(newToken);
+    expect(previousToken).not.toEqual(newToken);
   });
 
   it("can register", async () => {
@@ -197,7 +285,7 @@ describe("auth api", () => {
     expect(accessToken?.externalObtainAccessTokens?.errors).not.toHaveLength(0);
   });
 
-  it("can logout with external plugin", async () => {
+  it("logout with external plugin clears user cache", async () => {
     await loginWithExternalPlugin(saleor);
     await saleor.auth.logout();
     const state = saleor.getState();
@@ -219,12 +307,12 @@ describe("auth api", () => {
       input: JSON.stringify({ csrfToken }),
     });
     const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
     expect(state?.authenticated).toBe(true);
-    expect(data?.externalRefresh?.token === newToken);
-    expect(newToken !== previousToken);
+    expect(newToken).toBeTruthy();
+    expect(data?.externalRefresh?.token).toEqual(newToken);
+    expect(previousToken).not.toEqual(newToken);
   });
-
-  // // it("automatically refresh external access token", async () => {});
 
   it("verifies if external token is valid", async () => {
     const data = await loginWithExternalPlugin(saleor);

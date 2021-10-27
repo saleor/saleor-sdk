@@ -22,7 +22,7 @@ let refreshExternalPromise: ReturnType<
   AuthSDK["refreshExternalToken"]
 > | null = null;
 
-type FetchConfig = Partial<{
+export type FetchConfig = Partial<{
   /**
    * Enable auto token refreshing. Default to `true`.
    */
@@ -161,6 +161,7 @@ export const createFetch = ({
         }
       } catch (e) {
       } finally {
+        refreshExternalPromise = null;
         refreshPromise = null;
       }
     }
@@ -225,10 +226,11 @@ const getTypePolicies = (autologin: boolean): TypedTypePolicies => ({
 
 export const createApolloClient = (
   apiUrl: string,
-  autologin: boolean
+  autologin: boolean,
+  fetchOptions?: FetchConfig
 ): ApolloClient<NormalizedCacheObject> => {
   const httpLink = createHttpLink({
-    fetch: createFetch(),
+    fetch: createFetch(fetchOptions),
     uri: apiUrl,
     credentials: "include",
   });

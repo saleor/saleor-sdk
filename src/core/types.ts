@@ -17,6 +17,7 @@ import {
 import { AuthSDK } from "./auth";
 import { UserSDK } from "./user";
 import { State } from "./state";
+import { FetchConfig } from "../apollo";
 
 export interface SaleorClientInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -38,6 +39,7 @@ export interface SaleorClientOpts {
   apiUrl: string;
   channel: string;
   autologin?: boolean;
+  fetchOptions?: FetchConfig;
 }
 
 export type SaleorClientMethodsProps = SaleorClientInternals &

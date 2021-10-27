@@ -115,7 +115,7 @@ export const auth = ({
         if (data?.tokenCreate?.token) {
           storage.setTokens({
             accessToken: data.tokenCreate.token,
-            csrfToken: data.tokenCreate.csrfToken!,
+            csrfToken: data.tokenCreate.csrfToken,
           });
         }
       },

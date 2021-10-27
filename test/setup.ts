@@ -8,7 +8,8 @@ import { API_URI } from "../src/config";
 import { SaleorClient, createSaleorClient } from "../src/core";
 import { removeBlacklistedVariables } from "./utils";
 import { setupServer } from "msw/node";
-import { mockHandlers } from "./mocks";
+import { mockHandlers, MockHandlersOpts } from "./mocks";
+import { FetchConfig } from "../src/apollo";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
@@ -66,12 +67,14 @@ export const setupRecording = (): Context =>
     recordIfMissing: true,
   });
 
-export const setupMockServer = () => setupServer(...mockHandlers);
+export const setupMockServer = (opts?: MockHandlersOpts) =>
+  setupServer(...mockHandlers(opts));
 
-export const setupSaleorClient = (): SaleorClient => {
+export const setupSaleorClient = (fetchOptions?: FetchConfig): SaleorClient => {
   const saleor = createSaleorClient({
     apiUrl: API_URI,
     channel: "default-channel",
+    fetchOptions,
   });
 
   return saleor;
