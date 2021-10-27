@@ -11,13 +11,15 @@ import { requestPasswordResetHandler } from "./requestPasswordReset";
 import { verifyTokenHandler } from "./verifyToken";
 
 export interface MockHandlersOpts {
-  tokenRefreshTime?: number;
+  tokenExpirationPeriod?: number;
 }
 
-export const mockHandlers = ({ tokenRefreshTime }: MockHandlersOpts = {}) => [
+export const mockHandlers = ({
+  tokenExpirationPeriod,
+}: MockHandlersOpts = {}) => [
   // Auth - Internal login
-  loginHandler(tokenRefreshTime),
-  refreshTokenHandler(tokenRefreshTime),
+  loginHandler(tokenExpirationPeriod),
+  refreshTokenHandler(tokenExpirationPeriod),
   verifyTokenHandler,
   requestPasswordResetHandler,
   passwordChangeHandler,
@@ -25,8 +27,8 @@ export const mockHandlers = ({ tokenRefreshTime }: MockHandlersOpts = {}) => [
 
   // Auth - External login
   externalAuthenticationUrlHandler,
-  externalObtainAccessTokensHandler(tokenRefreshTime),
-  externalRefreshHandler(tokenRefreshTime),
+  externalObtainAccessTokensHandler(tokenExpirationPeriod),
+  externalRefreshHandler(tokenExpirationPeriod),
   externalVerifyHandler,
 
   // User
