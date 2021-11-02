@@ -3,7 +3,10 @@ import {
   PasswordChangeMutation,
   PasswordChangeMutationVariables,
 } from "../../src/apollo/types";
-import { TEST_AUTH_PASSWORD } from "../../src/config";
+import {
+  TEST_AUTH_PASSWORD,
+  TEST_AUTH_SECOND_PASSWORD,
+} from "../../src/config";
 import { verifyAuthorization } from "../utils";
 
 const passwordChange = () =>
@@ -36,7 +39,11 @@ export const passwordChangeHandler = graphql.mutation<
 
   const isAuthorised = verifyAuthorization(req);
 
-  if (oldPassword === TEST_AUTH_PASSWORD && isAuthorised) {
+  if (
+    (oldPassword === TEST_AUTH_PASSWORD ||
+      oldPassword === TEST_AUTH_SECOND_PASSWORD) &&
+    isAuthorised
+  ) {
     return res(ctx.data(passwordChange()));
   }
 

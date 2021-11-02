@@ -1,9 +1,14 @@
 import { graphql } from "msw";
 import { LoginMutation, LoginMutationVariables } from "../../src/apollo/types";
-import { TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../../src/config";
+import {
+  TEST_AUTH_EMAIL,
+  TEST_AUTH_PASSWORD,
+  TEST_AUTH_SECOND_EMAIL,
+  TEST_AUTH_SECOND_PASSWORD,
+} from "../../src/config";
 import { createTestToken, testCsrfToken } from "../utils";
 
-const login = (tokenExpirationPeriodInSeconds?: number) =>
+const login = (tokenExpirationPeriodInSeconds?: number, email?: string) =>
   ({
     tokenCreate: {
       __typename: "CreateToken",
@@ -11,7 +16,7 @@ const login = (tokenExpirationPeriodInSeconds?: number) =>
       csrfToken: testCsrfToken,
       user: {
         id: "VXNlcjoxMDMz",
-        email: TEST_AUTH_EMAIL,
+        email: email,
         firstName: "",
         lastName: "",
         isStaff: true,
@@ -49,7 +54,19 @@ export const loginHandler = (tokenExpirationPeriodInSeconds?: number) =>
       const { email, password } = req.variables;
 
       if (email === TEST_AUTH_EMAIL && password === TEST_AUTH_PASSWORD) {
-        return res(ctx.data(login(tokenExpirationPeriodInSeconds)));
+        return res(
+          ctx.data(login(tokenExpirationPeriodInSeconds, TEST_AUTH_EMAIL))
+        );
+      }
+      if (
+        email === TEST_AUTH_SECOND_EMAIL &&
+        password === TEST_AUTH_SECOND_PASSWORD
+      ) {
+        return res(
+          ctx.data(
+            login(tokenExpirationPeriodInSeconds, TEST_AUTH_SECOND_EMAIL)
+          )
+        );
       }
 
       return res(ctx.data(loginError()));

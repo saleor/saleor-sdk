@@ -1,7 +1,17 @@
 import { setupMockServer, setupSaleorClient } from "./setup";
-import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
+import {
+  API_URI,
+  TEST_AUTH_EMAIL,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_CODE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_STATE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  TEST_AUTH_PASSWORD,
+  TEST_AUTH_SECOND_EMAIL,
+  TEST_AUTH_SECOND_PASSWORD,
+} from "../src/config";
 import { storage } from "../src/core/storage";
-import { login, loginWithExternalPlugin } from "./utils";
+import { loginWithExternalPlugin } from "./utils";
 
 describe("auth api", () => {
   const saleor = setupSaleorClient();
@@ -23,7 +33,10 @@ describe("auth api", () => {
   afterAll(() => mockServer.close());
 
   it("can login", async () => {
-    const data = await login(saleor);
+    const { data } = await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     expect(data?.tokenCreate?.errors).toHaveLength(0);
     expect(data?.tokenCreate?.user?.id).toBeDefined();
     expect(data?.tokenCreate?.user?.email).toBe(TEST_AUTH_EMAIL);
@@ -33,7 +46,10 @@ describe("auth api", () => {
   });
 
   it("login caches user data", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
     expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
@@ -51,7 +67,10 @@ describe("auth api", () => {
   });
 
   it("manually refreshes auth token", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const state = saleor.getState();
     const previousToken = storage.getAccessToken();
     expect(state?.authenticated).toBe(true);
@@ -76,7 +95,10 @@ describe("auth api", () => {
   });
 
   it("logout clears user cache", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     await saleor.auth.logout();
     const state = saleor.getState();
     expect(state?.user).toBeFalsy();
@@ -86,7 +108,10 @@ describe("auth api", () => {
   });
 
   it("verifies if token is valid", async () => {
-    const data = await login(saleor);
+    const { data } = await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
 
     if (data?.tokenCreate?.token) {
       const { data: result } = await saleor.auth.verifyToken();
@@ -103,7 +128,10 @@ describe("auth api", () => {
   });
 
   it("changes user's password", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const { data } = await saleor.auth.changePassword({
       oldPassword: TEST_AUTH_PASSWORD,
       newPassword: TEST_AUTH_PASSWORD,
@@ -112,7 +140,10 @@ describe("auth api", () => {
   });
 
   it("can login with external plugin", async () => {
-    const accessToken = await loginWithExternalPlugin(saleor);
+    const accessToken = await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     expect(accessToken?.externalObtainAccessTokens?.errors).toHaveLength(0);
     expect(accessToken?.externalObtainAccessTokens?.user?.id).toBeDefined();
     expect(accessToken?.externalObtainAccessTokens?.user?.email).toBe(
@@ -125,7 +156,10 @@ describe("auth api", () => {
   });
 
   it("login with external plugin caches user data", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     const state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
     expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
@@ -143,7 +177,10 @@ describe("auth api", () => {
   });
 
   it("logout with external plugin clears user cache", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     await saleor.auth.logout();
     const state = saleor.getState();
     expect(state?.user).toBeFalsy();
@@ -153,7 +190,10 @@ describe("auth api", () => {
   });
 
   it("manually refresh external access token", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     const state = saleor.getState();
     const previousToken = storage.getAccessToken();
     expect(state?.authenticated).toBe(true);
@@ -168,7 +208,10 @@ describe("auth api", () => {
   });
 
   it("verifies if external token is valid", async () => {
-    const data = await loginWithExternalPlugin(saleor);
+    const data = await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
 
     if (data?.externalObtainAccessTokens?.token) {
       const { data: result } = await saleor.auth.verifyExternalToken();
@@ -176,10 +219,13 @@ describe("auth api", () => {
     }
   });
 
-  it("caches user data correctly in steps sequence: login, logout, login with external plugin", async () => {
+  it("login, logout and login with different credentials", async () => {
     let state;
 
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
     expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
@@ -197,10 +243,87 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeNull();
     expect(storage.getAuthPluginId()).toBeNull();
 
-    await loginWithExternalPlugin(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_SECOND_EMAIL,
+      password: TEST_AUTH_SECOND_PASSWORD,
+    });
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_SECOND_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeNull();
+  });
+
+  it("login, logout and login with different credentials with external plugin", async () => {
+    let state;
+
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
     expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeTruthy();
+
+    await saleor.auth.logout();
+    state = saleor.getState();
+    expect(state?.user?.id).toBeFalsy();
+    expect(state?.user?.email).toBeFalsy();
+    expect(state?.authenticated).toBe(false);
+    expect(storage.getAccessToken()).toBeNull();
+    expect(storage.getCSRFToken()).toBeNull();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_STATE,
+    });
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_SECOND_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeTruthy();
+  });
+
+  it("caches user data correctly in steps sequence: login, logout, login with external plugin", async () => {
+    let state;
+
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+    expect(storage.getAccessToken()).toBeTruthy();
+    expect(storage.getCSRFToken()).toBeTruthy();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await saleor.auth.logout();
+    state = saleor.getState();
+    expect(state?.user?.id).toBeFalsy();
+    expect(state?.user?.email).toBeFalsy();
+    expect(state?.authenticated).toBe(false);
+    expect(storage.getAccessToken()).toBeNull();
+    expect(storage.getCSRFToken()).toBeNull();
+    expect(storage.getAuthPluginId()).toBeNull();
+
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_STATE,
+    });
+    state = saleor.getState();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_SECOND_EMAIL);
     expect(state?.authenticated).toBe(true);
     expect(storage.getAccessToken()).toBeTruthy();
     expect(storage.getCSRFToken()).toBeTruthy();
@@ -210,7 +333,10 @@ describe("auth api", () => {
   it("caches user data correctly in steps sequence: login with external plugin, logout, login", async () => {
     let state;
 
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
     expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
@@ -228,10 +354,13 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeNull();
     expect(storage.getAuthPluginId()).toBeNull();
 
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_SECOND_EMAIL,
+      password: TEST_AUTH_SECOND_PASSWORD,
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeDefined();
-    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.user?.email).toBe(TEST_AUTH_SECOND_EMAIL);
     expect(state?.authenticated).toBe(true);
     expect(storage.getAccessToken()).toBeTruthy();
     expect(storage.getCSRFToken()).toBeTruthy();

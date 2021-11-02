@@ -3,7 +3,7 @@ import {
   RequestPasswordResetMutation,
   RequestPasswordResetMutationVariables,
 } from "../../src/apollo/types";
-import { TEST_AUTH_EMAIL } from "../../src/config";
+import { TEST_AUTH_EMAIL, TEST_AUTH_SECOND_EMAIL } from "../../src/config";
 
 const requestPasswordReset = () =>
   ({
@@ -33,7 +33,7 @@ export const requestPasswordResetHandler = graphql.mutation<
 >("requestPasswordReset", (req, res, ctx) => {
   const { email } = req.variables;
 
-  if (email === TEST_AUTH_EMAIL) {
+  if (email === TEST_AUTH_EMAIL || email === TEST_AUTH_SECOND_EMAIL) {
     return res(ctx.data(requestPasswordReset()));
   }
 

@@ -1,7 +1,12 @@
 import { setupMockServer, setupSaleorClient } from "./setup";
-import { TEST_AUTH_EMAIL } from "../src/config";
+import {
+  TEST_AUTH_EMAIL,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  TEST_AUTH_PASSWORD,
+} from "../src/config";
 import { storage } from "../src/core/storage";
-import { login, loginWithExternalPlugin } from "./utils";
+import { loginWithExternalPlugin } from "./utils";
 import { SaleorClient } from "../src/core";
 
 interface RefreshTokenOnDelayedExample {
@@ -20,7 +25,7 @@ const testRefreshTokenOnDelayedExampleRequest = async (
   expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
   expect(state?.authenticated).toBe(true);
 
-  // Wait until token can be refrshed
+  // Wait until token can be refreshed
   await new Promise(r => setTimeout(r, delayInSeconds * 1000));
 
   // Check that token was not refreshed before making another request
@@ -81,7 +86,10 @@ describe("auth api auto token refresh", () => {
   afterAll(() => mockServer.close());
 
   it("does not refresh access token before another request when refresh time skew not reached", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const {
       previousToken,
       newToken,
@@ -90,7 +98,10 @@ describe("auth api auto token refresh", () => {
   });
 
   it("does not refresh external access token before another request when refresh time skew not reached", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     const {
       previousToken,
       newToken,
@@ -99,7 +110,10 @@ describe("auth api auto token refresh", () => {
   });
 
   it("automatically refresh access token before another request when refresh time skew reached", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const {
       previousToken,
       newToken,
@@ -111,7 +125,10 @@ describe("auth api auto token refresh", () => {
   });
 
   it("automatically refresh external access token before another request when refresh time skew reached", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     const {
       previousToken,
       newToken,
@@ -123,7 +140,10 @@ describe("auth api auto token refresh", () => {
   });
 
   it("automatically refresh access token before another request when expiration period reached", async () => {
-    await login(saleor);
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
     const {
       previousToken,
       newToken,
@@ -135,7 +155,10 @@ describe("auth api auto token refresh", () => {
   });
 
   it("automatically refresh external access token before another request when expiration period reached", async () => {
-    await loginWithExternalPlugin(saleor);
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
     const {
       previousToken,
       newToken,
