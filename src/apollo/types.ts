@@ -11382,6 +11382,17 @@ export type ExternalRefreshMutation = { externalRefresh: Maybe<(
     & { errors: Array<AccountErrorFragment> }
   )> };
 
+export type ExternalRefreshWithUserMutationVariables = Exact<{
+  pluginId?: Maybe<Scalars['String']>;
+  input: Scalars['JSONString'];
+}>;
+
+
+export type ExternalRefreshWithUserMutation = { externalRefresh: Maybe<(
+    Pick<ExternalRefresh, 'token' | 'csrfToken'>
+    & { user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
+  )> };
+
 export type ExternalVerifyMutationVariables = Exact<{
   pluginId?: Maybe<Scalars['String']>;
   input: Scalars['JSONString'];
@@ -11884,6 +11895,48 @@ export function useExternalRefreshMutation(baseOptions?: Apollo.MutationHookOpti
 export type ExternalRefreshMutationHookResult = ReturnType<typeof useExternalRefreshMutation>;
 export type ExternalRefreshMutationResult = Apollo.MutationResult<ExternalRefreshMutation>;
 export type ExternalRefreshMutationOptions = Apollo.BaseMutationOptions<ExternalRefreshMutation, ExternalRefreshMutationVariables>;
+export const ExternalRefreshWithUserDocument = gql`
+    mutation externalRefreshWithUser($pluginId: String = "mirumee.authentication.openidconnect", $input: JSONString!) {
+  externalRefresh(pluginId: $pluginId, input: $input) {
+    token
+    csrfToken
+    user {
+      ...UserFragment
+    }
+    errors {
+      ...AccountErrorFragment
+    }
+  }
+}
+    ${UserFragmentDoc}
+${AccountErrorFragmentDoc}`;
+export type ExternalRefreshWithUserMutationFn = Apollo.MutationFunction<ExternalRefreshWithUserMutation, ExternalRefreshWithUserMutationVariables>;
+
+/**
+ * __useExternalRefreshWithUserMutation__
+ *
+ * To run a mutation, you first call `useExternalRefreshWithUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExternalRefreshWithUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [externalRefreshWithUserMutation, { data, loading, error }] = useExternalRefreshWithUserMutation({
+ *   variables: {
+ *      pluginId: // value for 'pluginId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useExternalRefreshWithUserMutation(baseOptions?: Apollo.MutationHookOptions<ExternalRefreshWithUserMutation, ExternalRefreshWithUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ExternalRefreshWithUserMutation, ExternalRefreshWithUserMutationVariables>(ExternalRefreshWithUserDocument, options);
+      }
+export type ExternalRefreshWithUserMutationHookResult = ReturnType<typeof useExternalRefreshWithUserMutation>;
+export type ExternalRefreshWithUserMutationResult = Apollo.MutationResult<ExternalRefreshWithUserMutation>;
+export type ExternalRefreshWithUserMutationOptions = Apollo.BaseMutationOptions<ExternalRefreshWithUserMutation, ExternalRefreshWithUserMutationVariables>;
 export const ExternalVerifyDocument = gql`
     mutation externalVerify($pluginId: String = "mirumee.authentication.openidconnect", $input: JSONString!) {
   externalVerify(pluginId: $pluginId, input: $input) {

@@ -1,10 +1,5 @@
 import { setupMockServer, setupSaleorClient } from "./setup";
-import {
-  API_URI,
-  TEST_AUTH_EMAIL,
-  TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-  TEST_AUTH_PASSWORD,
-} from "../src/config";
+import { API_URI, TEST_AUTH_EMAIL, TEST_AUTH_PASSWORD } from "../src/config";
 import { storage } from "../src/core/storage";
 import { login, loginWithExternalPlugin } from "./utils";
 
@@ -161,13 +156,9 @@ describe("auth api", () => {
     await loginWithExternalPlugin(saleor);
     const state = saleor.getState();
     const previousToken = storage.getAccessToken();
-    const csrfToken = storage.getCSRFToken();
     expect(state?.authenticated).toBe(true);
 
-    const { data } = await saleor.auth.refreshExternalToken({
-      pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-      input: JSON.stringify({ csrfToken }),
-    });
+    const { data } = await saleor.auth.refreshExternalToken();
     const newToken = storage.getAccessToken();
     expect(state?.user?.id).toBeDefined();
     expect(state?.authenticated).toBe(true);
@@ -178,13 +169,9 @@ describe("auth api", () => {
 
   it("verifies if external token is valid", async () => {
     const data = await loginWithExternalPlugin(saleor);
-    const csrfToken = storage.getCSRFToken();
 
     if (data?.externalObtainAccessTokens?.token) {
-      const { data: result } = await saleor.auth.verifyExternalToken({
-        pluginId: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
-        input: JSON.stringify({ csrfToken }),
-      });
+      const { data: result } = await saleor.auth.verifyExternalToken();
       expect(result?.externalVerify?.isValid).toBe(true);
     }
   });

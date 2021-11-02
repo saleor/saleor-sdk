@@ -57,12 +57,7 @@ export const createFetch = ({
   }
 
   let token = storage.getAccessToken();
-  const csrfToken = storage.getCSRFToken();
   const authPluginId = storage.getAuthPluginId();
-
-  if (authPluginId && !csrfToken) {
-    throw Error("csrfToken not present");
-  }
 
   if (
     ["refreshToken", "externalRefresh"].includes(
@@ -82,16 +77,9 @@ export const createFetch = ({
         await refreshPromise;
       } else if (Date.now() >= expirationTime) {
         // refreshToken automatically updates token in storage
-        if (authPluginId) {
-          refreshPromise = authClient.refreshExternalToken({
-            pluginId: authPluginId,
-            input: JSON.stringify({
-              csrfToken,
-            }),
-          });
-        } else {
-          refreshPromise = authClient.refreshToken();
-        }
+        refreshPromise = authPluginId
+          ? authClient.refreshExternalToken()
+          : authClient.refreshToken();
         await refreshPromise;
       }
     } catch (e) {
@@ -114,34 +102,20 @@ export const createFetch = ({
     const isUnauthenticated = data?.errors?.some(
       error => error.extensions?.exception.code === "ExpiredSignatureError"
     );
-    let refreshTokenResponse:
-      | FetchResult<
-          RefreshTokenMutation,
-          Record<string, any>,
-          Record<string, any>
-        >
-      | FetchResult<
-          ExternalRefreshMutation,
-          Record<string, any>,
-          Record<string, any>
-        >
-      | null = null;
+    let refreshTokenResponse: FetchResult<
+      RefreshTokenMutation | ExternalRefreshMutation,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > | null = null;
 
     if (isUnauthenticated) {
       try {
         if (refreshPromise) {
           refreshTokenResponse = await refreshPromise;
         } else {
-          if (authPluginId) {
-            refreshPromise = authClient.refreshExternalToken({
-              pluginId: authPluginId,
-              input: JSON.stringify({
-                csrfToken,
-              }),
-            });
-          } else {
-            refreshPromise = authClient.refreshToken();
-          }
+          refreshPromise = authPluginId
+            ? authClient.refreshExternalToken()
+            : authClient.refreshToken();
           refreshTokenResponse = await refreshPromise;
         }
 

@@ -13,6 +13,7 @@ import {
   SET_PASSWORD,
   VERIFY_TOKEN,
   REFRESH_TOKEN_WITH_USER,
+  EXTERNAL_REFRESH_WITH_USER,
 } from "../apollo/mutations";
 import {
   ExternalAuthenticationUrlMutation,
@@ -23,6 +24,8 @@ import {
   ExternalObtainAccessTokensMutationVariables,
   ExternalRefreshMutation,
   ExternalRefreshMutationVariables,
+  ExternalRefreshWithUserMutation,
+  ExternalRefreshWithUserMutationVariables,
   ExternalVerifyMutation,
   ExternalVerifyMutationVariables,
   LoginMutation,
@@ -81,11 +84,9 @@ export interface AuthSDK {
     opts: ExternalAuthOpts
   ) => Promise<FetchResult<ExternalLogoutMutation>>;
   refreshExternalToken: (
-    opts: ExternalAuthOpts
+    includeUser?: boolean
   ) => Promise<FetchResult<ExternalRefreshMutation>>;
-  verifyExternalToken: (
-    opts: ExternalAuthOpts
-  ) => Promise<FetchResult<ExternalVerifyMutation>>;
+  verifyExternalToken: () => Promise<FetchResult<ExternalVerifyMutation>>;
 }
 
 export const auth = ({
@@ -162,7 +163,7 @@ export const auth = ({
    * Refresh JWT token. Mutation will try to take refreshToken from the function's arguments.
    * If it fails, it will try to use refreshToken from the http-only cookie called refreshToken.
    *
-   * @param opts - Optional object with csrfToken and refreshToken. csrfToken is required when refreshToken is provided as a cookie.
+   * @param includeUser - Whether to fetch user. Default false.
    * @returns Authorization token.
    */
   const refreshToken: AuthSDK["refreshToken"] = (includeUser = false) => {
@@ -375,46 +376,87 @@ export const auth = ({
 
   /**
    * The externalRefresh mutation will generate new access tokens when provided with a valid refresh token.
-   * If the refresh token is not provided as an argument, the plugin will try to read it from a cookie
-   * set by the tokenCreate mutation. In that case, a matching CSRF token is required.
    *
-   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
-   * JSON with refreshToken - the refresh token which should be used to refresh the access token and
-   * csrfToken - required when refreshToken is not provided as an input
+   * @param includeUser - Whether to fetch user. Default false.
    * @returns Token refresh data and errors
    */
-  const refreshExternalToken: AuthSDK["refreshExternalToken"] = opts => {
-    return client.mutate<
-      ExternalRefreshMutation,
-      ExternalRefreshMutationVariables
-    >({
-      mutation: EXTERNAL_REFRESH,
-      variables: { ...opts },
-      update: (_, { data }) => {
-        if (data?.externalRefresh?.token) {
-          storage.setAccessToken(data.externalRefresh.token);
-        } else {
-          logout();
-        }
-      },
-    });
+  const refreshExternalToken: AuthSDK["refreshExternalToken"] = (
+    includeUser = false
+  ) => {
+    const csrfToken = storage.getCSRFToken();
+    const authPluginId = storage.getAuthPluginId();
+
+    if (!csrfToken) {
+      throw Error("csrfToken not present");
+    }
+
+    if (includeUser) {
+      return client.mutate<
+        ExternalRefreshWithUserMutation,
+        ExternalRefreshWithUserMutationVariables
+      >({
+        mutation: EXTERNAL_REFRESH_WITH_USER,
+        variables: {
+          pluginId: authPluginId,
+          input: JSON.stringify({
+            csrfToken,
+          }),
+        },
+        update: (_, { data }) => {
+          if (data?.externalRefresh?.token) {
+            storage.setAccessToken(data.externalRefresh.token);
+          } else {
+            logout();
+          }
+        },
+      });
+    } else {
+      return client.mutate<
+        ExternalRefreshMutation,
+        ExternalRefreshMutationVariables
+      >({
+        mutation: EXTERNAL_REFRESH,
+        variables: {
+          pluginId: authPluginId,
+          input: JSON.stringify({
+            csrfToken,
+          }),
+        },
+        update: (_, { data }) => {
+          if (data?.externalRefresh?.token) {
+            storage.setAccessToken(data.externalRefresh.token);
+          } else {
+            logout();
+          }
+        },
+      });
+    }
   };
 
   /**
    * The mutation will verify the authentication token.
    *
-   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
-   * JSON with refreshToken - the refresh token which should be used to refresh the access token and
-   * csrfToken - required when refreshToken is not provided as an input
    * @returns Token verification data and errors
    */
-  const verifyExternalToken: AuthSDK["verifyExternalToken"] = async opts => {
+  const verifyExternalToken: AuthSDK["verifyExternalToken"] = async () => {
+    const csrfToken = storage.getCSRFToken();
+    const authPluginId = storage.getAuthPluginId();
+
+    if (!csrfToken) {
+      throw Error("csrfToken not present");
+    }
+
     const result = await client.mutate<
       ExternalVerifyMutation,
       ExternalVerifyMutationVariables
     >({
       mutation: EXTERNAL_VERIFY_TOKEN,
-      variables: { ...opts },
+      variables: {
+        pluginId: authPluginId,
+        input: JSON.stringify({
+          csrfToken,
+        }),
+      },
     });
 
     if (!result.data?.externalVerify?.isValid) {
