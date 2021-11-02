@@ -14,7 +14,7 @@ interface RefreshTokenOnDelayedExample {
   newToken: string | null;
 }
 
-const testRefreshTokenOnDelayedExampleRequest = async (
+const testRefreshTokenOnDelayedExampleRequests = async (
   saleor: SaleorClient,
   delayInSeconds: number
 ): Promise<RefreshTokenOnDelayedExample> => {
@@ -32,25 +32,43 @@ const testRefreshTokenOnDelayedExampleRequest = async (
   const unchangedPreviousToken = storage.getAccessToken();
   expect(previousToken).toEqual(unchangedPreviousToken);
 
-  // Make another request
-  const { data } = await saleor.user.updateAccount({
+  // Make another requests
+  const firstUpdateAccountPromise = saleor.user.updateAccount({
+    input: {
+      firstName: state?.user?.firstName,
+      lastName: state?.user?.lastName,
+    },
+  });
+  const secondUpdateAccountPromise = saleor.user.updateAccount({
     input: {
       firstName: state?.user?.firstName,
       lastName: state?.user?.lastName,
     },
   });
 
-  // Check that token was refreshed with another request which did not return errors
-  expect(data?.accountUpdate?.errors).toHaveLength(0);
-  const newToken = storage.getAccessToken();
+  // Check that token was refreshed with first another request which did not return errors
+  const firstUpdateAccount = await firstUpdateAccountPromise;
+  expect(firstUpdateAccount.data?.accountUpdate?.errors).toHaveLength(0);
+  const newFirstToken = storage.getAccessToken();
   expect(state?.user?.id).toBeDefined();
   expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
   expect(state?.authenticated).toBe(true);
-  expect(newToken).toBeTruthy();
+  expect(newFirstToken).toBeTruthy();
+  const secondUpdateAccount = await secondUpdateAccountPromise;
+  expect(secondUpdateAccount.data?.accountUpdate?.errors).toHaveLength(0);
+  const newSecondToken = storage.getAccessToken();
+  expect(state?.user?.id).toBeDefined();
+  expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+  expect(state?.authenticated).toBe(true);
+  expect(newFirstToken).toBeTruthy();
+
+  // Check if tokenRefresh mutation only executes once on first request,
+  // and the rest awaits the initial promise instead of creating a new one
+  expect(newFirstToken).toEqual(newSecondToken);
 
   return {
     previousToken,
-    newToken,
+    newToken: newFirstToken,
   };
 };
 
@@ -93,7 +111,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(saleor, noCheckWait);
+    } = await testRefreshTokenOnDelayedExampleRequests(saleor, noCheckWait);
     expect(previousToken).toEqual(newToken);
   });
 
@@ -105,7 +123,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(saleor, noCheckWait);
+    } = await testRefreshTokenOnDelayedExampleRequests(saleor, noCheckWait);
     expect(previousToken).toEqual(newToken);
   });
 
@@ -117,7 +135,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(
+    } = await testRefreshTokenOnDelayedExampleRequests(
       saleor,
       tokenRefreshTimeSkewCheckWait
     );
@@ -132,7 +150,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(
+    } = await testRefreshTokenOnDelayedExampleRequests(
       saleor,
       tokenRefreshTimeSkewCheckWait
     );
@@ -147,7 +165,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(
+    } = await testRefreshTokenOnDelayedExampleRequests(
       saleor,
       tokenExpirationPeriodCheckWait
     );
@@ -162,7 +180,7 @@ describe("auth api auto token refresh", () => {
     const {
       previousToken,
       newToken,
-    } = await testRefreshTokenOnDelayedExampleRequest(
+    } = await testRefreshTokenOnDelayedExampleRequests(
       saleor,
       tokenExpirationPeriodCheckWait
     );
