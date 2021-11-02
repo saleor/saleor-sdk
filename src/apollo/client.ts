@@ -17,10 +17,13 @@ import { ExternalRefreshMutation, RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
 let authClient: AuthSDK;
-let refreshPromise: ReturnType<AuthSDK["refreshToken"]> | null = null;
-let refreshExternalPromise: ReturnType<
-  AuthSDK["refreshExternalToken"]
-> | null = null;
+let refreshPromise:
+  | ReturnType<AuthSDK["refreshToken"]>
+  | ReturnType<AuthSDK["refreshExternalToken"]>
+  | null = null;
+const isTokenRefreshExternal = (
+  result: RefreshTokenMutation | ExternalRefreshMutation
+): result is ExternalRefreshMutation => "externalRefresh" in result;
 
 export type FetchConfig = Partial<{
   /**
@@ -80,21 +83,19 @@ export const createFetch = ({
       } else if (Date.now() >= expirationTime) {
         // refreshToken automatically updates token in storage
         if (authPluginId) {
-          refreshExternalPromise = authClient.refreshExternalToken({
+          refreshPromise = authClient.refreshExternalToken({
             pluginId: authPluginId,
             input: JSON.stringify({
               csrfToken,
             }),
           });
-          await refreshExternalPromise;
         } else {
           refreshPromise = authClient.refreshToken();
-          await refreshPromise;
         }
+        await refreshPromise;
       }
     } catch (e) {
     } finally {
-      refreshExternalPromise = null;
       refreshPromise = null;
     }
     token = storage.getAccessToken();
@@ -113,41 +114,42 @@ export const createFetch = ({
     const isUnauthenticated = data?.errors?.some(
       error => error.extensions?.exception.code === "ExpiredSignatureError"
     );
-    let refreshTokenResponse: FetchResult<
-      RefreshTokenMutation,
-      Record<string, any>,
-      Record<string, any>
-    > | null = null;
-    let refreshExternalTokenResponse: FetchResult<
-      ExternalRefreshMutation,
-      Record<string, any>,
-      Record<string, any>
-    > | null = null;
+    let refreshTokenResponse:
+      | FetchResult<
+          RefreshTokenMutation,
+          Record<string, any>,
+          Record<string, any>
+        >
+      | FetchResult<
+          ExternalRefreshMutation,
+          Record<string, any>,
+          Record<string, any>
+        >
+      | null = null;
 
     if (isUnauthenticated) {
       try {
         if (refreshPromise) {
           refreshTokenResponse = await refreshPromise;
-        } else if (refreshExternalPromise) {
-          refreshExternalTokenResponse = await refreshExternalPromise;
         } else {
           if (authPluginId) {
-            refreshExternalPromise = authClient.refreshExternalToken({
+            refreshPromise = authClient.refreshExternalToken({
               pluginId: authPluginId,
               input: JSON.stringify({
                 csrfToken,
               }),
             });
-            refreshExternalTokenResponse = await refreshExternalPromise;
           } else {
             refreshPromise = authClient.refreshToken();
-            refreshTokenResponse = await refreshPromise;
           }
+          refreshTokenResponse = await refreshPromise;
         }
 
         if (
-          refreshExternalTokenResponse?.data?.externalRefresh?.token ||
-          refreshTokenResponse?.data?.tokenRefresh?.token
+          refreshTokenResponse.data &&
+          isTokenRefreshExternal(refreshTokenResponse.data)
+            ? refreshTokenResponse.data.externalRefresh?.token
+            : refreshTokenResponse.data?.tokenRefresh?.token
         ) {
           // check if mutation returns a valid token after refresh and retry the request
           return createFetch({
@@ -161,7 +163,6 @@ export const createFetch = ({
         }
       } catch (e) {
       } finally {
-        refreshExternalPromise = null;
         refreshPromise = null;
       }
     }
