@@ -205,8 +205,9 @@ describe("auth api", () => {
       }),
     });
     expect(result?.data?.externalLogout?.errors).toHaveLength(0);
-    const logoutUrl = JSON.parse(result?.data?.externalLogout?.logoutData)
-      .logoutUrl;
+    const logoutUrl = JSON.parse(
+      result?.data?.externalLogout?.logoutData || "{}"
+    ).logoutUrl;
     expect(logoutUrl).toBeDefined();
     const logoutUrlReturnToQueryParam = decodeURIComponent(logoutUrl as string)
       .split("?")[1]

@@ -61,7 +61,7 @@ export const createFetch = ({
 
   if (
     ["refreshToken", "externalRefresh"].includes(
-      JSON.parse(init.body?.toString() || "")?.operationName
+      JSON.parse(init.body?.toString() || "{}")?.operationName
     )
   ) {
     return fetch(input, init);
