@@ -6,6 +6,8 @@ export const TEST_AUTH_SECOND_PASSWORD =
   process.env.TEST_AUTH_SECOND_PASSWORD || "";
 export const TEST_AUTH_EXTERNAL_LOGIN_CALLBACK =
   "https://localhost:9000/login/callback/";
+export const TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK =
+  "https://localhost:9000/logout/callback/";
 export const TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID =
   "mirumee.authentication.openidconnect";
 export const TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE =

@@ -1,5 +1,6 @@
 import { accountUpdateHandler } from "./accountUpdate";
 import { externalAuthenticationUrlHandler } from "./externalAuthenticationUrl";
+import { externalLogoutHandler } from "./externalLogout";
 import { externalObtainAccessTokensHandler } from "./externalObtainAccessTokens";
 import { externalRefreshHandler } from "./externalRefresh";
 import { externalVerifyHandler } from "./externalVerify";
@@ -30,6 +31,7 @@ export const mockHandlers = ({
   externalObtainAccessTokensHandler(tokenExpirationPeriod),
   externalRefreshHandler(tokenExpirationPeriod),
   externalVerifyHandler,
+  externalLogoutHandler,
 
   // User
   accountUpdateHandler,

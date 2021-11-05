@@ -6,6 +6,7 @@ import {
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_CODE,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_SECOND_STATE,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+  TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK,
   TEST_AUTH_PASSWORD,
   TEST_AUTH_SECOND_EMAIL,
   TEST_AUTH_SECOND_PASSWORD,
@@ -181,12 +182,39 @@ describe("auth api", () => {
       code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
       state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
     });
-    await saleor.auth.logout();
+    await saleor.auth.logout({
+      input: JSON.stringify({
+        returnTo: TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK,
+      }),
+    });
     const state = saleor.getState();
     expect(state?.user).toBeFalsy();
     expect(state?.authenticated).toBe(false);
     expect(storage.getAccessToken()).toBeNull();
     expect(storage.getCSRFToken()).toBeNull();
+  });
+
+  it("logout with external plugin returns external logout URL", async () => {
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
+    const result = await saleor.auth.logout({
+      input: JSON.stringify({
+        returnTo: TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK,
+      }),
+    });
+    expect(result?.data?.externalLogout?.errors).toHaveLength(0);
+    const logoutUrl = JSON.parse(result?.data?.externalLogout?.logoutData)
+      .logoutUrl;
+    expect(logoutUrl).toBeDefined();
+    const logoutUrlReturnToQueryParam = decodeURIComponent(logoutUrl as string)
+      .split("?")[1]
+      .split("=");
+    expect(logoutUrlReturnToQueryParam[0]).toBe("returnTo");
+    expect(logoutUrlReturnToQueryParam[1]).toBe(
+      TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK
+    );
   });
 
   it("manually refresh external access token", async () => {
@@ -271,7 +299,11 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeTruthy();
     expect(storage.getAuthPluginId()).toBeTruthy();
 
-    await saleor.auth.logout();
+    await saleor.auth.logout({
+      input: JSON.stringify({
+        returnTo: TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK,
+      }),
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeFalsy();
     expect(state?.user?.email).toBeFalsy();
@@ -345,7 +377,11 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).toBeTruthy();
     expect(storage.getAuthPluginId()).toBeTruthy();
 
-    await saleor.auth.logout();
+    await saleor.auth.logout({
+      input: JSON.stringify({
+        returnTo: TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK,
+      }),
+    });
     state = saleor.getState();
     expect(state?.user?.id).toBeFalsy();
     expect(state?.user?.email).toBeFalsy();
