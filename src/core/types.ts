@@ -13,6 +13,7 @@ import {
   MutationSetPasswordArgs,
   MutationRequestEmailChangeArgs,
   AccountConfirmMutationVariables,
+  MutationExternalLogoutArgs,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
 import { UserSDK } from "./user";
@@ -57,6 +58,7 @@ export type SetPasswordOpts = MutationSetPasswordArgs;
 export type UpdateAccountOpts = MutationAccountUpdateArgs;
 export type UpdateAccountAddressOpts = MutationAccountAddressUpdateArgs;
 export type ExternalAuthOpts = MutationExternalAuthenticationUrlArgs;
+export type ExternalLogoutOpts = Pick<MutationExternalLogoutArgs, "input">;
 export type ConfirmAccountOpts = AccountConfirmMutationVariables;
 
 export type JWTToken = {

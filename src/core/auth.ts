@@ -1,4 +1,4 @@
-import { ApolloQueryResult, FetchResult } from "@apollo/client";
+import { FetchResult } from "@apollo/client";
 import {
   CHANGE_USER_PASSWORD,
   EXTERNAL_AUTHENTICATION_URL,
@@ -45,7 +45,7 @@ import {
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
 } from "../apollo/types";
-import { SaleorClientMethodsProps } from "./types";
+import { ExternalLogoutOpts, SaleorClientMethodsProps } from "./types";
 import {
   ChangeUserPasswordOpts,
   ExternalAuthOpts,
@@ -62,7 +62,9 @@ export interface AuthSDK {
     opts: ChangeUserPasswordOpts
   ) => Promise<FetchResult<PasswordChangeMutation>>;
   login: (opts: LoginOpts) => Promise<FetchResult<LoginMutation>>;
-  logout: () => Promise<ApolloQueryResult<null>[] | null>;
+  logout: (
+    opts?: ExternalLogoutOpts
+  ) => Promise<FetchResult<ExternalLogoutMutation> | null>;
   refreshToken: (
     includeUser?: boolean
   ) => Promise<FetchResult<RefreshTokenMutation>>;
@@ -80,9 +82,6 @@ export interface AuthSDK {
   getExternalAccessToken: (
     opts: ExternalAuthOpts
   ) => Promise<FetchResult<ExternalObtainAccessTokensMutation>>;
-  logoutExternal: (
-    opts: ExternalAuthOpts
-  ) => Promise<FetchResult<ExternalLogoutMutation>>;
   refreshExternalToken: (
     includeUser?: boolean
   ) => Promise<FetchResult<ExternalRefreshMutation>>;
@@ -124,11 +123,22 @@ export const auth = ({
   };
 
   /**
-   * Clears stored token and Apollo store.
+   * Clears stored token and Apollo store. If external plugin was used to log in, the mutation will prepare
+   * the logout URL. All values passed in field input will be added as GET parameters to the logout request.
    *
-   * @returns Apollo's native resetStore method.
+   * @param opts - Object with input as JSON with returnTo - the URL where a user should be redirected
+   * when external plugin was used to log in
+   * @returns Logout data and errors if external plugin was used to log in. Otherwise null.
    */
-  const logout: AuthSDK["logout"] = () => {
+  const logout: AuthSDK["logout"] = async opts => {
+    const authPluginId = storage.getAuthPluginId();
+
+    if (authPluginId && !opts?.input) {
+      throw Error(
+        "input should be provided when logged in with external plugin"
+      );
+    }
+
     storage.clear();
 
     client.writeQuery({
@@ -138,7 +148,22 @@ export const auth = ({
       },
     });
 
-    return client.resetStore();
+    client.resetStore();
+
+    if (authPluginId && opts?.input) {
+      const result = await client.mutate<
+        ExternalLogoutMutation,
+        ExternalLogoutMutationVariables
+      >({
+        mutation: EXTERNAL_LOGOUT,
+        variables: {
+          ...opts,
+          pluginId: authPluginId,
+        },
+      });
+      return result;
+    }
+    return null;
   };
 
   /**
@@ -354,27 +379,6 @@ export const auth = ({
   };
 
   /**
-   * The mutation will prepare the logout URL. All values passed in field input will be added as GET parameters to the logout request.
-   *
-   * @param opts - Object withpluginId default value set as "mirumee.authentication.openidconnect" and input as
-   * JSON with returnTo - the URL where a user should be redirected
-   * @returns Logout data and errors
-   */
-  const logoutExternal: AuthSDK["logoutExternal"] = async opts => {
-    logout();
-
-    const result = await client.mutate<
-      ExternalLogoutMutation,
-      ExternalLogoutMutationVariables
-    >({
-      mutation: EXTERNAL_LOGOUT,
-      variables: { ...opts },
-    });
-
-    return result;
-  };
-
-  /**
    * The externalRefresh mutation will generate new access tokens when provided with a valid refresh token.
    *
    * @param includeUser - Whether to fetch user. Default false.
@@ -404,7 +408,10 @@ export const auth = ({
         },
         update: (_, { data }) => {
           if (data?.externalRefresh?.token) {
-            storage.setAccessToken(data.externalRefresh.token);
+            storage.setTokens({
+              accessToken: data.externalRefresh.token,
+              csrfToken: data.externalRefresh.csrfToken || null,
+            });
           } else {
             logout();
           }
@@ -424,7 +431,10 @@ export const auth = ({
         },
         update: (_, { data }) => {
           if (data?.externalRefresh?.token) {
-            storage.setAccessToken(data.externalRefresh.token);
+            storage.setTokens({
+              accessToken: data.externalRefresh.token,
+              csrfToken: data.externalRefresh.csrfToken || null,
+            });
           } else {
             logout();
           }
@@ -472,7 +482,6 @@ export const auth = ({
     getExternalAuthUrl,
     login,
     logout,
-    logoutExternal,
     refreshExternalToken,
     refreshToken,
     register,
