@@ -186,4 +186,90 @@ describe("auth api auto token refresh", () => {
     );
     expect(previousToken).not.toEqual(newToken);
   });
+
+  it("check if another request has been called, no matter if automatically refresh access token fails", async () => {
+    await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+    });
+
+    // Check if initially logged in
+    const state = saleor.getState();
+    const previousToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+
+    // Wait until token can be refreshed
+    await new Promise(r => setTimeout(r, tokenRefreshTimeSkewCheckWait * 1000));
+
+    // Check that token was not refreshed before making another request
+    const unchangedPreviousToken = storage.getAccessToken();
+    expect(previousToken).toEqual(unchangedPreviousToken);
+
+    // Remove csrf token to fail next automatically refresh access token
+    storage.setCSRFToken(null);
+
+    // Make another requests
+    const updateAccount = await saleor.user.updateAccount({
+      input: {
+        firstName: state?.user?.firstName,
+        lastName: state?.user?.lastName,
+      },
+    });
+
+    // Check that token is still in use and another request did not return errors
+    expect(updateAccount.data?.accountUpdate?.errors).toHaveLength(0);
+    const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBeDefined();
+    expect(state?.authenticated).toBe(true);
+    expect(newToken).toBeTruthy();
+
+    // Check if token failed to refresh
+    expect(previousToken).toEqual(newToken);
+  });
+
+  it("check if another request has been called, no matter if automatically refresh external access token fails", async () => {
+    await loginWithExternalPlugin(saleor, {
+      code: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
+      state: TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
+    });
+
+    // Check if initially logged in
+    const state = saleor.getState();
+    const previousToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(state?.authenticated).toBe(true);
+
+    // Wait until token can be refreshed
+    await new Promise(r => setTimeout(r, tokenRefreshTimeSkewCheckWait * 1000));
+
+    // Check that token was not refreshed before making another request
+    const unchangedPreviousToken = storage.getAccessToken();
+    expect(previousToken).toEqual(unchangedPreviousToken);
+
+    // Remove csrf token to fail next automatically refresh access token
+    storage.setCSRFToken(null);
+
+    // Make another requests
+    const updateAccount = await saleor.user.updateAccount({
+      input: {
+        firstName: state?.user?.firstName,
+        lastName: state?.user?.lastName,
+      },
+    });
+
+    // Check that token is still in use and another request did not return errors
+    expect(updateAccount.data?.accountUpdate?.errors).toHaveLength(0);
+    const newToken = storage.getAccessToken();
+    expect(state?.user?.id).toBeDefined();
+    expect(state?.user?.email).toBeDefined();
+    expect(state?.authenticated).toBe(true);
+    expect(newToken).toBeTruthy();
+
+    // Check if token failed to refresh
+    expect(previousToken).toEqual(newToken);
+  });
 });
