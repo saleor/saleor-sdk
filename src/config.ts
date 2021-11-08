@@ -1,9 +1,8 @@
 export const API_URI = process.env.API_URI || "http://localhost:8000/graphql/";
 export const TEST_AUTH_EMAIL = process.env.TEST_AUTH_EMAIL || "";
 export const TEST_AUTH_PASSWORD = process.env.TEST_AUTH_PASSWORD || "";
-export const TEST_AUTH_SECOND_EMAIL = process.env.TEST_AUTH_SECOND_EMAIL || "";
-export const TEST_AUTH_SECOND_PASSWORD =
-  process.env.TEST_AUTH_SECOND_PASSWORD || "";
+export const TEST_AUTH_SECOND_EMAIL = "second+testers+dashboard@saleor.io";
+export const TEST_AUTH_SECOND_PASSWORD = "secondtest1234";
 export const TEST_AUTH_EXTERNAL_LOGIN_CALLBACK =
   "https://localhost:9000/login/callback/";
 export const TEST_AUTH_EXTERNAL_LOGOUT_CALLBACK =

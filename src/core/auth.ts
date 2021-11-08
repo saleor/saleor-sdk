@@ -215,23 +215,21 @@ export const auth = ({
           }
         },
       });
-    } else {
-      return client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>(
-        {
-          mutation: REFRESH_TOKEN,
-          variables: {
-            csrfToken,
-          },
-          update: (_, { data }) => {
-            if (data?.tokenRefresh?.token) {
-              storage.setAccessToken(data.tokenRefresh.token);
-            } else {
-              logout();
-            }
-          },
-        }
-      );
     }
+
+    return client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
+      mutation: REFRESH_TOKEN,
+      variables: {
+        csrfToken,
+      },
+      update: (_, { data }) => {
+        if (data?.tokenRefresh?.token) {
+          storage.setAccessToken(data.tokenRefresh.token);
+        } else {
+          logout();
+        }
+      },
+    });
   };
 
   /**
@@ -417,30 +415,30 @@ export const auth = ({
           }
         },
       });
-    } else {
-      return client.mutate<
-        ExternalRefreshMutation,
-        ExternalRefreshMutationVariables
-      >({
-        mutation: EXTERNAL_REFRESH,
-        variables: {
-          pluginId: authPluginId,
-          input: JSON.stringify({
-            csrfToken,
-          }),
-        },
-        update: (_, { data }) => {
-          if (data?.externalRefresh?.token) {
-            storage.setTokens({
-              accessToken: data.externalRefresh.token,
-              csrfToken: data.externalRefresh.csrfToken || null,
-            });
-          } else {
-            logout();
-          }
-        },
-      });
     }
+
+    return client.mutate<
+      ExternalRefreshMutation,
+      ExternalRefreshMutationVariables
+    >({
+      mutation: EXTERNAL_REFRESH,
+      variables: {
+        pluginId: authPluginId,
+        input: JSON.stringify({
+          csrfToken,
+        }),
+      },
+      update: (_, { data }) => {
+        if (data?.externalRefresh?.token) {
+          storage.setTokens({
+            accessToken: data.externalRefresh.token,
+            csrfToken: data.externalRefresh.csrfToken || null,
+          });
+        } else {
+          logout();
+        }
+      },
+    });
   };
 
   /**

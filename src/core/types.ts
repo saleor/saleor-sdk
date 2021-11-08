@@ -36,11 +36,15 @@ export interface SaleorClient {
   getState(): State;
 }
 
+interface SaleorClientFetchOpts {
+  autologin?: boolean;
+  fetchOpts?: FetchConfig;
+}
+
 export interface SaleorClientOpts {
   apiUrl: string;
   channel: string;
-  autologin?: boolean;
-  fetchOptions?: FetchConfig;
+  opts?: SaleorClientFetchOpts;
 }
 
 export type SaleorClientMethodsProps = SaleorClientInternals &
