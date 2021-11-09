@@ -54,11 +54,13 @@ export const checkoutProductVariantFragment = gql`
     attributes {
       attribute {
         id
+        slug
         name
       }
       values {
         id
         name
+        slug
         value: name
       }
     }
@@ -75,6 +77,7 @@ export const checkoutProductVariantFragment = gql`
       }
       productType {
         id
+        slug
         isShippingRequired
       }
     }
