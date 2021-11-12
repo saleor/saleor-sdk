@@ -1,4 +1,3 @@
-import { FetchResult } from "@apollo/client";
 import {
   CHANGE_USER_PASSWORD,
   EXTERNAL_AUTHENTICATION_URL,
@@ -45,10 +44,26 @@ import {
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
 } from "../apollo/types";
-import { ExternalLogoutOpts, SaleorClientMethodsProps } from "./types";
 import {
-  ChangeUserPasswordOpts,
-  ExternalAuthOpts,
+  ChangePasswordResult,
+  LogoutOpts,
+  GetExternalAccessTokenResult,
+  GetExternalAuthUrlResult,
+  LoginResult,
+  LogoutResult,
+  RefreshExternalTokenResult,
+  RefreshTokenResult,
+  RegisterResult,
+  RequestPasswordResetResult,
+  SaleorClientMethodsProps,
+  SetPasswordResult,
+  VerifyExternalTokenResult,
+  VerifyTokenResult,
+  GetExternalAuthUrlOpts,
+  GetExternalAccessTokenOpts,
+} from "./types";
+import {
+  ChangePasswordOpts,
   LoginOpts,
   RegisterOpts,
   RequestPasswordResetOpts,
@@ -58,34 +73,26 @@ import { storage } from "./storage";
 import { USER } from "../apollo/queries";
 
 export interface AuthSDK {
-  changePassword: (
-    opts: ChangeUserPasswordOpts
-  ) => Promise<FetchResult<PasswordChangeMutation>>;
-  login: (opts: LoginOpts) => Promise<FetchResult<LoginMutation>>;
-  logout: (
-    opts?: ExternalLogoutOpts
-  ) => Promise<FetchResult<ExternalLogoutMutation> | null>;
-  refreshToken: (
-    includeUser?: boolean
-  ) => Promise<FetchResult<RefreshTokenMutation>>;
-  register: (opts: RegisterOpts) => Promise<FetchResult<RegisterMutation>>;
+  changePassword: (opts: ChangePasswordOpts) => Promise<ChangePasswordResult>;
+  login: (opts: LoginOpts) => Promise<LoginResult>;
+  logout: (opts?: LogoutOpts) => Promise<LogoutResult>;
+  refreshToken: (includeUser?: boolean) => Promise<RefreshTokenResult>;
+  register: (opts: RegisterOpts) => Promise<RegisterResult>;
   requestPasswordReset: (
     opts: RequestPasswordResetOpts
-  ) => Promise<FetchResult<RequestPasswordResetMutation>>;
-  setPassword: (
-    opts: SetPasswordOpts
-  ) => Promise<FetchResult<SetPasswordMutation>>;
-  verifyToken: () => Promise<FetchResult<VerifyTokenMutation>>;
+  ) => Promise<RequestPasswordResetResult>;
+  setPassword: (opts: SetPasswordOpts) => Promise<SetPasswordResult>;
+  verifyToken: () => Promise<VerifyTokenResult>;
   getExternalAuthUrl: (
-    opts: ExternalAuthOpts
-  ) => Promise<FetchResult<ExternalAuthenticationUrlMutation>>;
+    opts: GetExternalAuthUrlOpts
+  ) => Promise<GetExternalAuthUrlResult>;
   getExternalAccessToken: (
-    opts: ExternalAuthOpts
-  ) => Promise<FetchResult<ExternalObtainAccessTokensMutation>>;
+    opts: GetExternalAccessTokenOpts
+  ) => Promise<GetExternalAccessTokenResult>;
   refreshExternalToken: (
     includeUser?: boolean
-  ) => Promise<FetchResult<ExternalRefreshMutation>>;
-  verifyExternalToken: () => Promise<FetchResult<ExternalVerifyMutation>>;
+  ) => Promise<RefreshExternalTokenResult>;
+  verifyExternalToken: () => Promise<VerifyExternalTokenResult>;
 }
 
 export const auth = ({
