@@ -31,6 +31,16 @@ import {
   VerifyTokenMutation,
   PasswordChangeMutation,
   MutationExternalObtainAccessTokensArgs,
+  AccountDeleteMutation,
+  AccountRequestDeletionMutation,
+  AccountConfirmMutation,
+  AccountUpdateMutation,
+  ConfirmEmailChangeMutation,
+  CreateAccountAddressMutation,
+  DeleteAccountAddressMutation,
+  RequestEmailChangeMutation,
+  SetAccountDefaultAddressMutation,
+  UpdateAccountAddressMutation,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
 import { UserSDK } from "./user";
@@ -67,24 +77,39 @@ export interface SaleorClientOpts {
 export type SaleorClientMethodsProps = SaleorClientInternals &
   Pick<SaleorClientConfig, "channel">;
 
+export type JWTToken = {
+  iat: number;
+  iss: string;
+  owner: string;
+  exp: number;
+  token: string;
+  email: string;
+  type: string;
+  user_id: string;
+  is_staff: boolean;
+};
+
 // Meethods opts
-export type CreateAccountAddressOpts = MutationAccountAddressCreateArgs;
+// Auth
 export type ChangePasswordOpts = MutationPasswordChangeArgs;
 export type LoginOpts = MutationTokenCreateArgs;
 export type RefreshTokenOpts = Pick<MutationTokenRefreshArgs, "csrfToken">;
 export type RegisterOpts = AccountRegisterInput;
-export type RequestEmailChangeOpts = MutationRequestEmailChangeArgs;
 export type RequestPasswordResetOpts = MutationRequestPasswordResetArgs;
-export type SetAccountDefaultAddressOpts = MutationAccountSetDefaultAddressArgs;
 export type SetPasswordOpts = MutationSetPasswordArgs;
-export type UpdateAccountOpts = MutationAccountUpdateArgs;
-export type UpdateAccountAddressOpts = MutationAccountAddressUpdateArgs;
 export type GetExternalAuthUrlOpts = MutationExternalAuthenticationUrlArgs;
 export type GetExternalAccessTokenOpts = MutationExternalObtainAccessTokensArgs;
 export type LogoutOpts = Pick<MutationExternalLogoutArgs, "input">;
+// User
+export type CreateAccountAddressOpts = MutationAccountAddressCreateArgs;
+export type RequestEmailChangeOpts = MutationRequestEmailChangeArgs;
+export type SetAccountDefaultAddressOpts = MutationAccountSetDefaultAddressArgs;
+export type UpdateAccountOpts = MutationAccountUpdateArgs;
+export type UpdateAccountAddressOpts = MutationAccountAddressUpdateArgs;
 export type ConfirmAccountOpts = AccountConfirmMutationVariables;
 
 // Meethods results
+// Auth
 export type ChangePasswordResult = FetchResult<PasswordChangeMutation>;
 export type ChangePasswordData = PasswordChangeMutation["passwordChange"];
 export type LoginResult = FetchResult<LoginMutation>;
@@ -115,15 +140,34 @@ export type RefreshExternalTokenResult = FetchResult<ExternalRefreshMutation>;
 export type RefreshExternalTokenData = ExternalRefreshMutation["externalRefresh"];
 export type VerifyExternalTokenResult = FetchResult<ExternalVerifyMutation>;
 export type VerifyExternalTokenData = ExternalVerifyMutation["externalVerify"];
-
-export type JWTToken = {
-  iat: number;
-  iss: string;
-  owner: string;
-  exp: number;
-  token: string;
-  email: string;
-  type: string;
-  user_id: string;
-  is_staff: boolean;
-};
+// User
+export type AccountDeleteResult = FetchResult<AccountDeleteMutation>;
+export type AccountDeleteData = AccountDeleteMutation["accountDelete"];
+export type AccountRequestDeletionResult = FetchResult<
+  AccountRequestDeletionMutation
+>;
+export type AccountRequestDeletionData = AccountRequestDeletionMutation["accountRequestDeletion"];
+export type ConfirmEmailChangeResult = FetchResult<ConfirmEmailChangeMutation>;
+export type ConfirmEmailChangeData = ConfirmEmailChangeMutation["confirmEmailChange"];
+export type CreateAccountAddressResult = FetchResult<
+  CreateAccountAddressMutation
+>;
+export type CreateAccountAddressData = CreateAccountAddressMutation["accountAddressCreate"];
+export type DeleteAccountAddressResult = FetchResult<
+  DeleteAccountAddressMutation
+>;
+export type DeleteAccountAddressData = DeleteAccountAddressMutation["accountAddressDelete"];
+export type RequestEmailChangeResult = FetchResult<RequestEmailChangeMutation>;
+export type RequestEmailChangeData = RequestEmailChangeMutation["requestEmailChange"];
+export type SetAccountDefaultAddressResult = FetchResult<
+  SetAccountDefaultAddressMutation
+>;
+export type SetAccountDefaultAddressData = SetAccountDefaultAddressMutation["accountSetDefaultAddress"];
+export type UpdateAccountResult = FetchResult<AccountUpdateMutation>;
+export type UpdateAccountData = AccountUpdateMutation["accountUpdate"];
+export type UpdateAccountAddressResult = FetchResult<
+  UpdateAccountAddressMutation
+>;
+export type UpdateAccountAddressData = UpdateAccountAddressMutation["accountAddressUpdate"];
+export type ConfirmAccountResult = FetchResult<AccountConfirmMutation>;
+export type ConfirmAccountData = AccountConfirmMutation["confirmAccount"];

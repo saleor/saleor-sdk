@@ -1,4 +1,3 @@
-import { FetchResult } from "@apollo/client";
 import {
   CONFIRM_ACCOUNT,
   CONFIRM_EMAIL_CHANGE,
@@ -34,7 +33,20 @@ import {
   UpdateAccountAddressMutationVariables,
 } from "../apollo/types";
 import { auth } from "./auth";
-import { ConfirmAccountOpts, SaleorClientMethodsProps } from "./types";
+import {
+  AccountDeleteResult,
+  AccountRequestDeletionResult,
+  ConfirmAccountOpts,
+  ConfirmAccountResult,
+  ConfirmEmailChangeResult,
+  CreateAccountAddressResult,
+  DeleteAccountAddressResult,
+  RequestEmailChangeResult,
+  SaleorClientMethodsProps,
+  SetAccountDefaultAddressResult,
+  UpdateAccountAddressResult,
+  UpdateAccountResult,
+} from "./types";
 import {
   CreateAccountAddressOpts,
   RequestEmailChangeOpts,
@@ -44,34 +56,28 @@ import {
 } from "./types";
 
 export interface UserSDK {
-  accountDelete: (token: string) => Promise<FetchResult<AccountDeleteMutation>>;
+  accountDelete: (token: string) => Promise<AccountDeleteResult>;
   accountRequestDeletion: (
     redirectUrl: string
-  ) => Promise<FetchResult<AccountRequestDeletionMutation>>;
-  confirmEmailChange: (
-    token: string
-  ) => Promise<FetchResult<ConfirmEmailChangeMutation>>;
+  ) => Promise<AccountRequestDeletionResult>;
+  confirmEmailChange: (token: string) => Promise<ConfirmEmailChangeResult>;
   createAccountAddress: (
     opts: CreateAccountAddressOpts
-  ) => Promise<FetchResult<CreateAccountAddressMutation>>;
+  ) => Promise<CreateAccountAddressResult>;
   deleteAccountAddress: (
     addressId: string
-  ) => Promise<FetchResult<DeleteAccountAddressMutation>>;
+  ) => Promise<DeleteAccountAddressResult>;
   requestEmailChange: (
     opts: RequestEmailChangeOpts
-  ) => Promise<FetchResult<RequestEmailChangeMutation>>;
+  ) => Promise<RequestEmailChangeResult>;
   setAccountDefaultAddress: (
     opts: SetAccountDefaultAddressOpts
-  ) => Promise<FetchResult<SetAccountDefaultAddressMutation>>;
-  updateAccount: (
-    opts: UpdateAccountOpts
-  ) => Promise<FetchResult<AccountUpdateMutation>>;
+  ) => Promise<SetAccountDefaultAddressResult>;
+  updateAccount: (opts: UpdateAccountOpts) => Promise<UpdateAccountResult>;
   updateAccountAddress: (
     opts: UpdateAccountAddressOpts
-  ) => Promise<FetchResult<UpdateAccountAddressMutation>>;
-  confirmAccount: (
-    opts: ConfirmAccountOpts
-  ) => Promise<FetchResult<AccountConfirmMutation>>;
+  ) => Promise<UpdateAccountAddressResult>;
+  confirmAccount: (opts: ConfirmAccountOpts) => Promise<ConfirmAccountResult>;
 }
 
 export const user = ({
