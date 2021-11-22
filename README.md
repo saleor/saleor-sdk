@@ -144,11 +144,12 @@ SDK fetch method uses [cross-fetch](https://github.com/lquixada/cross-fetch) und
 
 We provide an API with methods and fields, performing one, scoped type of work. You may access them straight from `createSaleorClient()` or use React hooks:
 
-| API object   | React hook       | Description                                                              |
-| :----------- | :--------------- | :----------------------------------------------------------------------- |
-| `getState()` | `useAuthState()` | Returns current SDK state: `user`, `authenticated` and `authenticating`. |
-| `auth`       | `useAuth()`      | Handles user authentication methods.                                     |
-| `user`       | `useUser()`      | Handles user account methods.                                            |
+| API object   | React hook          | Description                                                              |
+| :----------- | :------------------ | :----------------------------------------------------------------------- |
+| `getState()` | `useAuthState()`    | Returns current SDK state: `user`, `authenticated` and `authenticating`. |
+| `auth`       | `useAuth()`         | Handles user authentication methods.                                     |
+| `user`       | `useUser()`         | Handles user account methods.                                            |
+| `config`     | `useSaleorConfig()` | Handles SDK configuration.                                               |
 
 SDK supports OpenId Connect methods provided by Saleor API. They are under `auth` object and `useAuth` hook. For more usage details, please check https://docs.saleor.io/docs/3.0/developer/available-plugins/openid-connect.
 
