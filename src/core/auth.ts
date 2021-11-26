@@ -200,6 +200,13 @@ export const auth = ({
             accessToken: data.tokenCreate.token,
             csrfToken: data.tokenCreate.csrfToken,
           });
+        } else {
+          client.writeQuery({
+            query: USER,
+            data: {
+              authenticating: false,
+            },
+          });
         }
       },
     });
@@ -388,6 +395,13 @@ export const auth = ({
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
             csrfToken: data.externalObtainAccessTokens.csrfToken || null,
+          });
+        } else {
+          client.writeQuery({
+            query: USER,
+            data: {
+              authenticating: false,
+            },
           });
         }
       },
