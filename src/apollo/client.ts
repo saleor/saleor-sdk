@@ -32,7 +32,7 @@ export type FetchConfig = Partial<{
   autoTokenRefresh: boolean;
   /**
    * Set a value for skew between local time and token expiration date in
-   * seconds (only together with `autoTokenRefresh`). Defaults to `60`.
+   * seconds (only together with `autoTokenRefresh`). Defaults to `120`.
    */
   tokenRefreshTimeSkew: number;
   /**
