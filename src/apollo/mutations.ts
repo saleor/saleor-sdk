@@ -133,6 +133,26 @@ export const EXTERNAL_REFRESH = gql`
   }
 `;
 
+export const EXTERNAL_REFRESH_WITH_USER = gql`
+  ${accountErrorFragment}
+  ${userFragment}
+  mutation externalRefreshWithUser(
+    $pluginId: String = "mirumee.authentication.openidconnect"
+    $input: JSONString!
+  ) {
+    externalRefresh(pluginId: $pluginId, input: $input) {
+      token
+      csrfToken
+      user {
+        ...UserFragment
+      }
+      errors {
+        ...AccountErrorFragment
+      }
+    }
+  }
+`;
+
 export const EXTERNAL_VERIFY_TOKEN = gql`
   ${accountErrorFragment}
   ${userFragment}

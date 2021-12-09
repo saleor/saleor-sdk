@@ -96,6 +96,8 @@
     "graphql": "^15.5.1",
     "husky": "^6.0.0",
     "jest": "^27.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "msw": "^0.35.0",
     "np": "^7.5.0",
     "omit-deep-lodash": "^1.1.5",
     "react": "^17.0.2",
@@ -104,7 +106,7 @@
     "size-limit": "^4.10.2",
     "ts-jest": "^27.0.3",
     "tsdx": "^0.14.1",
-    "tslib": "^2.2.0",
+    "tslib": "^2.3.1",
     "typescript": "^4.2.4"
   },
   "dependencies": {

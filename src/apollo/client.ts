@@ -13,20 +13,26 @@ import { TypedTypePolicies } from "./apollo-helpers";
 import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
-import { RefreshTokenMutation } from "./types";
+import { ExternalRefreshMutation, RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
 let authClient: AuthSDK;
-let refreshPromise: ReturnType<AuthSDK["refreshToken"]> | null = null;
+let refreshPromise:
+  | ReturnType<AuthSDK["refreshToken"]>
+  | ReturnType<AuthSDK["refreshExternalToken"]>
+  | null = null;
+const isTokenRefreshExternal = (
+  result: RefreshTokenMutation | ExternalRefreshMutation
+): result is ExternalRefreshMutation => "externalRefresh" in result;
 
-type FetchConfig = Partial<{
+export type FetchConfig = Partial<{
   /**
    * Enable auto token refreshing. Default to `true`.
    */
   autoTokenRefresh: boolean;
   /**
    * Set a value for skew between local time and token expiration date in
-   * seconds (only together with `autoTokenRefresh`). Defaults to `60`.
+   * seconds (only together with `autoTokenRefresh`). Defaults to `120`.
    */
   tokenRefreshTimeSkew: number;
   /**
@@ -51,9 +57,12 @@ export const createFetch = ({
   }
 
   let token = storage.getAccessToken();
+  const authPluginId = storage.getAuthPluginId();
 
   if (
-    JSON.parse(init.body?.toString() || "")?.operationName === "refreshToken"
+    ["refreshToken", "externalRefresh"].includes(
+      JSON.parse(init.body?.toString() || "{}")?.operationName
+    )
   ) {
     return fetch(input, init);
   }
@@ -68,8 +77,9 @@ export const createFetch = ({
         await refreshPromise;
       } else if (Date.now() >= expirationTime) {
         // refreshToken automatically updates token in storage
-        refreshPromise = authClient.refreshToken();
-
+        refreshPromise = authPluginId
+          ? authClient.refreshExternalToken()
+          : authClient.refreshToken();
         await refreshPromise;
       }
     } catch (e) {
@@ -93,22 +103,28 @@ export const createFetch = ({
       error => error.extensions?.exception.code === "ExpiredSignatureError"
     );
     let refreshTokenResponse: FetchResult<
-      RefreshTokenMutation,
-      Record<string, any>,
-      Record<string, any>
-    >;
+      RefreshTokenMutation | ExternalRefreshMutation,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > | null = null;
 
     if (isUnauthenticated) {
       try {
         if (refreshPromise) {
           refreshTokenResponse = await refreshPromise;
         } else {
-          refreshPromise = authClient.refreshToken();
-
+          refreshPromise = authPluginId
+            ? authClient.refreshExternalToken()
+            : authClient.refreshToken();
           refreshTokenResponse = await refreshPromise;
         }
 
-        if (refreshTokenResponse.data?.tokenRefresh?.token) {
+        if (
+          refreshTokenResponse.data &&
+          isTokenRefreshExternal(refreshTokenResponse.data)
+            ? refreshTokenResponse.data.externalRefresh?.token
+            : refreshTokenResponse.data?.tokenRefresh?.token
+        ) {
           // check if mutation returns a valid token after refresh and retry the request
           return createFetch({
             autoTokenRefresh: false,
@@ -185,10 +201,11 @@ const getTypePolicies = (autologin: boolean): TypedTypePolicies => ({
 
 export const createApolloClient = (
   apiUrl: string,
-  autologin: boolean
+  autologin: boolean,
+  fetchOptions?: FetchConfig
 ): ApolloClient<NormalizedCacheObject> => {
   const httpLink = createHttpLink({
-    fetch: createFetch(),
+    fetch: createFetch(fetchOptions),
     uri: apiUrl,
     credentials: "include",
   });

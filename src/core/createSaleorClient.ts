@@ -10,9 +10,10 @@ import { DEVELOPMENT_MODE, WINDOW_EXISTS } from "../constants";
 export const createSaleorClient = ({
   apiUrl,
   channel,
-  autologin = true,
+  opts = {},
 }: SaleorClientOpts): SaleorClient => {
   let _channel = channel;
+  const { autologin = true, fetchOpts } = opts;
 
   const setChannel = (channel: string): string => {
     _channel = channel;
@@ -20,15 +21,18 @@ export const createSaleorClient = ({
   };
 
   createStorage(autologin);
-  const apolloClient = createApolloClient(apiUrl, autologin);
+  const apolloClient = createApolloClient(apiUrl, autologin, fetchOpts);
   const coreInternals = { apolloClient, channel: _channel };
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);
 
   if (autologin) {
     const csrfToken = storage.getCSRFToken();
+    const authPluginId = storage.getAuthPluginId();
 
-    if (csrfToken) {
+    if (csrfToken && authPluginId) {
+      authSDK.refreshExternalToken(true);
+    } else if (csrfToken) {
       authSDK.refreshToken(true);
     }
   }

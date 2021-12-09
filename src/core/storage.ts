@@ -1,7 +1,9 @@
 import { LOCAL_STORAGE_EXISTS } from "../constants";
-import { SALEOR_CSRF_TOKEN } from "./constants";
+import { SALEOR_AUTH_PLUGIN_ID, SALEOR_CSRF_TOKEN } from "./constants";
 
 export let storage: {
+  setAuthPluginId: (method: string | null) => void;
+  getAuthPluginId: () => string | null;
   setAccessToken: (token: string | null) => void;
   getAccessToken: () => string | null;
   setCSRFToken: (token: string | null) => void;
@@ -14,11 +16,26 @@ export let storage: {
 };
 
 export const createStorage = (autologinEnabled: boolean): void => {
+  let authPluginId: string | null = LOCAL_STORAGE_EXISTS
+    ? localStorage.getItem(SALEOR_AUTH_PLUGIN_ID)
+    : null;
   let accessToken: string | null = null;
   let csrfToken: string | null =
     autologinEnabled && LOCAL_STORAGE_EXISTS
       ? localStorage.getItem(SALEOR_CSRF_TOKEN)
       : null;
+
+  const setAuthPluginId = (pluginId: string | null): void => {
+    if (LOCAL_STORAGE_EXISTS) {
+      if (pluginId) {
+        localStorage.setItem(SALEOR_AUTH_PLUGIN_ID, pluginId);
+      } else {
+        localStorage.removeItem(SALEOR_AUTH_PLUGIN_ID);
+      }
+    }
+
+    authPluginId = pluginId;
+  };
 
   const setCSRFToken = (token: string | null): void => {
     if (autologinEnabled && LOCAL_STORAGE_EXISTS) {
@@ -35,6 +52,7 @@ export const createStorage = (autologinEnabled: boolean): void => {
     accessToken = token;
   };
 
+  const getAuthPluginId = (): string | null => authPluginId;
   const getAccessToken = (): string | null => accessToken;
   const getCSRFToken = (): string | null => csrfToken;
 
@@ -50,13 +68,16 @@ export const createStorage = (autologinEnabled: boolean): void => {
   };
 
   const clear = (): void => {
+    setAuthPluginId(null);
     setAccessToken(null);
     setCSRFToken(null);
   };
 
   storage = {
+    setAuthPluginId,
     setAccessToken,
     setCSRFToken,
+    getAuthPluginId,
     getAccessToken,
     getCSRFToken,
     setTokens,

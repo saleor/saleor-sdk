@@ -1,4 +1,3 @@
-import { FetchResult } from "@apollo/client";
 import {
   CONFIRM_ACCOUNT,
   CONFIRM_EMAIL_CHANGE,
@@ -34,7 +33,20 @@ import {
   UpdateAccountAddressMutationVariables,
 } from "../apollo/types";
 import { auth } from "./auth";
-import { ConfirmAccountOpts, SaleorClientMethodsProps } from "./types";
+import {
+  AccountDeleteResult,
+  AccountRequestDeletionResult,
+  ConfirmAccountOpts,
+  ConfirmAccountResult,
+  ConfirmEmailChangeResult,
+  CreateAccountAddressResult,
+  DeleteAccountAddressResult,
+  RequestEmailChangeResult,
+  SaleorClientMethodsProps,
+  SetAccountDefaultAddressResult,
+  UpdateAccountAddressResult,
+  UpdateAccountResult,
+} from "./types";
 import {
   CreateAccountAddressOpts,
   RequestEmailChangeOpts,
@@ -44,34 +56,89 @@ import {
 } from "./types";
 
 export interface UserSDK {
-  accountDelete: (token: string) => Promise<FetchResult<AccountDeleteMutation>>;
+  /**
+   * Remove user account.
+   *
+   * @param token - A one-time token required to remove account. Sent by email using AccountRequestDeletion mutation.
+   * @returns Deleted user's account data and errors.
+   */
+  accountDelete: (token: string) => Promise<AccountDeleteResult>;
+  /**
+   * Sends an email with the account removal link for the logged-in user.
+   *
+   * @param redirectUrl - URL of a view where users should be redirected to delete their account. URL in RFC 1808 format.
+   * @returns Errors if there are some.
+   */
   accountRequestDeletion: (
     redirectUrl: string
-  ) => Promise<FetchResult<AccountRequestDeletionMutation>>;
-  confirmEmailChange: (
-    token: string
-  ) => Promise<FetchResult<ConfirmEmailChangeMutation>>;
+  ) => Promise<AccountRequestDeletionResult>;
+  /**
+   * Confirm the email change of the logged-in user.
+   *
+   * @param token - A one-time token required to change the email.
+   * @returns A user instance with a new email and errors.
+   */
+  confirmEmailChange: (token: string) => Promise<ConfirmEmailChangeResult>;
+  /**
+   * Create a new address for the account.
+   *
+   * @param opts - Object with fields required to create address and a type of address.
+   * If provided, the new address will be automatically assigned as the customer's default address of that type.
+   * @returns Updated user account.
+   */
   createAccountAddress: (
     opts: CreateAccountAddressOpts
-  ) => Promise<FetchResult<CreateAccountAddressMutation>>;
+  ) => Promise<CreateAccountAddressResult>;
+  /**
+   * Delete an address of the logged-in account.
+   *
+   * @param addressId - ID of the address to delete.
+   * @returns Updated user account.
+   */
   deleteAccountAddress: (
     addressId: string
-  ) => Promise<FetchResult<DeleteAccountAddressMutation>>;
+  ) => Promise<DeleteAccountAddressResult>;
+  /**
+   * Request email change of the logged in user.
+   *
+   * @param opts - Object with new user email, user's password and URL of a view where users should be redirected to update the email address.
+   * @returns A user instance and errors.
+   */
   requestEmailChange: (
     opts: RequestEmailChangeOpts
-  ) => Promise<FetchResult<RequestEmailChangeMutation>>;
+  ) => Promise<RequestEmailChangeResult>;
+  /**
+   * Sets a default address for the authenticated account.
+   *
+   * @param opts - Object with ID of the address to set as default and the type of address.
+   * @returns Updated user account.
+   */
   setAccountDefaultAddress: (
     opts: SetAccountDefaultAddressOpts
-  ) => Promise<FetchResult<SetAccountDefaultAddressMutation>>;
-  updateAccount: (
-    opts: UpdateAccountOpts
-  ) => Promise<FetchResult<AccountUpdateMutation>>;
+  ) => Promise<SetAccountDefaultAddressResult>;
+  /**
+   * Updates the account of the logged-in account.
+   *
+   * @param opts - Fields required to update the account of the logged-in account.
+   * @returns Updated user account.
+   */
+  updateAccount: (opts: UpdateAccountOpts) => Promise<UpdateAccountResult>;
+  /**
+   * Updates an address of the logged-in account.
+   *
+   * @param opts - Object with ID of the address to update and fields required to update the address.
+   * @returns Updated user account.
+   */
   updateAccountAddress: (
     opts: UpdateAccountAddressOpts
-  ) => Promise<FetchResult<UpdateAccountAddressMutation>>;
-  confirmAccount: (
-    opts: ConfirmAccountOpts
-  ) => Promise<FetchResult<AccountConfirmMutation>>;
+  ) => Promise<UpdateAccountAddressResult>;
+  /**
+   * Confirms user account with token sent by email during registration.
+   *
+   * @param opts - Object with email of the user and one-time token required to confirm the account.
+   * @returns Confirmed user account.
+   */
+  confirmAccount: (opts: ConfirmAccountOpts) => Promise<ConfirmAccountResult>;
 }
 
 export const user = ({
@@ -80,12 +147,6 @@ export const user = ({
 }: SaleorClientMethodsProps): UserSDK => {
   const _auth = auth({ apolloClient: client, channel });
 
-  /**
-   * Remove user account.
-   *
-   * @param token - A one-time token required to remove account. Sent by email using AccountRequestDeletion mutation.
-   * @returns Deleted user's account data and errors.
-   */
   const accountDelete: UserSDK["accountDelete"] = async token => {
     const result = await client.mutate<
       AccountDeleteMutation,
@@ -100,12 +161,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Sends an email with the account removal link for the logged-in user.
-   *
-   * @param redirectUrl - URL of a view where users should be redirected to delete their account. URL in RFC 1808 format.
-   * @returns Errors if there are some.
-   */
   const accountRequestDeletion: UserSDK["accountRequestDeletion"] = async redirectUrl => {
     const result = await client.mutate<
       AccountRequestDeletionMutation,
@@ -118,12 +173,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Confirm the email change of the logged-in user.
-   *
-   * @param token - A one-time token required to change the email.
-   * @returns A user instance with a new email and errors.
-   */
   const confirmEmailChange: UserSDK["confirmEmailChange"] = async token => {
     const result = await client.mutate<
       ConfirmEmailChangeMutation,
@@ -136,30 +185,18 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Request email change of the logged in user.
-   *
-   * @param opts - Object with new user email, user's password and URL of a view where users should be redirected to update the email address.
-   * @returns A user instance and errors.
-   */
   const requestEmailChange: UserSDK["requestEmailChange"] = async opts => {
     const result = await client.mutate<
       RequestEmailChangeMutation,
       RequestEmailChangeMutationVariables
     >({
       mutation: REQUEST_EMAIL_CHANGE,
-      variables: { channel, ...opts },
+      variables: { ...opts, channel: opts.channel || channel },
     });
 
     return result;
   };
 
-  /**
-   * Updates the account of the logged-in account.
-   *
-   * @param opts - Fields required to update the account of the logged-in account.
-   * @returns Updated user account.
-   */
   const updateAccount: UserSDK["updateAccount"] = async opts => {
     const result = await client.mutate<
       AccountUpdateMutation,
@@ -172,12 +209,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Sets a default address for the authenticated account.
-   *
-   * @param opts - Object with ID of the address to set as default and the type of address.
-   * @returns Updated user account.
-   */
   const setAccountDefaultAddress: UserSDK["setAccountDefaultAddress"] = async opts => {
     const result = await client.mutate<
       SetAccountDefaultAddressMutation,
@@ -190,13 +221,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Create a new address for the account.
-   *
-   * @param opts - Object with fields required to create address and a type of address.
-   * If provided, the new address will be automatically assigned as the customer's default address of that type.
-   * @returns Updated user account.
-   */
   const createAccountAddress: UserSDK["createAccountAddress"] = async opts => {
     const result = await client.mutate<
       CreateAccountAddressMutation,
@@ -209,12 +233,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Delete an address of the logged-in account.
-   *
-   * @param addressId - ID of the address to delete.
-   * @returns Updated user account.
-   */
   const deleteAccountAddress: UserSDK["deleteAccountAddress"] = async addressId => {
     const result = await client.mutate<
       DeleteAccountAddressMutation,
@@ -227,12 +245,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Updates an address of the logged-in account.
-   *
-   * @param opts - Object with ID of the address to update and fields required to update the address.
-   * @returns Updated user account.
-   */
   const updateAccountAddress: UserSDK["updateAccountAddress"] = async opts => {
     const result = await client.mutate<
       UpdateAccountAddressMutation,
@@ -245,12 +257,6 @@ export const user = ({
     return result;
   };
 
-  /**
-   * Confirms user account with token sent by email during registration.
-   *
-   * @param opts - Object with email of the user and one-time token required to confirm the account.
-   * @returns Confirmed user account.
-   */
   const confirmAccount: UserSDK["confirmAccount"] = async opts => {
     const result = await client.mutate<
       AccountConfirmMutation,
