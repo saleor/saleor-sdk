@@ -59,13 +59,17 @@ export const createFetch = ({
   let token = storage.getAccessToken();
   const authPluginId = storage.getAuthPluginId();
 
-  if (
-    ["refreshToken", "externalRefresh"].includes(
-      JSON.parse(init.body?.toString() || "{}")?.operationName
-    )
-  ) {
-    return fetch(input, init);
-  }
+  try {
+    if (
+      ["refreshToken", "externalRefresh"].includes(
+        // INFO: Non-null assertion is enabled because the block is wrapped inside try/catch
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        JSON.parse(init.body!.toString()).operationName
+      )
+    ) {
+      return fetch(input, init);
+    }
+  } catch (e) {}
 
   if (autoTokenRefresh && token) {
     // auto refresh token before provided time skew (in seconds) until it expires
