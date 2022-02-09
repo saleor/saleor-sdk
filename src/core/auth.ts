@@ -215,12 +215,6 @@ export const auth = ({
   const logout: AuthSDK["logout"] = async opts => {
     const authPluginId = storage.getAuthPluginId();
 
-    if (authPluginId && !opts?.input) {
-      throw Error(
-        "input should be provided when logged in with external plugin"
-      );
-    }
-
     storage.clear();
 
     client.writeQuery({
