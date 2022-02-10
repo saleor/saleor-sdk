@@ -81,7 +81,6 @@
     "@graphql-codegen/typescript": "^1.22.3",
     "@graphql-codegen/typescript-apollo-client-helpers": "^1.1.9",
     "@graphql-codegen/typescript-operations": "^1.18.2",
-    "@graphql-codegen/typescript-react-apollo": "^2.2.7",
     "@pollyjs/adapter-node-http": "^5.1.1",
     "@pollyjs/core": "^5.1.1",
     "@pollyjs/persister-fs": "^5.1.1",
