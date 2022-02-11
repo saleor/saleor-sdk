@@ -9,7 +9,6 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-apollo
     config:
       dedupeOperationSuffix: true
       enumsAsTypes: true
