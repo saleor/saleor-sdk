@@ -4,7 +4,7 @@ import { externalLogoutHandler } from "./externalLogout";
 import { externalObtainAccessTokensHandler } from "./externalObtainAccessTokens";
 import { externalRefreshHandler } from "./externalRefresh";
 import { externalVerifyHandler } from "./externalVerify";
-import { loginHandler } from "./login";
+import { loginHandler, loginHandlerWithoutDetails } from "./login";
 import { passwordChangeHandler } from "./passwordChange";
 import { refreshTokenHandler } from "./refreshToken";
 import { registerHandler } from "./register";
@@ -20,6 +20,7 @@ export const mockHandlers = ({
 }: MockHandlersOpts = {}) => [
   // Auth - Internal login
   loginHandler(tokenExpirationPeriod),
+  loginHandlerWithoutDetails(tokenExpirationPeriod),
   refreshTokenHandler(tokenExpirationPeriod),
   verifyTokenHandler,
   requestPasswordResetHandler,
