@@ -3,12 +3,30 @@ import { gql } from "@apollo/client";
 import {
   accountErrorFragment,
   addressFragment,
-  userFragment,
+  userBaseFragment,
+  userDetailsFragment,
 } from "./fragments";
+
+export const LOGIN_WITHOUT_DETAILS = gql`
+  ${accountErrorFragment}
+  ${userBaseFragment}
+  mutation loginWithoutDetails($email: String!, $password: String!) {
+    tokenCreate(email: $email, password: $password) {
+      csrfToken
+      token
+      errors {
+        ...AccountErrorFragment
+      }
+      user {
+        ...UserBaseFragment
+      }
+    }
+  }
+`;
 
 export const LOGIN = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation login($email: String!, $password: String!) {
     tokenCreate(email: $email, password: $password) {
       csrfToken
@@ -17,7 +35,7 @@ export const LOGIN = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
@@ -51,12 +69,12 @@ export const REFRESH_TOKEN = gql`
 // used for initial authentication
 export const REFRESH_TOKEN_WITH_USER = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation refreshTokenWithUser($csrfToken: String!) {
     tokenRefresh(csrfToken: $csrfToken) {
       token
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
       errors {
         ...AccountErrorFragment
@@ -67,13 +85,13 @@ export const REFRESH_TOKEN_WITH_USER = gql`
 
 export const VERIFY_TOKEN = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation verifyToken($token: String!) {
     tokenVerify(token: $token) {
       isValid
       payload
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
       errors {
         ...AccountErrorFragment
@@ -99,7 +117,7 @@ export const EXTERNAL_AUTHENTICATION_URL = gql`
 
 export const OBTAIN_EXTERNAL_ACCESS_TOKEN = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation externalObtainAccessTokens(
     $pluginId: String = "mirumee.authentication.openidconnect"
     $input: JSONString!
@@ -108,7 +126,7 @@ export const OBTAIN_EXTERNAL_ACCESS_TOKEN = gql`
       token
       csrfToken
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
       errors {
         ...AccountErrorFragment
@@ -135,7 +153,7 @@ export const EXTERNAL_REFRESH = gql`
 
 export const EXTERNAL_REFRESH_WITH_USER = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation externalRefreshWithUser(
     $pluginId: String = "mirumee.authentication.openidconnect"
     $input: JSONString!
@@ -144,7 +162,7 @@ export const EXTERNAL_REFRESH_WITH_USER = gql`
       token
       csrfToken
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
       errors {
         ...AccountErrorFragment
@@ -155,7 +173,7 @@ export const EXTERNAL_REFRESH_WITH_USER = gql`
 
 export const EXTERNAL_VERIFY_TOKEN = gql`
   ${accountErrorFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   mutation externalVerify(
     $pluginId: String = "mirumee.authentication.openidconnect"
     $input: JSONString!
@@ -164,7 +182,7 @@ export const EXTERNAL_VERIFY_TOKEN = gql`
       isValid
       verifyData
       user {
-        ...UserFragment
+        ...UserDetailsFragment
         userPermissions {
           code
           name
@@ -223,7 +241,7 @@ export const REQUEST_PASSWORD_RESET = gql`
 `;
 
 export const SET_PASSWORD = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation setPassword($token: String!, $email: String!, $password: String!) {
     setPassword(token: $token, email: $email, password: $password) {
@@ -233,14 +251,14 @@ export const SET_PASSWORD = gql`
       token
       csrfToken
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const REQUEST_EMAIL_CHANGE = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation requestEmailChange(
     $channel: String!
@@ -258,14 +276,14 @@ export const REQUEST_EMAIL_CHANGE = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const CONFIRM_EMAIL_CHANGE = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation confirmEmailChange($channel: String!, $token: String!) {
     confirmEmailChange(channel: $channel, token: $token) {
@@ -273,7 +291,7 @@ export const CONFIRM_EMAIL_CHANGE = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
@@ -291,7 +309,7 @@ export const REQUEST_DELETE_ACCOUNT = gql`
 `;
 
 export const DELETE_ACCOUNT = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation accountDelete($token: String!) {
     accountDelete(token: $token) {
@@ -299,14 +317,14 @@ export const DELETE_ACCOUNT = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const UPDATE_ACCOUNT = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation accountUpdate($input: AccountInput!) {
     accountUpdate(input: $input) {
@@ -314,14 +332,14 @@ export const UPDATE_ACCOUNT = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const SET_ACCOUNT_DEFAULT_ADDRESS = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation setAccountDefaultAddress($id: ID!, $type: AddressTypeEnum!) {
     accountSetDefaultAddress(id: $id, type: $type) {
@@ -329,14 +347,14 @@ export const SET_ACCOUNT_DEFAULT_ADDRESS = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const DELETE_ACCOUNT_ADDRESS = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation deleteAccountAddress($addressId: ID!) {
     accountAddressDelete(id: $addressId) {
@@ -344,7 +362,7 @@ export const DELETE_ACCOUNT_ADDRESS = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
@@ -352,7 +370,7 @@ export const DELETE_ACCOUNT_ADDRESS = gql`
 
 export const CREATE_ACCOUNT_ADDRESS = gql`
   ${addressFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation createAccountAddress($input: AddressInput!) {
     accountAddressCreate(input: $input) {
@@ -363,7 +381,7 @@ export const CREATE_ACCOUNT_ADDRESS = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
@@ -371,7 +389,7 @@ export const CREATE_ACCOUNT_ADDRESS = gql`
 
 export const UPDATE_ACCOUNT_ADDRESS = gql`
   ${addressFragment}
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation updateAccountAddress($input: AddressInput!, $id: ID!) {
     accountAddressUpdate(input: $input, id: $id) {
@@ -382,19 +400,19 @@ export const UPDATE_ACCOUNT_ADDRESS = gql`
         ...AccountErrorFragment
       }
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
     }
   }
 `;
 
 export const CONFIRM_ACCOUNT = gql`
-  ${userFragment}
+  ${userDetailsFragment}
   ${accountErrorFragment}
   mutation accountConfirm($email: String!, $token: String!) {
     confirmAccount(email: $email, token: $token) {
       user {
-        ...UserFragment
+        ...UserDetailsFragment
       }
       errors {
         ...AccountErrorFragment

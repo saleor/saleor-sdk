@@ -11290,10 +11290,23 @@ export type AddressFragment = (
   & { country: Pick<CountryDisplay, 'code' | 'country'> }
 );
 
-export type UserFragment = (
-  Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>
-  & { metadata: Array<Maybe<Pick<MetadataItem, 'key' | 'value'>>>, defaultShippingAddress: Maybe<AddressFragment>, defaultBillingAddress: Maybe<AddressFragment>, addresses: Maybe<Array<Maybe<AddressFragment>>> }
+export type UserBaseFragment = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>;
+
+export type UserDetailsFragment = (
+  { metadata: Array<Maybe<Pick<MetadataItem, 'key' | 'value'>>>, defaultShippingAddress: Maybe<AddressFragment>, defaultBillingAddress: Maybe<AddressFragment>, addresses: Maybe<Array<Maybe<AddressFragment>>> }
+  & UserBaseFragment
 );
+
+export type LoginWithoutDetailsMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginWithoutDetailsMutation = { tokenCreate: Maybe<(
+    Pick<CreateToken, 'csrfToken' | 'token'>
+    & { errors: Array<AccountErrorFragment>, user: Maybe<UserBaseFragment> }
+  )> };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -11303,7 +11316,7 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { tokenCreate: Maybe<(
     Pick<CreateToken, 'csrfToken' | 'token'>
-    & { errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }
+    & { errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }
   )> };
 
 export type RegisterMutationVariables = Exact<{
@@ -11333,7 +11346,7 @@ export type RefreshTokenWithUserMutationVariables = Exact<{
 
 export type RefreshTokenWithUserMutation = { tokenRefresh: Maybe<(
     Pick<RefreshToken, 'token'>
-    & { user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
+    & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type VerifyTokenMutationVariables = Exact<{
@@ -11343,7 +11356,7 @@ export type VerifyTokenMutationVariables = Exact<{
 
 export type VerifyTokenMutation = { tokenVerify: Maybe<(
     Pick<VerifyToken, 'isValid' | 'payload'>
-    & { user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
+    & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type ExternalAuthenticationUrlMutationVariables = Exact<{
@@ -11365,7 +11378,7 @@ export type ExternalObtainAccessTokensMutationVariables = Exact<{
 
 export type ExternalObtainAccessTokensMutation = { externalObtainAccessTokens: Maybe<(
     Pick<ExternalObtainAccessTokens, 'token' | 'csrfToken'>
-    & { user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
+    & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type ExternalRefreshMutationVariables = Exact<{
@@ -11387,7 +11400,7 @@ export type ExternalRefreshWithUserMutationVariables = Exact<{
 
 export type ExternalRefreshWithUserMutation = { externalRefresh: Maybe<(
     Pick<ExternalRefresh, 'token' | 'csrfToken'>
-    & { user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }
+    & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
 export type ExternalVerifyMutationVariables = Exact<{
@@ -11400,7 +11413,7 @@ export type ExternalVerifyMutation = { externalVerify: Maybe<(
     Pick<ExternalVerify, 'isValid' | 'verifyData'>
     & { user: Maybe<(
       { userPermissions: Maybe<Array<Maybe<Pick<UserPermission, 'code' | 'name'>>>> }
-      & UserFragment
+      & UserDetailsFragment
     )>, errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11441,7 +11454,7 @@ export type SetPasswordMutationVariables = Exact<{
 
 export type SetPasswordMutation = { setPassword: Maybe<(
     Pick<SetPassword, 'token' | 'csrfToken'>
-    & { errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }
+    & { errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }
   )> };
 
 export type RequestEmailChangeMutationVariables = Exact<{
@@ -11452,7 +11465,7 @@ export type RequestEmailChangeMutationVariables = Exact<{
 }>;
 
 
-export type RequestEmailChangeMutation = { requestEmailChange: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type RequestEmailChangeMutation = { requestEmailChange: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type ConfirmEmailChangeMutationVariables = Exact<{
   channel: Scalars['String'];
@@ -11460,7 +11473,7 @@ export type ConfirmEmailChangeMutationVariables = Exact<{
 }>;
 
 
-export type ConfirmEmailChangeMutation = { confirmEmailChange: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type ConfirmEmailChangeMutation = { confirmEmailChange: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type AccountRequestDeletionMutationVariables = Exact<{
   channel: Scalars['String'];
@@ -11475,14 +11488,14 @@ export type AccountDeleteMutationVariables = Exact<{
 }>;
 
 
-export type AccountDeleteMutation = { accountDelete: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type AccountDeleteMutation = { accountDelete: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type AccountUpdateMutationVariables = Exact<{
   input: AccountInput;
 }>;
 
 
-export type AccountUpdateMutation = { accountUpdate: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type AccountUpdateMutation = { accountUpdate: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type SetAccountDefaultAddressMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -11490,21 +11503,21 @@ export type SetAccountDefaultAddressMutationVariables = Exact<{
 }>;
 
 
-export type SetAccountDefaultAddressMutation = { accountSetDefaultAddress: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type SetAccountDefaultAddressMutation = { accountSetDefaultAddress: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type DeleteAccountAddressMutationVariables = Exact<{
   addressId: Scalars['ID'];
 }>;
 
 
-export type DeleteAccountAddressMutation = { accountAddressDelete: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type DeleteAccountAddressMutation = { accountAddressDelete: Maybe<{ errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type CreateAccountAddressMutationVariables = Exact<{
   input: AddressInput;
 }>;
 
 
-export type CreateAccountAddressMutation = { accountAddressCreate: Maybe<{ address: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type CreateAccountAddressMutation = { accountAddressCreate: Maybe<{ address: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type UpdateAccountAddressMutationVariables = Exact<{
   input: AddressInput;
@@ -11512,7 +11525,7 @@ export type UpdateAccountAddressMutationVariables = Exact<{
 }>;
 
 
-export type UpdateAccountAddressMutation = { accountAddressUpdate: Maybe<{ address: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user: Maybe<UserFragment> }> };
+export type UpdateAccountAddressMutation = { accountAddressUpdate: Maybe<{ address: Maybe<AddressFragment>, errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }> };
 
 export type AccountConfirmMutationVariables = Exact<{
   email: Scalars['String'];
@@ -11520,12 +11533,20 @@ export type AccountConfirmMutationVariables = Exact<{
 }>;
 
 
-export type AccountConfirmMutation = { confirmAccount: Maybe<{ user: Maybe<UserFragment>, errors: Array<AccountErrorFragment> }> };
+export type AccountConfirmMutation = { confirmAccount: Maybe<{ user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }> };
 
-export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
+export type UserWithoutDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserDetailsQuery = (
+export type UserWithoutDetailsQuery = (
   Pick<Query, 'authenticated' | 'authenticating'>
-  & { user: Maybe<UserFragment> }
+  & { user: Maybe<UserBaseFragment> }
+);
+
+export type UserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserQuery = (
+  Pick<Query, 'authenticated' | 'authenticating'>
+  & { user: Maybe<UserDetailsFragment> }
 );
