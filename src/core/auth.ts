@@ -84,13 +84,11 @@ export interface AuthSDK {
   /**
    * Authenticates user with email and password.
    *
-   * @param opts - Object with user's email and password.
-   * @param includeDetails - Whether to fetch user details. Default is true.
+   * @param opts - Object with user's email, password and a boolean includeDetails - whether to fetch user details.
+   * Default for includeDetails is true.
    * @returns Promise resolved with CreateToken type data.
    */
-  login: (
-    opts: LoginOpts & { includeDetails?: boolean }
-  ) => Promise<LoginResult>;
+  login: (opts: LoginOpts) => Promise<LoginResult>;
   /**
    * Clears stored token and Apollo store. If external plugin was used to log in, the mutation will prepare
    * the logout URL. All values passed in field input will be added as GET parameters to the logout request.
