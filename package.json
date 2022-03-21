@@ -29,6 +29,7 @@
     "start": "npm run build-types && tsdx watch",
     "build": "npm run build-types && tsdx build",
     "test": "tsdx test",
+    "test:watch": "tsdx test --watch",
     "lint": "tsdx lint src test",
     "prepare": "npm run build && husky install",
     "size": "size-limit",

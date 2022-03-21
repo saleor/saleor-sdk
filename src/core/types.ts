@@ -92,7 +92,7 @@ export type JWTToken = {
 // Meethods opts
 // Auth
 export type ChangePasswordOpts = MutationPasswordChangeArgs;
-export type LoginOpts = MutationTokenCreateArgs;
+export type LoginOpts = MutationTokenCreateArgs & { includeDetails?: boolean };
 export type RefreshTokenOpts = Pick<MutationTokenRefreshArgs, "csrfToken">;
 export type RegisterOpts = AccountRegisterInput;
 export type RequestPasswordResetOpts = MutationRequestPasswordResetArgs;

@@ -1,8 +1,5 @@
 import { USER } from "../../apollo/queries";
-import {
-  UserDetailsQuery,
-  UserDetailsQueryVariables,
-} from "../../apollo/types";
+import { UserQuery, UserQueryVariables } from "../../apollo/types";
 import { hookFactory } from "../helpers/hookFactory";
 import { hookStateFactory } from "../helpers/hookStateFactory";
 
@@ -18,11 +15,8 @@ export const useAuth = hookFactory("auth");
  *
  * @returns Object with user's data
  */
-export const useAuthState = (): UserDetailsQuery => {
-  const { data } = hookStateFactory<
-    UserDetailsQuery,
-    UserDetailsQueryVariables
-  >(USER);
+export const useAuthState = (): UserQuery => {
+  const { data } = hookStateFactory<UserQuery, UserQueryVariables>(USER);
 
   if (!data) {
     throw new Error(

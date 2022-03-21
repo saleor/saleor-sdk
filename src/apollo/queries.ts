@@ -1,11 +1,22 @@
 import { gql } from "@apollo/client";
-import { userFragment } from "./fragments";
+import { userBaseFragment, userDetailsFragment } from "./fragments";
+
+export const USER_WITHOUT_DETAILS = gql`
+  ${userBaseFragment}
+  query UserWithoutDetails {
+    user: me {
+      ...UserBaseFragment
+    }
+    authenticated @client
+    authenticating @client
+  }
+`;
 
 export const USER = gql`
-  ${userFragment}
-  query UserDetails {
+  ${userDetailsFragment}
+  query User {
     user: me {
-      ...UserFragment
+      ...UserDetailsFragment
     }
     authenticated @client
     authenticating @client

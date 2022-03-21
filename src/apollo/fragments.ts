@@ -30,14 +30,21 @@ export const addressFragment = gql`
   }
 `;
 
-export const userFragment = gql`
-  ${addressFragment}
-  fragment UserFragment on User {
+export const userBaseFragment = gql`
+  fragment UserBaseFragment on User {
     id
     email
     firstName
     lastName
     isStaff
+  }
+`;
+
+export const userDetailsFragment = gql`
+  ${addressFragment}
+  ${userBaseFragment}
+  fragment UserDetailsFragment on User {
+    ...UserBaseFragment
     metadata {
       key
       value

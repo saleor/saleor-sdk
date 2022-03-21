@@ -228,3 +228,19 @@ GraphQL Code Generator is an automatic tool that converts schema to TS types. Af
 ```bash
 npm run build-types
 ```
+
+### Updating recordings
+
+Changes in the core user methods and tests may result in failing tests. Typically you may encounter the following error:
+
+```bash
+request to http://localhost:8000/graphql/ failed, reason: connect ECONNREFUSED 127.0.0.1:8000
+```
+
+To fix this run `npm run test` with the following variables:
+
+* `API_URI`
+* `TEST_AUTH_EMAIL`
+* `TEST_AUTH_PASSWORD`
+
+After the tests run the recordings should be updated. Next time you run tests without variables, tests will use updated recordings.

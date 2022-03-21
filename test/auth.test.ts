@@ -46,6 +46,24 @@ describe("auth api", () => {
     expect(storage.getCSRFToken()).not.toBeNull();
   });
 
+  it("can login without details", async () => {
+    const { data } = await saleor.auth.login({
+      email: TEST_AUTH_EMAIL,
+      password: TEST_AUTH_PASSWORD,
+      includeDetails: false,
+    });
+    expect(data?.tokenCreate?.errors).toHaveLength(0);
+    expect(data?.tokenCreate?.user?.id).toBeDefined();
+    expect(data?.tokenCreate?.user?.email).toBe(TEST_AUTH_EMAIL);
+    expect(data?.tokenCreate?.token).toBeDefined();
+    expect(data?.tokenCreate?.user?.addresses).toBeUndefined();
+    expect(data?.tokenCreate?.user?.defaultBillingAddress).toBeUndefined();
+    expect(data?.tokenCreate?.user?.defaultShippingAddress).toBeUndefined();
+    expect(data?.tokenCreate?.user?.metadata).toBeUndefined();
+    expect(storage.getAccessToken()).not.toBeNull();
+    expect(storage.getCSRFToken()).not.toBeNull();
+  });
+
   it("login caches user data", async () => {
     await saleor.auth.login({
       email: TEST_AUTH_EMAIL,

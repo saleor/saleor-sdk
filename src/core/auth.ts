@@ -13,6 +13,7 @@ import {
   VERIFY_TOKEN,
   REFRESH_TOKEN_WITH_USER,
   EXTERNAL_REFRESH_WITH_USER,
+  LOGIN_WITHOUT_DETAILS,
 } from "../apollo/mutations";
 import {
   ExternalAuthenticationUrlMutation,
@@ -70,7 +71,7 @@ import {
   SetPasswordOpts,
 } from "./types";
 import { storage } from "./storage";
-import { USER } from "../apollo/queries";
+import { USER, USER_WITHOUT_DETAILS } from "../apollo/queries";
 
 export interface AuthSDK {
   /**
@@ -83,7 +84,8 @@ export interface AuthSDK {
   /**
    * Authenticates user with email and password.
    *
-   * @param opts - Object with user's email and password.
+   * @param opts - Object with user's email, password and a boolean includeDetails - whether to fetch user details.
+   * Default for includeDetails is true.
    * @returns Promise resolved with CreateToken type data.
    */
   login: (opts: LoginOpts) => Promise<LoginResult>;
@@ -181,16 +183,19 @@ export const auth = ({
   apolloClient: client,
   channel,
 }: SaleorClientMethodsProps): AuthSDK => {
-  const login: AuthSDK["login"] = opts => {
+  const login: AuthSDK["login"] = ({ includeDetails = true, ...opts }) => {
+    const query = includeDetails ? USER : USER_WITHOUT_DETAILS;
+    const loginMutation = includeDetails ? LOGIN : LOGIN_WITHOUT_DETAILS;
+
     client.writeQuery({
-      query: USER,
+      query,
       data: {
         authenticating: true,
       },
     });
 
     return client.mutate<LoginMutation, LoginMutationVariables>({
-      mutation: LOGIN,
+      mutation: loginMutation,
       variables: {
         ...opts,
       },
@@ -202,7 +207,7 @@ export const auth = ({
           });
         } else {
           client.writeQuery({
-            query: USER,
+            query,
             data: {
               authenticating: false,
             },
