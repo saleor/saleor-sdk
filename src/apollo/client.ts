@@ -14,6 +14,7 @@ import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
 import { ExternalRefreshMutation, RefreshTokenMutation } from "./types";
+import { AUTHENTICATED } from "./queries";
 
 let client: ApolloClient<NormalizedCacheObject>;
 let authClient: AuthSDK;
@@ -40,12 +41,14 @@ export type FetchConfig = Partial<{
    * Defaults to `true`.
    */
   refreshOnUnauthorized: boolean;
+  waitForAuth: boolean;
 }>;
 
 export const createFetch = ({
   autoTokenRefresh = true,
   tokenRefreshTimeSkew = 120,
   refreshOnUnauthorized = true,
+  waitForAuth = false,
 }: FetchConfig = {}) => async (
   input: RequestInfo,
   init: RequestInit = {}
@@ -54,6 +57,21 @@ export const createFetch = ({
     throw new Error(
       "Could not find Saleor's client instance. Did you forget to call createSaleorClient()?"
     );
+  }
+
+  console.log({ waitForAuth });
+  if (waitForAuth) {
+    console.log("WAITIN");
+    await new Promise<void>((resolve: any) => {
+      // @ts-ignore
+      client.watchQuery({ query: AUTHENTICATED }).subscribe((observer: any) => {
+        console.log(666, observer);
+        if (observer.data.authenticated) {
+          console.log("MORDOO");
+          resolve();
+        }
+      });
+    });
   }
 
   let token = storage.getAccessToken();
@@ -104,7 +122,7 @@ export const createFetch = ({
     const response = await fetch(input, init);
     const data: FetchResult = await response.clone().json();
     const isUnauthenticated = data?.errors?.some(
-      error => error.extensions?.exception.code === "ExpiredSignatureError"
+      (error) => error.extensions?.exception.code === "ExpiredSignatureError"
     );
     let refreshTokenResponse: FetchResult<
       RefreshTokenMutation | ExternalRefreshMutation,

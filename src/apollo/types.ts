@@ -11550,3 +11550,8 @@ export type UserQuery = (
   Pick<Query, 'authenticated' | 'authenticating'>
   & { user: Maybe<UserDetailsFragment> }
 );
+
+export type AuthenticatedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AuthenticatedQuery = Pick<Query, 'authenticated'>;

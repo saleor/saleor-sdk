@@ -22,3 +22,9 @@ export const USER = gql`
     authenticating @client
   }
 `;
+
+export const AUTHENTICATED = gql`
+  query Authenticated {
+    authenticated @client
+  }
+`;

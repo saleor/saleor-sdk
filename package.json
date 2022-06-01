@@ -26,12 +26,12 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "npm run build-types && tsdx watch",
-    "build": "npm run build-types && tsdx build",
+    "start": "pnpm run build-types && tsdx watch",
+    "build": "pnpm run build-types && tsdx build",
     "test": "tsdx test",
     "test:watch": "tsdx test --watch",
     "lint": "tsdx lint src test",
-    "prepare": "npm run build && husky install",
+    "prepare": "pnpm run build && husky install",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "build-types": "graphql-codegen --config codegen.yml",
@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@apollo/client": "^3.3.19",
     "graphql": "^15.5.0",
-    "react": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "husky": {
     "hooks": {
@@ -100,8 +100,6 @@
     "msw": "^0.35.0",
     "np": "^7.5.0",
     "omit-deep-lodash": "^1.1.5",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "setup-polly-jest": "^0.9.1",
     "size-limit": "^4.10.2",
     "ts-jest": "^27.0.3",

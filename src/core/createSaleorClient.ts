@@ -14,6 +14,7 @@ export const createSaleorClient = ({
 }: SaleorClientOpts): SaleorClient => {
   let _channel = channel;
   const { autologin = true, fetchOpts } = opts;
+  console.log({ apiUrl, channel, fetchOpts });
 
   const setChannel = (channel: string): string => {
     _channel = channel;
