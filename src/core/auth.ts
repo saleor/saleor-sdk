@@ -61,6 +61,7 @@ import {
   VerifyTokenResult,
   GetExternalAuthUrlOpts,
   GetExternalAccessTokenOpts,
+  VerifyTokenOpts,
 } from "./types";
 import {
   ChangePasswordOpts,
@@ -134,10 +135,10 @@ export interface AuthSDK {
   /**
    * Verify JWT token.
    *
-   * @param token - Token value.
+   * @param opts - Object with token value.
    * @returns User assigned to token and the information if the token is valid or not.
    */
-  verifyToken: () => Promise<VerifyTokenResult>;
+  verifyToken: (opts?: VerifyTokenOpts) => Promise<VerifyTokenResult>;
   /**
    * Executing externalAuthenticationUrl mutation will prepare special URL which will redirect user to requested
    * page after successfull authentication. After redirection state and code fields will be added to the URL.
@@ -300,8 +301,8 @@ export const auth = ({
     });
   };
 
-  const verifyToken: AuthSDK["verifyToken"] = async () => {
-    const token = storage.getAccessToken();
+  const verifyToken: AuthSDK["verifyToken"] = async opts => {
+    const token = opts?.token || storage.getAccessToken();
 
     if (!token) {
       throw Error("Token not present");
