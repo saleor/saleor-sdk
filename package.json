@@ -39,7 +39,7 @@
     "release": "np"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.3.19",
+    "@apollo/client": "^3.7.1",
     "graphql": "^15.5.0",
     "react": "^16.8.0 || ^17.0.0"
   },
@@ -76,7 +76,7 @@
     }
   ],
   "devDependencies": {
-    "@apollo/client": "^3.3.19",
+    "@apollo/client": "^3.7.1",
     "@graphql-codegen/cli": "1.21.5",
     "@graphql-codegen/introspection": "^1.18.2",
     "@graphql-codegen/typescript": "^1.22.3",
