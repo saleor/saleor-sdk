@@ -85,7 +85,7 @@
     "@pollyjs/adapter-node-http": "^5.1.1",
     "@pollyjs/core": "^5.1.1",
     "@pollyjs/persister-fs": "^5.1.1",
-    "@size-limit/preset-small-lib": "^4.10.2",
+    "@size-limit/preset-small-lib": "^8.1.0",
     "@types/omit-deep-lodash": "^1.1.1",
     "@types/pollyjs__adapter-node-http": "^2.0.1",
     "@types/pollyjs__core": "^4.3.2",
