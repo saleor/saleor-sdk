@@ -175,7 +175,7 @@ const getTypePolicies = (autologin: boolean): TypedTypePolicies => ({
       },
       authenticating: {
         read(
-          read = autologin && !!storage.getCSRFToken(),
+          read = autologin && !!storage.getRefreshToken(),
           { readField }
         ): boolean {
           if (readField("authenticated")) {

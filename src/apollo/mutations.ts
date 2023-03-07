@@ -12,7 +12,7 @@ export const LOGIN_WITHOUT_DETAILS = gql`
   ${userBaseFragment}
   mutation loginWithoutDetails($email: String!, $password: String!) {
     tokenCreate(email: $email, password: $password) {
-      csrfToken
+      refreshToken
       token
       errors {
         ...AccountErrorFragment
@@ -29,8 +29,8 @@ export const LOGIN = gql`
   ${userDetailsFragment}
   mutation login($email: String!, $password: String!) {
     tokenCreate(email: $email, password: $password) {
-      csrfToken
       token
+      refreshToken
       errors {
         ...AccountErrorFragment
       }
@@ -55,8 +55,8 @@ export const REGISTER = gql`
 
 export const REFRESH_TOKEN = gql`
   ${accountErrorFragment}
-  mutation refreshToken($csrfToken: String!) {
-    tokenRefresh(csrfToken: $csrfToken) {
+  mutation refreshToken($refreshToken: String!) {
+    tokenRefresh(refreshToken: $refreshToken) {
       token
       errors {
         ...AccountErrorFragment
@@ -70,8 +70,8 @@ export const REFRESH_TOKEN = gql`
 export const REFRESH_TOKEN_WITH_USER = gql`
   ${accountErrorFragment}
   ${userDetailsFragment}
-  mutation refreshTokenWithUser($csrfToken: String!) {
-    tokenRefresh(csrfToken: $csrfToken) {
+  mutation refreshTokenWithUser($refreshToken: String!) {
+    tokenRefresh(refreshToken: $refreshToken) {
       token
       user {
         ...UserDetailsFragment
@@ -124,7 +124,7 @@ export const OBTAIN_EXTERNAL_ACCESS_TOKEN = gql`
   ) {
     externalObtainAccessTokens(pluginId: $pluginId, input: $input) {
       token
-      csrfToken
+      refreshToken
       user {
         ...UserDetailsFragment
       }
@@ -143,7 +143,7 @@ export const EXTERNAL_REFRESH = gql`
   ) {
     externalRefresh(pluginId: $pluginId, input: $input) {
       token
-      csrfToken
+      refreshToken
       errors {
         ...AccountErrorFragment
       }
@@ -160,7 +160,7 @@ export const EXTERNAL_REFRESH_WITH_USER = gql`
   ) {
     externalRefresh(pluginId: $pluginId, input: $input) {
       token
-      csrfToken
+      refreshToken
       user {
         ...UserDetailsFragment
       }
@@ -249,7 +249,7 @@ export const SET_PASSWORD = gql`
         ...AccountErrorFragment
       }
       token
-      csrfToken
+      refreshToken
       user {
         ...UserDetailsFragment
       }

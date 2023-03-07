@@ -11304,7 +11304,7 @@ export type LoginWithoutDetailsMutationVariables = Exact<{
 
 
 export type LoginWithoutDetailsMutation = { tokenCreate: Maybe<(
-    Pick<CreateToken, 'csrfToken' | 'token'>
+    Pick<CreateToken, 'refreshToken' | 'token'>
     & { errors: Array<AccountErrorFragment>, user: Maybe<UserBaseFragment> }
   )> };
 
@@ -11315,7 +11315,7 @@ export type LoginMutationVariables = Exact<{
 
 
 export type LoginMutation = { tokenCreate: Maybe<(
-    Pick<CreateToken, 'csrfToken' | 'token'>
+    Pick<CreateToken, 'token' | 'refreshToken'>
     & { errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }
   )> };
 
@@ -11330,7 +11330,7 @@ export type RegisterMutation = { accountRegister: Maybe<(
   )> };
 
 export type RefreshTokenMutationVariables = Exact<{
-  csrfToken: Scalars['String'];
+  refreshToken: Scalars['String'];
 }>;
 
 
@@ -11340,7 +11340,7 @@ export type RefreshTokenMutation = { tokenRefresh: Maybe<(
   )> };
 
 export type RefreshTokenWithUserMutationVariables = Exact<{
-  csrfToken: Scalars['String'];
+  refreshToken: Scalars['String'];
 }>;
 
 
@@ -11377,7 +11377,7 @@ export type ExternalObtainAccessTokensMutationVariables = Exact<{
 
 
 export type ExternalObtainAccessTokensMutation = { externalObtainAccessTokens: Maybe<(
-    Pick<ExternalObtainAccessTokens, 'token' | 'csrfToken'>
+    Pick<ExternalObtainAccessTokens, 'token' | 'refreshToken'>
     & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11388,7 +11388,7 @@ export type ExternalRefreshMutationVariables = Exact<{
 
 
 export type ExternalRefreshMutation = { externalRefresh: Maybe<(
-    Pick<ExternalRefresh, 'token' | 'csrfToken'>
+    Pick<ExternalRefresh, 'token' | 'refreshToken'>
     & { errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11399,7 +11399,7 @@ export type ExternalRefreshWithUserMutationVariables = Exact<{
 
 
 export type ExternalRefreshWithUserMutation = { externalRefresh: Maybe<(
-    Pick<ExternalRefresh, 'token' | 'csrfToken'>
+    Pick<ExternalRefresh, 'token' | 'refreshToken'>
     & { user: Maybe<UserDetailsFragment>, errors: Array<AccountErrorFragment> }
   )> };
 
@@ -11453,7 +11453,7 @@ export type SetPasswordMutationVariables = Exact<{
 
 
 export type SetPasswordMutation = { setPassword: Maybe<(
-    Pick<SetPassword, 'token' | 'csrfToken'>
+    Pick<SetPassword, 'token' | 'refreshToken'>
     & { errors: Array<AccountErrorFragment>, user: Maybe<UserDetailsFragment> }
   )> };
 
