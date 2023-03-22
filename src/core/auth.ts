@@ -3,18 +3,19 @@ import {
   EXTERNAL_AUTHENTICATION_URL,
   EXTERNAL_LOGOUT,
   EXTERNAL_REFRESH,
+  EXTERNAL_REFRESH_WITH_USER,
   EXTERNAL_VERIFY_TOKEN,
   LOGIN,
+  LOGIN_WITHOUT_DETAILS,
   OBTAIN_EXTERNAL_ACCESS_TOKEN,
-  REQUEST_PASSWORD_RESET,
   REFRESH_TOKEN,
+  REFRESH_TOKEN_WITH_USER,
   REGISTER,
+  REQUEST_PASSWORD_RESET,
   SET_PASSWORD,
   VERIFY_TOKEN,
-  REFRESH_TOKEN_WITH_USER,
-  EXTERNAL_REFRESH_WITH_USER,
-  LOGIN_WITHOUT_DETAILS,
 } from "../apollo/mutations";
+import { USER, USER_WITHOUT_DETAILS } from "../apollo/queries";
 import {
   ExternalAuthenticationUrlMutation,
   ExternalAuthenticationUrlMutationVariables,
@@ -45,33 +46,30 @@ import {
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
 } from "../apollo/types";
+import { storage } from "./storage";
 import {
+  ChangePasswordOpts,
   ChangePasswordResult,
-  LogoutOpts,
+  GetExternalAccessTokenOpts,
   GetExternalAccessTokenResult,
+  GetExternalAuthUrlOpts,
   GetExternalAuthUrlResult,
+  LoginOpts,
   LoginResult,
+  LogoutOpts,
   LogoutResult,
   RefreshExternalTokenResult,
   RefreshTokenResult,
+  RegisterOpts,
   RegisterResult,
+  RequestPasswordResetOpts,
   RequestPasswordResetResult,
   SaleorClientMethodsProps,
+  SetPasswordOpts,
   SetPasswordResult,
   VerifyExternalTokenResult,
   VerifyTokenResult,
-  GetExternalAuthUrlOpts,
-  GetExternalAccessTokenOpts,
 } from "./types";
-import {
-  ChangePasswordOpts,
-  LoginOpts,
-  RegisterOpts,
-  RequestPasswordResetOpts,
-  SetPasswordOpts,
-} from "./types";
-import { storage } from "./storage";
-import { USER, USER_WITHOUT_DETAILS } from "../apollo/queries";
 
 export interface AuthSDK {
   /**
@@ -389,8 +387,8 @@ export const auth = ({
         ...opts,
       },
       update: (_, { data }) => {
+        storage.setAuthPluginId(opts.pluginId);
         if (data?.externalObtainAccessTokens?.token) {
-          storage.setAuthPluginId(opts.pluginId);
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
             csrfToken: data.externalObtainAccessTokens.csrfToken || null,
