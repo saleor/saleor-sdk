@@ -1,12 +1,12 @@
-import omitDeep from "omit-deep-lodash";
-import { GraphQLRequest } from "msw";
 import jwt from "jsonwebtoken";
-import { SaleorClient } from "../src/core";
+import { GraphQLRequest } from "msw";
+import omitDeep from "omit-deep-lodash";
 import { ExternalObtainAccessTokensMutation } from "../src/apollo/types";
 import {
   TEST_AUTH_EXTERNAL_LOGIN_CALLBACK,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID,
 } from "../src/config";
+import { SaleorClient } from "../src/core";
 
 export const removeBlacklistedVariables = (obj: {}): {} => {
   const variablesBlacklist = [
@@ -26,7 +26,7 @@ export const removeBlacklistedVariables = (obj: {}): {} => {
 
 const testTokenExpirationPeriodInSeconds = 3600; // 1 hour by default
 export const testTokenSecret = "secret";
-export const testCsrfToken =
+export const testRefreshToken =
   "sSrkI91Yyho52LTNWLuh6WkPwC5NAP49n1TdB4Oh4Hrw7NuQ1oj7ga3j5aE82b2O";
 export const createTestToken = (
   expirationPeriodInSeconds: number = testTokenExpirationPeriodInSeconds
