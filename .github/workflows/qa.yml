@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
       - name: Validate lock file
         run: |
           npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
@@ -15,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -43,7 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -62,5 +68,3 @@ jobs:
       - name: Run jest
         run: |
           npm run test
-
-      
