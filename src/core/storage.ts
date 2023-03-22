@@ -45,8 +45,7 @@ export const createStorage = (autologinEnabled: boolean): void => {
     }
 
     refreshToken = token;
-  }
-
+  };
 
   const setAccessToken = (token: string | null): void => {
     accessToken = token;
@@ -56,7 +55,10 @@ export const createStorage = (autologinEnabled: boolean): void => {
   const getAccessToken = (): string | null => accessToken;
   const getRefreshToken = (): string | null => refreshToken;
 
-  const setTokens = ({ accessToken, refreshToken }: {
+  const setTokens = ({
+    accessToken,
+    refreshToken,
+  }: {
     accessToken: string | null;
     refreshToken: string | null;
   }): void => {

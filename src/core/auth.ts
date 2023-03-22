@@ -351,7 +351,7 @@ export const auth = ({
         if (data?.setPassword?.token) {
           storage.setTokens({
             accessToken: data.setPassword.token,
-            refreshToken: data.setPassword.refreshToken 
+            refreshToken: data.setPassword.refreshToken,
           });
         }
       },
@@ -391,7 +391,7 @@ export const auth = ({
         if (data?.externalObtainAccessTokens?.token) {
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
-            refreshToken: data.externalObtainAccessTokens.refreshToken
+            refreshToken: data.externalObtainAccessTokens.refreshToken,
           });
         } else {
           client.writeQuery({
@@ -431,7 +431,7 @@ export const auth = ({
           if (data?.externalRefresh?.token) {
             storage.setTokens({
               accessToken: data.externalRefresh.token,
-              refreshToken: data.externalRefresh.refreshToken
+              refreshToken: data.externalRefresh.refreshToken,
             });
           } else {
             logout();
@@ -455,7 +455,7 @@ export const auth = ({
         if (data?.externalRefresh?.token) {
           storage.setTokens({
             accessToken: data.externalRefresh.token,
-            refreshToken: data.externalRefresh.refreshToken
+            refreshToken: data.externalRefresh.refreshToken,
           });
         } else {
           logout();

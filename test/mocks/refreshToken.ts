@@ -5,7 +5,7 @@ import {
 } from "../../src/apollo/types";
 import { createTestToken } from "../utils";
 
-const refreshToken = (tokenExpirationPeriodInSeconds?: number) =>
+const createRefreshToken = (tokenExpirationPeriodInSeconds?: number) =>
   ({
     tokenRefresh: {
       __typename: "RefreshToken",
@@ -33,10 +33,12 @@ export const refreshTokenHandler = (tokenExpirationPeriodInSeconds?: number) =>
   graphql.mutation<RefreshTokenMutation, RefreshTokenMutationVariables>(
     "refreshToken",
     (req, res, ctx) => {
-      const { csrfToken } = req.variables;
+      const { refreshToken } = req.variables;
 
-      if (!!csrfToken) {
-        return res(ctx.data(refreshToken(tokenExpirationPeriodInSeconds)));
+      if (!!refreshToken) {
+        return res(
+          ctx.data(createRefreshToken(tokenExpirationPeriodInSeconds))
+        );
       }
 
       return res(ctx.data(refreshTokenError()));

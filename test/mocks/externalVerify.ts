@@ -61,7 +61,7 @@ export const externalVerifyHandler = graphql.mutation<
 
   if (
     pluginId === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID &&
-    !!parsedInput.csrfToken &&
+    !!parsedInput.refreshToken &&
     isTokenValid
   ) {
     return res(ctx.data(externalVerify()));

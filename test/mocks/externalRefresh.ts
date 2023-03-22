@@ -11,7 +11,7 @@ const externalRefresh = (tokenExpirationPeriodInSeconds?: number) =>
     externalRefresh: {
       __typename: "ExternalRefresh",
       token: createTestToken(tokenExpirationPeriodInSeconds),
-      csrfToken: testCsrfToken,
+      refreshToken: testCsrfToken,
       errors: [],
     },
   } as ExternalRefreshMutation);
@@ -20,7 +20,7 @@ const externalRefreshError = () =>
   ({
     externalRefresh: {
       __typename: "ExternalRefresh",
-      csrfToken: null,
+      refreshToken: null,
       token: null,
       errors: [
         {
@@ -43,7 +43,7 @@ export const externalRefreshHandler = (
 
       if (
         pluginId === TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_ID &&
-        !!parsedInput.csrfToken
+        !!parsedInput.refreshToken
       ) {
         return res(ctx.data(externalRefresh(tokenExpirationPeriodInSeconds)));
       }

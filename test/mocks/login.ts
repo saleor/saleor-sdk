@@ -18,7 +18,7 @@ const login = (tokenExpirationPeriodInSeconds?: number, email?: string) =>
     tokenCreate: {
       __typename: "CreateToken",
       token: createTestToken(tokenExpirationPeriodInSeconds),
-      csrfToken: testCsrfToken,
+      refreshToken: testCsrfToken,
       user: {
         id: "VXNlcjoxMDMz",
         email: email,
@@ -43,7 +43,7 @@ const loginWithoutDetails = (
     tokenCreate: {
       __typename: "CreateToken",
       token: createTestToken(tokenExpirationPeriodInSeconds),
-      csrfToken: testCsrfToken,
+      refreshToken: testCsrfToken,
       user: {
         id: "VXNlcjoxMDMz",
         email: email,
@@ -59,8 +59,8 @@ const loginWithoutDetails = (
 const loginError = () =>
   ({
     tokenCreate: {
-      __typename: "CreateToken",
-      csrfToken: null,
+      __typename: "RefreshToken",
+      refreshToken: null,
       token: null,
       user: null,
       errors: [

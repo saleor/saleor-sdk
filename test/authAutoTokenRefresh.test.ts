@@ -1,13 +1,13 @@
-import { setupMockServer, setupSaleorClient } from "./setup";
 import {
   TEST_AUTH_EMAIL,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_CODE,
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   TEST_AUTH_PASSWORD,
 } from "../src/config";
-import { storage } from "../src/core/storage";
-import { loginWithExternalPlugin } from "./utils";
 import { SaleorClient } from "../src/core";
+import { storage } from "../src/core/storage";
+import { setupMockServer, setupSaleorClient } from "./setup";
+import { loginWithExternalPlugin } from "./utils";
 
 interface RefreshTokenOnDelayedExample {
   previousToken: string | null;
@@ -208,7 +208,7 @@ describe("auth api auto token refresh", () => {
     expect(previousToken).toEqual(unchangedPreviousToken);
 
     // Remove csrf token to fail next automatically refresh access token
-    storage.setCSRFToken(null);
+    storage.setRefreshToken(null);
 
     // Make another requests
     const updateAccount = await saleor.user.updateAccount({
@@ -251,7 +251,7 @@ describe("auth api auto token refresh", () => {
     expect(previousToken).toEqual(unchangedPreviousToken);
 
     // Remove csrf token to fail next automatically refresh access token
-    storage.setCSRFToken(null);
+    storage.setRefreshToken(null);
 
     // Make another requests
     const updateAccount = await saleor.user.updateAccount({

@@ -22,7 +22,7 @@ const externalObtainAccessTokens = (
     externalObtainAccessTokens: {
       __typename: "ExternalObtainAccessTokens",
       token: createTestToken(tokenExpirationPeriodInSeconds),
-      csrfToken: testCsrfToken,
+      refreshToken: testCsrfToken,
       user: {
         id: "VXNlcjoxMDMz",
         email: email,
@@ -45,7 +45,7 @@ const externalObtainAccessTokensError = () =>
       __typename: "ExternalObtainAccessTokens",
       user: null,
       token: null,
-      csrfToken: null,
+      refreshToken: null,
       errors: [
         {
           message: "Invalid code or state",
