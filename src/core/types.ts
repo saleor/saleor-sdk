@@ -3,49 +3,49 @@ import {
   FetchResult,
   NormalizedCacheObject,
 } from "@apollo/client";
+import { FetchConfig } from "../apollo";
 import {
-  AccountRegisterInput,
-  MutationAccountAddressCreateArgs,
-  MutationAccountAddressUpdateArgs,
-  MutationAccountSetDefaultAddressArgs,
-  MutationAccountUpdateArgs,
-  MutationExternalAuthenticationUrlArgs,
-  MutationPasswordChangeArgs,
-  MutationTokenCreateArgs,
-  MutationTokenRefreshArgs,
-  MutationRequestPasswordResetArgs,
-  MutationSetPasswordArgs,
-  MutationRequestEmailChangeArgs,
+  AccountConfirmMutation,
   AccountConfirmMutationVariables,
-  MutationExternalLogoutArgs,
+  AccountDeleteMutation,
+  AccountRegisterInput,
+  AccountRequestDeletionMutation,
+  AccountUpdateMutation,
+  ConfirmEmailChangeMutation,
+  CreateAccountAddressMutation,
+  DeleteAccountAddressMutation,
   ExternalAuthenticationUrlMutation,
   ExternalLogoutMutation,
   ExternalObtainAccessTokensMutation,
   ExternalRefreshMutation,
   ExternalVerifyMutation,
   LoginMutation,
+  MutationAccountAddressCreateArgs,
+  MutationAccountAddressUpdateArgs,
+  MutationAccountSetDefaultAddressArgs,
+  MutationAccountUpdateArgs,
+  MutationExternalAuthenticationUrlArgs,
+  MutationExternalLogoutArgs,
+  MutationExternalObtainAccessTokensArgs,
+  MutationPasswordChangeArgs,
+  MutationRequestEmailChangeArgs,
+  MutationRequestPasswordResetArgs,
+  MutationSetPasswordArgs,
+  MutationTokenCreateArgs,
+  MutationTokenRefreshArgs,
+  PasswordChangeMutation,
   RefreshTokenMutation,
   RegisterMutation,
-  RequestPasswordResetMutation,
-  SetPasswordMutation,
-  VerifyTokenMutation,
-  PasswordChangeMutation,
-  MutationExternalObtainAccessTokensArgs,
-  AccountDeleteMutation,
-  AccountRequestDeletionMutation,
-  AccountConfirmMutation,
-  AccountUpdateMutation,
-  ConfirmEmailChangeMutation,
-  CreateAccountAddressMutation,
-  DeleteAccountAddressMutation,
   RequestEmailChangeMutation,
+  RequestPasswordResetMutation,
   SetAccountDefaultAddressMutation,
+  SetPasswordMutation,
   UpdateAccountAddressMutation,
+  VerifyTokenMutation,
 } from "../apollo/types";
 import { AuthSDK } from "./auth";
-import { UserSDK } from "./user";
 import { State } from "./state";
-import { FetchConfig } from "../apollo";
+import { UserSDK } from "./user";
 
 export interface SaleorClientInternals {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -93,7 +93,7 @@ export type JWTToken = {
 // Auth
 export type ChangePasswordOpts = MutationPasswordChangeArgs;
 export type LoginOpts = MutationTokenCreateArgs & { includeDetails?: boolean };
-export type RefreshTokenOpts = Pick<MutationTokenRefreshArgs, "csrfToken">;
+export type RefreshTokenOpts = Pick<MutationTokenRefreshArgs, "refreshToken">;
 export type RegisterOpts = AccountRegisterInput;
 export type RequestPasswordResetOpts = MutationRequestPasswordResetArgs;
 export type SetPasswordOpts = MutationSetPasswordArgs;

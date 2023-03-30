@@ -201,7 +201,7 @@ export const auth = ({
         if (data?.tokenCreate?.token) {
           storage.setTokens({
             accessToken: data.tokenCreate.token,
-            csrfToken: data.tokenCreate.csrfToken,
+            refreshToken: data.tokenCreate.refreshToken,
           });
         } else {
           client.writeQuery({
@@ -257,10 +257,10 @@ export const auth = ({
     });
 
   const refreshToken: AuthSDK["refreshToken"] = (includeUser = false) => {
-    const csrfToken = storage.getCSRFToken();
+    const refreshToken = storage.getRefreshToken();
 
-    if (!csrfToken) {
-      throw Error("csrfToken not present");
+    if (!refreshToken) {
+      throw Error("refreshToken not present");
     }
 
     if (includeUser) {
@@ -270,7 +270,7 @@ export const auth = ({
       >({
         mutation: REFRESH_TOKEN_WITH_USER,
         variables: {
-          csrfToken,
+          refreshToken,
         },
         update: (_, { data }) => {
           if (data?.tokenRefresh?.token) {
@@ -285,7 +285,7 @@ export const auth = ({
     return client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
       mutation: REFRESH_TOKEN,
       variables: {
-        csrfToken,
+        refreshToken,
       },
       update: (_, { data }) => {
         if (data?.tokenRefresh?.token) {
@@ -351,7 +351,7 @@ export const auth = ({
         if (data?.setPassword?.token) {
           storage.setTokens({
             accessToken: data.setPassword.token,
-            csrfToken: data.setPassword.csrfToken || null,
+            refreshToken: data.setPassword.refreshToken,
           });
         }
       },
@@ -391,7 +391,7 @@ export const auth = ({
         if (data?.externalObtainAccessTokens?.token) {
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
-            csrfToken: data.externalObtainAccessTokens.csrfToken || null,
+            refreshToken: data.externalObtainAccessTokens.refreshToken,
           });
         } else {
           client.writeQuery({
@@ -408,11 +408,11 @@ export const auth = ({
   const refreshExternalToken: AuthSDK["refreshExternalToken"] = (
     includeUser = false
   ) => {
-    const csrfToken = storage.getCSRFToken();
+    const refreshToken = storage.getRefreshToken();
     const authPluginId = storage.getAuthPluginId();
 
-    if (!csrfToken) {
-      throw Error("csrfToken not present");
+    if (!refreshToken) {
+      throw Error("refreshToken not present");
     }
 
     if (includeUser) {
@@ -424,14 +424,14 @@ export const auth = ({
         variables: {
           pluginId: authPluginId,
           input: JSON.stringify({
-            csrfToken,
+            refreshToken,
           }),
         },
         update: (_, { data }) => {
           if (data?.externalRefresh?.token) {
             storage.setTokens({
               accessToken: data.externalRefresh.token,
-              csrfToken: data.externalRefresh.csrfToken || null,
+              refreshToken: data.externalRefresh.refreshToken,
             });
           } else {
             logout();
@@ -448,14 +448,14 @@ export const auth = ({
       variables: {
         pluginId: authPluginId,
         input: JSON.stringify({
-          csrfToken,
+          refreshToken,
         }),
       },
       update: (_, { data }) => {
         if (data?.externalRefresh?.token) {
           storage.setTokens({
             accessToken: data.externalRefresh.token,
-            csrfToken: data.externalRefresh.csrfToken || null,
+            refreshToken: data.externalRefresh.refreshToken,
           });
         } else {
           logout();
@@ -465,11 +465,11 @@ export const auth = ({
   };
 
   const verifyExternalToken: AuthSDK["verifyExternalToken"] = async () => {
-    const csrfToken = storage.getCSRFToken();
+    const refreshToken = storage.getRefreshToken();
     const authPluginId = storage.getAuthPluginId();
 
-    if (!csrfToken) {
-      throw Error("csrfToken not present");
+    if (!refreshToken) {
+      throw Error("refreshToken not present");
     }
 
     const result = await client.mutate<
@@ -480,7 +480,7 @@ export const auth = ({
       variables: {
         pluginId: authPluginId,
         input: JSON.stringify({
-          csrfToken,
+          refreshToken,
         }),
       },
     });

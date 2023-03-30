@@ -12,7 +12,7 @@ import {
   TEST_AUTH_EXTERNAL_LOGIN_PLUGIN_RESPONSE_STATE,
   TEST_AUTH_SECOND_EMAIL,
 } from "../../src/config";
-import { createTestToken, testCsrfToken } from "../utils";
+import { createTestToken, testRefreshToken } from "../utils";
 
 const externalObtainAccessTokens = (
   tokenExpirationPeriodInSeconds?: number,
@@ -22,7 +22,7 @@ const externalObtainAccessTokens = (
     externalObtainAccessTokens: {
       __typename: "ExternalObtainAccessTokens",
       token: createTestToken(tokenExpirationPeriodInSeconds),
-      csrfToken: testCsrfToken,
+      refreshToken: testRefreshToken,
       user: {
         id: "VXNlcjoxMDMz",
         email: email,
@@ -45,7 +45,7 @@ const externalObtainAccessTokensError = () =>
       __typename: "ExternalObtainAccessTokens",
       user: null,
       token: null,
-      csrfToken: null,
+      refreshToken: null,
       errors: [
         {
           message: "Invalid code or state",

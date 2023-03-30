@@ -1,16 +1,16 @@
 import { LOCAL_STORAGE_EXISTS } from "../constants";
-import { SALEOR_AUTH_PLUGIN_ID, SALEOR_CSRF_TOKEN } from "./constants";
+import { SALEOR_AUTH_PLUGIN_ID, SALEOR_REFRESH_TOKEN } from "./constants";
 
 export let storage: {
   setAuthPluginId: (method: string | null) => void;
   getAuthPluginId: () => string | null;
   setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
   getAccessToken: () => string | null;
-  setCSRFToken: (token: string | null) => void;
-  getCSRFToken: () => string | null;
+  getRefreshToken: () => string | null;
   setTokens: (tokens: {
     accessToken: string | null;
-    csrfToken: string | null;
+    refreshToken: string | null;
   }) => void;
   clear: () => void;
 };
@@ -20,9 +20,9 @@ export const createStorage = (autologinEnabled: boolean): void => {
     ? localStorage.getItem(SALEOR_AUTH_PLUGIN_ID)
     : null;
   let accessToken: string | null = null;
-  let csrfToken: string | null =
+  let refreshToken: string | null =
     autologinEnabled && LOCAL_STORAGE_EXISTS
-      ? localStorage.getItem(SALEOR_CSRF_TOKEN)
+      ? localStorage.getItem(SALEOR_REFRESH_TOKEN)
       : null;
 
   const setAuthPluginId = (pluginId: string | null): void => {
@@ -37,49 +37,48 @@ export const createStorage = (autologinEnabled: boolean): void => {
     authPluginId = pluginId;
   };
 
-  const setCSRFToken = (token: string | null): void => {
-    if (autologinEnabled && LOCAL_STORAGE_EXISTS) {
-      if (token) {
-        localStorage.setItem(SALEOR_CSRF_TOKEN, token);
-      } else {
-        localStorage.removeItem(SALEOR_CSRF_TOKEN);
-      }
+  const setRefreshToken = (token: string | null): void => {
+    if (token) {
+      localStorage.setItem(SALEOR_REFRESH_TOKEN, token);
+    } else {
+      localStorage.removeItem(SALEOR_REFRESH_TOKEN);
     }
 
-    csrfToken = token;
+    refreshToken = token;
   };
+
   const setAccessToken = (token: string | null): void => {
     accessToken = token;
   };
 
   const getAuthPluginId = (): string | null => authPluginId;
   const getAccessToken = (): string | null => accessToken;
-  const getCSRFToken = (): string | null => csrfToken;
+  const getRefreshToken = (): string | null => refreshToken;
 
   const setTokens = ({
     accessToken,
-    csrfToken,
+    refreshToken,
   }: {
     accessToken: string | null;
-    csrfToken: string | null;
+    refreshToken: string | null;
   }): void => {
     setAccessToken(accessToken);
-    setCSRFToken(csrfToken);
+    setRefreshToken(refreshToken);
   };
 
   const clear = (): void => {
     setAuthPluginId(null);
     setAccessToken(null);
-    setCSRFToken(null);
+    setRefreshToken(null);
   };
 
   storage = {
     setAuthPluginId,
     setAccessToken,
-    setCSRFToken,
+    setRefreshToken,
     getAuthPluginId,
     getAccessToken,
-    getCSRFToken,
+    getRefreshToken,
     setTokens,
     clear,
   };
