@@ -99,7 +99,7 @@ export type RequestPasswordResetOpts = MutationRequestPasswordResetArgs;
 export type SetPasswordOpts = MutationSetPasswordArgs;
 export type GetExternalAuthUrlOpts = MutationExternalAuthenticationUrlArgs;
 export type GetExternalAccessTokenOpts = MutationExternalObtainAccessTokensArgs;
-export type LogoutOpts = Pick<MutationExternalLogoutArgs, "input">;
+export type LogoutOpts = MutationExternalLogoutArgs;
 // User
 export type CreateAccountAddressOpts = MutationAccountAddressCreateArgs;
 export type RequestEmailChangeOpts = MutationRequestEmailChangeArgs;

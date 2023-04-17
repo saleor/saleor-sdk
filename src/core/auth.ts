@@ -216,7 +216,7 @@ export const auth = ({
   };
 
   const logout: AuthSDK["logout"] = async opts => {
-    const authPluginId = storage.getAuthPluginId();
+    const authPluginId = storage.getAuthPluginId() || opts?.pluginId;
 
     storage.clear();
 
@@ -387,8 +387,8 @@ export const auth = ({
         ...opts,
       },
       update: (_, { data }) => {
-        storage.setAuthPluginId(opts.pluginId);
         if (data?.externalObtainAccessTokens?.token) {
+          storage.setAuthPluginId(opts.pluginId);
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
             refreshToken: data.externalObtainAccessTokens.refreshToken,
