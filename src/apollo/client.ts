@@ -1,18 +1,19 @@
 import {
   ApolloClient,
-  createHttpLink,
+  FetchResult,
   InMemoryCache,
   NormalizedCacheObject,
   Reference,
-  FetchResult,
+  createHttpLink,
 } from "@apollo/client";
 import fetch from "cross-fetch";
 import jwtDecode from "jwt-decode";
 
-import { TypedTypePolicies } from "./apollo-helpers";
 import { JWTToken } from "../core";
 import { AuthSDK, auth } from "../core/auth";
 import { storage } from "../core/storage";
+import { isInternalToken } from "../helpers";
+import { TypedTypePolicies } from "./apollo-helpers";
 import { ExternalRefreshMutation, RefreshTokenMutation } from "./types";
 
 let client: ApolloClient<NormalizedCacheObject>;
@@ -57,7 +58,6 @@ export const createFetch = ({
   }
 
   let token = storage.getAccessToken();
-  const authPluginId = storage.getAuthPluginId();
 
   try {
     if (
@@ -73,18 +73,19 @@ export const createFetch = ({
 
   if (autoTokenRefresh && token) {
     // auto refresh token before provided time skew (in seconds) until it expires
-    const expirationTime =
-      (jwtDecode<JWTToken>(token).exp - tokenRefreshTimeSkew) * 1000;
+    const decodedToken = jwtDecode<JWTToken>(token);
+    const expirationTime = (decodedToken.exp - tokenRefreshTimeSkew) * 1000;
+    const owner = decodedToken.owner;
 
     try {
       if (refreshPromise) {
         await refreshPromise;
       } else if (Date.now() >= expirationTime) {
-        // refreshToken automatically updates token in storage
-        refreshPromise = authPluginId
-          ? authClient.refreshExternalToken()
-          : authClient.refreshToken();
-        await refreshPromise;
+        if (isInternalToken(owner)) {
+          await authClient.refreshToken();
+        } else {
+          await authClient.refreshExternalToken();
+        }
       }
     } catch (e) {
     } finally {
@@ -111,15 +112,16 @@ export const createFetch = ({
       Record<string, unknown>,
       Record<string, unknown>
     > | null = null;
+    const owner = jwtDecode<JWTToken>(token).owner;
 
     if (isUnauthenticated) {
       try {
         if (refreshPromise) {
           refreshTokenResponse = await refreshPromise;
         } else {
-          refreshPromise = authPluginId
-            ? authClient.refreshExternalToken()
-            : authClient.refreshToken();
+          refreshPromise = isInternalToken(owner)
+            ? authClient.refreshToken()
+            : authClient.refreshExternalToken();
           refreshTokenResponse = await refreshPromise;
         }
 

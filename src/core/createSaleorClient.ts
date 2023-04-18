@@ -1,11 +1,13 @@
-import { auth } from "./auth";
-import { user } from "./user";
-import { getState, State } from "./state";
 import { createApolloClient } from "../apollo";
-import { SaleorClient, SaleorClientOpts } from "./types";
+import { auth } from "./auth";
+import { getState, State } from "./state";
+import { JWTToken, SaleorClient, SaleorClientOpts } from "./types";
+import { user } from "./user";
 
-import { createStorage, storage } from "./storage";
+import jwtDecode from "jwt-decode";
 import { DEVELOPMENT_MODE, WINDOW_EXISTS } from "../constants";
+import { isInternalToken } from "../helpers";
+import { createStorage, storage } from "./storage";
 
 export const createSaleorClient = ({
   apiUrl,
@@ -26,14 +28,15 @@ export const createSaleorClient = ({
   const authSDK = auth(coreInternals);
   const userSDK = user(coreInternals);
 
-  if (autologin) {
-    const refreshToken = storage.getRefreshToken();
-    const authPluginId = storage.getAuthPluginId();
+  const refreshToken = storage.getRefreshToken();
 
-    if (refreshToken && authPluginId) {
-      authSDK.refreshExternalToken(true);
-    } else if (refreshToken) {
+  if (autologin && refreshToken) {
+    const owner = jwtDecode<JWTToken>(refreshToken).owner;
+
+    if (isInternalToken(owner)) {
       authSDK.refreshToken(true);
+    } else {
+      authSDK.refreshExternalToken(true);
     }
   }
 

@@ -35,6 +35,7 @@ export const createTestToken = (
     {
       data: Math.random(), // to prevent generating the same tokens within the same second - some tests may try to create tokens quickly
       exp: Math.floor(Date.now() / 1000) + expirationPeriodInSeconds,
+      owner: "saleor",
     },
     testTokenSecret
   );
