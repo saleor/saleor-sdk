@@ -58,7 +58,6 @@ export const createFetch = ({
   }
 
   let token = storage.getAccessToken();
-  // const authPluginId = storage.getAuthPluginId();
 
   try {
     if (
