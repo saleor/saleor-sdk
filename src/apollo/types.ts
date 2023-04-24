@@ -11290,7 +11290,10 @@ export type AddressFragment = (
   & { country: Pick<CountryDisplay, 'code' | 'country'> }
 );
 
-export type UserBaseFragment = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>;
+export type UserBaseFragment = (
+  Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'isStaff'>
+  & { userPermissions: Maybe<Array<Maybe<Pick<UserPermission, 'code' | 'name'>>>> }
+);
 
 export type UserDetailsFragment = (
   { metadata: Array<Maybe<Pick<MetadataItem, 'key' | 'value'>>>, defaultShippingAddress: Maybe<AddressFragment>, defaultBillingAddress: Maybe<AddressFragment>, addresses: Maybe<Array<Maybe<AddressFragment>>> }

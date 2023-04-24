@@ -33,6 +33,7 @@ const externalObtainAccessTokens = (
         addresses: [],
         defaultBillingAddress: null,
         defaultShippingAddress: null,
+        userPermissions: [],
         __typename: "User",
       },
       errors: [],
