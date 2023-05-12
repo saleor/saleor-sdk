@@ -46,6 +46,7 @@ import {
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
 } from "../apollo/types";
+import { hasNonEmptyPermissions } from "./helpers";
 import { storage } from "./storage";
 import {
   ChangePasswordOpts,
@@ -388,7 +389,12 @@ export const auth = ({
       },
       update: (_, { data }) => {
         storage.setAuthPluginId(opts.pluginId);
-        if (data?.externalObtainAccessTokens?.token) {
+        if (
+          data?.externalObtainAccessTokens?.token &&
+          hasNonEmptyPermissions(
+            data?.externalObtainAccessTokens?.user?.userPermissions
+          )
+        ) {
           storage.setTokens({
             accessToken: data.externalObtainAccessTokens.token,
             refreshToken: data.externalObtainAccessTokens.refreshToken,

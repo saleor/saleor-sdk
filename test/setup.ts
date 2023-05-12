@@ -1,15 +1,15 @@
-import { Context, setupPolly } from "setup-polly-jest";
-import { Polly, PollyServer } from "@pollyjs/core";
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
+import { Polly, PollyServer } from "@pollyjs/core";
 import FSPersister from "@pollyjs/persister-fs";
 import path from "path";
+import { Context, setupPolly } from "setup-polly-jest";
 
+import { setupServer } from "msw/node";
+import { FetchConfig } from "../src/apollo";
 import { API_URI } from "../src/config";
 import { SaleorClient, createSaleorClient } from "../src/core";
+import { MockHandlersOpts, mockHandlers } from "./mocks";
 import { removeBlacklistedVariables } from "./utils";
-import { setupServer } from "msw/node";
-import { mockHandlers, MockHandlersOpts } from "./mocks";
-import { FetchConfig } from "../src/apollo";
 
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
