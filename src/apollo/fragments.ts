@@ -30,6 +30,23 @@ export const addressFragment = gql`
   }
 `;
 
+export const channelFragment = gql`
+  fragment ChannelFragment on Channel {
+    id
+    isActive
+    name
+    slug
+    currencyCode
+    defaultCountry {
+      code
+      country
+    }
+    stockSettings {
+      allocationStrategy
+    }
+  }
+`;
+
 export const userBaseFragment = gql`
   fragment UserBaseFragment on User {
     id
@@ -43,6 +60,7 @@ export const userBaseFragment = gql`
 export const userDetailsFragment = gql`
   ${addressFragment}
   ${userBaseFragment}
+  ${channelFragment}
   fragment UserDetailsFragment on User {
     ...UserBaseFragment
     metadata {
@@ -58,5 +76,9 @@ export const userDetailsFragment = gql`
     addresses {
       ...AddressFragment
     }
+    accessibleChannels {
+      ...ChannelFragment
+    }
+    restrictedAccessToChannels
   }
 `;

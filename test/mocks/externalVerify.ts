@@ -23,6 +23,8 @@ const externalVerify = () =>
         isStaff: true,
         metadata: [],
         addresses: [],
+        accessibleChannels: [],
+        restrictedAccessToChannels: false,
         defaultBillingAddress: null,
         defaultShippingAddress: null,
         userPermissions: [],

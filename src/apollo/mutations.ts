@@ -212,7 +212,7 @@ export const EXTERNAL_LOGOUT = gql`
 
 export const CHANGE_USER_PASSWORD = gql`
   ${accountErrorFragment}
-  mutation passwordChange($newPassword: String!, $oldPassword: String!) {
+  mutation passwordChange($newPassword: String!, $oldPassword: String) {
     passwordChange(newPassword: $newPassword, oldPassword: $oldPassword) {
       errors {
         ...AccountErrorFragment

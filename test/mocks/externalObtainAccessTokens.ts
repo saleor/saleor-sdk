@@ -31,6 +31,8 @@ const externalObtainAccessTokens = (
         isStaff: true,
         metadata: [],
         addresses: [],
+        accessibleChannels: [],
+        restrictedAccessToChannels: false,
         defaultBillingAddress: null,
         defaultShippingAddress: null,
         __typename: "User",

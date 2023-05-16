@@ -27,6 +27,8 @@ const login = (tokenExpirationPeriodInSeconds?: number, email?: string) =>
         isStaff: true,
         metadata: [],
         addresses: [],
+        accessibleChannels: [],
+        restrictedAccessToChannels: false,
         defaultBillingAddress: null,
         defaultShippingAddress: null,
         __typename: "User",
