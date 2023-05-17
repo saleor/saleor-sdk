@@ -2,6 +2,7 @@ import { graphql } from "msw";
 import {
   ExternalObtainAccessTokensMutation,
   ExternalObtainAccessTokensMutationVariables,
+  PermissionEnum,
 } from "../../src/apollo/types";
 import {
   TEST_AUTH_EMAIL,
@@ -33,6 +34,12 @@ const externalObtainAccessTokens = (
         addresses: [],
         defaultBillingAddress: null,
         defaultShippingAddress: null,
+        userPermissions: [
+          {
+            code: "HANDLE_CHECKOUTS" as PermissionEnum,
+            name: "Handle checkouts",
+          },
+        ],
         __typename: "User",
       },
       errors: [],

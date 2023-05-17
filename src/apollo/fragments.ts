@@ -37,6 +37,10 @@ export const userBaseFragment = gql`
     firstName
     lastName
     isStaff
+    userPermissions {
+      code
+      name
+    }
   }
 `;
 
