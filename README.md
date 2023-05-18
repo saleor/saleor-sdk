@@ -4,7 +4,7 @@
 
 This package contains methods providing Saleor business logic for a storefront and apps. It handles Saleor GraphQL queries and mutations, manages Apollo cache, and provides an internal state to manage popular storefront use cases, like user authentication.
 
-> :warning: **Note: Saleor SDK is being DEPRECATED. Please use authentication from our [Saleor docs](https://docs.saleor.io/docs/3.x/api-usage/authentication)**
+> :warning: **Note: Saleor SDK is DEPRECATED. Please use authentication from [Saleor docs](https://docs.saleor.io/docs/3.x/api-usage/authentication)**
 
 ## Table of Contents
 
