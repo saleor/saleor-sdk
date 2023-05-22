@@ -1,10 +1,10 @@
 <div align="center">
-  <h1>Saleor SDK</h1>
+  <h1>Saleor SDK - DEPRECATED</h1>
 </div>
 
 This package contains methods providing Saleor business logic for a storefront and apps. It handles Saleor GraphQL queries and mutations, manages Apollo cache, and provides an internal state to manage popular storefront use cases, like user authentication.
 
-> :warning: **Note: Saleor SDK is still under heavy development, and its API may change.**
+> :warning: **Note: Saleor SDK is DEPRECATED. Please use authentication from [Saleor docs](https://docs.saleor.io/docs/3.x/api-usage/authentication)**
 
 ## Table of Contents
 
@@ -239,8 +239,8 @@ request to http://localhost:8000/graphql/ failed, reason: connect ECONNREFUSED 1
 
 To fix this run `npm run test` with the following variables:
 
-* `API_URI`
-* `TEST_AUTH_EMAIL`
-* `TEST_AUTH_PASSWORD`
+- `API_URI`
+- `TEST_AUTH_EMAIL`
+- `TEST_AUTH_PASSWORD`
 
 After the tests run the recordings should be updated. Next time you run tests without variables, tests will use updated recordings.
