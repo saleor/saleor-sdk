@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@apollo/client": "^3.3.19",
     "graphql": "^15.5.0",
-    "react": "^16.8.0 || ^17.0.0"
+    "react": "^17.0.0 || ^18.0.0"
   },
   "husky": {
     "hooks": {
@@ -90,7 +90,7 @@
     "@types/pollyjs__adapter-node-http": "^2.0.1",
     "@types/pollyjs__core": "^4.3.2",
     "@types/pollyjs__persister-fs": "^2.0.1",
-    "@types/react": "^17.0.6",
+    "@types/react": "^18.2.7",
     "@types/setup-polly-jest": "^0.5.1",
     "eslint-plugin-tsdoc": "^0.2.14",
     "graphql": "^15.5.1",
@@ -100,8 +100,8 @@
     "msw": "^0.35.0",
     "np": "^7.5.0",
     "omit-deep-lodash": "^1.1.5",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "setup-polly-jest": "^0.9.1",
     "size-limit": "^4.10.2",
     "ts-jest": "^27.0.3",
