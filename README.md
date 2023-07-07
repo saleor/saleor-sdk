@@ -51,7 +51,7 @@ ReactDOM.render(
 
 const App = () => {
   const { login } = useAuth();
-  const { authenticated, user } = useAuthState();
+  const { authenticated, user, authenticating } = useAuthState();
 
   const handleSignIn = async () => {
     const { data } = await login({
@@ -70,8 +70,13 @@ const App = () => {
     }
   };
 
+  // Important: wait till the authentication process finishes
+  if (authenticating) {
+    return <div>Loading...</div>
+  }
+
   if (authenticated && user) {
-    return <span>Signed in as {user.firstName}</span>;
+    return <span>Signed in as {user.email}</span>;
   }
 
   return <button onClick={handleSignIn}>Sign in</button>;
