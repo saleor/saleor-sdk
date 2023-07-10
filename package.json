@@ -77,7 +77,7 @@
   ],
   "devDependencies": {
     "@apollo/client": "^3.3.19",
-    "@graphql-codegen/cli": "1.21.5",
+    "@graphql-codegen/cli": "4.0.1",
     "@graphql-codegen/introspection": "^1.18.2",
     "@graphql-codegen/typescript": "^1.22.3",
     "@graphql-codegen/typescript-apollo-client-helpers": "^1.1.9",
@@ -98,7 +98,7 @@
     "jest": "^27.0.5",
     "jsonwebtoken": "^8.5.1",
     "msw": "^0.35.0",
-    "np": "^7.5.0",
+    "np": "^8.0.4",
     "omit-deep-lodash": "^1.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
